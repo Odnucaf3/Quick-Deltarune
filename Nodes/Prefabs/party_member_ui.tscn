@@ -1,0 +1,97 @@
+[gd_scene load_steps=3 format=3 uid="uid://deigb0wpxseqj"]
+
+[ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="1_0sp46"]
+[ext_resource type="Script" uid="uid://ckbwtn4v3dh8n" path="res://Scripts/Prefabs/party_member_ui_script.gd" id="1_dax5a"]
+
+[node name="party_member_ui" type="Control" node_paths=PackedStringArray("offset", "button", "label_hp", "label_sp")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dax5a")
+offset = NodePath("offset_Control")
+button = NodePath("Button")
+label_hp = NodePath("offset_Control/VBoxContainer/hp_Label")
+label_sp = NodePath("offset_Control/VBoxContainer/sp_Label")
+
+[node name="offset_Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="offset_Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -70.5
+offset_top = -72.0
+offset_right = 70.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 2
+
+[node name="hp_Label" type="Label" parent="offset_Control/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "  30 / 30 HP  "
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="offset_Control/VBoxContainer/hp_Label"]
+self_modulate = Color(0, 0, 0, 0.4117647)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_0sp46")
+expand_mode = 1
+
+[node name="sp_Label" type="Label" parent="offset_Control/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "  20 / 20 SP  "
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="offset_Control/VBoxContainer/sp_Label"]
+self_modulate = Color(0, 0, 0, 0.4117647)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_0sp46")
+expand_mode = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -77.5
+offset_right = 77.5
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = "  Player 1  "

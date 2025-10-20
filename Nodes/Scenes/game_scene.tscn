@@ -1,23 +1,20 @@
-[gd_scene load_steps=62 format=4 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=29 format=4 uid="uid://dk4sbf5s4wg0y"]
 
-[ext_resource type="Texture2D" uid="uid://b0402pg2o182n" path="res://Assets/ansimuz/warped city files/sprites/player/idle.png" id="1_hf1mx"]
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
 [ext_resource type="Texture2D" uid="uid://ctjy5goss2wv7" path="res://Assets/ansimuz/warped city files/enviroment/preview-top-down-sci-fi.png" id="3_4usn6"]
-[ext_resource type="Texture2D" uid="uid://xfmiejntkjq" path="res://Assets/ansimuz/warped city files/sprites/player/walk.png" id="3_mqnqo"]
-[ext_resource type="Texture2D" uid="uid://doav3l76si2wh" path="res://Assets/ansimuz/warped city files/sprites/player/run.png" id="4_1o8lw"]
 [ext_resource type="Texture2D" uid="uid://c1jjfr2vhckdq" path="res://Assets/ansimuz/Starfighter Files/enviroment/tileset.png" id="4_4usn6"]
-[ext_resource type="Texture2D" uid="uid://bveu3hvcd82oy" path="res://Assets/ansimuz/warped city files/sprites/player/crouch.png" id="5_lleqo"]
 [ext_resource type="Texture2D" uid="uid://dg2sbnw1nhq88" path="res://Assets/ansimuz/warped city files/props/antenna.png" id="5_x381h"]
 [ext_resource type="Texture2D" uid="uid://br1xmqdj7to7l" path="res://Assets/ansimuz/warped city files/props/banner-arrow.png" id="6_tnh07"]
 [ext_resource type="Texture2D" uid="uid://b6vpgq8gyipmd" path="res://Assets/ansimuz/warped city files/props/banner-floor.png" id="7_xrh8u"]
 [ext_resource type="Texture2D" uid="uid://b8wieo7nga7xe" path="res://Assets/ansimuz/warped city files/sprites/player/shoot.png" id="8_bykob"]
 [ext_resource type="Texture2D" uid="uid://bhvliat8fdk88" path="res://Assets/ansimuz/warped city files/props/banner-open.png" id="8_ik87f"]
 [ext_resource type="Texture2D" uid="uid://dsx7fbj1pmvow" path="res://Assets/ansimuz/warped city files/props/banner-small.png" id="9_hxoxt"]
-[ext_resource type="Texture2D" uid="uid://crrtdbmmayw3a" path="res://Assets/ansimuz/warped city files/sprites/player/hurt.png" id="9_lleqo"]
 [ext_resource type="Texture2D" uid="uid://nlrt226wag2i" path="res://Assets/ansimuz/warped city files/props/banners.png" id="10_igypo"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="11_tnh07"]
+[ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/party_member.tscn" id="13_hxoxt"]
+[ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/party_member_ui.tscn" id="20_ik87f"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bpjbf"]
 texture = ExtResource("3_4usn6")
@@ -265,874 +262,28 @@ expand_margin_top = 8.0
 expand_margin_right = 8.0
 expand_margin_bottom = 8.0
 
-[sub_resource type="Animation" id="Animation_4usn6"]
-resource_name = "Crouch"
-length = 1.0000143
-step = 0.14285715
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("5_lleqo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_bpjbf"]
-resource_name = "Crouch_Hurt"
-length = 0.500005
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("5_lleqo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(30, 0), Vector2(-15, 0), Vector2(15, 0), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_lleqo"]
-resource_name = "Death"
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("9_lleqo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.65000004),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(30, 0), Vector2(-15, 0), Vector2(15, 0), Vector2(0, 0), Vector2(69.35, -23.2)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0.25, 0.65),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, -1.5707964]
-}
-
-[sub_resource type="Animation" id="Animation_p8wxr"]
-resource_name = "Hurt"
-length = 0.500005
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("9_lleqo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(30, 0), Vector2(-15, 0), Vector2(15, 0), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_hf1mx"]
-resource_name = "Idle"
-length = 0.5714429
-loop_mode = 1
-step = 0.14285715
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("1_hf1mx")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.14285715, 0.2857143, 0.42857146),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
-[sub_resource type="Animation" id="Animation_xqt5u"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:texture")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("1_hf1mx")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:hframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:vframes")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".:rotation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_bykob"]
-resource_name = "Run"
-length = 0.80001
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("4_1o8lw")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [8]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
-[sub_resource type="Animation" id="Animation_ddtg4"]
-resource_name = "Shot"
-length = 0.500005
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("8_bykob")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(-60, 0), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_v83d8"]
-resource_name = "Walk"
-length = 1.0666734
-loop_mode = 1
-step = 0.06666667
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("3_mqnqo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.33333334, 0.4, 0.4666667, 0.53333336, 0.6, 0.6666667, 0.73333335, 0.8, 0.8666667, 0.93333334, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_mqnqo"]
-_data = {
-&"Crouch": SubResource("Animation_4usn6"),
-&"Crouch_Hurt": SubResource("Animation_bpjbf"),
-&"Death": SubResource("Animation_lleqo"),
-&"Hurt": SubResource("Animation_p8wxr"),
-&"Idle": SubResource("Animation_hf1mx"),
-&"RESET": SubResource("Animation_xqt5u"),
-&"Run": SubResource("Animation_bykob"),
-&"Shot": SubResource("Animation_ddtg4"),
-&"Walk": SubResource("Animation_v83d8")
-}
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p8wxr"]
-animation = &"Crouch"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ddtg4"]
-animation = &"Crouch_Hurt"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lleqo"]
-animation = &"Death"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bpjbf"]
-animation = &"Hurt"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mqnqo"]
-animation = &"Idle"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bykob"]
-animation = &"Run"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fbyh6"]
-animation = &"Shot"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p8nic"]
-animation = &"Walk"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lleqo"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fbyh6"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_1o8lw"]
-allow_transition_to_self = true
-states/Crouch/node = SubResource("AnimationNodeAnimation_p8wxr")
-states/Crouch/position = Vector2(566, 187)
-states/Crouch_Hurt/node = SubResource("AnimationNodeAnimation_ddtg4")
-states/Crouch_Hurt/position = Vector2(363, 187)
-states/Death/node = SubResource("AnimationNodeAnimation_lleqo")
-states/Death/position = Vector2(720, 187)
-states/Hurt/node = SubResource("AnimationNodeAnimation_bpjbf")
-states/Hurt/position = Vector2(363, 100)
-states/Idle/node = SubResource("AnimationNodeAnimation_mqnqo")
-states/Idle/position = Vector2(566, 100)
-states/Run/node = SubResource("AnimationNodeAnimation_bykob")
-states/Run/position = Vector2(363, 3)
-states/Shot/node = SubResource("AnimationNodeAnimation_fbyh6")
-states/Shot/position = Vector2(712, 90)
-states/Start/position = Vector2(174, 100)
-states/Walk/node = SubResource("AnimationNodeAnimation_p8nic")
-states/Walk/position = Vector2(566, 3)
-transitions = ["Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_lleqo"), "Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_fbyh6")]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1o8lw"]
-size = Vector2(52, 16)
-
-[sub_resource type="Animation" id="Animation_fbyh6"]
-resource_name = "Hurt"
-length = 0.500005
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("9_lleqo")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(30, 0), Vector2(-15, 0), Vector2(15, 0), Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_mqnqo"]
-resource_name = "Idle"
-length = 0.5714429
-loop_mode = 1
-step = 0.14285715
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("1_hf1mx")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.14285715, 0.2857143, 0.42857146),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
-[sub_resource type="Animation" id="Animation_p8nic"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:texture")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("9_lleqo")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:hframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:vframes")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_v83d8"]
-_data = {
-&"Hurt": SubResource("Animation_fbyh6"),
-&"Idle": SubResource("Animation_mqnqo"),
-&"RESET": SubResource("Animation_p8nic")
-}
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mapp4"]
-animation = &"Hurt"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x381h"]
-animation = &"Idle"
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_xrh8u"]
-allow_transition_to_self = true
-states/Hurt/node = SubResource("AnimationNodeAnimation_mapp4")
-states/Hurt/position = Vector2(330, 100)
-states/Idle/node = SubResource("AnimationNodeAnimation_x381h")
-states/Idle/position = Vector2(465, 100)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d3vcv"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "player_ui", "player_ui_button", "player_ui_label_hp", "player_ui_label_sp", "player_Sprite", "player_Collision", "enemy", "enemy_ui", "enemy_ui_button", "enemy_ui_label_hp", "enemy_ui_label_sp", "camera", "hitbox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label", "animation_tree", "enemy_animation_tree")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "enemy", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
-player = NodePath("World2D/Player")
+player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member2"), NodePath("World2D/Party_Member3")]
+enemy = [NodePath("World2D/Party_Member4"), NodePath("World2D/Party_Member5"), NodePath("World2D/Party_Member6"), NodePath("World2D/Party_Member7"), NodePath("World2D/Party_Member8")]
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
 pauseLabel = NodePath("CanvasLayer/Label")
 win_label = NodePath("CanvasLayer/Battle_UI/win_Label")
 retry_menu = NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu")
 retry_menu_button = [NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button3")]
-debug_label = NodePath("CanvasLayer/MarginContainer/Label")
-player_ui = NodePath("CanvasLayer/Battle_UI/Player_ui")
-player_ui_button = NodePath("CanvasLayer/Battle_UI/Player_ui/VBoxContainer2/Button")
-player_ui_label_hp = NodePath("CanvasLayer/Battle_UI/Player_ui/VBoxContainer2/Label")
-player_ui_label_sp = NodePath("CanvasLayer/Battle_UI/Player_ui/VBoxContainer2/Label2")
-player_Sprite = NodePath("World2D/Player/Sprite2D")
-player_Collision = NodePath("World2D/Player/CollisionShape2D")
-enemy = NodePath("World2D/Enemy")
-enemy_ui = NodePath("CanvasLayer/Battle_UI/Enemy_ui")
-enemy_ui_button = NodePath("CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2/Button")
-enemy_ui_label_hp = NodePath("CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2/Label")
-enemy_ui_label_sp = NodePath("CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2/Label2")
+debug_label = NodePath("CanvasLayer/debug_MarginContainer/debug_Label")
 camera = NodePath("World2D/Camera2D")
 hitbox = NodePath("World2D/Battle_Box/Content/Hitbox")
-battle_menu = NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer")
-battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer/Button3"), NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer/Button4"), NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer/Button5"), NodePath("CanvasLayer/Battle_UI/Control2/VBoxContainer/Button6")]
+battle_menu = NodePath("CanvasLayer/Battle_UI/Control2")
+battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2/Button3"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2/Button4"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3/Button5"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3/Button6")]
 battle_menu_rect = NodePath("CanvasLayer/Battle_UI/TextureRect")
 battle_box = NodePath("World2D/Battle_Box")
 timer_label = NodePath("CanvasLayer/Battle_UI/Label")
-animation_tree = NodePath("World2D/Player/AnimationTree")
-enemy_animation_tree = NodePath("World2D/Enemy/AnimationTree")
 bullet_Prefab = ExtResource("2_lleqo")
 
 [node name="World2D" type="Node2D" parent="."]
@@ -1209,7 +360,6 @@ pivot_offset = Vector2(600, 350)
 theme_override_styles/panel = SubResource("StyleBoxFlat_4usn6")
 
 [node name="Battle_Box" type="Panel" parent="World2D"]
-visible = false
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -1246,63 +396,43 @@ show_behind_parent = true
 scale = Vector2(4, 4)
 texture = ExtResource("2_hf1mx")
 
-[node name="Player" type="CharacterBody2D" parent="World2D"]
-y_sort_enabled = true
-
-[node name="Sprite2D" type="Sprite2D" parent="World2D/Player"]
-scale = Vector2(3.5, 3.5)
-texture = ExtResource("1_hf1mx")
-offset = Vector2(0, -33)
-hframes = 4
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="World2D/Player"]
-root_node = NodePath("../Sprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_mqnqo")
-}
-
-[node name="AnimationTree" type="AnimationTree" parent="World2D/Player"]
-root_node = NodePath("../Sprite2D")
-tree_root = SubResource("AnimationNodeStateMachine_1o8lw")
-anim_player = NodePath("../AnimationPlayer")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World2D/Player"]
-position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_1o8lw")
-
-[node name="Marker2D" type="Marker2D" parent="World2D/Player"]
-position = Vector2(77.35, -131.2)
-
-[node name="Enemy" type="CharacterBody2D" parent="World2D"]
-position = Vector2(960, 192)
-
-[node name="Sprite2D" type="Sprite2D" parent="World2D/Enemy"]
-scale = Vector2(3.5, 3.5)
-texture = ExtResource("9_lleqo")
-offset = Vector2(0, -33)
-flip_h = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="World2D/Enemy"]
-root_node = NodePath("../Sprite2D")
-libraries = {
-&"": SubResource("AnimationLibrary_v83d8")
-}
-
-[node name="AnimationTree" type="AnimationTree" parent="World2D/Enemy"]
-root_node = NodePath("../Sprite2D")
-tree_root = SubResource("AnimationNodeStateMachine_xrh8u")
-anim_player = NodePath("../AnimationPlayer")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World2D/Enemy"]
-shape = SubResource("RectangleShape2D_d3vcv")
-disabled = true
-
 [node name="Camera2D" type="Camera2D" parent="World2D"]
+
+[node name="Party_Member" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui")
+
+[node name="Party_Member2" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(-45, -121)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui2")
+
+[node name="Party_Member3" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(87, -128)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui3")
+
+[node name="Party_Member4" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(813, 153)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui4")
+
+[node name="Party_Member5" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(915, 60)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui5")
+
+[node name="Party_Member6" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(914, 217)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui6")
+
+[node name="Party_Member7" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(1005, 120)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui7")
+
+[node name="Party_Member8" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+position = Vector2(1005, 120)
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 process_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1313,7 +443,7 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer"]
+[node name="debug_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
@@ -1349,67 +479,61 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -4.0
-offset_right = -280.0
-offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Battle_UI/Control2"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -141.0
-offset_right = 160.0
-offset_bottom = 141.0
+offset_top = -52.0
+offset_right = 348.0
+offset_bottom = 52.0
 grow_vertical = 2
-size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 4
 alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Attack"
+text = "  Attack  "
 
-[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
+[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = " Defense "
+text = "  Defense  "
 
-[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "  Skills  "
+
+[node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "  Items  "
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
-visible = false
+[node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Skills"
+text = "  Equip  "
 
-[node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
-visible = false
+[node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Items"
-
-[node name="HSeparator2" type="HSeparator" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
-visible = false
-layout_mode = 2
-
-[node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Status"
-
-[node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Control2/VBoxContainer"]
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Escape"
+text = "  Check  "
 
 [node name="Label" type="Label" parent="CanvasLayer/Battle_UI"]
 layout_mode = 1
@@ -1464,140 +588,6 @@ size_flags_vertical = 1
 theme_override_font_sizes/font_size = 24
 text = "*Godot waited for you"
 
-[node name="Player_ui" type="Control" parent="CanvasLayer/Battle_UI"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -408.0
-offset_top = 106.0
-offset_right = -408.0
-offset_bottom = 106.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Player_ui"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -77.5
-offset_right = 77.5
-offset_bottom = 126.0
-grow_horizontal = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Battle_UI/Player_ui/VBoxContainer2"]
-layout_mode = 2
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 24
-text = "30 / 30 HP"
-horizontal_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/Player_ui/VBoxContainer2/Label"]
-self_modulate = Color(0, 0, 0, 0.4117647)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_hf1mx")
-expand_mode = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/Battle_UI/Player_ui/VBoxContainer2"]
-layout_mode = 2
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 24
-text = "20 / 20 SP"
-horizontal_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/Player_ui/VBoxContainer2/Label2"]
-self_modulate = Color(0, 0, 0, 0.4117647)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_hf1mx")
-expand_mode = 1
-
-[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Player_ui/VBoxContainer2"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "  Player 1  "
-
-[node name="Enemy_ui" type="Control" parent="CanvasLayer/Battle_UI"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 360.0
-offset_top = 106.0
-offset_right = 360.0
-offset_bottom = 106.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Enemy_ui"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -77.5
-offset_right = 77.5
-offset_bottom = 126.0
-grow_horizontal = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2"]
-layout_mode = 2
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 24
-text = "30 / 30 HP"
-horizontal_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2/Label"]
-self_modulate = Color(0, 0, 0, 0.4117647)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_hf1mx")
-expand_mode = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2"]
-layout_mode = 2
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 24
-text = "20 / 20 SP"
-horizontal_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2/Label2"]
-self_modulate = Color(0, 0, 0, 0.4117647)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_hf1mx")
-expand_mode = 1
-
-[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Enemy_ui/VBoxContainer2"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "  Enemy 1  "
-
 [node name="win_Label" type="Label" parent="CanvasLayer/Battle_UI"]
 layout_mode = 1
 anchors_preset = 8
@@ -1649,6 +639,30 @@ text = "  Escape Battle  "
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
+
+[node name="party_member_ui" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui2" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui3" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui4" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui5" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui6" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui7" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
+
+[node name="party_member_ui8" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+layout_mode = 1
 
 [node name="Label" type="Label" parent="CanvasLayer"]
 visible = false
