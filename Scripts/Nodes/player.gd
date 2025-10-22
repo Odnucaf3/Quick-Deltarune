@@ -4,10 +4,13 @@ class_name Party_Member
 var hp: int
 var max_hp: int = 30
 var sp: int
-var max_sp: int = 25
+var max_sp: int = 100
 var is_in_guard: bool
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool
+#-------------------------------------------------------------------------------
+var target: Party_Member
+var action: StringName
 #-------------------------------------------------------------------------------
 @export var sprite: Sprite2D
 @export var collider: CollisionShape2D

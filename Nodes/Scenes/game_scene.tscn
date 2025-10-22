@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=30 format=4 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -14,7 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://nlrt226wag2i" path="res://Assets/ansimuz/warped city files/props/banners.png" id="10_igypo"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="11_tnh07"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/party_member.tscn" id="13_hxoxt"]
-[ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/party_member_ui.tscn" id="20_ik87f"]
+[ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
+[ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bpjbf"]
 texture = ExtResource("3_4usn6")
@@ -248,7 +249,7 @@ sources/5 = SubResource("TileSetAtlasSource_mitwg")
 sources/6 = SubResource("TileSetAtlasSource_3p4s7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muxe8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -265,25 +266,26 @@ expand_margin_bottom = 8.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "enemy", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "enemy", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
 player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member2"), NodePath("World2D/Party_Member3")]
-enemy = [NodePath("World2D/Party_Member4"), NodePath("World2D/Party_Member5"), NodePath("World2D/Party_Member6"), NodePath("World2D/Party_Member7"), NodePath("World2D/Party_Member8")]
+enemy = [NodePath("World2D/Party_Member4"), NodePath("World2D/Party_Member5"), NodePath("World2D/Party_Member6")]
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
-pauseLabel = NodePath("CanvasLayer/Label")
+pauseLabel = NodePath("CanvasLayer/pause_Label")
 win_label = NodePath("CanvasLayer/Battle_UI/win_Label")
 retry_menu = NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu")
 retry_menu_button = [NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button3")]
 debug_label = NodePath("CanvasLayer/debug_MarginContainer/debug_Label")
 camera = NodePath("World2D/Camera2D")
 hitbox = NodePath("World2D/Battle_Box/Content/Hitbox")
-battle_menu = NodePath("CanvasLayer/Battle_UI/Control2")
-battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2/Button3"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2/Button4"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3/Button5"), NodePath("CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3/Button6")]
+grazebox = NodePath("World2D/Battle_Box/Content/Hitbox/MagnetBox")
+battle_menu = NodePath("CanvasLayer/Battle_UI/Battle_Menu")
+battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2/Button3"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2/Button4"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Button5"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Button6")]
 battle_menu_rect = NodePath("CanvasLayer/Battle_UI/TextureRect")
 battle_box = NodePath("World2D/Battle_Box")
-timer_label = NodePath("CanvasLayer/Battle_UI/Label")
+timer_label = NodePath("CanvasLayer/Battle_UI/timer_Label")
 bullet_Prefab = ExtResource("2_lleqo")
 
 [node name="World2D" type="Node2D" parent="."]
@@ -360,6 +362,7 @@ pivot_offset = Vector2(600, 350)
 theme_override_styles/panel = SubResource("StyleBoxFlat_4usn6")
 
 [node name="Battle_Box" type="Panel" parent="World2D"]
+visible = false
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -399,40 +402,41 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 
 [node name="Party_Member" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui")
 
 [node name="Party_Member2" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(-45, -121)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui2")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui2")
 
 [node name="Party_Member3" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(87, -128)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui3")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui3")
 
 [node name="Party_Member4" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(813, 153)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui4")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui")
 
 [node name="Party_Member5" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(915, 60)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui5")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui2")
 
 [node name="Party_Member6" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(914, 217)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui6")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui3")
 
 [node name="Party_Member7" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(1005, 120)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui7")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui4")
 
 [node name="Party_Member8" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(1005, 120)
-party_member_ui = NodePath("../../CanvasLayer/Battle_UI/party_member_ui8")
+party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui5")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 process_mode = 1
 
 [node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -447,7 +451,7 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 6
 text = "aaaaaaaaaaaaa"
 
 [node name="Battle_UI" type="Control" parent="CanvasLayer"]
@@ -472,7 +476,7 @@ size_flags_vertical = 4
 texture = ExtResource("8_bykob")
 expand_mode = 3
 
-[node name="Control2" type="Control" parent="CanvasLayer/Battle_UI"]
+[node name="Battle_Menu" type="Control" parent="CanvasLayer/Battle_UI"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -482,60 +486,69 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Battle_UI/Control2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -52.0
-offset_right = 348.0
-offset_bottom = 52.0
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 3
+text = "Battle Menu:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Attack  "
 
-[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer"]
+[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Defense  "
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 
-[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2"]
+[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Skills  "
 
-[node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer2"]
+[node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Items  "
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3"]
+[node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Equip  "
 
-[node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Control2/HBoxContainer/VBoxContainer3"]
+[node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Check  "
 
-[node name="Label" type="Label" parent="CanvasLayer/Battle_UI"]
+[node name="timer_Label" type="Label" parent="CanvasLayer/Battle_UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -552,7 +565,7 @@ theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "  10 / 10 s"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Battle_UI"]
+[node name="dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Battle_UI"]
 visible = false
 layout_mode = 1
 anchors_preset = 12
@@ -567,10 +580,10 @@ theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Battle_UI/MarginContainer"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Battle_UI/dialogue_MarginContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Battle_UI/MarginContainer/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Battle_UI/dialogue_MarginContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -582,13 +595,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Label" type="Label" parent="CanvasLayer/Battle_UI/MarginContainer/Panel/MarginContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Battle_UI/dialogue_MarginContainer/Panel/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 24
 text = "*Godot waited for you"
 
 [node name="win_Label" type="Label" parent="CanvasLayer/Battle_UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -640,31 +654,39 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
 
-[node name="party_member_ui" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="ally_ui" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui2" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="ally_ui2" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui3" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="ally_ui3" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui4" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="enemy_ui" parent="CanvasLayer/Battle_UI" instance=ExtResource("16_mapp4")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui5" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="enemy_ui2" parent="CanvasLayer/Battle_UI" instance=ExtResource("16_mapp4")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui6" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="enemy_ui3" parent="CanvasLayer/Battle_UI" instance=ExtResource("16_mapp4")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui7" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="enemy_ui4" parent="CanvasLayer/Battle_UI" instance=ExtResource("16_mapp4")]
+visible = false
 layout_mode = 1
 
-[node name="party_member_ui8" parent="CanvasLayer/Battle_UI" instance=ExtResource("20_ik87f")]
+[node name="enemy_ui5" parent="CanvasLayer/Battle_UI" instance=ExtResource("16_mapp4")]
+visible = false
 layout_mode = 1
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="pause_Label" type="Label" parent="CanvasLayer"]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0

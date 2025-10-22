@@ -5,8 +5,15 @@ enum GAME_STATE{IN_WORLD, IN_MENU, IN_BATTLE}
 #-------------------------------------------------------------------------------
 #region VARIABLES
 @export var player: Array[Party_Member]
+var player_alive: Array[Party_Member]
+var player_death: Array[Party_Member]
+#-------------------------------------------------------------------------------
 @export var enemy: Array[Party_Member]
+var enemy_alive: Array[Party_Member]
+var enemy_death: Array[Party_Member]
+#-------------------------------------------------------------------------------
 var camera_offset_y: float = 125
+var current_player_turn: int = 0
 @export var black_panel: Panel
 @export var battle_black_panel: Panel
 @export var pauseLabel: Label
@@ -27,6 +34,7 @@ var tween_Array: Array[Tween]
 #-------------------------------------------------------------------------------
 @export var camera: Camera2D
 @export var hitbox: Sprite2D
+@export var grazebox: Sprite2D
 @export var battle_menu: Control
 @export var battle_menu_button: Array[Button]
 @export var battle_menu_rect: TextureRect
@@ -57,7 +65,7 @@ var screen_limit_right: float
 var enemyBullets_Enabled_Array: Array[Bullet]
 var enemyBullets_Disabled_Array: Array[Bullet]
 #-------------------------------------------------------------------------------
-var grazeBox_radius: float = 30.0
+var grazeBox_radius: float = 41.0
 var hitBox_radius: float = 8.0
 var canBeHit: bool = true
 var viewport_size: Vector2
@@ -72,13 +80,13 @@ func _ready() -> void:
 	for _i in player.size():
 		player[_i].playback = player[_i].animation_tree.get("parameters/playback")
 		player[_i].party_member_ui.hide()
-		player[_i].party_member_ui.button.hide()
+		player[_i].party_member_ui.button_pivot.hide()
 		PlayAnimation(player[_i].playback, "Idle")
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
 		enemy[_i].playback = enemy[_i].animation_tree.get("parameters/playback")
 		enemy[_i].party_member_ui.hide()
-		enemy[_i].party_member_ui.button.hide()
+		enemy[_i].party_member_ui.button_pivot.hide()
 		enemy[_i].party_member_ui.label_sp.hide()
 		PlayAnimation(enemy[_i].playback, "Idle")
 	#-------------------------------------------------------------------------------
@@ -95,6 +103,10 @@ func _ready() -> void:
 	viewport_size = Vector2(_width, _height)
 	viewport_center = viewport_size/2.0
 	#-------------------------------------------------------------------------------
+	hitbox.global_scale = Get_CircleSprite_Scale(hitBox_radius) + Vector2(0.01, 0.01)
+	grazebox.global_scale = Get_CircleSprite_Scale(grazeBox_radius) + Vector2(0.01, 0.01)
+	#-------------------------------------------------------------------------------
+	Create_EnemyBullets_Disabled(2000)
 	PauseOff()
 	NormalMotion()
 #-------------------------------------------------------------------------------
@@ -224,6 +236,12 @@ func Check_for_Enemy():
 		EnterBattle()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+
+func Face_Left(_b:bool):
+	player[0].sprite.flip_h = _b
+	is_Facing_Left = _b
+#endregion
+#-------------------------------------------------------------------------------
 func EnterBattle():
 	myGAME_STATE = GAME_STATE.IN_MENU
 	#-------------------------------------------------------------------------------
@@ -242,6 +260,7 @@ func EnterBattle():
 		#enemy[_i].global_position = enemy[0].global_position
 	#-------------------------------------------------------------------------------
 	Face_Left(false)
+	current_player_turn = 0
 	#-------------------------------------------------------------------------------
 	player_last_position = player[0].global_position
 	enemy_last_position = enemy[0].global_position
@@ -263,7 +282,6 @@ func EnterBattle():
 		var _x_pos: float = -400
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
 		player[_i].party_member_ui.global_position = viewport_center + Vector2(_x_pos, _y_pos)
-		player[_i].party_member_ui.offset.position.x = -100
 		_tween.parallel().tween_property(player[_i], "position", _position, 0.5)
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
@@ -271,10 +289,9 @@ func EnterBattle():
 		var _x_pos: float = 400
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
 		enemy[_i].party_member_ui.global_position = viewport_center + Vector2(_x_pos, _y_pos)
-		enemy[_i].party_member_ui.offset.position.x = 100
 		_tween.parallel().tween_property(enemy[_i], "position", _position, 0.5)
 	#-------------------------------------------------------------------------------
-	battle_menu.position = player[0].party_member_ui.position + Vector2(60, -85)
+	battle_menu.global_position = player[current_player_turn].party_member_ui.button_pivot.global_position
 	_tween.tween_interval(0.5)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
@@ -286,13 +303,20 @@ func EnterBattle():
 		SetButton(battle_menu_button[0],func():CommonSelected() , func():BattleMenu_AttackButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		SetButton(battle_menu_button[1],func():CommonSelected() , func():BattleMenu_DefenseButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		#-------------------------------------------------------------------------------
+		player_alive.clear()
+		player_death.clear()
+		#-------------------------------------------------------------------------------
 		for _i in player.size():
 			player[_i].hp = player[_i].max_hp
 			Set_HP_Label(player[_i].party_member_ui.label_hp, player[_i].hp, player[_i].max_hp)
 			player[_i].sp = 0
 			Set_SP_Label(player[_i].party_member_ui.label_sp, player[_i].sp, player[_i].max_sp)
 			player[_i].party_member_ui.show()
-			player[_i].party_member_ui.button.hide()
+			player[_i].party_member_ui.button_pivot.hide()
+			player_alive.append(player[_i])
+		#-------------------------------------------------------------------------------
+		enemy_alive.clear()
+		enemy_death.clear()
 		#-------------------------------------------------------------------------------
 		for _i in enemy.size():
 			enemy[_i].hp = enemy[_i].max_hp
@@ -300,82 +324,150 @@ func EnterBattle():
 			enemy[_i].sp = 0
 			Set_SP_Label(enemy[_i].party_member_ui.label_sp, enemy[_i].sp, enemy[_i].max_sp)
 			enemy[_i].party_member_ui.show()
-			enemy[_i].party_member_ui.button.hide()
+			enemy[_i].party_member_ui.button_pivot.hide()
+			enemy_alive.append(enemy[_i])
 		#-------------------------------------------------------------------------------
 	)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Face_Left(_b:bool):
-	player[0].sprite.flip_h = _b
-	is_Facing_Left = _b
-#endregion
-#-------------------------------------------------------------------------------
 #region IN_MENU FUNCTIONS
 func BattleMenu_AttackButton_Submit():
 	battle_menu.hide()
-	enemy[0].party_member_ui.button.show()
-	Move_to_Button(enemy[0].party_member_ui.button)
-	SetButton(enemy[0].party_member_ui.button, func():CommonSelected(), func():TargetMenu_EnemyButton_Submit(), func():TargetMenu_EnemyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	for _i in enemy_alive.size():
+		enemy_alive[_i].party_member_ui.button_pivot.show()
+		SetButton(enemy_alive[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_EnemyButton_Submit(enemy_alive[_i]), func():TargetMenu_EnemyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	Move_to_Button(enemy_alive[0].party_member_ui.button)
 #-------------------------------------------------------------------------------
 func BattleMenu_DefenseButton_Submit():
 	battle_menu.hide()
-	player[0].party_member_ui.button.show()
-	Move_to_Button(player[0].party_member_ui.button)
-	SetButton(player[0].party_member_ui.button, func():CommonSelected(), func():TargetMenu_PlayerButton_Submit(), func():TargetMenu_PlayerButton_Cancel())
+	player_alive[current_player_turn].party_member_ui.button_pivot.show()
+	Move_to_Button(player_alive[current_player_turn].party_member_ui.button)
+	SetButton(player_alive[current_player_turn].party_member_ui.button, func():CommonSelected(), func():TargetMenu_PlayerButton_Submit(), func():TargetMenu_PlayerButton_Cancel())
 #-------------------------------------------------------------------------------
 func BattleMenu_AnyButton_Cancel():
-	battle_menu.hide()
-	win_label.text = "Escape?"
-	win_label.show()
-	retry_menu.show()
-	Move_to_Button(retry_menu_button[0])
-	SetButton(retry_menu_button[0], func():CommonSelected(), func():RetryMenu_RetryButton_Submit(), func():RetryMenu_AnyButton_Cancel())
-	SetButton(retry_menu_button[1], func():CommonSelected(), func():RetryMenu_EscapeButton_Submit(), func():RetryMenu_AnyButton_Cancel())
-	SetButton(retry_menu_button[2], func():CommonSelected(), func():RetryMenu_ReturnToSavePointButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+	current_player_turn -= 1
+	#-------------------------------------------------------------------------------
+	if(current_player_turn < 0):
+		current_player_turn = 0
+		battle_menu.hide()
+		win_label.text = "Escape?"
+		win_label.show()
+		retry_menu.show()
+		Move_to_Button(retry_menu_button[0])
+		SetButton(retry_menu_button[0], func():CommonSelected(), func():RetryMenu_RetryButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+		SetButton(retry_menu_button[1], func():CommonSelected(), func():RetryMenu_EscapeButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+		SetButton(retry_menu_button[2], func():CommonSelected(), func():RetryMenu_ReturnToSavePointButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	else:
+		#-------------------------------------------------------------------------------
+		for _i in range(current_player_turn, player_alive.size()):
+			PlayAnimation(player_alive[_i].playback, "Idle")
+		#-------------------------------------------------------------------------------
+		for _i in enemy_alive.size():
+			PlayAnimation(enemy_alive[_i].playback, "Idle")
+		#-------------------------------------------------------------------------------
+		battle_menu.global_position = player_alive[current_player_turn].party_member_ui.button_pivot.global_position
 #-------------------------------------------------------------------------------
-func TargetMenu_EnemyButton_Submit():
-	enemy[0].party_member_ui.button.hide()
-	player[0].is_in_guard = false
-	var _tween: Tween = create_tween()
-	_tween.tween_interval(0.5)
+func TargetMenu_EnemyButton_Submit(_target:Party_Member):
+	PlayAnimation(player_alive[current_player_turn].playback, "Aim")
+	player_alive[current_player_turn].action = "Attack"
+	player_alive[current_player_turn].target = _target
+	After_Choose_Target_Logic()
+#-------------------------------------------------------------------------------
+func After_Choose_Target_Logic():
+	for _i in enemy.size():
+		enemy[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
 	for _i in player.size():
-		#-------------------------------------------------------------------------------
-		_tween.tween_callback(func():
-			PlayAnimation(player[_i].playback, "Shot")
-			enemy[0].hp -= 5
-			#-------------------------------------------------------------------------------
-			if(enemy[0].hp > 0):
-				PlayAnimation(enemy[0].playback, "Hurt 2")
-			#-------------------------------------------------------------------------------
-			else:
-				PlayAnimation(enemy[0].playback, "Death")
-			#-------------------------------------------------------------------------------
-			Set_HP_Label(enemy[0].party_member_ui.label_hp, enemy[0].hp, enemy[0].max_hp)
-		)
-		#-------------------------------------------------------------------------------
-		_tween.tween_interval(0.3)
+		player[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
-	_tween.tween_interval(1.0)
+	current_player_turn += 1
+	#-------------------------------------------------------------------------------
+	if(current_player_turn < player_alive.size()):
+		#-------------------------------------------------------------------------------
+		battle_menu.global_position = player_alive[current_player_turn].party_member_ui.button_pivot.global_position
+		battle_menu.show()
+		Move_to_Button(battle_menu_button[0])
+	#-------------------------------------------------------------------------------
+	else:
+		Party_Actions()
+#-------------------------------------------------------------------------------
+func Party_Actions():
+	current_player_turn = player_alive.size()
+	var _tween: Tween = create_tween()
+	_tween.tween_interval(0.3)
+	#-------------------------------------------------------------------------------
+	for _i in player_alive.size():
+		#-------------------------------------------------------------------------------
+		match(player_alive[_i].action):
+			"Attack":
+				#-------------------------------------------------------------------------------
+				_tween.tween_callback(func():
+					#-------------------------------------------------------------------------------
+					if(enemy_alive.size() > 0):
+						PlayAnimation(player_alive[_i].playback, "Shot")
+						var _target: Party_Member = player_alive[_i].target
+						#-------------------------------------------------------------------------------
+						if(!enemy_alive.has(_target)):
+							_target = enemy_alive[0]
+							#-------------------------------------------------------------------------------
+							for _j in enemy_alive.size():
+								#-------------------------------------------------------------------------------
+								if(enemy_alive[_j].hp < _target.hp):
+									_target = enemy_alive[_i]
+									#-------------------------------------------------------------------------------
+								#-------------------------------------------------------------------------------
+						#-------------------------------------------------------------------------------
+						_target.hp -= 23
+						#-------------------------------------------------------------------------------
+						if(_target.hp > 0):
+							PlayAnimation(_target.playback, "Hurt 2")
+						#-------------------------------------------------------------------------------
+						else:
+							_target.hp = 0
+							PlayAnimation(_target.playback, "Death")
+							enemy_alive.erase(_target)
+						#-------------------------------------------------------------------------------
+						Set_HP_Label(_target.party_member_ui.label_hp, _target.hp, _target.max_hp)
+				)
+				#-------------------------------------------------------------------------------
+				_tween.tween_interval(0.3)
+			#-------------------------------------------------------------------------------
+			"Defense":
+				player_alive[_i].is_in_guard = true
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	_tween.tween_interval(0.5)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		#-------------------------------------------------------------------------------
-		for _i in player.size():
-			PlayAnimation(player[_i].playback, "Idle")
+		for _i in player_alive.size():
+			if(player_alive[_i].is_in_guard):
+				PlayAnimation(player_alive[_i].playback, "Crouch")
+			#-------------------------------------------------------------------------------
+			else:
+				PlayAnimation(player_alive[_i].playback, "Idle")
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		if(enemy[0].hp > 0):
-			PlayAnimation(enemy[0].playback, "Idle")
+		if(enemy_alive.size() > 0):
+			#-------------------------------------------------------------------------------
+			for _i in enemy_alive.size():
+				PlayAnimation(enemy_alive[_i].playback, "Idle")
+			#-------------------------------------------------------------------------------
 			Start_BulletHell()
 		#-------------------------------------------------------------------------------
 		else:
 			#-------------------------------------------------------------------------------
 			for _i in player.size():
 				player[_i].party_member_ui.hide()
-				player[_i].party_member_ui.button.hide()
+				player[_i].party_member_ui.button_pivot.hide()
 			#-------------------------------------------------------------------------------
 			for _i in enemy.size():
 				enemy[_i].party_member_ui.hide()
-				enemy[_i].party_member_ui.button.hide()
+				enemy[_i].party_member_ui.button_pivot.hide()
 			#-------------------------------------------------------------------------------
 			retry_menu.hide()
 			win_label.text = "You Win"
@@ -409,18 +501,20 @@ func TargetMenu_EnemyButton_Submit():
 #-------------------------------------------------------------------------------
 func TargetMenu_EnemyButton_Cancel():
 	battle_menu.show()
-	enemy[0].party_member_ui.button.hide()
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		enemy[_i].party_member_ui.button_pivot.hide()
+	#-------------------------------------------------------------------------------
 	Move_to_Button(battle_menu_button[0])
 #-------------------------------------------------------------------------------
 func TargetMenu_PlayerButton_Submit():
-	player[0].party_member_ui.button.hide()
-	player[0].is_in_guard = true
-	PlayAnimation(player[0].playback, "Crouch")
-	Start_BulletHell()
+	PlayAnimation(player_alive[current_player_turn].playback, "Crouch")
+	player_alive[current_player_turn].action = "Defense"
+	After_Choose_Target_Logic()
 #-------------------------------------------------------------------------------
 func TargetMenu_PlayerButton_Cancel():
 	battle_menu.show()
-	player[0].party_member_ui.button.hide()
+	player_alive[current_player_turn].party_member_ui.button_pivot.hide()
 	Move_to_Button(battle_menu_button[1])
 #-------------------------------------------------------------------------------
 func RetryMenu_RetryButton_Submit():
@@ -433,18 +527,35 @@ func RetryMenu_RetryButton_Submit():
 		retry_menu.hide()
 		win_label.hide()
 		#-------------------------------------------------------------------------------
-		PlayAnimation(player[0].playback, "Idle")
+		current_player_turn = 0
+		battle_menu.global_position = player[0].party_member_ui.button_pivot.global_position
 		#-------------------------------------------------------------------------------
-		player[0].hp = player[0].max_hp
-		Set_HP_Label(player[0].party_member_ui.label_hp, player[0].hp, player[0].max_hp)
-		player[0].party_member_ui.show()
+		player_alive.clear()
+		player_death.clear()
 		#-------------------------------------------------------------------------------
-		player[0].sp = 0
-		Set_SP_Label(player[0].party_member_ui.label_sp, player[0].sp, player[0].max_sp)
+		for _i in player.size():
+			PlayAnimation(player[_i].playback, "Idle")
+			#-------------------------------------------------------------------------------
+			player[_i].hp = player[_i].max_hp
+			Set_HP_Label(player[_i].party_member_ui.label_hp, player[_i].hp, player[_i].max_hp)
+			#-------------------------------------------------------------------------------
+			player[_i].sp = 0
+			Set_SP_Label(player[_i].party_member_ui.label_sp, player[_i].sp, player[_i].max_sp)
+			#-------------------------------------------------------------------------------
+			player[_i].party_member_ui.show()
+			player_alive.append(player[_i])
 		#-------------------------------------------------------------------------------
-		enemy[0].hp = enemy[0].max_hp
-		Set_HP_Label(enemy[0].party_member_ui.label_hp, enemy[0].hp, enemy[0].max_hp)
-		enemy[0].party_member_ui.show()
+		enemy_alive.clear()
+		enemy_death.clear()
+		#-------------------------------------------------------------------------------
+		for _i in enemy.size():
+			PlayAnimation(enemy[_i].playback, "Idle")
+			#-------------------------------------------------------------------------------
+			enemy[_i].hp = enemy[_i].max_hp
+			Set_HP_Label(enemy[_i].party_member_ui.label_hp, enemy[_i].hp, enemy[_i].max_hp)
+			#-------------------------------------------------------------------------------
+			enemy[_i].party_member_ui.show()
+			enemy_alive.append(enemy[_i])
 		#-------------------------------------------------------------------------------
 		battle_menu.show()
 		Move_to_Button(battle_menu_button[0])
@@ -519,11 +630,47 @@ func Start_BulletHell():
 	Stage1_Fire2(_tween, enemy[0], 1)
 	#-------------------------------------------------------------------------------
 	await TimeOut_Tween(7)
-	battle_menu.show()
-	battle_box.hide()
 	myGAME_STATE = GAME_STATE.IN_MENU
-	Move_to_Button(battle_menu_button[0])
-	PlayAnimation(player[0].playback, "Idle")
+	current_player_turn = 0
+	#-------------------------------------------------------------------------------
+	player_alive.clear()
+	player_death.clear()
+	#-------------------------------------------------------------------------------
+	for _i in player.size():
+		player[_i].is_in_guard = false
+		#-------------------------------------------------------------------------------
+		if(player[_i].hp > 0):
+			player_alive.append(player[_i])
+			PlayAnimation(player[_i].playback, "Idle")
+		#-------------------------------------------------------------------------------
+		else:
+			player_death.append(player[_i])
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	enemy_alive.clear()
+	enemy_death.clear()
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		enemy[_i].is_in_guard = false
+		#-------------------------------------------------------------------------------
+		if(enemy[_i].hp > 0):
+			enemy_alive.append(enemy[_i])
+			PlayAnimation(enemy[_i].playback, "Idle")
+		#-------------------------------------------------------------------------------
+		else:
+			enemy_death.append(enemy[_i])
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	if(player_alive.size() > 0):
+		battle_menu.show()
+		battle_box.hide()
+		myGAME_STATE = GAME_STATE.IN_MENU
+		Move_to_Button(battle_menu_button[current_player_turn])
+		battle_menu.global_position = player_alive[current_player_turn].party_member_ui.button_pivot.global_position
+	#-------------------------------------------------------------------------------
+	else:
+		GameOver()
+	#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region TIMER FUNCTIONS
@@ -555,6 +702,11 @@ func TimeOut_Tween(_iMax: int):
 #-------------------------------------------------------------------------------
 func PrintTimer(_i:int, _iMax:int):
 	timer_label.text = "   "+str(_i).pad_zeros(2)+" / " +str(_iMax).pad_zeros(2) + " s"
+#-------------------------------------------------------------------------------
+func StopEverithing_and_Timer():
+	StopEverithing()
+	timer_tween.kill()
+	timer_tween.finished.emit()
 #-------------------------------------------------------------------------------
 func StopEverithing():
 	timer_label.text = ""
@@ -694,60 +846,77 @@ func Hitbox_Damage():
 			if(_bullet.global_position.distance_to(hitbox.global_position) < (_bullet.radius+hitBox_radius) and canBeHit):
 				Player_Shooted()
 				Destroy_EnemyBullet(_bullet)
+				return
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Player_Shooted():
 	#-------------------------------------------------------------------------------
-	if(player[0].is_in_guard):
-		player[0].hp -= 5
-	#-------------------------------------------------------------------------------
-	else:
-		player[0].hp -= 10
-	#-------------------------------------------------------------------------------
-	if(player[0].hp > 0):
+	if(player_alive.size() > 0):
+		var _target: Party_Member = player_alive.pick_random()
 		#-------------------------------------------------------------------------------
-		if(player[0].is_in_guard):
-			PlayAnimation(player[0].playback, "Crouch_Hurt")
+		if(_target.is_in_guard):
+			_target.hp -= 5
 		#-------------------------------------------------------------------------------
 		else:
-			PlayAnimation(player[0].playback, "Hurt")
+			_target.hp -= 10
 		#-------------------------------------------------------------------------------
-		Set_HP_Label(player[0].party_member_ui.label_hp, player[0].hp, player[0].max_hp)
-	#-------------------------------------------------------------------------------
+		if(_target.hp > 0):
+			#-------------------------------------------------------------------------------
+			if(_target.is_in_guard):
+				PlayAnimation(_target.playback, "Crouch_Hurt")
+			#-------------------------------------------------------------------------------
+			else:
+				PlayAnimation(_target.playback, "Hurt")
+			#-------------------------------------------------------------------------------
+			Set_HP_Label(_target.party_member_ui.label_hp, _target.hp, _target.max_hp)
+		#-------------------------------------------------------------------------------
+		else:
+			_target.hp = 0
+			Set_HP_Label(_target.party_member_ui.label_hp, _target.hp, _target.max_hp)
+			PlayAnimation(_target.playback, "Death")
+			#-------------------------------------------------------------------------------
+			player_alive.erase(_target)
+			#-------------------------------------------------------------------------------
+			if(player_alive.size() <= 0):
+				StopEverithing_and_Timer()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
 	else:
-		player[0].hp = 0
-		Set_HP_Label(player[0].party_member_ui.label_hp, player[0].hp, player[0].max_hp)
-		#-------------------------------------------------------------------------------
-		var _tween:Tween = create_tween()
-		#-------------------------------------------------------------------------------
-		_tween.tween_callback(func():
-			PlayAnimation(player[0].playback, "Death")
-			myGAME_STATE = GAME_STATE.IN_MENU
-			StopEverithing()
-			timer_tween.kill()
-			battle_box.hide()
-			retry_menu.hide()
-			win_label.text = "You Lose"
-			win_label.show()
-		)
-		#-------------------------------------------------------------------------------
-		_tween.tween_interval(1.0)
-		#-------------------------------------------------------------------------------
-		_tween.tween_callback(func():
-			retry_menu.show()
-			SetButton(retry_menu_button[0], func():CommonSelected(), func():RetryMenu_RetryButton_Submit(), func():pass)
-			SetButton(retry_menu_button[1], func():CommonSelected(), func():RetryMenu_EscapeButton_Submit(), func():pass)
-			SetButton(retry_menu_button[2], func():CommonSelected(), func():RetryMenu_ReturnToSavePointButton_Submit(), func():pass)
-			Move_to_Button(retry_menu_button[0])
-		)
-		#-------------------------------------------------------------------------------
+		StopEverithing_and_Timer()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func GameOver():
+	#-------------------------------------------------------------------------------
+	var _tween:Tween = create_tween()
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		timer_tween.kill()
+		battle_box.hide()
+		retry_menu.hide()
+		win_label.text = "You Lose"
+		win_label.show()
+	)
+	#-------------------------------------------------------------------------------
+	_tween.tween_interval(1.0)
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		retry_menu.show()
+		SetButton(retry_menu_button[0], func():CommonSelected(), func():RetryMenu_RetryButton_Submit(), func():pass)
+		SetButton(retry_menu_button[1], func():CommonSelected(), func():RetryMenu_EscapeButton_Submit(), func():pass)
+		SetButton(retry_menu_button[2], func():CommonSelected(), func():RetryMenu_ReturnToSavePointButton_Submit(), func():pass)
+		Move_to_Button(retry_menu_button[0])
+	)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Bullet_Grazed():
-	player[0].sp += 1
-	Set_SP_Label(player[0].party_member_ui.label_sp, player[0].sp, player[0].max_sp)
+	#-------------------------------------------------------------------------------
+	if(player_alive.size() > 0):
+		var _target: Party_Member = player_alive.pick_random()
+		_target.sp += 4
+		Set_SP_Label(_target.party_member_ui.label_sp, _target.sp, _target.max_sp)
+	#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region COMMON FUNCTIONS
@@ -760,6 +929,11 @@ func Set_SP_Label(_label:Label, _hp:int, _max_hp:int):
 func PlayAnimation(_playback:AnimationNodeStateMachinePlayback, _s: String):
 	#playback.travel(_s)
 	_playback.call_deferred("travel", _s)
+#-------------------------------------------------------------------------------
+func Get_CircleSprite_Scale(_scale: float) -> Vector2:
+	_scale *= 0.75/95.0
+	var _v2: Vector2 = Vector2(_scale, _scale)
+	return _v2
 #endregion
 #-------------------------------------------------------------------------------
 #region COMMON BUTTON FUNCTIONS
@@ -815,9 +989,18 @@ func KillTween_Array(_tween_Array: Array[Tween]):
 #region DEBUG FUNCTIONS
 func Debug_Information() -> void:
 	var _s: String = ""
+	_s += "Current Turn ID: " + str(current_player_turn)+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += str(Engine.get_frames_per_second()) + " fps.\n"
 	_s += "Tweens: "+str(tween_Array.size())+"\n"
+	_s += "-------------------------------------------------------\n"
+	_s += "Player: " + str(player.size())+"\n"
+	_s += "Player Alive: " + str(player_alive.size())+"\n"
+	_s += "Player Death: " + str(player_death.size())+"\n"
+	_s += "-------------------------------------------------------\n"
+	_s += "Enemy: " + str(enemy.size())+"\n"
+	_s += "Enemy Alive: " + str(enemy_alive.size())+"\n"
+	_s += "Enemy Death: " + str(enemy_death.size())+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += "Enemy Bullets Enabled: " + str(enemyBullets_Enabled_Array.size())+"\n"
 	_s += "Enemy Bullets Disabled: " + str(enemyBullets_Disabled_Array.size())+"\n"
