@@ -12,6 +12,15 @@ var player_death: Array[Party_Member]
 var enemy_alive: Array[Party_Member]
 var enemy_death: Array[Party_Member]
 #-------------------------------------------------------------------------------
+@export var item_menu: Control
+@export var item_menu_scrollContainer: ScrollContainer
+@export var item_menu_content: VBoxContainer
+@export var item_menu_title: Label
+@export var item_menu_description: Label
+@export var item_menu_button_array: Array[Button]
+#-------------------------------------------------------------------------------
+@export var item_array: Array[StringName]
+#-------------------------------------------------------------------------------
 var camera_offset_y: float = 125
 var current_player_turn: int = 0
 @export var black_panel: Panel
@@ -20,8 +29,8 @@ var current_player_turn: int = 0
 var isSlowMotion: bool = false
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool = true
-var player_last_position: Vector2
-var enemy_last_position: Vector2
+var player_last_position: Array[Vector2]
+var enemy_last_position: Array[Vector2]
 #-------------------------------------------------------------------------------
 const submitInput: String = "ui_accept"
 const cancelInput: String = "ui_cancel"
@@ -90,9 +99,13 @@ func _ready() -> void:
 		enemy[_i].party_member_ui.label_sp.hide()
 		PlayAnimation(enemy[_i].playback, "Idle")
 	#-------------------------------------------------------------------------------
+	for _i in range(1, player.size()):
+		player[_i].collider.disabled = true
+	#-------------------------------------------------------------------------------
 	win_label.hide()
 	retry_menu.hide()
 	battle_menu.hide()
+	item_menu.hide()
 	battle_box.hide()
 	battle_menu_rect.hide()
 	timer_label.hide()
@@ -105,6 +118,12 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	hitbox.global_scale = Get_CircleSprite_Scale(hitBox_radius) + Vector2(0.01, 0.01)
 	grazebox.global_scale = Get_CircleSprite_Scale(grazeBox_radius) + Vector2(0.01, 0.01)
+	#-------------------------------------------------------------------------------
+	item_menu_button_array.clear()
+	Destroy_Childrens(item_menu_content)
+	#-------------------------------------------------------------------------------
+	var _button_num: float = 4
+	item_menu_scrollContainer.size.y = _button_num*42 + (_button_num-1) * 4
 	#-------------------------------------------------------------------------------
 	Create_EnemyBullets_Disabled(2000)
 	PauseOff()
@@ -128,6 +147,7 @@ func _physics_process(_delta: float) -> void:
 			#-------------------------------------------------------------------------------
 			if(!get_tree().paused):
 				Player_Movement()
+				Followers_Movement()
 				Camera_Follow()
 				Check_for_Enemy()
 			#-------------------------------------------------------------------------------
@@ -208,6 +228,20 @@ func Player_Movement():
 	#-------------------------------------------------------------------------------
 	player[0].move_and_slide()
 #-------------------------------------------------------------------------------
+func Followers_Movement():
+	#-------------------------------------------------------------------------------
+	for _i in range(1, player.size()):
+		var _distance: float = 150
+		if(player[_i].global_position.distance_to(player[_i-1].global_position) > _distance):
+			var _x: float = player[_i].global_position.x - player[_i-1].global_position.x
+			var _y: float = player[_i].global_position.y - player[_i-1].global_position.y
+			var _dir: float = atan2(_y, _x)
+			var _x2: float = _distance * cos(_dir)
+			var _y2: float = _distance * sin(_dir)
+			player[_i].global_position = player[_i-1].global_position + Vector2(_x2, _y2)
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 func Hitbox_Movement():
 	var _input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var _run_flag: bool = Input.is_action_pressed("Input_Run")
@@ -245,13 +279,19 @@ func Face_Left(_b:bool):
 func EnterBattle():
 	myGAME_STATE = GAME_STATE.IN_MENU
 	#-------------------------------------------------------------------------------
+	player_last_position.clear()
+	#-------------------------------------------------------------------------------
 	for _i in player.size():
+		player_last_position.append(player[_i].global_position)
 		player[_i].collider.disabled = true
 		PlayAnimation(player[_i].playback, "Idle")
 		player[_i].z_index = 1
-		player[_i].global_position = player[0].global_position
+		#player[_i].global_position = player[0].global_position
+	#-------------------------------------------------------------------------------
+	enemy_last_position.clear()
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
+		enemy_last_position.append(enemy[_i].global_position)
 		enemy[_i].collider.disabled = true
 		PlayAnimation(enemy[_i].playback, "Idle")
 		enemy[_i].z_index = 1
@@ -261,9 +301,6 @@ func EnterBattle():
 	#-------------------------------------------------------------------------------
 	Face_Left(false)
 	current_player_turn = 0
-	#-------------------------------------------------------------------------------
-	player_last_position = player[0].global_position
-	enemy_last_position = enemy[0].global_position
 	#-------------------------------------------------------------------------------
 	var _center: Vector2 = camera.position
 	#-------------------------------------------------------------------------------
@@ -302,6 +339,8 @@ func EnterBattle():
 		#battle_menu_rect.show()
 		SetButton(battle_menu_button[0],func():CommonSelected() , func():BattleMenu_AttackButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		SetButton(battle_menu_button[1],func():CommonSelected() , func():BattleMenu_DefenseButton_Submit(), func():BattleMenu_AnyButton_Cancel())
+		SetButton(battle_menu_button[2],func():CommonSelected() , func():BattleMenu_SkillButton_Submit(), func():BattleMenu_AnyButton_Cancel())
+		SetButton(battle_menu_button[3],func():CommonSelected() , func():BattleMenu_ItemButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		#-------------------------------------------------------------------------------
 		player_alive.clear()
 		player_death.clear()
@@ -346,6 +385,75 @@ func BattleMenu_DefenseButton_Submit():
 	Move_to_Button(player_alive[current_player_turn].party_member_ui.button)
 	SetButton(player_alive[current_player_turn].party_member_ui.button, func():CommonSelected(), func():TargetMenu_PlayerButton_Submit(), func():TargetMenu_PlayerButton_Cancel())
 #-------------------------------------------------------------------------------
+func BattleMenu_SkillButton_Submit():
+	battle_menu.hide()
+	item_menu.show()
+	#-------------------------------------------------------------------------------
+	item_menu_title.text = "Skills"
+	#-------------------------------------------------------------------------------
+	for _i in player_alive[current_player_turn].skill_array.size():
+		var _button: Button = Button.new()
+		#_button.text = "Item N°" + str(_i)
+		_button.text = "  "+"Skill N°"+ str(_i)+": "+player_alive[current_player_turn].skill_array[_i]+"  "
+		_button.add_theme_font_size_override("font_size", 24)
+		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		item_menu_content.add_child(_button)
+		item_menu_button_array.append(_button)
+		SetButton(_button, func():CommonSelected(), func(): pass, func():ItemMenu_SkillButton_Cancel())
+	#-------------------------------------------------------------------------------
+	if(item_menu_button_array.size() > 0):
+		Move_to_Button(item_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	item_menu_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func ItemMenu_SkillButton_Cancel():
+	item_menu.hide()
+	battle_menu.show()
+	Move_to_Button(battle_menu_button[2])
+	#-------------------------------------------------------------------------------
+	for _i in item_menu_button_array.size():
+		item_menu_button_array[_i].queue_free()
+	#-------------------------------------------------------------------------------
+	item_menu_button_array.clear()
+#-------------------------------------------------------------------------------
+func BattleMenu_ItemButton_Submit():
+	battle_menu.hide()
+	item_menu.show()
+	#-------------------------------------------------------------------------------
+	item_menu_title.text = "Items"
+	#-------------------------------------------------------------------------------
+	for _i in item_array.size():
+		var _button: Button = Button.new()
+		#_button.text = "Item N°" + str(_i)
+		_button.text = "  "+"Item N°"+ str(_i)+": "+item_array[_i]+"  "
+		_button.add_theme_font_size_override("font_size", 24)
+		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		item_menu_content.add_child(_button)
+		item_menu_button_array.append(_button)
+		SetButton(_button, func():CommonSelected(), func(): pass, func():ItemMenu_ItemButton_Cancel())
+	#-------------------------------------------------------------------------------
+	if(item_menu_button_array.size() > 0):
+		Move_to_Button(item_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	item_menu_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func ItemMenu_ItemButton_Cancel():
+	item_menu.hide()
+	battle_menu.show()
+	Move_to_Button(battle_menu_button[3])
+	#-------------------------------------------------------------------------------
+	for _i in item_menu_button_array.size():
+		item_menu_button_array[_i].queue_free()
+	#-------------------------------------------------------------------------------
+	item_menu_button_array.clear()
+#-------------------------------------------------------------------------------
+func Destroy_Childrens(_node:Node):
+	var children = _node.get_children()
+	#-------------------------------------------------------------------------------
+	for _child in children:
+		_child.queue_free()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 func BattleMenu_AnyButton_Cancel():
 	current_player_turn -= 1
 	#-------------------------------------------------------------------------------
@@ -369,6 +477,7 @@ func BattleMenu_AnyButton_Cancel():
 			PlayAnimation(enemy_alive[_i].playback, "Idle")
 		#-------------------------------------------------------------------------------
 		battle_menu.global_position = player_alive[current_player_turn].party_member_ui.button_pivot.global_position
+		Move_to_Button(battle_menu_button[0])
 #-------------------------------------------------------------------------------
 func TargetMenu_EnemyButton_Submit(_target:Party_Member):
 	PlayAnimation(player_alive[current_player_turn].playback, "Aim")
@@ -460,42 +569,50 @@ func Party_Actions():
 			Start_BulletHell()
 		#-------------------------------------------------------------------------------
 		else:
-			#-------------------------------------------------------------------------------
-			for _i in player.size():
-				player[_i].party_member_ui.hide()
-				player[_i].party_member_ui.button_pivot.hide()
-			#-------------------------------------------------------------------------------
-			for _i in enemy.size():
-				enemy[_i].party_member_ui.hide()
-				enemy[_i].party_member_ui.button_pivot.hide()
-			#-------------------------------------------------------------------------------
-			retry_menu.hide()
-			win_label.text = "You Win"
-			win_label.show()
-			#-------------------------------------------------------------------------------
-			can_enter_fight = false
-			#-------------------------------------------------------------------------------
-			var _tween3: Tween = create_tween()
-			_tween3.tween_interval(1.0)
-			_tween3.tween_property(player[0], "global_position", player_last_position, 0.5)
-			_tween3.parallel().tween_property(enemy[0], "global_position", enemy_last_position, 0.5)
-			#-------------------------------------------------------------------------------
-			_tween3.tween_callback(func():
-				win_label.hide()
-				myGAME_STATE = GAME_STATE.IN_WORLD
-				#-------------------------------------------------------------------------------
-				for _i in player.size():
-					player[_i].collider.disabled = false
-					player[_i].z_index = 0
-				#-------------------------------------------------------------------------------
-				for _i in enemy.size():
-					enemy[_i].collider.disabled = false
-					enemy[_i].z_index = 0
-				#-------------------------------------------------------------------------------
-				battle_black_panel.hide()
-			)
-			#-------------------------------------------------------------------------------
+			You_Win()
 		#-------------------------------------------------------------------------------
+	)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func You_Win():
+	#-------------------------------------------------------------------------------
+	for _i in player.size():
+		player[_i].party_member_ui.hide()
+		player[_i].party_member_ui.button_pivot.hide()
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		enemy[_i].party_member_ui.hide()
+		enemy[_i].party_member_ui.button_pivot.hide()
+	#-------------------------------------------------------------------------------
+	retry_menu.hide()
+	win_label.text = "You Win"
+	win_label.show()
+	#-------------------------------------------------------------------------------
+	can_enter_fight = false
+	#-------------------------------------------------------------------------------
+	var _tween3: Tween = create_tween()
+	_tween3.tween_interval(1.0)
+	_tween3.tween_interval(1.0)
+	#-------------------------------------------------------------------------------
+	for _i in player.size():
+		_tween3.parallel().tween_property(player[_i], "global_position", player_last_position[_i], 0.5)
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		_tween3.parallel().tween_property(enemy[_i], "global_position", enemy_last_position[_i], 0.5)
+	#-------------------------------------------------------------------------------
+	_tween3.tween_callback(func():
+		win_label.hide()
+		myGAME_STATE = GAME_STATE.IN_WORLD
+		#-------------------------------------------------------------------------------
+		for _i in player.size():
+			player[_i].collider.disabled = false
+			player[_i].z_index = 0
+		#-------------------------------------------------------------------------------
+		for _i in enemy.size():
+			enemy[_i].collider.disabled = false
+			enemy[_i].z_index = 0
+		#-------------------------------------------------------------------------------
+		battle_black_panel.hide()
 	)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -566,6 +683,9 @@ func RetryMenu_RetryButton_Submit():
 	_tween.tween_property(black_panel, "self_modulate", Color.TRANSPARENT, 0.3)
 #-------------------------------------------------------------------------------
 func RetryMenu_EscapeButton_Submit():
+	You_Escape()
+#-------------------------------------------------------------------------------
+func You_Escape():
 	#-------------------------------------------------------------------------------
 	for _i in player.size():
 		player[_i].party_member_ui.hide()
@@ -592,8 +712,11 @@ func RetryMenu_EscapeButton_Submit():
 	#-------------------------------------------------------------------------------
 	var _tween3: Tween = create_tween()
 	#_tween3.tween_interval(1.0)
-	_tween3.tween_property(player[0], "global_position", player_last_position, 0.5)
-	_tween3.parallel().tween_property(enemy[0], "global_position", enemy_last_position, 0.5)
+	for _i in player.size():
+		_tween3.parallel().tween_property(player[_i], "global_position", player_last_position[_i], 0.5)
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		_tween3.parallel().tween_property(enemy[_i], "global_position", enemy_last_position[_i], 0.5)
 	#-------------------------------------------------------------------------------
 	_tween3.tween_callback(func():
 		myGAME_STATE = GAME_STATE.IN_WORLD

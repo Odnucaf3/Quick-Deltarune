@@ -249,7 +249,7 @@ sources/5 = SubResource("TileSetAtlasSource_mitwg")
 sources/6 = SubResource("TileSetAtlasSource_3p4s7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
-bg_color = Color(0, 0, 0, 0.8039216)
+bg_color = Color(0, 0, 0, 0.4117647)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muxe8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -266,11 +266,17 @@ expand_margin_bottom = 8.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "enemy", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "enemy", "item_menu", "item_menu_scrollContainer", "item_menu_content", "item_menu_title", "item_menu_description", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
 player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member2"), NodePath("World2D/Party_Member3")]
 enemy = [NodePath("World2D/Party_Member4"), NodePath("World2D/Party_Member5"), NodePath("World2D/Party_Member6")]
+item_menu = NodePath("CanvasLayer/Item_Menu")
+item_menu_scrollContainer = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
+item_menu_content = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_title = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/Label")
+item_menu_description = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer/Label2")
+item_array = Array[StringName]([&"Potion", &"Bomb", &"Revive Mint", &"Ether", &"Throwing Dagger", &"Ice Bomb", &"Super Potion", &"Mega Potion", &"Thunder in a Bottle", &"Fire Bomb", &"Ninja Star", &"Granade", &"Esteroids"])
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
 pauseLabel = NodePath("CanvasLayer/pause_Label")
@@ -402,14 +408,17 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 
 [node name="Party_Member" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+skill_array = Array[StringName]([&"Rude Buster", &"Ruder Buster", &"The Rudest Buster", &"Red Buster", &"Duel Buster", &"Ultimate Healing", &"Jaw Breaker", &"Axelent"])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui")
 
 [node name="Party_Member2" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(-45, -121)
+skill_array = Array[StringName]([&"V-Slash", &"Double V-Slash", &"Triple Doble V-Slash", &"Pipis", &"Dexterity", &"Shield Bash", &"Quick Steps"])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui2")
 
 [node name="Party_Member3" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(87, -128)
+skill_array = Array[StringName]([&"Fire Ball", &"Ice Ball", &"Thunder Ball", &"Inferno", &"Ice Age", &"Thermodynamic", &"Fluffy Guard"])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui3")
 
 [node name="Party_Member4" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
@@ -425,34 +434,17 @@ position = Vector2(914, 217)
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui3")
 
 [node name="Party_Member7" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+visible = false
 position = Vector2(1005, 120)
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui4")
 
 [node name="Party_Member8" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+visible = false
 position = Vector2(1005, 120)
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/enemy_ui5")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 process_mode = 1
-
-[node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="debug_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 6
-text = "aaaaaaaaaaaaa"
 
 [node name="Battle_UI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -520,7 +512,6 @@ theme_override_font_sizes/font_size = 30
 text = "  Defense  "
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2"]
@@ -707,3 +698,181 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lleqo")
+
+[node name="Item_Menu" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -245.0
+offset_right = 350.0
+offset_bottom = 245.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Item_Menu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Item_Menu/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Item List"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button3" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button4" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button5" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button6" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button7" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button8" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button9" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button10" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button11" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button12" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button13" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="Button14" type="Button" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Item's Name"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="Label2" type="Label" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "assssssss
+aaaaaaaaaaaaaaaaa"
+autowrap_mode = 2
+
+[node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="debug_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 6
+text = "aaaaaaaaaaaaa"
