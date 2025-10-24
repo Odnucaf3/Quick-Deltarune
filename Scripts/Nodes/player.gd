@@ -7,12 +7,14 @@ var sp: int
 var max_sp: int = 100
 var is_in_guard: bool
 #-------------------------------------------------------------------------------
-@export var skill_array: Array[StringName]
+var skill_dictionaty: Dictionary
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool
 #-------------------------------------------------------------------------------
 var target: Party_Member
-var action: StringName
+var target_party: Array[Party_Member]
+#-------------------------------------------------------------------------------
+var action: Callable = func(): pass
 #-------------------------------------------------------------------------------
 @export var sprite: Sprite2D
 @export var collider: CollisionShape2D

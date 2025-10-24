@@ -276,7 +276,6 @@ item_menu_scrollContainer = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBox
 item_menu_content = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_title = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/Label")
 item_menu_description = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer/Label2")
-item_array = Array[StringName]([&"Potion", &"Bomb", &"Revive Mint", &"Ether", &"Throwing Dagger", &"Ice Bomb", &"Super Potion", &"Mega Potion", &"Thunder in a Bottle", &"Fire Bomb", &"Ninja Star", &"Granade", &"Esteroids"])
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
 pauseLabel = NodePath("CanvasLayer/pause_Label")
@@ -408,17 +407,14 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 
 [node name="Party_Member" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
-skill_array = Array[StringName]([&"Rude Buster", &"Ruder Buster", &"The Rudest Buster", &"Red Buster", &"Duel Buster", &"Ultimate Healing", &"Jaw Breaker", &"Axelent"])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui")
 
 [node name="Party_Member2" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(-45, -121)
-skill_array = Array[StringName]([&"V-Slash", &"Double V-Slash", &"Triple Doble V-Slash", &"Pipis", &"Dexterity", &"Shield Bash", &"Quick Steps"])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui2")
 
 [node name="Party_Member3" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(87, -128)
-skill_array = Array[StringName]([&"Fire Ball", &"Ice Ball", &"Thunder Ball", &"Inferno", &"Ice Age", &"Thermodynamic", &"Fluffy Guard"])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui3")
 
 [node name="Party_Member4" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
@@ -854,8 +850,23 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
-text = "assssssss
-aaaaaaaaaaaaaaaaa"
+text = "Lore description of the Skill / Item."
+autowrap_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="Label2" type="Label" parent="CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer2"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "Utility description of the Skill / Item."
 autowrap_mode = 2
 
 [node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
@@ -870,7 +881,6 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="debug_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
