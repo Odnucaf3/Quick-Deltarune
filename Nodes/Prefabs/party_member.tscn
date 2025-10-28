@@ -237,10 +237,10 @@ tracks/4/path = NodePath(".:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.4, 0.54999995),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.4, 0.55),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(30, 0), Vector2(-15, 0), Vector2(15, 0), Vector2(0, 0), Vector2(77, -43), Vector2(89.00001, -35.000004)]
+"values": [Vector2(0, 0), Vector2(-30, 0), Vector2(30, 0), Vector2(-15, 0), Vector2(15, 0), Vector2(0, 0), Vector2(34, -36), Vector2(7.6293945e-06, -10.000006)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -253,6 +253,18 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, -1.5707964]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.25, 0.55),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.2412583e-07, -33), Vector2(9.995933, -7.50331)]
 }
 
 [sub_resource type="Animation" id="Animation_p8wxr"]
@@ -447,6 +459,18 @@ tracks/5/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:offset")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -33)]
 }
 
 [sub_resource type="Animation" id="Animation_bykob"]
@@ -705,6 +729,7 @@ size = Vector2(52, 16)
 
 [node name="Party_Member" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collider", "animation_tree")]
 y_sort_enabled = true
+collision_layer = 2
 script = ExtResource("1_hjtjb")
 sprite = NodePath("Sprite2D")
 collider = NodePath("CollisionShape2D")

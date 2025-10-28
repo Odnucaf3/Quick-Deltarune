@@ -7,14 +7,16 @@ var sp: int
 var max_sp: int = 100
 var is_in_guard: bool
 #-------------------------------------------------------------------------------
-var skill_dictionaty: Dictionary
+@export var skill_array: Array[Item_Resource]
+var skill_array_in_battle: Array[Item_Resource]
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool
 #-------------------------------------------------------------------------------
+var user_party: Array[Party_Member]
 var target: Party_Member
 var target_party: Array[Party_Member]
 #-------------------------------------------------------------------------------
-var action: Callable = func(): pass
+var item_resource: Item_Resource
 #-------------------------------------------------------------------------------
 @export var sprite: Sprite2D
 @export var collider: CollisionShape2D

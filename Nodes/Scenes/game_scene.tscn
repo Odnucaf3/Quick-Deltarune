@@ -1,11 +1,16 @@
-[gd_scene load_steps=30 format=4 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=38 format=4 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="2_tnh07"]
 [ext_resource type="Texture2D" uid="uid://ctjy5goss2wv7" path="res://Assets/ansimuz/warped city files/enviroment/preview-top-down-sci-fi.png" id="3_4usn6"]
+[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Items/potion.tres" id="3_xrh8u"]
 [ext_resource type="Texture2D" uid="uid://c1jjfr2vhckdq" path="res://Assets/ansimuz/Starfighter Files/enviroment/tileset.png" id="4_4usn6"]
+[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Items/revive_mint.tres" id="4_xrh8u"]
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="5_rpgth"]
 [ext_resource type="Texture2D" uid="uid://dg2sbnw1nhq88" path="res://Assets/ansimuz/warped city files/props/antenna.png" id="5_x381h"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/defense.tres" id="6_lujb4"]
 [ext_resource type="Texture2D" uid="uid://br1xmqdj7to7l" path="res://Assets/ansimuz/warped city files/props/banner-arrow.png" id="6_tnh07"]
 [ext_resource type="Texture2D" uid="uid://b6vpgq8gyipmd" path="res://Assets/ansimuz/warped city files/props/banner-floor.png" id="7_xrh8u"]
 [ext_resource type="Texture2D" uid="uid://b8wieo7nga7xe" path="res://Assets/ansimuz/warped city files/sprites/player/shoot.png" id="8_bykob"]
@@ -15,6 +20,9 @@
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="11_tnh07"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/party_member.tscn" id="13_hxoxt"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
+[ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="17_gg6rv"]
+[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="18_rpgth"]
+[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="20_1th3s"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bpjbf"]
@@ -266,9 +274,10 @@ expand_margin_bottom = 8.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("player", "enemy", "item_menu", "item_menu_scrollContainer", "item_menu_content", "item_menu_title", "item_menu_description", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "player", "enemy", "item_menu", "item_menu_scrollContainer", "item_menu_content", "item_menu_title", "item_menu_description", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
+world2d = NodePath("World2D")
 player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member2"), NodePath("World2D/Party_Member3")]
 enemy = [NodePath("World2D/Party_Member4"), NodePath("World2D/Party_Member5"), NodePath("World2D/Party_Member6")]
 item_menu = NodePath("CanvasLayer/Item_Menu")
@@ -276,6 +285,9 @@ item_menu_scrollContainer = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBox
 item_menu_content = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_title = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/Label")
 item_menu_description = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer/Label2")
+item_array = Array[ExtResource("2_tnh07")]([ExtResource("3_xrh8u"), ExtResource("4_xrh8u")])
+iten_resource_attack = ExtResource("5_rpgth")
+iten_resource_defense = ExtResource("6_lujb4")
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
 pauseLabel = NodePath("CanvasLayer/pause_Label")
@@ -407,14 +419,17 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 
 [node name="Party_Member" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
+skill_array = Array[ExtResource("2_tnh07")]([ExtResource("17_gg6rv")])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui")
 
 [node name="Party_Member2" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(-45, -121)
+skill_array = Array[ExtResource("2_tnh07")]([ExtResource("18_rpgth")])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui2")
 
 [node name="Party_Member3" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
 position = Vector2(87, -128)
+skill_array = Array[ExtResource("2_tnh07")]([ExtResource("3_xrh8u"), ExtResource("20_1th3s")])
 party_member_ui = NodePath("../../CanvasLayer/Battle_UI/ally_ui3")
 
 [node name="Party_Member4" parent="World2D" node_paths=PackedStringArray("party_member_ui") instance=ExtResource("13_hxoxt")]
@@ -881,6 +896,7 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="debug_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4

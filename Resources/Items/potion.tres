@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item_Resource" load_steps=2 format=3 uid="uid://b36k10uy3fikw"]
+
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_wmc1u"]
+
+[resource]
+script = ExtResource("1_wmc1u")
+action_string = "Item_0_0"
+myTARGET_TYPE = 1
+max_hold = 4
+metadata/_custom_type_script = "uid://cutcj8e6g23o2"

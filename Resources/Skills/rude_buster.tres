@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Item_Resource" load_steps=2 format=3 uid="uid://1piy8o8exhtk"]
+
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_rmimv"]
+
+[resource]
+script = ExtResource("1_rmimv")
+action_string = "Skill_0_0"
+sp_cost = 20
+metadata/_custom_type_script = "uid://cutcj8e6g23o2"
