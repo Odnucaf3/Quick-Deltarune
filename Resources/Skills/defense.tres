@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_lrqvx")
-action_string = "Defense"
 myTARGET_TYPE = 3
+anim = "Crouch"
+action_string = "Defense"
 max_cooldown = 0
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_wmc1u")
-action_string = "Item_0_0"
 myTARGET_TYPE = 1
+anim = "Crouch"
+action_string = "Item_0_0"
 max_hold = 4
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

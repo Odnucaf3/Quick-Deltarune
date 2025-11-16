@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Party_Member
 #-------------------------------------------------------------------------------
+@export var id: StringName
 var hp: int
 var max_hp: int = 30
 var sp: int
@@ -23,5 +24,5 @@ var item_resource: Item_Resource
 @export var animation_tree: AnimationTree
 var playback : AnimationNodeStateMachinePlayback
 #-------------------------------------------------------------------------------
-@export var party_member_ui: Party_Member_UI
+var party_member_ui: Party_Member_UI
 #-------------------------------------------------------------------------------

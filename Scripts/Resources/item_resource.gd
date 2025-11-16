@@ -8,6 +8,7 @@ enum TARGET_TYPE{ENEMY_1, ALLY_1, ALLY_DEATH, USER}
 var id: StringName
 @export var myTARGET_TYPE: TARGET_TYPE
 @export var speed: int
+@export var anim: String = "Aim"
 @export var action_string: String = "Do_Nothing"
 #-------------------------------------------------------------------------------
 @export_category("Skill Paramenters")

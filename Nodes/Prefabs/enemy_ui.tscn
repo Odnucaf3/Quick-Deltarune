@@ -1,9 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmoqfek0rdwlr"]
+[gd_scene load_steps=8 format=3 uid="uid://bmoqfek0rdwlr"]
 
 [ext_resource type="Script" uid="uid://ckbwtn4v3dh8n" path="res://Scripts/Prefabs/party_member_ui_script.gd" id="1_ry00h"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_q2wv4"]
+[ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="3_q2wv4"]
 
-[node name="enemy_ui" type="Control" node_paths=PackedStringArray("button_pivot", "button", "label_hp", "label_sp")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ry00h"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2wv4"]
+bg_color = Color(1, 0.34509805, 0.85490197, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7l4xr"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_10pjd"]
+bg_color = Color(0.5568628, 1, 0.4392157, 1)
+
+[node name="enemy_ui" type="Control" node_paths=PackedStringArray("button_pivot", "button", "label_hp", "bar_hp", "label_sp", "bar_sp")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -16,7 +47,9 @@ script = ExtResource("1_ry00h")
 button_pivot = NodePath("Control")
 button = NodePath("Control/VBoxContainer/Button")
 label_hp = NodePath("Control2/VBoxContainer/hp_Label")
+bar_hp = NodePath("Control2/VBoxContainer/ProgressBar")
 label_sp = NodePath("Control2/VBoxContainer/sp_Label")
+bar_sp = NodePath("Control2/VBoxContainer/ProgressBar3")
 metadata/_custom_type_script = "uid://ckbwtn4v3dh8n"
 
 [node name="Control2" type="Control" parent="."]
@@ -26,8 +59,8 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 30.0
-offset_right = 30.0
+offset_left = 50.0
+offset_right = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -36,9 +69,10 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -56.0
-offset_right = 126.0
+offset_top = -34.0
+offset_right = 108.0
 grow_vertical = 0
+theme_override_constants/separation = 0
 alignment = 2
 
 [node name="hp_Label" type="Label" parent="Control2/VBoxContainer"]
@@ -46,9 +80,11 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 18
-text = "  300 / 300 HP  "
+text = "300 / 300 HP"
+horizontal_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="Control2/VBoxContainer/hp_Label"]
+visible = false
 self_modulate = Color(0, 0, 0, 0.4117647)
 show_behind_parent = true
 layout_mode = 1
@@ -59,6 +95,15 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_q2wv4")
 expand_mode = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Control2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 7)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_ry00h")
+theme_override_styles/fill = SubResource("StyleBoxFlat_q2wv4")
+value = 21.0
+rounded = true
+show_percentage = false
 
 [node name="sp_Label" type="Label" parent="Control2/VBoxContainer"]
 layout_mode = 2
@@ -68,6 +113,7 @@ theme_override_font_sizes/font_size = 18
 text = "  300 / 300 SP  "
 
 [node name="TextureRect" type="TextureRect" parent="Control2/VBoxContainer/sp_Label"]
+visible = false
 self_modulate = Color(0, 0, 0, 0.4117647)
 show_behind_parent = true
 layout_mode = 1
@@ -78,6 +124,14 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_q2wv4")
 expand_mode = 1
+
+[node name="ProgressBar3" type="ProgressBar" parent="Control2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 7)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_7l4xr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_10pjd")
+value = 26.57
+show_percentage = false
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
@@ -110,8 +164,11 @@ text = "Target:"
 
 [node name="Button" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("3_q2wv4")
 theme_override_font_sizes/font_size = 30
-text = "  Enemy 1  "
+text = "  Enemy  "
 
 [node name="Control3" type="Control" parent="."]
 visible = false

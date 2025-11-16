@@ -5,5 +5,4 @@
 [resource]
 script = ExtResource("1_rmimv")
 action_string = "Skill_0_0"
-sp_cost = 20
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

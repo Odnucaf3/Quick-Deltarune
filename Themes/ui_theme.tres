@@ -1,0 +1,78 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://wd0u0jfbqnww"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p08fh"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.8980392, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0kyu6"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.8980392, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4x3fk"]
+bg_color = Color(0.09803922, 0.09803922, 0.09803922, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nstmv"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muhxk"]
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6busg"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y72x4"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ne4s"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[resource]
+Button/styles/disabled = SubResource("StyleBoxFlat_p08fh")
+Button/styles/focus = SubResource("StyleBoxFlat_0kyu6")
+Button/styles/hover = SubResource("StyleBoxFlat_4x3fk")
+Button/styles/normal = SubResource("StyleBoxFlat_nstmv")
+Button/styles/pressed = SubResource("StyleBoxFlat_muhxk")
+Panel/styles/panel = SubResource("StyleBoxFlat_6busg")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_y72x4")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_8ne4s")

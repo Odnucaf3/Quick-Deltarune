@@ -5,6 +5,15 @@ enum GAME_STATE{IN_WORLD, IN_MENU, IN_BATTLE}
 #-------------------------------------------------------------------------------
 #region VARIABLES
 @export var world2d: Node2D
+@export var ui_theme: Theme
+@export var room_test: Room_Script
+#-------------------------------------------------------------------------------
+@export var dialogue_menu: Control
+@export var dialogue_menu_label: Label
+#-------------------------------------------------------------------------------
+@export var ally_ui_prefab: PackedScene
+@export var enemy_ui_prefab: PackedScene
+#-------------------------------------------------------------------------------
 @export var player: Array[Party_Member]
 var player_alive: Array[Party_Member]
 var player_death: Array[Party_Member]
@@ -50,6 +59,7 @@ var tween_Array: Array[Tween]
 @export var grazebox: Sprite2D
 var can_be_hit: bool = true
 var i_frames: int = 0
+@export var battle_control: Control
 @export var battle_menu: Control
 @export var battle_menu_button: Array[Button]
 @export var battle_menu_rect: TextureRect
@@ -94,16 +104,27 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	for _i in player.size():
 		player[_i].playback = player[_i].animation_tree.get("parameters/playback")
+		PlayAnimation(player[_i].playback, "Idle")
+		#-------------------------------------------------------------------------------
+		var _party_member_ui: Party_Member_UI = ally_ui_prefab.instantiate() as Party_Member_UI
+		player[_i].party_member_ui = _party_member_ui
 		player[_i].party_member_ui.hide()
 		player[_i].party_member_ui.button_pivot.hide()
-		PlayAnimation(player[_i].playback, "Idle")
+		#player[_i].party_member_ui.label_sp.hide()
+		#player[_i].party_member_ui.bar_sp.hide()
+		battle_control.add_child(_party_member_ui)
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
 		enemy[_i].playback = enemy[_i].animation_tree.get("parameters/playback")
+		PlayAnimation(enemy[_i].playback, "Idle")
+		#-------------------------------------------------------------------------------
+		var _party_member_ui: Party_Member_UI = enemy_ui_prefab.instantiate() as Party_Member_UI
+		enemy[_i].party_member_ui = _party_member_ui
 		enemy[_i].party_member_ui.hide()
 		enemy[_i].party_member_ui.button_pivot.hide()
 		enemy[_i].party_member_ui.label_sp.hide()
-		PlayAnimation(enemy[_i].playback, "Idle")
+		enemy[_i].party_member_ui.bar_sp.hide()
+		battle_control.add_child(_party_member_ui)
 	#-------------------------------------------------------------------------------
 	for _i in range(1, player.size()):
 		player[_i].collider.disabled = true
@@ -116,6 +137,7 @@ func _ready() -> void:
 	battle_menu_rect.hide()
 	timer_label.hide()
 	battle_black_panel.hide()
+	dialogue_menu.hide()
 	camera.position = player[0].position + Vector2(0, -camera_offset_y)
 	var _width: float = ProjectSettings.get_setting("display/window/size/viewport_width")
 	var _height: float = ProjectSettings.get_setting("display/window/size/viewport_height")
@@ -158,7 +180,7 @@ func _physics_process(_delta: float) -> void:
 				Player_Movement()
 				Followers_Movement()
 				Camera_Follow()
-				Check_for_Enemy()
+				room_test.Check_for_Enemy(self)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		GAME_STATE.IN_BATTLE:
@@ -300,13 +322,16 @@ func Hitbox_Movement():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Camera_Follow():
-	camera.position = lerp(camera.position, player[0].position + Vector2(0, -camera_offset_y), 0.1)
-#-------------------------------------------------------------------------------
-func Check_for_Enemy():
+	var _new_position: Vector2 = player[0].position + Vector2(0, -camera_offset_y)
 	#-------------------------------------------------------------------------------
-	if(player[0].position.distance_to(enemy[0].position) < 60 and can_enter_fight):
-		EnterBattle()
+	var _limit_top: float = room_test.camera_limits.global_position.y + viewport_center.y
+	var _limit_botton: float = room_test.camera_limits.global_position.y + room_test.camera_limits.size.y - viewport_center.y
+	var _limit_left: float = room_test.camera_limits.global_position.x + viewport_center.x
+	var _limit_right: float = room_test.camera_limits.global_position.x + room_test.camera_limits.size.x - viewport_center.x
 	#-------------------------------------------------------------------------------
+	_new_position.x = clampf(_new_position.x, _limit_left, _limit_right)
+	_new_position.y = clampf(_new_position.y, _limit_top, _limit_botton)
+	camera.position = lerp(camera.position, _new_position, 0.2)
 #-------------------------------------------------------------------------------
 func Face_Left(_b:bool):
 	player[0].sprite.flip_h = _b
@@ -326,6 +351,7 @@ func EnterBattle():
 		PlayAnimation(player[_i].playback, "Idle")
 		player[_i].z_index = 1
 		#player[_i].global_position = player[0].global_position
+		player[_i].party_member_ui.button.text = "  " + player[_i].id + "  "
 	#-------------------------------------------------------------------------------
 	enemy_last_position.clear()
 	#-------------------------------------------------------------------------------
@@ -337,6 +363,7 @@ func EnterBattle():
 		enemy[_i].sprite.flip_h = false
 		enemy[_i].scale.x = -1.0
 		#enemy[_i].global_position = enemy[0].global_position
+		enemy[_i].party_member_ui.button.text = "  " + enemy[_i].id + "  "
 	#-------------------------------------------------------------------------------
 	Face_Left(false)
 	current_player_turn = 0
@@ -354,19 +381,19 @@ func EnterBattle():
 	_tween.tween_interval(0.5)
 	_tween.tween_interval(0.5)
 	#-------------------------------------------------------------------------------
-	var _top_limit: float = 0.4
-	var _botton_limit: float = 0.8
+	var _top_limit: float = 0.45
+	var _botton_limit: float = 1.15
 	#-------------------------------------------------------------------------------
 	for _i in player.size():
-		var _y_pos: float = -viewport_size.y*_top_limit + viewport_size.y*_botton_limit* (float(_i+1)/(player.size()))
-		var _x_pos: float = -400
+		var _y_pos: float = -viewport_size.y*_top_limit + viewport_size.y*_botton_limit* (float(_i+1)/(player.size()+1))
+		var _x_pos: float = -375
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
 		player[_i].party_member_ui.global_position = viewport_center + Vector2(_x_pos, _y_pos)
 		_tween.parallel().tween_property(player[_i], "position", _position, 0.5)
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
-		var _y_pos: float = -viewport_size.y*_top_limit + viewport_size.y*_botton_limit* (float(_i+1)/(enemy.size()))
-		var _x_pos: float = 400
+		var _y_pos: float = -viewport_size.y*_top_limit + viewport_size.y*_botton_limit* (float(_i+1)/(enemy.size()+1))
+		var _x_pos: float = 375
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
 		enemy[_i].party_member_ui.global_position = viewport_center + Vector2(_x_pos, _y_pos)
 		_tween.parallel().tween_property(enemy[_i], "position", _position, 0.5)
@@ -429,7 +456,7 @@ func BattleMenu_AttackButton_Submit():
 		battle_menu.show()
 		Move_to_Button(battle_menu_button[0])
 	#-------------------------------------------------------------------------------
-	TargetMenu_Enter(iten_resource_attack, "Aim", _cancel)
+	TargetMenu_Enter(iten_resource_attack, _cancel)
 #-------------------------------------------------------------------------------
 func BattleMenu_DefenseButton_Submit():
 	battle_menu.hide()
@@ -439,7 +466,7 @@ func BattleMenu_DefenseButton_Submit():
 		battle_menu.show()
 		Move_to_Button(battle_menu_button[1])
 	#-------------------------------------------------------------------------------
-	TargetMenu_Enter(iten_resource_defense, "Crouch", _cancel)
+	TargetMenu_Enter(iten_resource_defense, _cancel)
 #-------------------------------------------------------------------------------
 func BattleMenu_SkillButton_Submit():
 	battle_menu.hide()
@@ -452,6 +479,7 @@ func BattleMenu_SkillButton_Submit():
 		var _item_resource: Item_Resource = player_alive[current_player_turn].skill_array_in_battle[_i]
 		#-------------------------------------------------------------------------------
 		var _button: Button = Button.new()
+		_button.theme = ui_theme
 		_button.text = "  "+_item_resource.id+"  "
 		_button.add_theme_font_size_override("font_size", 24)
 		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -494,6 +522,7 @@ func BattleMenu_ItemButton_Submit():
 				_hold -= 1
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
+		_button.theme = ui_theme
 		_button.text = "  "+item_array_in_battle[_i].id+"  "
 		_button.add_theme_font_size_override("font_size", 24)
 		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -555,7 +584,7 @@ func BattleMenu_AnyButton_Cancel():
 #-------------------------------------------------------------------------------
 func ItemMenu_SkillButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
 	if(player[current_player_turn].sp >= _item_resource.sp_cost):
-		TargetMenu_Enter(_item_resource, "Aim", _cancel)
+		TargetMenu_Enter(_item_resource, _cancel)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ItemMenu_SkillButton_Cancel():
@@ -565,7 +594,7 @@ func ItemMenu_SkillButton_Cancel():
 	Destroy_All_Items()
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
-	TargetMenu_Enter(_item_resource, "Crouch", _cancel)
+	TargetMenu_Enter(_item_resource, _cancel)
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Cancel():
 	item_menu.hide()
@@ -587,7 +616,7 @@ func Destroy_All_Items():
 #-------------------------------------------------------------------------------
 #region TARGET MENU FUNCTIONS
 #-------------------------------------------------------------------------------
-func TargetMenu_Enter(_item_resource:Item_Resource, _anim:String, _cancel:Callable):	
+func TargetMenu_Enter(_item_resource:Item_Resource, _cancel:Callable):	
 	#-------------------------------------------------------------------------------
 	match(_item_resource.myTARGET_TYPE):
 		#-------------------------------------------------------------------------------
@@ -598,7 +627,7 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _anim:String, _cancel:Callab
 				#-------------------------------------------------------------------------------
 				for _i in enemy_alive.size():
 					enemy_alive[_i].party_member_ui.button_pivot.show()
-					SetButton(enemy_alive[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, enemy_alive[_i], enemy_alive, _item_resource, _anim), _cancel)
+					SetButton(enemy_alive[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, enemy_alive[_i], enemy_alive, _item_resource), _cancel)
 				#-------------------------------------------------------------------------------
 				Move_to_Button(enemy_alive[0].party_member_ui.button)
 			#-------------------------------------------------------------------------------
@@ -610,7 +639,7 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _anim:String, _cancel:Callab
 				#-------------------------------------------------------------------------------
 				for _i in player_alive.size():
 					player_alive[_i].party_member_ui.button_pivot.show()
-					SetButton(player_alive[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, player_alive[_i], player_alive, _item_resource, _anim), _cancel)
+					SetButton(player_alive[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, player_alive[_i], player_alive, _item_resource), _cancel)
 				#-------------------------------------------------------------------------------
 				Move_to_Button(player_alive[0].party_member_ui.button)
 			#-------------------------------------------------------------------------------
@@ -622,7 +651,7 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _anim:String, _cancel:Callab
 				#-------------------------------------------------------------------------------
 				for _i in player_death.size():
 					player_death[_i].party_member_ui.button_pivot.show()
-					SetButton(player_death[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_death, player_death[_i], player_death, _item_resource, _anim), _cancel)
+					SetButton(player_death[_i].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_death, player_death[_i], player_death, _item_resource), _cancel)
 				#-------------------------------------------------------------------------------
 				Move_to_Button(player_death[0].party_member_ui.button)
 			#-------------------------------------------------------------------------------
@@ -631,19 +660,19 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _anim:String, _cancel:Callab
 			item_menu.hide()
 			#-------------------------------------------------------------------------------
 			player_alive[current_player_turn].party_member_ui.button_pivot.show()
-			SetButton(player_alive[current_player_turn].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, player_alive[current_player_turn], player_alive, _item_resource, _anim), _cancel)
+			SetButton(player_alive[current_player_turn].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, player_alive[current_player_turn], player_alive, _item_resource), _cancel)
 			#-------------------------------------------------------------------------------
 			Move_to_Button(player_alive[current_player_turn].party_member_ui.button)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Party_Member, _target_party:Array[Party_Member], _item_resource:Item_Resource, _anim:String):
+func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Party_Member, _target_party:Array[Party_Member], _item_resource:Item_Resource):
 	player_alive[current_player_turn].user_party = _user_party
 	player_alive[current_player_turn].target = _target
 	player_alive[current_player_turn].target_party = _target_party
 	player_alive[current_player_turn].item_resource = _item_resource
 	#-------------------------------------------------------------------------------
-	PlayAnimation(player_alive[current_player_turn].playback, _anim)
+	PlayAnimation(player_alive[current_player_turn].playback, _item_resource.anim)
 	Destroy_All_Items()
 	After_Choose_Target_Logic()
 #-------------------------------------------------------------------------------
@@ -690,39 +719,90 @@ func Party_Actions():
 	current_player_turn = player_alive.size()
 	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
+	var _player_alive_attacking: Array[Party_Member] = []
+	var _player_alive_defending: Array[Party_Member] = []
+	var _player_alive_using_skill_or_item: Array[Party_Member] = []
+	#-------------------------------------------------------------------------------
 	for _i in player_alive.size():
-		await Do_Player_Action(player_alive[_i])
+		match(player_alive[_i].item_resource):
+			iten_resource_attack:
+				_player_alive_attacking.append(player_alive[_i])
+			iten_resource_defense:
+				_player_alive_defending.append(player_alive[_i])
+			_:
+				_player_alive_using_skill_or_item.append(player_alive[_i])
+		#if(player_alive[_i].item_resource == iten_resource_attack):
+		#	_player_alive_attacking.append(player_alive[_i])
+		#-------------------------------------------------------------------------------
+		#else:
+		#	_player_alive_using_skill_or_item.append(player_alive[_i])
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	await Do_Defence_Minigame(_player_alive_defending)
+	#-------------------------------------------------------------------------------
+	for _i in _player_alive_using_skill_or_item.size():
+		var _user: Party_Member = _player_alive_using_skill_or_item[_i]
+		Set_Target_Avalible(_user)
+		#-------------------------------------------------------------------------------
+		if(_user.target != null):
+			dialogue_menu.show()
+			dialogue_menu_label.text = _user.id + " uses " + _user.item_resource.id + " on " + _user.target.id
+			await Seconds(0.5)
+			await Do_Player_Action(_user)
+			await Seconds(0.2)
+			await Seconds(0.5)
+			dialogue_menu.hide()
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	await Do_Attack_Minigame(_player_alive_attacking)
 	#-------------------------------------------------------------------------------
 	await Seconds(0.5)
 	#-------------------------------------------------------------------------------
-	for _i in player_alive.size():
-		if(player_alive[_i].is_in_guard):
-			PlayAnimation(player_alive[_i].playback, "Crouch")
-		#-------------------------------------------------------------------------------
-		else:
-			PlayAnimation(player_alive[_i].playback, "Idle")
-		#-------------------------------------------------------------------------------
+	player_alive.clear()
+	player_death.clear()
 	#-------------------------------------------------------------------------------
-	if(enemy_alive.size() > 0):
-		#-------------------------------------------------------------------------------
-		for _i in enemy_alive.size():
-			if(enemy_alive[_i].hp > 0):
-				PlayAnimation(enemy_alive[_i].playback, "Idle")
+	for _i in player.size():
+		if(player[_i].hp > 0):
+			player_alive.append(player[_i])
+			if(player[_i].is_in_guard):
+				PlayAnimation(player[_i].playback, "Crouch")
+			#-------------------------------------------------------------------------------
+			else:
+				PlayAnimation(player[_i].playback, "Idle")
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		Start_BulletHell()
+		else:
+			player_death.append(player[_i])
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	enemy_alive.clear()
+	enemy_death.clear()
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		if(enemy[_i].hp > 0):
+			enemy_alive.append(enemy[_i])
+			PlayAnimation(enemy[_i].playback, "Idle")
+		else:
+			enemy_death.append(enemy[_i])
+	#-------------------------------------------------------------------------------
+	if(enemy_alive.size() > 0):
+		if(player_alive.size() > 0):
+			await Start_BulletHell()
+		else:
+			You_Lose()
 	#-------------------------------------------------------------------------------
 	else:
 		You_Win()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Do_Player_Action(_user:Party_Member):
+func Set_Target_Avalible(_user:Party_Member):
+	#-------------------------------------------------------------------------------
 	match(_user.item_resource.myTARGET_TYPE):
 		#-------------------------------------------------------------------------------
 		Item_Resource.TARGET_TYPE.ENEMY_1:
 			#-------------------------------------------------------------------------------
 			if(_user.target.hp > 0):
-				await Do_Player_Action_2(_user)
+				pass
 			#-------------------------------------------------------------------------------
 			else:
 				var _target_array_alive: Array[Party_Member] = []
@@ -730,40 +810,90 @@ func Do_Player_Action(_user:Party_Member):
 				for _i in _user.target_party.size():
 					#-------------------------------------------------------------------------------
 					if(_user.target_party[_i].hp > 0):
-						_user.target_array_alive.append(_user.target_party[_i])
+						_target_array_alive.append(_user.target_party[_i])
 					#-------------------------------------------------------------------------------
 				#-------------------------------------------------------------------------------
 				if(_target_array_alive.size() > 0):
-					_user.target = _user.target_array_alive[0]
+					_user.target = _target_array_alive[0]
 					#-------------------------------------------------------------------------------
 					for _i in _target_array_alive.size():
 						#-------------------------------------------------------------------------------
-						if(_user.target_array_alive[_i].hp < _user.target.hp):
-							_user.target = _user.target_array_alive[_i]
+						if(_target_array_alive[_i].hp < _user.target.hp):
+							_user.target = _target_array_alive[_i]
 						#-------------------------------------------------------------------------------
 					#-------------------------------------------------------------------------------
-					await Do_Player_Action_2(_user)
+				#-------------------------------------------------------------------------------
+				else:
+					_user.target = null
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		Item_Resource.TARGET_TYPE.ALLY_1:
-			await Do_Player_Action_2(_user)
+			pass
 		#-------------------------------------------------------------------------------
 		Item_Resource.TARGET_TYPE.ALLY_DEATH:
-			await Do_Player_Action_2(_user)
+			pass
 		#-------------------------------------------------------------------------------
 		Item_Resource.TARGET_TYPE.USER:
-			await Do_Player_Action_2(_user)
+			pass
 		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Do_Player_Action_2(_user:Party_Member):
+func Do_Player_Action(_user:Party_Member):
+	#-------------------------------------------------------------------------------
+	if(_user.target == null):
+		return
+	#-------------------------------------------------------------------------------
 	_user.item_resource.hold -= 1
 	_user.sp -= _user.item_resource.sp_cost
 	_user.hp -= _user.item_resource.hp_cost
 	Set_HP_Label(_user)
 	Set_SP_Label(_user)
-	print(_user.item_resource.action_string)
 	await call(_user.item_resource.action_string, _user)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Do_Defence_Minigame(_player_alive_defending: Array[Party_Member]):
+	if(_player_alive_defending.size() > 0):
+		#-------------------------------------------------------------------------------
+		for _i in _player_alive_defending.size():
+			await Do_Player_Action(_player_alive_defending[_i])
+			await Seconds(0.1)
+		#-------------------------------------------------------------------------------
+		await Seconds(0.5)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
+	if(_attacking_party.size() > 0):
+		#-------------------------------------------------------------------------------
+		enemy_alive.clear()
+		enemy_death.clear()
+		#-------------------------------------------------------------------------------
+		for _i in enemy.size():
+			#-------------------------------------------------------------------------------
+			if(enemy[_i].hp > 0):
+				enemy_alive.append(enemy[_i])
+			#-------------------------------------------------------------------------------
+			else:
+				enemy_death.append(enemy[_i])
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		if(enemy_alive.size() > 0):
+			dialogue_menu.show()
+			dialogue_menu_label.text = "Normal Attack Minigame"
+			await Seconds(0.5)
+			#-------------------------------------------------------------------------------
+			for _i in _attacking_party.size():
+				Set_Target_Avalible(_attacking_party[_i])
+				#-------------------------------------------------------------------------------
+				if(_attacking_party[_i].target != null):
+					await Do_Player_Action(_attacking_party[_i])
+					await Seconds(0.2)
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			await Seconds(0.5)
+			dialogue_menu.hide()
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Do_Nothing(_user:Party_Member):
 	print("The actions Does not exist")
@@ -784,10 +914,16 @@ func Start_BulletHell():
 	screen_limit_left = camera.global_position.x-viewport_center.x
 	screen_limit_right = camera.global_position.x+viewport_center.x
 	#-------------------------------------------------------------------------------
-	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
-	Stage1_Fire2(_tween, enemy[0], 1)
 	#-------------------------------------------------------------------------------
-	await TimeOut_Tween(7)
+	for _i in enemy_alive.size():
+		PlayAnimation(enemy_alive[_i].playback, "Aim")
+	#-------------------------------------------------------------------------------
+	await Seconds(0.5)
+	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
+	_tween.set_loops()
+	Stage1_Fire2(_tween)
+	#-------------------------------------------------------------------------------
+	await TimeOut_Tween(15)
 	myGAME_STATE = GAME_STATE.IN_MENU
 	current_player_turn = 0
 	#-------------------------------------------------------------------------------
@@ -825,15 +961,18 @@ func Start_BulletHell():
 			enemy_death.append(enemy[_i])
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	if(player_alive.size() > 0):
-		battle_menu.show()
-		battle_box.hide()
-		myGAME_STATE = GAME_STATE.IN_MENU
-		Move_to_Button(battle_menu_button[current_player_turn])
-		battle_menu.global_position = player_alive[current_player_turn].party_member_ui.button_pivot.global_position
+	if(enemy_alive.size() > 0):
+		if(player_alive.size() > 0):
+			battle_menu.show()
+			battle_box.hide()
+			myGAME_STATE = GAME_STATE.IN_MENU
+			Move_to_Button(battle_menu_button[current_player_turn])
+			battle_menu.global_position = player_alive[current_player_turn].party_member_ui.button_pivot.global_position
+		else:
+			You_Lose()
 	#-------------------------------------------------------------------------------
 	else:
-		GameOver()
+		You_Win()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func You_Win():
@@ -1041,6 +1180,19 @@ func StopEverithing():
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
+#region PLAYER BULLET FUNCTIONS
+#-------------------------------------------------------------------------------
+func Create_PlayerBullet(_global_position:Vector2, _dir:float) -> Bullet:
+	var _bullet: Bullet = bullet_Prefab.instantiate() as Bullet
+	_bullet.global_position = _global_position
+	_bullet.z_index = 2
+	_bullet.scale = Vector2(7, 7)
+	_bullet.rotation = _dir
+	world2d.add_child(_bullet)
+	return _bullet
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
 #region ENEMY BULLET FUNCTIONS
 func Destroy_EnemyBullet(_bullet: Bullet):
 	KillTween_Array(_bullet.tween_Array)
@@ -1124,34 +1276,70 @@ func EnemyBullet_PhysicsUpdate_Limitless_A(_bullet: Bullet):
 #endregion
 #-------------------------------------------------------------------------------
 #region SPELLCARD FUNCTIONS
-func Stage1_Fire2(_tween:Tween, _node2D: Node2D, _mirror:float):
-	var _max1: float = 10 
-	var _max2: float = 50
-	var _vel: float = 4 
-	var _timer: float = 0.2 
+func Set_Difficulty() -> float:
+	#return enemy.size() - enemy_alive.size()
+	return 3.0 - enemy_alive.size()
+#-------------------------------------------------------------------------------
+func Stage1_Fire2(_tween:Tween):
+	var _difficulty: float = Set_Difficulty()
+	var _mirror = 1
 	#-------------------------------------------------------------------------------
-	var _ang: float = 0
+	for _j in 2:
+		#-------------------------------------------------------------------------------
+		for _i in enemy_alive.size():
+			_tween.tween_callback(func():
+				PlayAnimation(enemy_alive[_i].playback, "Shot")
+				Stage1_Fire2_Bullet1(enemy_alive[_i], _mirror)
+			)
+			_tween.tween_interval(1.0+1.2*_difficulty)
+			_mirror *= -1
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
+	#-------------------------------------------------------------------------------
+	var _difficulty: float = Set_Difficulty()
+	#-------------------------------------------------------------------------------
+	var _max1: float = 10 + 2*_difficulty
+	var _max2: float = 10 + 5*_difficulty
+	#-------------------------------------------------------------------------------
+	var _x: float = camera.position.x+viewport_center.x*0.5 * _mirror
+	var _y: float = camera.position.y-viewport_center.y*0.5
+	var _vel: float = 2
 	var _dir: float = 90
 	#-------------------------------------------------------------------------------
-	var _bullet: Bullet = Create_EnemyBullet_A(camera.position.x+viewport_center.x*0.5, camera.position.y-viewport_center.y*0.5, 1, 90, "bullet2", false)
+	var _vel2: float = 4
+	var _dir2: float = randf_range(0, 360)
+	#-------------------------------------------------------------------------------
+	var _timer: float = 0.2
+	#-------------------------------------------------------------------------------
+	var _ang: float = 0
+	#-------------------------------------------------------------------------------
+	var _bullet: Bullet = Create_EnemyBullet_A(_x, _y, _vel, _dir, "bullet2", false)
+	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
 	#-------------------------------------------------------------------------------
 	for _j in _max2:
 		#-------------------------------------------------------------------------------
 		_tween.tween_callback(func():
-			var _dir2: float = 0
+			var _dir3: float = 0
 			#-------------------------------------------------------------------------------
 			for _i in _max1:
-				var _x:float = _bullet.global_position.x
-				var _y:float = _bullet.global_position.y
-				var _bullet2: Bullet = Create_EnemyBullet_A(_x, _y, _vel, _dir+_dir2+_ang, "bullet2", false)
-				_dir2 += 360/_max1
+				var _x2:float = _bullet.global_position.x
+				var _y2:float = _bullet.global_position.y
+				var _bullet2: Bullet = Create_EnemyBullet_A(_x2, _y2, _vel2, _dir2+_dir3+_ang, "bullet2", false)
+				_dir3 += 360/_max1
 			#-------------------------------------------------------------------------------
 		)
 		#-------------------------------------------------------------------------------
-		_ang += 5.0*_mirror
+		_ang += 4.0*_mirror
 		#-------------------------------------------------------------------------------
 		_tween.tween_interval(_timer)
 	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		Destroy_EnemyBullet(_bullet)
+	)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region HITBOX FUNCTIONS
@@ -1179,6 +1367,15 @@ func Hitbox_Damage():
 		#-------------------------------------------------------------------------------
 		if(i_frames < 0):
 			can_be_hit = true
+			hitbox.visible = true
+		#-------------------------------------------------------------------------------
+		elif(i_frames % 2 == 0):
+			#-------------------------------------------------------------------------------
+			if(hitbox.visible):
+				hitbox.visible = false
+			#-------------------------------------------------------------------------------
+			else:
+				hitbox.visible = true
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -1198,8 +1395,12 @@ func Player_Shooted():
 			_int = 10
 		#-------------------------------------------------------------------------------
 		_target.hp -= _int
+		#-------------------------------------------------------------------------------
+		var _global_position: Vector2 = _target.global_position
+		_global_position.y += randf_range(-75, 25)
+		#-------------------------------------------------------------------------------
 		if(_target.hp > 0):
-			Flying_Label(_target.global_position, "-"+str(_int)+" HP")
+			Flying_Label(_global_position, "-"+str(_int)+" HP")
 			#-------------------------------------------------------------------------------
 			if(_target.is_in_guard):
 				PlayAnimation(_target.playback, "Crouch_Hurt")
@@ -1211,7 +1412,7 @@ func Player_Shooted():
 		#-------------------------------------------------------------------------------
 		else:
 			_target.hp = 0
-			Flying_Label(_target.global_position, "Down")
+			Flying_Label(_global_position, "Down")
 			Set_HP_Label(_target)
 			PlayAnimation(_target.playback, "Death")
 			#-------------------------------------------------------------------------------
@@ -1225,7 +1426,7 @@ func Player_Shooted():
 		StopEverithing_and_Timer()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func GameOver():
+func You_Lose():
 	#-------------------------------------------------------------------------------
 	var _tween:Tween = create_tween()
 	#-------------------------------------------------------------------------------
@@ -1260,6 +1461,7 @@ func Bullet_Grazed():
 	if(_target_party.size() > 0):
 		_target_party.shuffle()
 		_target_party[0].sp += 1
+		SP_Gain_VisualEffect(_target_party[0].global_position)
 		#-------------------------------------------------------------------------------
 		if(_target_party[0].sp > _target_party[0].max_sp):
 			_target_party[0].sp = _target_party[0].max_sp
@@ -1271,22 +1473,72 @@ func Bullet_Grazed():
 #region PARTY_SKILLS CALLABLES
 #-------------------------------------------------------------------------------
 func Attack(_user:Party_Member):
-	PlayAnimation(_user.playback, "Shot")
-	HP_Damage(_user.target, 5)
-	await Seconds(0.3)
+	var _global_position: Vector2 = _user.target.global_position + Vector2(-75, -150)
+	var _dir: float = Get_Dir_XY(Vector2(100,100))
+	var _sprite2d: Bullet = Create_PlayerBullet(_global_position, _dir)
+	#-------------------------------------------------------------------------------
+	var _tween: Tween = create_tween()
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		PlayAnimation(_user.playback, "Shot")
+		HP_Damage(_user.target, 5)
+	)
+	#-------------------------------------------------------------------------------
+	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(100,100), 0.15)
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		_sprite2d.queue_free()
+	)
+	#-------------------------------------------------------------------------------
+	await _tween.finished
 #-------------------------------------------------------------------------------
 func Defense(_user:Party_Member):
 	_user.is_in_guard = true
+	Flying_Label(_user.global_position, "+Guard")
 #-------------------------------------------------------------------------------
 func Skill_0_0(_user:Party_Member):
-	PlayAnimation(_user.playback, "Shot")
-	HP_Damage(_user.target, 5)
-	await Seconds(0.3)
+	var _global_position: Vector2 = _user.target.global_position + Vector2(-100, -150)
+	var _dir: float = Get_Dir_XY(Vector2(50,100))
+	var _bullet: Bullet = Create_PlayerBullet(_global_position, _dir)
+	#-------------------------------------------------------------------------------
+	var _tween: Tween = create_tween()
+	var _dx: float = 50
+	var _dy: float = 50
+	for _i in 4:
+		_tween.tween_callback(func():
+			PlayAnimation(_user.playback, "Shot")
+			HP_Damage(_user.target, 5)
+			_bullet.rotation = Get_Dir_XY(Vector2(50, _dy))
+		)
+		#-------------------------------------------------------------------------------
+		_tween.tween_property(_bullet, "global_position", _bullet.global_position + Vector2(_dx,50+_dy), 0.1)
+		_dx += 50
+		_dy *=-1
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		_bullet.queue_free()
+	)
+	#-------------------------------------------------------------------------------
+	await _tween.finished
 #-------------------------------------------------------------------------------
 func Skill_0_1(_user:Party_Member):
-	PlayAnimation(_user.playback, "Shot")
-	HP_Heal_Porcentual(_user.target, 0.5)
-	await Seconds(0.3)
+	var _global_position: Vector2 = _user.target.global_position + Vector2(-500, -100)
+	var _sprite2d: Bullet = Create_PlayerBullet(_global_position, 0)
+	#-------------------------------------------------------------------------------
+	var _tween: Tween = create_tween()
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		PlayAnimation(_user.playback, "Shot")
+		HP_Damage(_user.target, 15)
+	)
+	#-------------------------------------------------------------------------------
+	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(700,0), 0.3)
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		_sprite2d.queue_free()
+	)
+	#-------------------------------------------------------------------------------
+	await _tween.finished
 #-------------------------------------------------------------------------------
 func Skill_0_2(_user:Party_Member):
 	PlayAnimation(_user.playback, "Shot")
@@ -1299,22 +1551,31 @@ func Skill_0_2(_user:Party_Member):
 #region PARTY_ITEMS CALLABLES
 #-------------------------------------------------------------------------------
 func Item_0_0(_user:Party_Member):
-	await Skill_0_1(_user)
+	PlayAnimation(_user.playback, "Shot")
+	HP_Heal_Porcentual(_user.target, 0.5)
+	PlayAnimation(_user.target.playback, "Idle")
+	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Item_0_1(_user:Party_Member):
-	await Skill_0_2(_user)
+	PlayAnimation(_user.playback, "Shot")
+	HP_Heal_Porcentual(_user.target, 1.0)
+	PlayAnimation(_user.target.playback, "Idle")
+	await Seconds(0.3)
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region COMMON FUNCTIONS
 #-------------------------------------------------------------------------------
+func Get_Dir_XY(_v2:Vector2) -> float:
+	var _dir: float = atan2(_v2.y, _v2.x)
+	return _dir
+#-------------------------------------------------------------------------------
 func Flying_Label(_pos:Vector2, _s:String):
 	var _label: Label = Label.new()
 	_label.add_theme_font_size_override("font_size", 24)
-	_label.add_theme_constant_override("outline_size", 3)
+	_label.add_theme_constant_override("outline_size", 5)
 	_label.text = _s
-	_pos.y -= 100
-	_pos.x = randf_range(_pos.x-25, _pos.x+25)
-	_pos.y = randf_range(_pos.y-25, _pos.y+25)
+	_pos.y -= 75
 	_label.global_position = _pos
 	_label.z_index = 2
 	world2d.add_child(_label)
@@ -1325,6 +1586,25 @@ func Flying_Label(_pos:Vector2, _s:String):
 	_tween.tween_property(_label, "global_position", _pos + Vector2(65, -15), 0.1)
 	_tween.tween_property(_label, "global_position", _pos + Vector2(80, 0), 0.1)
 	_tween.tween_interval(0.7)
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		_label.queue_free()
+	)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func SP_Gain_VisualEffect(_pos:Vector2):
+	var _label: Label = Label.new()
+	_label.add_theme_font_size_override("font_size", 18)
+	_label.add_theme_constant_override("outline_size", 4)
+	_label.text = "+1 SP"
+	_pos.y -= 10
+	_pos.x = randf_range(_pos.x-25, _pos.x+25)
+	_label.global_position = _pos
+	_label.z_index = 2
+	world2d.add_child(_label)
+	#-------------------------------------------------------------------------------
+	var _tween: Tween = create_tween()
+	_tween.tween_property(_label, "global_position", _pos + Vector2(0, -100), 1.0)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		_label.queue_free()
@@ -1342,37 +1622,49 @@ func Destroy_Childrens(_node:Node):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func HP_Damage(_target:Party_Member, _int:int):
-	_target.hp -= _int
-	#-------------------------------------------------------------------------------
 	if(_target.hp > 0):
-		PlayAnimation(_target.playback, "Hurt 2")
-		Flying_Label(_target.global_position, "-"+str(_int)+" HP")
+		_target.hp -= _int
+		#-------------------------------------------------------------------------------
+		var _global_position: Vector2 = _target.global_position
+		_global_position.y += randf_range(-75, 25)
+		#-------------------------------------------------------------------------------
+		if(_target.hp > 0):
+			PlayAnimation(_target.playback, "Hurt 2")
+			Flying_Label(_global_position, "-"+str(_int)+" HP")
+		#-------------------------------------------------------------------------------
+		else:
+			_target.hp = 0
+			PlayAnimation(_target.playback, "Death")
+			Flying_Label(_global_position, "Down")
+		#-------------------------------------------------------------------------------
+		Set_HP_Label(_target)
 	#-------------------------------------------------------------------------------
-	else:
-		_target.hp = 0
-		Flying_Label(_target.global_position, "Down")
-		PlayAnimation(_target.playback, "Death")
-	#-------------------------------------------------------------------------------
-	Set_HP_Label(_target)
 #-------------------------------------------------------------------------------
 func HP_Heal_Porcentual(_target:Party_Member, _float:float):
 	var _int: int = int(float(_target.max_hp)*_float)
 	_target.hp += _int
 	#-------------------------------------------------------------------------------
+	var _global_position: Vector2 = _target.global_position
+	_global_position.y += randf_range(-75, 25)
+	#-------------------------------------------------------------------------------
 	if(_target.hp < _target.max_hp):
-		Flying_Label(_target.global_position, "+"+str(_int)+" HP")
+		Flying_Label(_global_position, "+"+str(_int)+" HP")
 	#-------------------------------------------------------------------------------
 	else:
-		Flying_Label(_target.global_position, "Max HP")
 		_target.hp = _target.max_hp
+		Flying_Label(_global_position, "Max HP")
 	#-------------------------------------------------------------------------------
 	Set_HP_Label(_target)
 #-------------------------------------------------------------------------------
 func Set_HP_Label(_user:Party_Member):
 	_user.party_member_ui.label_hp.text = "  "+str(_user.hp)+" / "+str(_user.max_hp)+" HP  "
+	_user.party_member_ui.bar_hp.max_value = _user.max_hp
+	_user.party_member_ui.bar_hp.value = _user.hp
 #-------------------------------------------------------------------------------
 func Set_SP_Label(_user:Party_Member):
 	_user.party_member_ui.label_sp.text = "  "+str(_user.sp)+" / "+str(_user.max_sp)+" SP  "
+	_user.party_member_ui.bar_sp.max_value = _user.max_sp
+	_user.party_member_ui.bar_sp.value = _user.sp
 #-------------------------------------------------------------------------------
 func PlayAnimation(_playback:AnimationNodeStateMachinePlayback, _s: String):
 	#playback.travel(_s)

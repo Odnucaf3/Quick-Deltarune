@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_t6ret")
-action_string = "Item_0_1"
 myTARGET_TYPE = 2
+anim = "Crouch"
+action_string = "Item_0_1"
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"
