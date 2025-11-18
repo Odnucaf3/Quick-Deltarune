@@ -114,18 +114,6 @@ func _ready() -> void:
 		#player[_i].party_member_ui.bar_sp.hide()
 		battle_control.add_child(_party_member_ui)
 	#-------------------------------------------------------------------------------
-	for _i in enemy.size():
-		enemy[_i].playback = enemy[_i].animation_tree.get("parameters/playback")
-		PlayAnimation(enemy[_i].playback, "Idle")
-		#-------------------------------------------------------------------------------
-		var _party_member_ui: Party_Member_UI = enemy_ui_prefab.instantiate() as Party_Member_UI
-		enemy[_i].party_member_ui = _party_member_ui
-		enemy[_i].party_member_ui.hide()
-		enemy[_i].party_member_ui.button_pivot.hide()
-		enemy[_i].party_member_ui.label_sp.hide()
-		enemy[_i].party_member_ui.bar_sp.hide()
-		battle_control.add_child(_party_member_ui)
-	#-------------------------------------------------------------------------------
 	for _i in range(1, player.size()):
 		player[_i].collider.disabled = true
 	#-------------------------------------------------------------------------------
@@ -138,11 +126,15 @@ func _ready() -> void:
 	timer_label.hide()
 	battle_black_panel.hide()
 	dialogue_menu.hide()
-	camera.position = player[0].position + Vector2(0, -camera_offset_y)
+	#-------------------------------------------------------------------------------
 	var _width: float = ProjectSettings.get_setting("display/window/size/viewport_width")
 	var _height: float = ProjectSettings.get_setting("display/window/size/viewport_height")
 	viewport_size = Vector2(_width, _height)
 	viewport_center = viewport_size/2.0
+	#-------------------------------------------------------------------------------
+	room_test.game_scene = self
+	room_test.Set_Room()
+	camera.position = Camera_Set_Target_Position()
 	#-------------------------------------------------------------------------------
 	hitbox.global_scale = Get_CircleSprite_Scale(hitBox_radius) + Vector2(0.01, 0.01)
 	grazebox.global_scale = Get_CircleSprite_Scale(grazeBox_radius) + Vector2(0.01, 0.01)
@@ -322,16 +314,16 @@ func Hitbox_Movement():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Camera_Follow():
+	var _new_position: Vector2 = Camera_Set_Target_Position()
+	camera.position = lerp(camera.position, _new_position, 0.2)
+#-------------------------------------------------------------------------------
+func Camera_Set_Target_Position() -> Vector2:
 	var _new_position: Vector2 = player[0].position + Vector2(0, -camera_offset_y)
 	#-------------------------------------------------------------------------------
-	var _limit_top: float = room_test.camera_limits.global_position.y + viewport_center.y
-	var _limit_botton: float = room_test.camera_limits.global_position.y + room_test.camera_limits.size.y - viewport_center.y
-	var _limit_left: float = room_test.camera_limits.global_position.x + viewport_center.x
-	var _limit_right: float = room_test.camera_limits.global_position.x + room_test.camera_limits.size.x - viewport_center.x
+	_new_position.x = clampf(_new_position.x, room_test.limit_left, room_test.limit_right)
+	_new_position.y = clampf(_new_position.y, room_test.limit_top, room_test.limit_botton)
 	#-------------------------------------------------------------------------------
-	_new_position.x = clampf(_new_position.x, _limit_left, _limit_right)
-	_new_position.y = clampf(_new_position.y, _limit_top, _limit_botton)
-	camera.position = lerp(camera.position, _new_position, 0.2)
+	return _new_position
 #-------------------------------------------------------------------------------
 func Face_Left(_b:bool):
 	player[0].sprite.flip_h = _b

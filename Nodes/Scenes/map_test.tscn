@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://kpwdhek0p57w"]
+
+[ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="1_lwkax"]
+[ext_resource type="PackedScene" uid="uid://c7ehw7h0jv22a" path="res://Nodes/Prefabs/Rooms/room_test_02.tscn" id="2_incd7"]
+[ext_resource type="Script" uid="uid://dkpbd3o7n34ul" path="res://Scripts/Prefabs/Rooms/room_test_1.gd" id="3_3fvte"]
+[ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="4_kkek5"]
+
+[node name="Map Test" type="Node2D"]
+
+[node name="room_test_01" parent="." instance=ExtResource("1_lwkax")]
+
+[node name="Room_test_02" parent="." instance=ExtResource("2_incd7")]
+
+[node name="Room_Script" type="Node2D" parent="."]
+script = ExtResource("3_3fvte")
+metadata/_custom_type_script = "uid://dkpbd3o7n34ul"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Room_Script"]
+tile_set = ExtResource("4_kkek5")

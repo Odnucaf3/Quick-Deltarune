@@ -1,0 +1,79 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://eynb8l6cn813"]
+
+[ext_resource type="Texture2D" uid="uid://ctjy5goss2wv7" path="res://Assets/ansimuz/warped city files/v1/preview-top-down-sci-fi.png" id="1_icbr3"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bpjbf"]
+texture = ExtResource("1_icbr3")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:2/0 = 0
+0:3/0 = 0
+0:4/0 = 0
+0:5/0 = 0
+0:6/0 = 0
+0:7/0 = 0
+0:8/0 = 0
+0:9/0 = 0
+0:10/0 = 0
+2:9/0 = 0
+2:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+4:9/0 = 0
+6:5/0 = 0
+5:5/0 = 0
+4:5/0 = 0
+3:5/0 = 0
+2:5/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+6:3/0 = 0
+6:2/0 = 0
+6:1/0 = 0
+5:1/0 = 0
+4:1/0 = 0
+3:1/0 = 0
+2:1/0 = 0
+2:2/0 = 0
+2:3/0 = 0
+7:7/0 = 0
+9:7/0 = 0
+9:8/0 = 0
+9:5/0 = 0
+9:4/0 = 0
+9:2/0 = 0
+9:1/0 = 0
+8:1/0 = 0
+10:1/0 = 0
+11:7/0 = 0
+12:7/0 = 0
+13:7/0 = 0
+13:8/0 = 0
+13:9/0 = 0
+12:9/0 = 0
+11:9/0 = 0
+11:8/0 = 0
+12:8/0 = 0
+12:5/0 = 0
+12:4/0 = 0
+13:4/0 = 0
+14:4/0 = 0
+15:4/0 = 0
+16:4/0 = 0
+16:3/0 = 0
+16:2/0 = 0
+15:2/0 = 0
+14:2/0 = 0
+13:2/0 = 0
+12:2/0 = 0
+12:3/0 = 0
+14:5/0 = 0
+16:5/0 = 0
+
+[resource]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_bpjbf")
