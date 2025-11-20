@@ -5,4 +5,6 @@
 [resource]
 script = ExtResource("1_rmimv")
 action_string = "Skill_0_0"
+lore = "*A shoot that ricochets everywhere."
+description = "*Do 4 consecutive attack."
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

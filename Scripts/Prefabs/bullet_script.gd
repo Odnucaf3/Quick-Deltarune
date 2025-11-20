@@ -18,7 +18,7 @@ var spin: float
 var pos_X: float
 var pos_Y: float
 #-------------------------------------------------------------------------------
-var radius: float = 7
+var radius: float = 2.0
 #-------------------------------------------------------------------------------
 var bounce_counter: int
 var bounce_up: bool

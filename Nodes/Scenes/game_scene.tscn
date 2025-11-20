@@ -24,20 +24,20 @@ bg_color = Color(0, 0, 0, 0.88235295)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muxe8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
-expand_margin_left = 8.0
-expand_margin_top = 8.0
-expand_margin_right = 8.0
-expand_margin_bottom = 8.0
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "dialogue_menu", "dialogue_menu_label", "player", "enemy", "item_menu", "item_menu_scrollContainer", "item_menu_content", "item_menu_title", "item_menu_description", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "dialogue_menu", "dialogue_menu_label", "player", "enemy", "item_menu", "item_menu_scrollContainer", "item_menu_content", "item_menu_title", "item_menu_lore", "item_menu_description", "black_panel", "battle_black_panel", "pauseLabel", "win_label", "retry_menu", "retry_menu_button", "debug_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_menu_rect", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
 world2d = NodePath("World2D")
@@ -53,7 +53,8 @@ item_menu = NodePath("CanvasLayer/Item_Menu")
 item_menu_scrollContainer = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_content = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_title = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer/Label")
-item_menu_description = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer/Label2")
+item_menu_lore = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer/Label2")
+item_menu_description = NodePath("CanvasLayer/Item_Menu/MarginContainer/HBoxContainer/VBoxContainer2/MarginContainer2/Label2")
 item_array = Array[ExtResource("2_tnh07")]([ExtResource("3_xrh8u"), ExtResource("4_xrh8u")])
 iten_resource_attack = ExtResource("5_rpgth")
 iten_resource_defense = ExtResource("6_lujb4")
@@ -87,10 +88,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -600.0
-offset_top = -350.0
-offset_right = 600.0
-offset_bottom = 350.0
+offset_left = -168.0
+offset_top = -96.0
+offset_right = 168.0
+offset_bottom = 96.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(600, 350)
@@ -104,10 +105,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -150.0
-offset_right = 150.0
-offset_bottom = 150.0
+offset_left = -31.0
+offset_top = -31.0
+offset_right = 31.0
+offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 150)
@@ -124,8 +125,8 @@ grow_vertical = 2
 
 [node name="Hitbox" type="Sprite2D" parent="World2D/Battle_Box/Content"]
 self_modulate = Color(1, 0, 0, 1)
-position = Vector2(150, 150)
-scale = Vector2(0.08, 0.08)
+position = Vector2(31, 31)
+scale = Vector2(0.025, 0.025)
 texture = ExtResource("2_hf1mx")
 
 [node name="MagnetBox" type="Sprite2D" parent="World2D/Battle_Box/Content/Hitbox"]
@@ -135,18 +136,18 @@ scale = Vector2(4, 4)
 texture = ExtResource("2_hf1mx")
 
 [node name="Camera2D" type="Camera2D" parent="World2D"]
-position = Vector2(2480, 880)
+zoom = Vector2(3.5, 3.5)
 
 [node name="Party_Member" parent="World2D" instance=ExtResource("13_hxoxt")]
 id = &"Kris"
 skill_array = Array[ExtResource("2_tnh07")]([ExtResource("17_gg6rv")])
 
 [node name="Party_Member2" parent="World2D" instance=ExtResource("20_lujb4")]
-position = Vector2(-245, 185)
+position = Vector2(-24, -8)
 skill_array = Array[ExtResource("2_tnh07")]([ExtResource("25_3p4s7")])
 
 [node name="Party_Member3" parent="World2D" instance=ExtResource("21_rpgth")]
-position = Vector2(-128, 344)
+position = Vector2(-24, 8)
 
 [node name="room_test_1" parent="World2D" instance=ExtResource("11_tnh07")]
 
@@ -176,7 +177,6 @@ texture = ExtResource("8_bykob")
 expand_mode = 3
 
 [node name="Battle_Menu" type="Control" parent="CanvasLayer/Battle_UI"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -191,47 +191,54 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
+offset_top = -131.0
+offset_right = 258.0
 grow_vertical = 0
 
 [node name="Label" type="Label" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
 theme_override_constants/outline_size = 3
 text = "Battle Menu:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
+size_flags_horizontal = 3
 alignment = 1
 
 [node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Attack  "
 
 [node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
-text = "  Defense  "
+text = "  Guard  "
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Skills  "
 
 [node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Items  "
@@ -239,18 +246,21 @@ text = "  Items  "
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
-text = "  Equip  "
+text = "Equip"
 
 [node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3"]
 layout_mode = 2
+size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
-text = "  Check  "
+text = "Check"
 
 [node name="timer_Label" type="Label" parent="CanvasLayer/Battle_UI"]
 visible = false
@@ -386,7 +396,6 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lleqo")
 
 [node name="Item_Menu" type="PanelContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -587,6 +596,7 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="debug_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
@@ -623,6 +633,3 @@ theme_override_font_sizes/font_size = 30
 text = "Player 1 uses V-Slash to Enemy 1"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-40, 165)

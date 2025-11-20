@@ -2,7 +2,7 @@ extends Node2D
 class_name Room_Script
 #-------------------------------------------------------------------------------
 var game_scene: Game_Scene
-@export var camera_limits: Control
+@export var room_limits: Control
 @export var enemy: Array[Party_Member]
 @export var warp_array: Array[Warp_Script]
 
@@ -31,22 +31,24 @@ func Set_Room():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Set_Camera_Limits():
-	limit_top = camera_limits.global_position.y + game_scene.viewport_center.y
-	limit_botton = camera_limits.global_position.y + camera_limits.size.y - game_scene.viewport_center.y
-	limit_left = camera_limits.global_position.x + game_scene.viewport_center.x
-	limit_right = camera_limits.global_position.x + camera_limits.size.x - game_scene.viewport_center.x
+	limit_top = room_limits.global_position.y + game_scene.camera_center.y
+	limit_botton = room_limits.global_position.y + room_limits.size.y - game_scene.camera_center.y
+	limit_left = room_limits.global_position.x + game_scene.camera_center.x
+	limit_right = room_limits.global_position.x + room_limits.size.x - game_scene.camera_center.x
 	#-------------------------------------------------------------------------------
-	var _center_x: float = camera_limits.global_position.x + camera_limits.size.x *0.5
-	var _center_y: float = camera_limits.global_position.y + camera_limits.size.y *0.5
+	var _center_x: float = room_limits.global_position.x + room_limits.size.x *0.5
+	var _center_y: float = room_limits.global_position.y + room_limits.size.y *0.5
 	#-------------------------------------------------------------------------------
 	if(limit_top > _center_y): limit_top = _center_y
 	if(limit_botton < _center_y): limit_botton = _center_y
 	if(limit_left > _center_x): limit_left = _center_x
 	if(limit_right < _center_x): limit_right = _center_x
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 func Check_for_Enemy(_game_scene: Game_Scene):
 	if(enemy.size() > 0):
 		#-------------------------------------------------------------------------------
-		if(_game_scene.player[0].position.distance_to(enemy[0].position) < 60 and _game_scene.can_enter_fight):
+		if(_game_scene.player[0].position.distance_to(enemy[0].position) < 20 and _game_scene.can_enter_fight):
 			_game_scene.enemy.clear()
 			#-------------------------------------------------------------------------------
 			for _i in enemy.size():

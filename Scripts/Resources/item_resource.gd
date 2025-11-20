@@ -11,6 +11,9 @@ var id: StringName
 @export var anim: String = "Aim"
 @export var action_string: String = "Do_Nothing"
 #-------------------------------------------------------------------------------
+@export_multiline  var lore: String
+@export_multiline  var description: String
+#-------------------------------------------------------------------------------
 @export_category("Skill Paramenters")
 @export var hp_cost: int
 @export var sp_cost: int
@@ -27,6 +30,10 @@ func Constructor() -> Item_Resource:
 	#-------------------------------------------------------------------------------
 	_item_resource_new.id = id
 	_item_resource_new.action_string = action_string
+	#-------------------------------------------------------------------------------
+	_item_resource_new.lore = lore
+	_item_resource_new.description = description
+	#-------------------------------------------------------------------------------
 	_item_resource_new.myTARGET_TYPE = myTARGET_TYPE
 	_item_resource_new.speed = speed
 	#-------------------------------------------------------------------------------

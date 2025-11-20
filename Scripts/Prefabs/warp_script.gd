@@ -3,6 +3,7 @@ class_name Warp_Script
 #-------------------------------------------------------------------------------
 @export var current_room: Room_Script
 @export var room_name: StringName = "room_test_01"
+@export var room_warp_index: int = 0
 #@export var next_room_prefab: PackedScene
 #-------------------------------------------------------------------------------
 @export var collider: CollisionShape2D
@@ -16,7 +17,7 @@ func Move_to_Next_Room(_body:Node2D):
 		_new_room.game_scene = _game_scene
 		#-------------------------------------------------------------------------------
 		for _i in _game_scene.player.size():
-			_game_scene.player[_i].position = _new_room.warp_array[0].position
+			_game_scene.player[_i].position = _new_room.warp_array[room_warp_index].position
 		#-------------------------------------------------------------------------------
 		_game_scene.room_test = _new_room
 		#_game_scene.world2d.add_child(_new_room)

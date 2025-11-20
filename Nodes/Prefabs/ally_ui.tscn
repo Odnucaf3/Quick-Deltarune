@@ -168,3 +168,4 @@ size_flags_vertical = 4
 theme = ExtResource("3_v1s3a")
 theme_override_font_sizes/font_size = 30
 text = "  Player 1  "
+alignment = 0

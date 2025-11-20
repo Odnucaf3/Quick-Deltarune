@@ -26,6 +26,7 @@ var enemy_death: Array[Party_Member]
 @export var item_menu_scrollContainer: ScrollContainer
 @export var item_menu_content: VBoxContainer
 @export var item_menu_title: Label
+@export var item_menu_lore: Label
 @export var item_menu_description: Label
 @export var item_menu_button_array: Array[Button]
 #-------------------------------------------------------------------------------
@@ -34,7 +35,7 @@ var item_array_in_battle: Array[Item_Resource]
 @export var iten_resource_attack: Item_Resource
 @export var iten_resource_defense: Item_Resource
 #-------------------------------------------------------------------------------
-var camera_offset_y: float = 125
+var camera_offset_y: float = 40
 var current_player_turn: int = 0
 @export var black_panel: Panel
 @export var battle_black_panel: Panel
@@ -90,9 +91,11 @@ var screen_limit_right: float
 var enemyBullets_Enabled_Array: Array[Bullet]
 var enemyBullets_Disabled_Array: Array[Bullet]
 #-------------------------------------------------------------------------------
-var grazeBox_radius: float = 41.0
-var hitBox_radius: float = 8.0
+var grazeBox_radius: float = 6.0
+var hitBox_radius: float = 1.5
 var canBeHit: bool = true
+var camera_size: Vector2
+var camera_center: Vector2
 var viewport_size: Vector2
 var viewport_center: Vector2
 #-------------------------------------------------------------------------------
@@ -131,6 +134,8 @@ func _ready() -> void:
 	var _height: float = ProjectSettings.get_setting("display/window/size/viewport_height")
 	viewport_size = Vector2(_width, _height)
 	viewport_center = viewport_size/2.0
+	camera_size = viewport_size / camera.zoom
+	camera_center = viewport_center / camera.zoom
 	#-------------------------------------------------------------------------------
 	room_test.game_scene = self
 	room_test.Set_Room()
@@ -225,7 +230,7 @@ func Player_Movement():
 		_input_dir.normalized()
 		#-------------------------------------------------------------------------------
 		if(is_Running):
-			var _new_velocity: Vector2 = _input_dir * 600.0 * deltaTimeScale
+			var _new_velocity: Vector2 = _input_dir * 200.0 * deltaTimeScale
 			player[0].velocity = _new_velocity
 			#-------------------------------------------------------------------------------
 			if(!_run_flag):
@@ -234,7 +239,7 @@ func Player_Movement():
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
-			var _new_velocity: Vector2 = _input_dir * 200.0 * deltaTimeScale
+			var _new_velocity: Vector2 = _input_dir * 70.0 * deltaTimeScale
 			player[0].velocity = _new_velocity
 			#-------------------------------------------------------------------------------
 			if(_run_flag):
@@ -283,7 +288,7 @@ func Player_Movement():
 func Followers_Movement():
 	#-------------------------------------------------------------------------------
 	for _i in range(1, player.size()):
-		var _distance: float = 150
+		var _distance: float = 25
 		if(player[_i].global_position.distance_to(player[_i-1].global_position) > _distance):
 			var _x: float = player[_i].global_position.x - player[_i-1].global_position.x
 			var _y: float = player[_i].global_position.y - player[_i-1].global_position.y
@@ -303,10 +308,10 @@ func Hitbox_Movement():
 		var myPosition: Vector2 = hitbox.position
 		#-------------------------------------------------------------------------------
 		if(_run_flag):
-			myPosition += _input_dir * 3.0 * deltaTimeScale * deltaTimeScale
+			myPosition += _input_dir * 1.0 * deltaTimeScale * deltaTimeScale
 		#-------------------------------------------------------------------------------
 		else:
-			myPosition += _input_dir * 8.0 * deltaTimeScale * deltaTimeScale
+			myPosition += _input_dir * 2.0 * deltaTimeScale * deltaTimeScale
 		#-------------------------------------------------------------------------------
 		myPosition.y = clampf(myPosition.y, box_limit_up, box_limit_down)
 		myPosition.x = clampf(myPosition.x, box_limit_left, box_limit_right)
@@ -377,17 +382,17 @@ func EnterBattle():
 	var _botton_limit: float = 1.15
 	#-------------------------------------------------------------------------------
 	for _i in player.size():
-		var _y_pos: float = -viewport_size.y*_top_limit + viewport_size.y*_botton_limit* (float(_i+1)/(player.size()+1))
-		var _x_pos: float = -375
+		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(player.size()+1))
+		var _x_pos: float = -camera_size.x*0.3
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
-		player[_i].party_member_ui.global_position = viewport_center + Vector2(_x_pos, _y_pos)
+		player[_i].party_member_ui.global_position = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
 		_tween.parallel().tween_property(player[_i], "position", _position, 0.5)
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
-		var _y_pos: float = -viewport_size.y*_top_limit + viewport_size.y*_botton_limit* (float(_i+1)/(enemy.size()+1))
-		var _x_pos: float = 375
+		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(enemy.size()+1))
+		var _x_pos: float = camera_size.x*0.3
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
-		enemy[_i].party_member_ui.global_position = viewport_center + Vector2(_x_pos, _y_pos)
+		enemy[_i].party_member_ui.global_position = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
 		_tween.parallel().tween_property(enemy[_i], "position", _position, 0.5)
 	#-------------------------------------------------------------------------------
 	battle_menu.global_position = player[current_player_turn].party_member_ui.button_pivot.global_position
@@ -490,7 +495,7 @@ func BattleMenu_SkillButton_Submit():
 			item_menu.show()
 			Move_to_Button(item_menu_button_array[_i])
 		#-------------------------------------------------------------------------------
-		SetButton(_button, func():CommonSelected(), func(): ItemMenu_SkillButton_Submit(_item_resource, _cancel), func():ItemMenu_SkillButton_Cancel())
+		SetButton(_button, func():ItemMenu_SkillButton_Selected(_item_resource), func(): ItemMenu_SkillButton_Submit(_item_resource, _cancel), func():ItemMenu_SkillButton_Cancel())
 	#-------------------------------------------------------------------------------
 	if(item_menu_button_array.size() > 0):
 		Move_to_Button(item_menu_button_array[0])
@@ -534,10 +539,10 @@ func BattleMenu_ItemButton_Submit():
 			Move_to_Button(item_menu_button_array[_i])
 		#-------------------------------------------------------------------------------
 		if(_hold > 0):
-			SetButton(_button, func():CommonSelected(), func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _cancel), func():ItemMenu_ItemButton_Cancel())
+			SetButton(_button, func():ItemMenu_ItemButton_Selected(item_array_in_battle[_i]), func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _cancel), func():ItemMenu_ItemButton_Cancel())
 		#-------------------------------------------------------------------------------
 		else:
-			SetButton(_button, func():CommonSelected(), func():pass, func():ItemMenu_ItemButton_Cancel())
+			SetButton(_button, func():ItemMenu_ItemButton_Selected(item_array_in_battle[_i]), func():pass, func():ItemMenu_ItemButton_Cancel())
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	if(item_menu_button_array.size() > 0):
@@ -574,6 +579,11 @@ func BattleMenu_AnyButton_Cancel():
 #-------------------------------------------------------------------------------
 #region ITEM/SKILL MENU FUNCTIONS
 #-------------------------------------------------------------------------------
+func ItemMenu_SkillButton_Selected(_item_resource:Item_Resource):
+	item_menu_lore.text = _item_resource.lore
+	item_menu_description.text = _item_resource.description
+	CommonSelected()
+#-------------------------------------------------------------------------------
 func ItemMenu_SkillButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
 	if(player[current_player_turn].sp >= _item_resource.sp_cost):
 		TargetMenu_Enter(_item_resource, _cancel)
@@ -584,6 +594,11 @@ func ItemMenu_SkillButton_Cancel():
 	battle_menu.show()
 	Move_to_Button(battle_menu_button[2])
 	Destroy_All_Items()
+#-------------------------------------------------------------------------------
+func ItemMenu_ItemButton_Selected(_item_resource:Item_Resource):
+	item_menu_lore.text = _item_resource.lore
+	item_menu_description.text = _item_resource.description
+	CommonSelected()
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
 	TargetMenu_Enter(_item_resource, _cancel)
@@ -895,16 +910,16 @@ func Start_BulletHell():
 	hitbox.position = battle_box.size/2.0
 	myGAME_STATE = GAME_STATE.IN_BATTLE
 	#-------------------------------------------------------------------------------
-	var _offset: float = 10
+	var _offset: float = 3
 	box_limit_up = _offset
 	box_limit_down = battle_box.size.y - _offset
 	box_limit_left = _offset
 	box_limit_right = battle_box.size.x - _offset
 	#-------------------------------------------------------------------------------
-	screen_limit_up = camera.global_position.y-viewport_center.y
-	screen_limit_down = camera.global_position.y+viewport_center.y
-	screen_limit_left = camera.global_position.x-viewport_center.x
-	screen_limit_right = camera.global_position.x+viewport_center.x
+	screen_limit_up = camera.global_position.y-camera_center.y
+	screen_limit_down = camera.global_position.y+camera_center.y
+	screen_limit_left = camera.global_position.x-camera_center.x
+	screen_limit_right = camera.global_position.x+camera_center.x
 	#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	for _i in enemy_alive.size():
@@ -1178,7 +1193,7 @@ func Create_PlayerBullet(_global_position:Vector2, _dir:float) -> Bullet:
 	var _bullet: Bullet = bullet_Prefab.instantiate() as Bullet
 	_bullet.global_position = _global_position
 	_bullet.z_index = 2
-	_bullet.scale = Vector2(7, 7)
+	_bullet.scale = Vector2(2, 2)
 	_bullet.rotation = _dir
 	world2d.add_child(_bullet)
 	return _bullet
@@ -1295,12 +1310,12 @@ func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
 	var _max1: float = 10 + 2*_difficulty
 	var _max2: float = 10 + 5*_difficulty
 	#-------------------------------------------------------------------------------
-	var _x: float = camera.position.x+viewport_center.x*0.5 * _mirror
-	var _y: float = camera.position.y-viewport_center.y*0.5
-	var _vel: float = 2
+	var _x: float = camera.position.x+camera_center.x*0.5 * _mirror
+	var _y: float = camera.position.y-camera_center.y*0.5
+	var _vel: float = 0.6
 	var _dir: float = 90
 	#-------------------------------------------------------------------------------
-	var _vel2: float = 4
+	var _vel2: float = 1
 	var _dir2: float = randf_range(0, 360)
 	#-------------------------------------------------------------------------------
 	var _timer: float = 0.2
@@ -1465,8 +1480,8 @@ func Bullet_Grazed():
 #region PARTY_SKILLS CALLABLES
 #-------------------------------------------------------------------------------
 func Attack(_user:Party_Member):
-	var _global_position: Vector2 = _user.target.global_position + Vector2(-75, -150)
-	var _dir: float = Get_Dir_XY(Vector2(100,100))
+	var _global_position: Vector2 = _user.target.global_position + Vector2(-30, -60)
+	var _dir: float = Get_Dir_XY(Vector2(30,30))
 	var _sprite2d: Bullet = Create_PlayerBullet(_global_position, _dir)
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
@@ -1476,7 +1491,7 @@ func Attack(_user:Party_Member):
 		HP_Damage(_user.target, 5)
 	)
 	#-------------------------------------------------------------------------------
-	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(100,100), 0.15)
+	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(60,60), 0.25)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		_sprite2d.queue_free()
@@ -1489,22 +1504,22 @@ func Defense(_user:Party_Member):
 	Flying_Label(_user.global_position, "+Guard")
 #-------------------------------------------------------------------------------
 func Skill_0_0(_user:Party_Member):
-	var _global_position: Vector2 = _user.target.global_position + Vector2(-100, -150)
-	var _dir: float = Get_Dir_XY(Vector2(50,100))
+	var _global_position: Vector2 = _user.target.global_position + Vector2(-30, -50)
+	var _dir: float = Get_Dir_XY(Vector2(15,30))
 	var _bullet: Bullet = Create_PlayerBullet(_global_position, _dir)
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
-	var _dx: float = 50
-	var _dy: float = 50
+	var _dx: float = 15
+	var _dy: float = 15
 	for _i in 4:
 		_tween.tween_callback(func():
 			PlayAnimation(_user.playback, "Shot")
 			HP_Damage(_user.target, 5)
-			_bullet.rotation = Get_Dir_XY(Vector2(50, _dy))
+			_bullet.rotation = Get_Dir_XY(Vector2(15, _dy))
 		)
 		#-------------------------------------------------------------------------------
-		_tween.tween_property(_bullet, "global_position", _bullet.global_position + Vector2(_dx,50+_dy), 0.1)
-		_dx += 50
+		_tween.tween_property(_bullet, "global_position", _bullet.global_position + Vector2(_dx,15+_dy), 0.1)
+		_dx += 15
 		_dy *=-1
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
@@ -1514,7 +1529,7 @@ func Skill_0_0(_user:Party_Member):
 	await _tween.finished
 #-------------------------------------------------------------------------------
 func Skill_0_1(_user:Party_Member):
-	var _global_position: Vector2 = _user.target.global_position + Vector2(-500, -100)
+	var _global_position: Vector2 = _user.target.global_position + Vector2(-150, -30)
 	var _sprite2d: Bullet = Create_PlayerBullet(_global_position, 0)
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
@@ -1524,7 +1539,7 @@ func Skill_0_1(_user:Party_Member):
 		HP_Damage(_user.target, 15)
 	)
 	#-------------------------------------------------------------------------------
-	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(700,0), 0.3)
+	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(200,0), 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		_sprite2d.queue_free()
@@ -1566,17 +1581,18 @@ func Flying_Label(_pos:Vector2, _s:String):
 	var _label: Label = Label.new()
 	_label.add_theme_font_size_override("font_size", 24)
 	_label.add_theme_constant_override("outline_size", 5)
+	_label.scale = Vector2.ONE /camera.zoom
 	_label.text = _s
-	_pos.y -= 75
+	_pos.y -= 20
 	_label.global_position = _pos
 	_label.z_index = 2
 	world2d.add_child(_label)
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
-	_tween.tween_property(_label, "global_position", _pos + Vector2(25, -75), 0.2)
-	_tween.tween_property(_label, "global_position", _pos + Vector2(50, 0), 0.2)
-	_tween.tween_property(_label, "global_position", _pos + Vector2(65, -15), 0.1)
-	_tween.tween_property(_label, "global_position", _pos + Vector2(80, 0), 0.1)
+	_tween.tween_property(_label, "global_position", _pos + Vector2(10, -25), 0.2)
+	_tween.tween_property(_label, "global_position", _pos + Vector2(20, 0), 0.2)
+	_tween.tween_property(_label, "global_position", _pos + Vector2(30, -5), 0.1)
+	_tween.tween_property(_label, "global_position", _pos + Vector2(40, 0), 0.1)
 	_tween.tween_interval(0.7)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
@@ -1588,15 +1604,16 @@ func SP_Gain_VisualEffect(_pos:Vector2):
 	var _label: Label = Label.new()
 	_label.add_theme_font_size_override("font_size", 18)
 	_label.add_theme_constant_override("outline_size", 4)
+	_label.scale = Vector2.ONE /camera.zoom
 	_label.text = "+1 SP"
-	_pos.y -= 10
+	_pos.y -= 3
 	_pos.x = randf_range(_pos.x-25, _pos.x+25)
 	_label.global_position = _pos
 	_label.z_index = 2
 	world2d.add_child(_label)
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
-	_tween.tween_property(_label, "global_position", _pos + Vector2(0, -100), 1.0)
+	_tween.tween_property(_label, "global_position", _pos + Vector2(0, -30), 1.0)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		_label.queue_free()
@@ -1618,7 +1635,7 @@ func HP_Damage(_target:Party_Member, _int:int):
 		_target.hp -= _int
 		#-------------------------------------------------------------------------------
 		var _global_position: Vector2 = _target.global_position
-		_global_position.y += randf_range(-75, 25)
+		_global_position.y += randf_range(-25, 8)
 		#-------------------------------------------------------------------------------
 		if(_target.hp > 0):
 			PlayAnimation(_target.playback, "Hurt 2")
@@ -1637,7 +1654,7 @@ func HP_Heal_Porcentual(_target:Party_Member, _float:float):
 	_target.hp += _int
 	#-------------------------------------------------------------------------------
 	var _global_position: Vector2 = _target.global_position
-	_global_position.y += randf_range(-75, 25)
+	_global_position.y += randf_range(-25, 8)
 	#-------------------------------------------------------------------------------
 	if(_target.hp < _target.max_hp):
 		Flying_Label(_global_position, "+"+str(_int)+" HP")

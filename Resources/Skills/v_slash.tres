@@ -5,4 +5,6 @@
 [resource]
 script = ExtResource("1_m46nq")
 action_string = "Skill_0_1"
+lore = "*An bull´seye shoot."
+description = "*Do big damage."
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

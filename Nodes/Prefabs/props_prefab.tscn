@@ -144,7 +144,6 @@ animations = [{
 }]
 
 [node name="props_prefab" type="AnimatedSprite2D"]
-scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_lujb4")
 animation = &"banner-big"
 autoplay = "monitorface"

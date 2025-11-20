@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://ml74s1kgs0qy" path="res://Scripts/Prefabs/bullet_script.gd" id="2_lmhn4"]
 
 [node name="Bullet" type="Sprite2D"]
-scale = Vector2(4, 4)
 texture = ExtResource("1_jy51j")
 offset = Vector2(-4, 0)
 script = ExtResource("2_lmhn4")
