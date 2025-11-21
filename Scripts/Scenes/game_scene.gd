@@ -39,7 +39,8 @@ var camera_offset_y: float = 40
 var current_player_turn: int = 0
 @export var black_panel: Panel
 @export var battle_black_panel: Panel
-@export var pauseLabel: Label
+@export var pause_menu: Control
+@export var pause_menu_button_array: Array[Button]
 var isSlowMotion: bool = false
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool = true
@@ -53,6 +54,7 @@ const cancelInput: String = "ui_cancel"
 @export var retry_menu_button: Array[Button]
 #-------------------------------------------------------------------------------
 @export var debug_label: Label
+@export var fps_label: Label
 var tween_Array: Array[Tween]
 #-------------------------------------------------------------------------------
 @export var camera: Camera2D
@@ -72,8 +74,6 @@ var timer: int
 var main_tween_Array: Array[Tween]
 #-------------------------------------------------------------------------------
 var myGAME_STATE: GAME_STATE = GAME_STATE.IN_WORLD
-var is_Moving: bool = false
-var is_Facing_Left: bool = false
 var is_Running: bool = false
 #-------------------------------------------------------------------------------
 var box_limit_up: float
@@ -159,6 +159,7 @@ func _ready() -> void:
 #-------------------------------------------------------------------------------
 func _process(_delta: float) -> void:
 	Debug_Information()
+	Show_fps()
 	#-------------------------------------------------------------------------------
 	Set_FullScreen()
 	Set_Vsync()
@@ -226,7 +227,7 @@ func Player_Movement():
 	var _input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var _run_flag: bool = Input.is_action_pressed("Input_Run")
 	#-------------------------------------------------------------------------------
-	if(is_Moving):
+	if(player[0].is_Moving):
 		_input_dir.normalized()
 		#-------------------------------------------------------------------------------
 		if(is_Running):
@@ -249,18 +250,18 @@ func Player_Movement():
 		#-------------------------------------------------------------------------------
 		if(_input_dir == Vector2.ZERO):
 			PlayAnimation(player[0].playback, "Idle")
-			is_Moving = false
+			player[0].is_Moving = false
 			return
 		#-------------------------------------------------------------------------------
-		if(is_Facing_Left):
+		if(player[0].is_Facing_Left):
 			if(_input_dir.x > 0):
-				Face_Left(false)
+				Face_Left(player[0], false)
 				return
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
 			if(_input_dir.x < 0):
-				Face_Left(true)
+				Face_Left(player[0], true)
 				return
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -279,7 +280,7 @@ func Player_Movement():
 				PlayAnimation(player[0].playback, "Walk")
 				is_Running = false
 			#-------------------------------------------------------------------------------
-			is_Moving = true
+			player[0].is_Moving = true
 			return
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -288,14 +289,43 @@ func Player_Movement():
 func Followers_Movement():
 	#-------------------------------------------------------------------------------
 	for _i in range(1, player.size()):
-		var _distance: float = 25
+		var _distance: float = 20
+		#-------------------------------------------------------------------------------
 		if(player[_i].global_position.distance_to(player[_i-1].global_position) > _distance):
 			var _x: float = player[_i].global_position.x - player[_i-1].global_position.x
 			var _y: float = player[_i].global_position.y - player[_i-1].global_position.y
 			var _dir: float = atan2(_y, _x)
 			var _x2: float = _distance * cos(_dir)
 			var _y2: float = _distance * sin(_dir)
-			player[_i].global_position = player[_i-1].global_position + Vector2(_x2, _y2)
+			var _new_position: Vector2 = player[_i-1].global_position + Vector2(_x2, _y2)
+			#-------------------------------------------------------------------------------
+			if(player[_i].is_Moving):
+				player[_i].global_position = lerp(player[_i].global_position, _new_position, 0.1*deltaTimeScale)
+				#-------------------------------------------------------------------------------
+				if(player[_i].global_position.distance_to(_new_position) < 5):
+					PlayAnimation(player[_i].playback, "Idle")
+					player[_i].is_Moving = false
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			else:
+				#-------------------------------------------------------------------------------
+				if(player[_i].global_position.distance_to(_new_position) > 10):
+					PlayAnimation(player[_i].playback, "Run")
+					player[_i].is_Moving = true
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		if(player[_i].is_Facing_Left):
+			#-------------------------------------------------------------------------------
+			if(player[_i].global_position < player[0].global_position):
+				Face_Left(player[_i], false)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		else:
+			#-------------------------------------------------------------------------------
+			if(player[_i].global_position > player[0].global_position):
+				Face_Left(player[_i], true)
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -330,9 +360,15 @@ func Camera_Set_Target_Position() -> Vector2:
 	#-------------------------------------------------------------------------------
 	return _new_position
 #-------------------------------------------------------------------------------
-func Face_Left(_b:bool):
-	player[0].sprite.flip_h = _b
-	is_Facing_Left = _b
+func Face_Left(_user:Party_Member, _b:bool):
+	#-------------------------------------------------------------------------------
+	if(_b):
+		_user.pivot.scale.x = -1
+	#-------------------------------------------------------------------------------
+	else:
+		_user.pivot.scale.x = 1
+	#-------------------------------------------------------------------------------
+	_user.is_Facing_Left = _b
 #endregion
 #-------------------------------------------------------------------------------
 #region SET BATTLEFIELD
@@ -347,22 +383,23 @@ func EnterBattle():
 		player[_i].collider.disabled = true
 		PlayAnimation(player[_i].playback, "Idle")
 		player[_i].z_index = 1
+		Face_Left(player[_i], false)
 		#player[_i].global_position = player[0].global_position
 		player[_i].party_member_ui.button.text = "  " + player[_i].id + "  "
 	#-------------------------------------------------------------------------------
 	enemy_last_position.clear()
 	#-------------------------------------------------------------------------------
 	for _i in enemy.size():
+		enemy[_i].show()
 		enemy_last_position.append(enemy[_i].global_position)
 		enemy[_i].collider.disabled = true
 		PlayAnimation(enemy[_i].playback, "Idle")
 		enemy[_i].z_index = 1
-		enemy[_i].sprite.flip_h = false
-		enemy[_i].scale.x = -1.0
+		Face_Left(enemy[_i], true)
 		#enemy[_i].global_position = enemy[0].global_position
 		enemy[_i].party_member_ui.button.text = "  " + enemy[_i].id + "  "
 	#-------------------------------------------------------------------------------
-	Face_Left(false)
+	
 	current_player_turn = 0
 	#-------------------------------------------------------------------------------
 	var _center: Vector2 = camera.position
@@ -1602,7 +1639,7 @@ func Flying_Label(_pos:Vector2, _s:String):
 #-------------------------------------------------------------------------------
 func SP_Gain_VisualEffect(_pos:Vector2):
 	var _label: Label = Label.new()
-	_label.add_theme_font_size_override("font_size", 18)
+	_label.add_theme_font_size_override("font_size", 12)
 	_label.add_theme_constant_override("outline_size", 4)
 	_label.scale = Vector2.ONE /camera.zoom
 	_label.text = "+1 SP"
@@ -1741,7 +1778,6 @@ func Debug_Information() -> void:
 	var _s: String = ""
 	_s += "Current Turn ID: " + str(current_player_turn)+"\n"
 	_s += "-------------------------------------------------------\n"
-	_s += str(Engine.get_frames_per_second()) + " fps.\n"
 	_s += "Tweens: "+str(tween_Array.size())+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += "Player: " + str(player.size())+"\n"
@@ -1764,6 +1800,9 @@ func Debug_Information() -> void:
 	if(player[2].skill_array_in_battle.size() > 0):
 		_s += "Potion Skill in Battle: " + str(player[2].skill_array_in_battle[0].hold)+"\n"
 	debug_label.text = _s
+#-------------------------------------------------------------------------------
+func Show_fps():
+	fps_label.text = str(Engine.get_frames_per_second()) + " fps."
 #-------------------------------------------------------------------------------
 func Set_FullScreen() -> void:
 	if(Input.is_action_just_pressed("Debug_FullScreen")):
@@ -1829,13 +1868,14 @@ func Input_PauseGame() -> void:
 			PauseOff()
 		#-------------------------------------------------------------------------------
 		else:
-			pauseLabel.show()
+			pause_menu.show()
+			Move_to_Button(pause_menu_button_array[0])
 			get_tree().set_deferred("paused", true)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func PauseOff():
-	pauseLabel.hide()
+	pause_menu.hide()
 	get_tree().set_deferred("paused", false)
 #endregion
 #-------------------------------------------------------------------------------

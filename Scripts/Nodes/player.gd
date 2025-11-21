@@ -12,6 +12,8 @@ var is_in_guard: bool
 var skill_array_in_battle: Array[Item_Resource]
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool
+var is_Facing_Left: bool = false
+var is_Moving: bool = false
 #-------------------------------------------------------------------------------
 var user_party: Array[Party_Member]
 var target: Party_Member
@@ -19,6 +21,7 @@ var target_party: Array[Party_Member]
 #-------------------------------------------------------------------------------
 var item_resource: Item_Resource
 #-------------------------------------------------------------------------------
+@export var pivot: Marker2D
 @export var sprite: Sprite2D
 @export var collider: CollisionShape2D
 @export var animation_tree: AnimationTree

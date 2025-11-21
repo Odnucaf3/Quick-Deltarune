@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://b8wieo7nga7xe" path="res://Assets/ansimuz/warped city files/v1/sprites/player/shoot.png" id="6_oac30"]
 [ext_resource type="Texture2D" uid="uid://xfmiejntkjq" path="res://Assets/ansimuz/warped city files/v1/sprites/player/walk.png" id="7_ys8se"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1o8lw"]
+size = Vector2(24, 8)
+
 [sub_resource type="Animation" id="Animation_hjtjb"]
 resource_name = "Aim"
 length = 0.14287144
@@ -725,32 +728,32 @@ states/Walk/position = Vector2(566, 3)
 transitions = ["Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_lleqo"), "Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_fbyh6")]
 graph_offset = Vector2(-29, 78)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1o8lw"]
-size = Vector2(24, 8)
-
-[node name="Party_Member" type="CharacterBody2D" node_paths=PackedStringArray("sprite", "collider", "animation_tree")]
+[node name="Party_Member" type="CharacterBody2D" node_paths=PackedStringArray("pivot", "sprite", "collider", "animation_tree")]
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_hjtjb")
-sprite = NodePath("Sprite2D")
+pivot = NodePath("Marker2D")
+sprite = NodePath("Marker2D/Sprite2D")
 collider = NodePath("CollisionShape2D")
-animation_tree = NodePath("AnimationTree")
+animation_tree = NodePath("Marker2D/AnimationTree")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1o8lw")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Marker2D"]
 texture = ExtResource("2_wl5sh")
 offset = Vector2(0, -33)
 hframes = 4
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Marker2D"]
 root_node = NodePath("../Sprite2D")
 libraries = {
 &"": SubResource("AnimationLibrary_mqnqo")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="Marker2D"]
 root_node = NodePath("../Sprite2D")
 tree_root = SubResource("AnimationNodeStateMachine_1o8lw")
 anim_player = NodePath("../AnimationPlayer")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_1o8lw")

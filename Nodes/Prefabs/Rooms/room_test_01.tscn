@@ -41,13 +41,13 @@ tile_map_data = PackedByteArray("AAD//wEAAAAHAAcAAAAAAAEAAAAHAAcAAAABAAEAAAAHAAc
 tile_set = ExtResource("2_0ji40")
 
 [node name="Enemy1" parent="." instance=ExtResource("3_8dt50")]
-position = Vector2(448, 85)
+position = Vector2(448, 80)
 
 [node name="Enemy2" parent="." instance=ExtResource("3_8dt50")]
-position = Vector2(472, 72)
+position = Vector2(624, 64)
 
 [node name="Enemy3" parent="." instance=ExtResource("3_8dt50")]
-position = Vector2(472, 96)
+position = Vector2(624, 104)
 
 [node name="Warp_Script" type="Area2D" parent="." node_paths=PackedStringArray("current_room", "collider")]
 position = Vector2(408, -120)

@@ -17,6 +17,8 @@ func Move_to_Next_Room(_body:Node2D):
 		_new_room.game_scene = _game_scene
 		#-------------------------------------------------------------------------------
 		for _i in _game_scene.player.size():
+			_game_scene.PlayAnimation(_game_scene.player[_i].playback, "Idle")
+			_game_scene.player[_i].is_Moving = false
 			_game_scene.player[_i].position = _new_room.warp_array[room_warp_index].position
 		#-------------------------------------------------------------------------------
 		_game_scene.room_test = _new_room
