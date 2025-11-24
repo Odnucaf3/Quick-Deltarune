@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name Party_Member
 #-------------------------------------------------------------------------------
 @export var id: StringName
+@export var texture2d: Texture2D
 var hp: int
 var max_hp: int = 30
 var sp: int

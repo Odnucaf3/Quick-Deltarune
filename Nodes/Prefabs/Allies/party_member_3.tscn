@@ -802,6 +802,7 @@ size = Vector2(24, 8)
 collision_layer = 2
 script = ExtResource("1_8v33q")
 id = &"Ralsei"
+texture2d = ExtResource("5_o041u")
 skill_array = Array[ExtResource("2_fyg2d")]([ExtResource("3_api1y"), ExtResource("4_2k48a")])
 pivot = NodePath("Marker2D")
 sprite = NodePath("Marker2D/Sprite2D")

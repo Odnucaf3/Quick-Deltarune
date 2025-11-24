@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://wd0u0jfbqnww"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://wd0u0jfbqnww"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p08fh"]
 bg_color = Color(0, 0, 0, 0.60784316)
@@ -60,6 +60,61 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3mcu"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y45jq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.8980392, 0, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7667g"]
+bg_color = Color(1, 1, 1, 0.21568628)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_61xiw"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_suh8o"]
+bg_color = Color(0, 0, 0, 0.60784316)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ne4s"]
 bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 4
@@ -75,4 +130,10 @@ Button/styles/normal = SubResource("StyleBoxFlat_nstmv")
 Button/styles/pressed = SubResource("StyleBoxFlat_muhxk")
 Panel/styles/panel = SubResource("StyleBoxFlat_6busg")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_y72x4")
+TabContainer/constants/tab_separation = 8
+TabContainer/styles/panel = SubResource("StyleBoxFlat_o3mcu")
+TabContainer/styles/tab_focus = SubResource("StyleBoxFlat_y45jq")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_7667g")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_61xiw")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_suh8o")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_8ne4s")

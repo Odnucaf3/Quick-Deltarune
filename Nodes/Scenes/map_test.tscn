@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://kpwdhek0p57w"]
+[gd_scene load_steps=5 format=3 uid="uid://kpwdhek0p57w"]
 
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="1_lwkax"]
 [ext_resource type="PackedScene" uid="uid://c7ehw7h0jv22a" path="res://Nodes/Prefabs/Rooms/room_test_02.tscn" id="2_incd7"]
 [ext_resource type="PackedScene" uid="uid://b0gmlepnqkt3t" path="res://Nodes/Prefabs/Rooms/room_test_03.tscn" id="3_lwkax"]
+[ext_resource type="PackedScene" uid="uid://b0k53achv5l43" path="res://Nodes/Prefabs/Rooms/room_test_04.tscn" id="4_3fvte"]
 
 [node name="Map Test" type="Node2D"]
 
@@ -11,3 +12,5 @@
 [node name="Room_test_02" parent="." instance=ExtResource("2_incd7")]
 
 [node name="Room_test_03" parent="." instance=ExtResource("3_lwkax")]
+
+[node name="Room_test_04" parent="." instance=ExtResource("4_3fvte")]

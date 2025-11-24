@@ -22,12 +22,26 @@ var player_death: Array[Party_Member]
 var enemy_alive: Array[Party_Member]
 var enemy_death: Array[Party_Member]
 #-------------------------------------------------------------------------------
-@export var item_menu: Control
-@export var item_menu_scrollContainer: ScrollContainer
-@export var item_menu_content: VBoxContainer
-@export var item_menu_title: Label
-@export var item_menu_lore: Label
-@export var item_menu_description: Label
+@export var item_menu: TabContainer
+#-------------------------------------------------------------------------------
+@export var item_menu_consumable_scrollContainer: ScrollContainer
+@export var item_menu_consumable_content: VBoxContainer
+@export var item_menu_consumable_title: Label
+@export var item_menu_consumable_lore: Label
+@export var item_menu_consumable_description: Label
+#-------------------------------------------------------------------------------
+@export var item_menu_equipment_scrollContainer: ScrollContainer
+@export var item_menu_equipment_content: VBoxContainer
+@export var item_menu_equipment_title: Label
+@export var item_menu_equipment_lore: Label
+@export var item_menu_equipment_description: Label
+#-------------------------------------------------------------------------------
+@export var item_menu_keyitems_scrollContainer: ScrollContainer
+@export var item_menu_keyitems_content: VBoxContainer
+@export var item_menu_keyitems_title: Label
+@export var item_menu_keyitems_lore: Label
+@export var item_menu_keyitems_description: Label
+#-------------------------------------------------------------------------------
 @export var item_menu_button_array: Array[Button]
 #-------------------------------------------------------------------------------
 @export var item_array: Array[Item_Resource]
@@ -35,12 +49,22 @@ var item_array_in_battle: Array[Item_Resource]
 @export var iten_resource_attack: Item_Resource
 @export var iten_resource_defense: Item_Resource
 #-------------------------------------------------------------------------------
+@export var skill_menu: TabContainer
+#-------------------------------------------------------------------------------
+@export var skill_menu_scrollContainer: ScrollContainer
+@export var skill_menu_content: VBoxContainer
+@export var skill_menu_title: Label
+@export var skill_menu_lore: Label
+@export var skill_menu_description: Label
+#-------------------------------------------------------------------------------
 var camera_offset_y: float = 40
 var current_player_turn: int = 0
 @export var black_panel: Panel
 @export var battle_black_panel: Panel
+@export var pause_menu_panel: Panel
 @export var pause_menu: Control
 @export var pause_menu_button_array: Array[Button]
+@export var pause_menu_party_button_array: Array[Party_Button]
 var isSlowMotion: bool = false
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool = true
@@ -124,6 +148,7 @@ func _ready() -> void:
 	retry_menu.hide()
 	battle_menu.hide()
 	item_menu.hide()
+	skill_menu.hide()
 	battle_box.hide()
 	battle_menu_rect.hide()
 	timer_label.hide()
@@ -145,10 +170,9 @@ func _ready() -> void:
 	grazebox.global_scale = Get_CircleSprite_Scale(grazeBox_radius) + Vector2(0.01, 0.01)
 	#-------------------------------------------------------------------------------
 	item_menu_button_array.clear()
-	Destroy_Childrens(item_menu_content)
-	#-------------------------------------------------------------------------------
-	var _button_num: float = 4
-	item_menu_scrollContainer.size.y = _button_num*42 + (_button_num-1) * 4
+	Destroy_Childrens(item_menu_consumable_content)
+	item_menu_button_array.clear()
+	Destroy_Childrens(skill_menu_content)
 	#-------------------------------------------------------------------------------
 	Create_EnemyBullets_Disabled(2000)
 	PauseOff()
@@ -156,6 +180,8 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	SetParty_Skills()
 	SetParty_Items()
+	#-------------------------------------------------------------------------------
+	PauseMenu_Set()
 #-------------------------------------------------------------------------------
 func _process(_delta: float) -> void:
 	Debug_Information()
@@ -504,9 +530,9 @@ func BattleMenu_DefenseButton_Submit():
 #-------------------------------------------------------------------------------
 func BattleMenu_SkillButton_Submit():
 	battle_menu.hide()
-	item_menu.show()
+	skill_menu.show()
 	#-------------------------------------------------------------------------------
-	item_menu_title.text = "Skills"
+	Set_TabBar(skill_menu.get_tab_bar(),func():No_Description(), func():SkillMenu_SkillButton_Cancel())
 	#-------------------------------------------------------------------------------
 	for _i in player_alive[current_player_turn].skill_array_in_battle.size():
 		#-------------------------------------------------------------------------------
@@ -517,7 +543,7 @@ func BattleMenu_SkillButton_Submit():
 		_button.text = "  "+_item_resource.id+"  "
 		_button.add_theme_font_size_override("font_size", 24)
 		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_content.add_child(_button)
+		skill_menu_content.add_child(_button)
 		item_menu_button_array.append(_button)
 		#-------------------------------------------------------------------------------
 		var _label2: Label = Label.new()
@@ -529,21 +555,21 @@ func BattleMenu_SkillButton_Submit():
 		#-------------------------------------------------------------------------------
 		var _cancel: Callable = func():
 			TargetMenu_TargetButton_Cancel()
-			item_menu.show()
+			skill_menu.show()
 			Move_to_Button(item_menu_button_array[_i])
 		#-------------------------------------------------------------------------------
-		SetButton(_button, func():ItemMenu_SkillButton_Selected(_item_resource), func(): ItemMenu_SkillButton_Submit(_item_resource, _cancel), func():ItemMenu_SkillButton_Cancel())
+		SetButton(_button, func():SkillMenu_SkillButton_Selected(_item_resource), func(): SkillMenu_SkillButton_Submit(_item_resource, _cancel), func():SkillMenu_SkillButton_Cancel())
 	#-------------------------------------------------------------------------------
 	if(item_menu_button_array.size() > 0):
 		Move_to_Button(item_menu_button_array[0])
 	#-------------------------------------------------------------------------------
-	item_menu_scrollContainer.scroll_vertical = 0
+	skill_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_ItemButton_Submit():
 	battle_menu.hide()
 	item_menu.show()
 	#-------------------------------------------------------------------------------
-	item_menu_title.text = "Items"
+	Set_TabBar(item_menu.get_tab_bar(),func():No_Description(), func():ItemMenu_ItemButton_Cancel())
 	#-------------------------------------------------------------------------------
 	for _i in item_array_in_battle.size():
 		#-------------------------------------------------------------------------------
@@ -560,7 +586,7 @@ func BattleMenu_ItemButton_Submit():
 		_button.text = "  "+item_array_in_battle[_i].id+"  "
 		_button.add_theme_font_size_override("font_size", 24)
 		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_content.add_child(_button)
+		item_menu_consumable_content.add_child(_button)
 		item_menu_button_array.append(_button)
 		#-------------------------------------------------------------------------------
 		var _label2: Label = Label.new()
@@ -585,7 +611,11 @@ func BattleMenu_ItemButton_Submit():
 	if(item_menu_button_array.size() > 0):
 		Move_to_Button(item_menu_button_array[0])
 	#-------------------------------------------------------------------------------
-	item_menu_scrollContainer.scroll_vertical = 0
+	else:
+		Move_to_Button(item_menu.get_tab_bar())
+	#-------------------------------------------------------------------------------
+	item_menu.current_tab = 0
+	item_menu_consumable_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_AnyButton_Cancel():
 	current_player_turn -= 1
@@ -616,25 +646,25 @@ func BattleMenu_AnyButton_Cancel():
 #-------------------------------------------------------------------------------
 #region ITEM/SKILL MENU FUNCTIONS
 #-------------------------------------------------------------------------------
-func ItemMenu_SkillButton_Selected(_item_resource:Item_Resource):
-	item_menu_lore.text = _item_resource.lore
-	item_menu_description.text = _item_resource.description
+func SkillMenu_SkillButton_Selected(_item_resource:Item_Resource):
+	skill_menu_lore.text = _item_resource.lore
+	skill_menu_description.text = _item_resource.description
 	CommonSelected()
 #-------------------------------------------------------------------------------
-func ItemMenu_SkillButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
+func SkillMenu_SkillButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
 	if(player[current_player_turn].sp >= _item_resource.sp_cost):
 		TargetMenu_Enter(_item_resource, _cancel)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func ItemMenu_SkillButton_Cancel():
-	item_menu.hide()
+func SkillMenu_SkillButton_Cancel():
+	skill_menu.hide()
 	battle_menu.show()
 	Move_to_Button(battle_menu_button[2])
-	Destroy_All_Items()
+	Destroy_All_Items(item_menu_button_array)
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Selected(_item_resource:Item_Resource):
-	item_menu_lore.text = _item_resource.lore
-	item_menu_description.text = _item_resource.description
+	item_menu_consumable_lore.text = _item_resource.lore
+	item_menu_consumable_description.text = _item_resource.description
 	CommonSelected()
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Submit(_item_resource:Item_Resource, _cancel:Callable):
@@ -645,16 +675,13 @@ func ItemMenu_ItemButton_Cancel():
 	battle_menu.show()
 	Move_to_Button(battle_menu_button[3])
 	#-------------------------------------------------------------------------------
-	for _i in item_menu_button_array.size():
-		item_menu_button_array[_i].queue_free()
-	#-------------------------------------------------------------------------------
-	item_menu_button_array.clear()
+	Destroy_All_Items(item_menu_button_array)
 #-------------------------------------------------------------------------------
-func Destroy_All_Items():
-	for _i in item_menu_button_array.size():
-		item_menu_button_array[_i].queue_free()
+func Destroy_All_Items(_button_array:Array[Button]):
+	for _i in _button_array.size():
+		_button_array[_i].queue_free()
 	#-------------------------------------------------------------------------------
-	item_menu_button_array.clear()
+	_button_array.clear()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -668,6 +695,7 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _cancel:Callable):
 			#-------------------------------------------------------------------------------
 			if(enemy_alive.size() > 0):
 				item_menu.hide()
+				skill_menu.hide()
 				#-------------------------------------------------------------------------------
 				for _i in enemy_alive.size():
 					enemy_alive[_i].party_member_ui.button_pivot.show()
@@ -680,6 +708,7 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _cancel:Callable):
 			#-------------------------------------------------------------------------------
 			if(player_alive.size() > 0):
 				item_menu.hide()
+				skill_menu.hide()
 				#-------------------------------------------------------------------------------
 				for _i in player_alive.size():
 					player_alive[_i].party_member_ui.button_pivot.show()
@@ -692,6 +721,7 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _cancel:Callable):
 			#-------------------------------------------------------------------------------
 			if(player_death.size() > 0):
 				item_menu.hide()
+				skill_menu.hide()
 				#-------------------------------------------------------------------------------
 				for _i in player_death.size():
 					player_death[_i].party_member_ui.button_pivot.show()
@@ -701,7 +731,6 @@ func TargetMenu_Enter(_item_resource:Item_Resource, _cancel:Callable):
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		Item_Resource.TARGET_TYPE.USER:
-			item_menu.hide()
 			#-------------------------------------------------------------------------------
 			player_alive[current_player_turn].party_member_ui.button_pivot.show()
 			SetButton(player_alive[current_player_turn].party_member_ui.button, func():CommonSelected(), func():TargetMenu_TargetButton_Submit(player_alive, player_alive[current_player_turn], player_alive, _item_resource), _cancel)
@@ -717,7 +746,7 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 	player_alive[current_player_turn].item_resource = _item_resource
 	#-------------------------------------------------------------------------------
 	PlayAnimation(player_alive[current_player_turn].playback, _item_resource.anim)
-	Destroy_All_Items()
+	Destroy_All_Items(item_menu_button_array)
 	After_Choose_Target_Logic()
 #-------------------------------------------------------------------------------
 func TargetMenu_TargetButton_Cancel():
@@ -1721,6 +1750,27 @@ func Get_CircleSprite_Scale(_scale: float) -> Vector2:
 	var _v2: Vector2 = Vector2(_scale, _scale)
 	return _v2
 #-------------------------------------------------------------------------------
+func Set_Vertical_Navigation(_button_array:Array[Button]):
+	#-------------------------------------------------------------------------------
+	if(_button_array.size() > 0):
+		if(_button_array.size() > 2):
+			Set_Vertical_Navigation_Button(_button_array[0], _button_array[_button_array.size()-1], _button_array[1])
+			#-------------------------------------------------------------------------------
+			for _i in range(1, _button_array.size()-1):
+				Set_Vertical_Navigation_Button(_button_array[_i], _button_array[_i-1], _button_array[_i+1])
+			#-------------------------------------------------------------------------------
+			Set_Vertical_Navigation_Button(_button_array[_button_array.size()-1], _button_array[_button_array.size()-2], _button_array[0])
+		#-------------------------------------------------------------------------------
+		else:
+			Set_Vertical_Navigation_Button(_button_array[0], _button_array[0], _button_array[0])
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Set_Vertical_Navigation_Button(_button:Button, _button_top:Button, _button_botton:Button):
+	_button.focus_neighbor_top = _button_top.get_path()
+	_button.focus_neighbor_bottom = _button_botton.get_path()
+	_button.focus_neighbor_left = _button.get_path()
+	_button.focus_neighbor_right = _button.get_path()
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region COMMON BUTTON FUNCTIONS
@@ -1745,6 +1795,25 @@ func DisconnectButton(_b:Button) -> void:
 	DisconnectAll(_b.focus_entered)
 	DisconnectAll(_b.pressed)
 	DisconnectAll(_b.gui_input)
+#-------------------------------------------------------------------------------
+func Set_TabBar(_tb:TabBar, _selected:Callable, _canceled:Callable) -> void:
+	Disconnect_TabBar(_tb)
+	_tb.focus_entered.connect(_selected)
+	#-------------------------------------------------------------------------------
+	_tb.gui_input.connect(
+		#-------------------------------------------------------------------------------
+		func(_event:InputEvent):
+			#-------------------------------------------------------------------------------
+			if(_event.is_action_pressed(cancelInput)):
+				_canceled.call()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Disconnect_TabBar(_tb:TabBar) -> void:
+	DisconnectAll(_tb.gui_input)
+	DisconnectAll(_tb.focus_entered)
 #-------------------------------------------------------------------------------
 func DisconnectAll(_signal:Signal):
 	var _dictionaryArray : Array = _signal.get_connections()
@@ -1777,6 +1846,7 @@ func KillTween_Array(_tween_Array: Array[Tween]):
 func Debug_Information() -> void:
 	var _s: String = ""
 	_s += "Current Turn ID: " + str(current_player_turn)+"\n"
+	_s += "Grab Focus: " + str(get_viewport().gui_get_focus_owner())+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += "Tweens: "+str(tween_Array.size())+"\n"
 	_s += "-------------------------------------------------------\n"
@@ -1864,18 +1934,205 @@ func Set_ResetGame() -> void:
 #-------------------------------------------------------------------------------
 func Input_PauseGame() -> void:
 	if(Input.is_action_just_pressed("Input_Pause")):
-		if(get_tree().paused):
-			PauseOff()
-		#-------------------------------------------------------------------------------
-		else:
-			pause_menu.show()
-			Move_to_Button(pause_menu_button_array[0])
-			get_tree().set_deferred("paused", true)
+		if(!get_tree().paused):
+			PauseOn()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+func PauseOn():
+	pause_menu_panel.show()
+	pause_menu.show()
+	Move_to_Button(pause_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	get_tree().set_deferred("paused", true)
+#-------------------------------------------------------------------------------
 func PauseOff():
+	pause_menu_panel.hide()
 	pause_menu.hide()
 	get_tree().set_deferred("paused", false)
 #endregion
+#-------------------------------------------------------------------------------
+func PauseMenu_Set():
+	#-------------------------------------------------------------------------------
+	var _button_array: Array[Button]
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		var _player_ui: Party_Button =pause_menu_party_button_array[_i]
+		#-------------------------------------------------------------------------------
+		_player_ui.label_hp.text = "  "+str(player[_i].max_hp)+" / "+str(player[_i].max_hp)+" HP  "
+		_player_ui.bar_hp.max_value = player[_i].max_hp
+		_player_ui.bar_hp.value = player[_i].max_hp
+		#-------------------------------------------------------------------------------
+		_player_ui.label_sp.text = "  "+str(player[_i].max_sp)+" / "+str(player[_i].max_sp)+" SP  "
+		_player_ui.bar_sp.max_value = player[_i].max_sp
+		_player_ui.bar_sp.value = player[_i].max_sp
+		#-------------------------------------------------------------------------------
+		pause_menu_party_button_array[_i].title.text = player[_i].id + "\n"
+		pause_menu_party_button_array[_i].title.text += "The Hero Number "+str(_i)
+		pause_menu_party_button_array[_i].texture.texture = player[_i].texture2d
+		#-------------------------------------------------------------------------------
+		_button_array.append(_player_ui.button)
+	#-------------------------------------------------------------------------------
+	Set_Vertical_Navigation(_button_array)
+	#-------------------------------------------------------------------------------
+	Set_Vertical_Navigation(pause_menu_button_array)
+	#-------------------------------------------------------------------------------
+	SetButton(pause_menu_button_array[0],func():CommonSelected() , func():PauseMenu_SkillButton_Submit(), func():PauseMenu_AnyButton_Cancel())
+	SetButton(pause_menu_button_array[1],func():CommonSelected() , func():PauseMenu_ItemButton_Submit(), func():PauseMenu_AnyButton_Cancel())
+	SetButton(pause_menu_button_array[2],func():CommonSelected() , func():PauseMenu_EquipButton_Submit(), func():PauseMenu_AnyButton_Cancel())
+	SetButton(pause_menu_button_array[3],func():CommonSelected() , func():PauseMenu_StatusButton_Submit(), func():PauseMenu_AnyButton_Cancel())
+	SetButton(pause_menu_button_array[4],func():CommonSelected() , func():pass, func():PauseMenu_AnyButton_Cancel())
+	SetButton(pause_menu_button_array[5],func():CommonSelected() , func():pass, func():PauseMenu_AnyButton_Cancel())
+#-------------------------------------------------------------------------------
+func PauseMenu_SkillButton_Submit():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		var _b: Button = pause_menu_party_button_array[_i].button
+		SetButton(_b, func():CommonSelected() , func():PauseMenu_SkillButton_PartyButton_Submit(_i), func():PauseMenu_SkillButton_PartyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	Move_to_Button(pause_menu_party_button_array[0].button)
+	pause_menu_button_array[0].disabled = true
+#-------------------------------------------------------------------------------
+func PauseMenu_ItemButton_Submit():
+	pause_menu.hide()
+	item_menu.show()
+	#-------------------------------------------------------------------------------
+	Set_TabBar(item_menu.get_tab_bar(),func():No_Description(), func():PauseMenu_ItemButton_ItemMenu_Cancel())
+	#-------------------------------------------------------------------------------
+	for _i in item_array.size():
+		#-------------------------------------------------------------------------------
+		var _button: Button = Button.new()
+		var _hold: int = item_array[_i].hold
+		#-------------------------------------------------------------------------------
+		for _j in current_player_turn:
+			#-------------------------------------------------------------------------------
+			if(item_array[_i] == (player[_j].item_resource)):
+				_hold -= 1
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		_button.theme = ui_theme
+		_button.text = "  "+item_array[_i].id+"  "
+		_button.add_theme_font_size_override("font_size", 24)
+		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		item_menu_consumable_content.add_child(_button)
+		item_menu_button_array.append(_button)
+		#-------------------------------------------------------------------------------
+		var _label2: Label = Label.new()
+		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_label2.text = "  ("+str(_hold)+" / "+str(item_array[_i].max_hold)+")  "
+		_button.add_child(_label2)
+		#-------------------------------------------------------------------------------
+		var _cancel: Callable = func():
+			TargetMenu_TargetButton_Cancel()
+			item_menu.show()
+			Move_to_Button(item_menu_button_array[_i])
+		#-------------------------------------------------------------------------------
+		SetButton(_button, func():ItemMenu_ItemButton_Selected(item_array[_i]), func():pass, func():PauseMenu_ItemButton_ItemMenu_Cancel())
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	if(item_menu_button_array.size() > 0):
+		Move_to_Button(item_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	else:
+		Move_to_Button(item_menu.get_tab_bar())
+	#-------------------------------------------------------------------------------
+	item_menu.current_tab = 0
+	item_menu_consumable_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func No_Description():
+	item_menu_consumable_description.text = ""
+	item_menu_consumable_lore.text = ""
+	#-------------------------------------------------------------------------------
+	item_menu_equipment_description.text = ""
+	item_menu_equipment_lore.text = ""
+	#-------------------------------------------------------------------------------
+	item_menu_keyitems_description.text = ""
+	item_menu_keyitems_lore.text = ""
+	#-------------------------------------------------------------------------------
+	skill_menu_description.text = ""
+	skill_menu_lore.text = ""
+#-------------------------------------------------------------------------------
+func PauseMenu_EquipButton_Submit():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		var _b: Button = pause_menu_party_button_array[_i].button
+		SetButton(_b, func():CommonSelected() , func():pass, func():PauseMenu_EquipButton_PartyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	Move_to_Button(pause_menu_party_button_array[0].button)
+	pause_menu_button_array[2].disabled = true
+#-------------------------------------------------------------------------------
+func PauseMenu_StatusButton_Submit():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		var _b: Button = pause_menu_party_button_array[_i].button
+		SetButton(_b, func():CommonSelected() , func():pass, func():PauseMenu_StatusButton_PartyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	Move_to_Button(pause_menu_party_button_array[0].button)
+	pause_menu_button_array[3].disabled = true
+#-------------------------------------------------------------------------------
+func PauseMenu_AnyButton_Cancel():
+	PauseOff()
+#-------------------------------------------------------------------------------
+func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
+	pause_menu.hide()
+	skill_menu.show()
+	#-------------------------------------------------------------------------------
+	Set_TabBar(skill_menu.get_tab_bar(),func():No_Description(), func():PauseMenu_SkillButton_PartyButton_SkillMenu_Cancel(_index))
+	#-------------------------------------------------------------------------------
+	for _i in player[_index].skill_array.size():
+		#-------------------------------------------------------------------------------
+		var _item_resource: Item_Resource = player[_index].skill_array[_i]
+		#-------------------------------------------------------------------------------
+		var _button: Button = Button.new()
+		_button.theme = ui_theme
+		_button.text = "  "+_item_resource.id+"  "
+		_button.add_theme_font_size_override("font_size", 24)
+		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		skill_menu_content.add_child(_button)
+		item_menu_button_array.append(_button)
+		#-------------------------------------------------------------------------------
+		var _label2: Label = Label.new()
+		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_label2.text = "  ("+str(_item_resource.sp_cost)+" SP)  "
+		_button.add_child(_label2)
+		#-------------------------------------------------------------------------------
+		var _cancel: Callable = func():
+			TargetMenu_TargetButton_Cancel()
+			skill_menu.show()
+			Move_to_Button(item_menu_button_array[_i])
+		#-------------------------------------------------------------------------------
+		SetButton(_button, func():SkillMenu_SkillButton_Selected(_item_resource), func(): pass, func():PauseMenu_SkillButton_PartyButton_SkillMenu_Cancel(_index))
+	#-------------------------------------------------------------------------------
+	if(item_menu_button_array.size() > 0):
+		Move_to_Button(item_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	skill_menu_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func PauseMenu_SkillButton_PartyButton_Cancel():
+	pause_menu_button_array[0].disabled = false
+	Move_to_Button(pause_menu_button_array[0])
+#-------------------------------------------------------------------------------
+func PauseMenu_SkillButton_PartyButton_SkillMenu_Cancel(_index: int):
+	Destroy_All_Items(item_menu_button_array)
+	skill_menu.hide()
+	pause_menu.show()
+	Move_to_Button(pause_menu_party_button_array[_index].button)
+#-------------------------------------------------------------------------------
+func PauseMenu_ItemButton_ItemMenu_Cancel():
+	Destroy_All_Items(item_menu_button_array)
+	item_menu.hide()
+	pause_menu.show()
+	Move_to_Button(pause_menu_button_array[1])
+#-------------------------------------------------------------------------------
+func PauseMenu_EquipButton_PartyButton_Cancel():
+	pause_menu_button_array[2].disabled = false
+	Move_to_Button(pause_menu_button_array[2])
+#-------------------------------------------------------------------------------
+func PauseMenu_StatusButton_PartyButton_Cancel():
+	pause_menu_button_array[3].disabled = false
+	Move_to_Button(pause_menu_button_array[3])
 #-------------------------------------------------------------------------------

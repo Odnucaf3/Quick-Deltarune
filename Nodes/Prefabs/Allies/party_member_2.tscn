@@ -1,6 +1,7 @@
-[gd_scene load_steps=30 format=3 uid="uid://dottqr7xoeeuf"]
+[gd_scene load_steps=31 format=3 uid="uid://dottqr7xoeeuf"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_d1kby"]
+[ext_resource type="Texture2D" uid="uid://qw62qdjg350n" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/idle1.png" id="2_a6kb6"]
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="2_gi8vl"]
 [ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="3_ac6xr"]
 [ext_resource type="Texture2D" uid="uid://dlm8ht7qj8se4" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/player.png" id="4_mnlw8"]
@@ -726,6 +727,7 @@ size = Vector2(24, 8)
 collision_layer = 2
 script = ExtResource("1_d1kby")
 id = &"Susie"
+texture2d = ExtResource("2_a6kb6")
 skill_array = Array[ExtResource("2_gi8vl")]([ExtResource("3_ac6xr")])
 pivot = NodePath("Marker2D")
 sprite = NodePath("Marker2D/Sprite2D")

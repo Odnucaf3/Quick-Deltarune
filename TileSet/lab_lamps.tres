@@ -1,0 +1,90 @@
+[gd_resource type="TileSet" load_steps=21 format=3 uid="uid://cutyx4smls0s0"]
+
+[ext_resource type="Texture2D" uid="uid://dg2sbnw1nhq88" path="res://Assets/ansimuz/warped city files/v1/props/antenna.png" id="1_u3m3a"]
+[ext_resource type="Texture2D" uid="uid://br1xmqdj7to7l" path="res://Assets/ansimuz/warped city files/v1/props/banner-arrow.png" id="2_jxa6n"]
+[ext_resource type="Texture2D" uid="uid://b6vpgq8gyipmd" path="res://Assets/ansimuz/warped city files/v1/props/banner-floor.png" id="3_wgt8y"]
+[ext_resource type="Texture2D" uid="uid://bhvliat8fdk88" path="res://Assets/ansimuz/warped city files/v1/props/banner-open.png" id="4_a3muc"]
+[ext_resource type="Texture2D" uid="uid://dsx7fbj1pmvow" path="res://Assets/ansimuz/warped city files/v1/props/banner-small.png" id="5_3brlw"]
+[ext_resource type="Texture2D" uid="uid://nlrt226wag2i" path="res://Assets/ansimuz/warped city files/v1/props/banners.png" id="6_083wo"]
+[ext_resource type="Texture2D" uid="uid://cd1wht0dmvo6q" path="res://Assets/ansimuz/warped city files/v1/props/control-box-1.png" id="7_y1nwh"]
+[ext_resource type="Texture2D" uid="uid://cyt3o63v2afuy" path="res://Assets/ansimuz/warped city files/v1/props/control-box-2.png" id="8_sh4gt"]
+[ext_resource type="Texture2D" uid="uid://dpw2ojfkclqpq" path="res://Assets/ansimuz/warped city files/v1/props/control-box-3.png" id="9_7opqr"]
+[ext_resource type="Texture2D" uid="uid://bprr3v3j78q5f" path="res://Assets/ansimuz/warped city files/v1/props/hotel-sign.png" id="10_32jax"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldgio"]
+texture = ExtResource("1_u3m3a")
+texture_region_size = Vector2i(22, 96)
+0:0/0 = 0
+0:0/0/y_sort_origin = 47
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-1.8461537, 47.384617, 4.3076925, 47.384617, 4.3076925, 43.69231, -1.8461537, 43.69231)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gqbsv"]
+texture = ExtResource("2_jxa6n")
+texture_region_size = Vector2i(16, 34)
+0:0/0 = 0
+0:0/0/y_sort_origin = 47
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hba6q"]
+texture = ExtResource("3_wgt8y")
+texture_region_size = Vector2i(13, 10)
+0:0/0 = 0
+0:0/0/y_sort_origin = 47
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1qr4"]
+texture = ExtResource("4_a3muc")
+texture_region_size = Vector2i(14, 44)
+0:0/0 = 0
+0:0/0/y_sort_origin = 47
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jlven"]
+texture = ExtResource("5_3brlw")
+texture_region_size = Vector2i(13, 35)
+0:0/0 = 0
+0:0/0/y_sort_origin = 47
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_34b5x"]
+texture = ExtResource("6_083wo")
+texture_region_size = Vector2i(28, 66)
+0:0/0 = 0
+0:0/0/y_sort_origin = 47
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_436kd"]
+texture = ExtResource("7_y1nwh")
+texture_region_size = Vector2i(32, 30)
+0:0/0 = 0
+0:0/0/y_sort_origin = 14
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-11.2, 14.4, 11.200001, 14.4, 11.200001, 11.200001, -11.2, 11.200001)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3hpbs"]
+texture = ExtResource("8_sh4gt")
+texture_region_size = Vector2i(17, 27)
+0:0/0 = 0
+0:0/0/y_sort_origin = 13
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 13.333334, 6.2222223, 13.333334, 6.2222223, 9.777779, -8, 9.777779)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o40it"]
+texture = ExtResource("9_7opqr")
+texture_region_size = Vector2i(62, 30)
+0:0/0 = 0
+0:0/0/y_sort_origin = 14
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-30.4, 11.200001, 30.400002, 11.200001, 30.400002, 14.4, -30.4, 14.4)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k31t1"]
+texture = ExtResource("10_32jax")
+texture_region_size = Vector2i(68, 35)
+0:0/0 = 0
+0:0/0/y_sort_origin = 17
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-30.4, 17.6, 24, 17.6, 24, 14.4, -30.4, 14.4)
+
+[resource]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_ldgio")
+sources/1 = SubResource("TileSetAtlasSource_gqbsv")
+sources/2 = SubResource("TileSetAtlasSource_hba6q")
+sources/3 = SubResource("TileSetAtlasSource_e1qr4")
+sources/4 = SubResource("TileSetAtlasSource_jlven")
+sources/5 = SubResource("TileSetAtlasSource_34b5x")
+sources/6 = SubResource("TileSetAtlasSource_436kd")
+sources/7 = SubResource("TileSetAtlasSource_3hpbs")
+sources/8 = SubResource("TileSetAtlasSource_o40it")
+sources/9 = SubResource("TileSetAtlasSource_k31t1")
