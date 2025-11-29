@@ -6,11 +6,14 @@ class_name Party_Member
 var hp: int
 var max_hp: int = 30
 var sp: int
-var max_sp: int = 100
+var max_sp: int = 20
 var is_in_guard: bool
 #-------------------------------------------------------------------------------
 @export var skill_array: Array[Item_Resource]
 var skill_array_in_battle: Array[Item_Resource]
+#-------------------------------------------------------------------------------
+@export var status_array: Array[Status_Resource]
+var status_array_in_battle: Array[Status_Resource]
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool
 var is_Facing_Left: bool = false

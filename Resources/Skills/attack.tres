@@ -5,5 +5,7 @@
 [resource]
 script = ExtResource("1_4coga")
 action_string = "Attack"
+lore = "* A normal attack where you just shoot a rechargable bullet"
+description = "* Do 5 HP of damage to an enemy"
 max_cooldown = 0
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

@@ -1,7 +1,8 @@
-[gd_scene load_steps=30 format=3 uid="uid://c3gpm8500ebkp"]
+[gd_scene load_steps=31 format=3 uid="uid://c3gpm8500ebkp"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_84owv"]
-[ext_resource type="Texture2D" uid="uid://dyegdx81d1rxj" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/soldier.png" id="2_vs54o"]
+[ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="2_n5ixp"]
+[ext_resource type="Texture2D" uid="uid://dyegdx81d1rxj" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/soldier.png" id="2_vs54o"]
 
 [sub_resource type="Animation" id="Animation_42b3h"]
 resource_name = "Aim"
@@ -892,6 +893,7 @@ size = Vector2(24, 8)
 collision_layer = 2
 script = ExtResource("1_84owv")
 id = &"Juggernaut"
+texture2d = ExtResource("2_n5ixp")
 pivot = NodePath("Marker2D")
 sprite = NodePath("Marker2D/Sprite2D")
 collider = NodePath("CollisionShape2D")

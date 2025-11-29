@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dyegdx81d1rxj"
-path="res://.godot/imported/soldier.png-a5439ed2e021b50084ea24ff4f177de6.ctex"
+path="res://.godot/imported/soldier.png-5b6fb6b2245f3804088d8acf1de892b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ansimuz/Sewers pack files/Spritesheets/soldier.png"
-dest_files=["res://.godot/imported/soldier.png-a5439ed2e021b50084ea24ff4f177de6.ctex"]
+source_file="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/soldier.png"
+dest_files=["res://.godot/imported/soldier.png-5b6fb6b2245f3804088d8acf1de892b1.ctex"]
 
 [params]
 

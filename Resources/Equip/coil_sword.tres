@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Equip_Resource" load_steps=2 format=3 uid="uid://cmtocen6a17v3"]
+
+[ext_resource type="Script" uid="uid://kyu7ufkbhotc" path="res://Scripts/Resources/equip_resource.gd" id="1_wdcqm"]
+
+[resource]
+script = ExtResource("1_wdcqm")
+metadata/_custom_type_script = "uid://kyu7ufkbhotc"

@@ -152,8 +152,8 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
+offset_top = -77.0
+offset_right = 200.0
 grow_vertical = 0
 
 [node name="Label" type="Label" parent="Control2/VBoxContainer"]
@@ -163,9 +163,7 @@ text = "Target:"
 
 [node name="Button" type="Button" parent="Control2/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 8
 theme = ExtResource("3_v1s3a")
 theme_override_font_sizes/font_size = 30
 text = "  Player 1  "
-alignment = 0

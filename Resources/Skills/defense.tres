@@ -7,5 +7,7 @@ script = ExtResource("1_lrqvx")
 myTARGET_TYPE = 3
 anim = "Crouch"
 action_string = "Defense"
+lore = "* An basic manuber where you just crouch guard against enemy attacks"
+description = "* The user takes half damage of enemies attack for 1 turn."
 max_cooldown = 0
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

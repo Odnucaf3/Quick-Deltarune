@@ -18,6 +18,7 @@ var id: StringName
 @export var hp_cost: int
 @export var sp_cost: int
 @export var max_cooldown: int = 3
+@export var price: int = 0
 var cooldown: int = 0
 #-------------------------------------------------------------------------------
 @export_category("Item Paramenters")
