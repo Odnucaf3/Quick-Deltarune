@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=35 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -23,8 +23,11 @@
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 [ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
 [ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
+[ext_resource type="AudioStream" uid="uid://ctboksgyydra2" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Cursor_tones/cursor_style_1.wav" id="24_3p4s7"]
 [ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="25_3p4s7"]
+[ext_resource type="AudioStream" uid="uid://diiwnxpxavytu" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Confirm_tones/style1/confirm_style_1_001.wav" id="25_xhx7r"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
+[ext_resource type="AudioStream" uid="uid://cl6xwf2nly41l" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Error_tones/style1/error_style_1_001.wav" id="26_42b3h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -62,12 +65,15 @@ bg_color = Color(0.5568628, 1, 0.4392157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "dialogue_menu", "dialogue_menu_label", "player", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_button_array", "status_menu", "status_menu_content", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "audioStreamPlayer_select", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "dialogue_menu", "dialogue_menu_label", "player", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_content", "status_menu", "status_menu_content", "status_menu_stats_button_array", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
 world2d = NodePath("World2D")
 ui_theme = ExtResource("26_1th3s")
 room_test = NodePath("World2D/room_test_1")
+audioStreamPlayer_select = NodePath("CanvasLayer/AudioStreamPlayer_select")
+audioStreamPlayer_submit = NodePath("CanvasLayer/AudioStreamPlayer_submit")
+audioStreamPlayer_cancel = NodePath("CanvasLayer/AudioStreamPlayer_cancel")
 dialogue_menu = NodePath("CanvasLayer/Dialogue_PanelContainer")
 dialogue_menu_label = NodePath("CanvasLayer/Dialogue_PanelContainer/Dialogue_MarginContainer/Dialogue_Label")
 ally_ui_prefab = ExtResource("20_ik87f")
@@ -103,10 +109,11 @@ equip_menu = NodePath("CanvasLayer/All Menues/Equip_TabContainer")
 equip_menu_scrollContainer = NodePath("CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 equip_menu_content = NodePath("CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 equipslot_menu = NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer")
-equipslot_menu_button_array = [NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button2"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button3"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button4"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button5"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button6"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button7"), NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer/Button8")]
+equipslot_menu_content = NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer")
 equip_array = Array[ExtResource("9_ik87f")]([ExtResource("10_hxoxt")])
 status_menu = NodePath("CanvasLayer/All Menues/Status_TabContainer")
 status_menu_content = NodePath("CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+status_menu_stats_button_array = [NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button6"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button7"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button8")]
 status_menu_image = NodePath("CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
@@ -207,6 +214,16 @@ position = Vector2(-24, 8)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="AudioStreamPlayer_select" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("24_3p4s7")
+volume_db = 5.0
+
+[node name="AudioStreamPlayer_submit" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("25_xhx7r")
+
+[node name="AudioStreamPlayer_cancel" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("26_42b3h")
+
 [node name="Pause_Menu_Panel" type="Panel" parent="CanvasLayer"]
 visible = false
 anchors_preset = 15
@@ -278,6 +295,7 @@ value = 26.57
 show_percentage = false
 
 [node name="Battle_Menu" type="Control" parent="CanvasLayer/Battle_UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -479,6 +497,7 @@ theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
 
 [node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -574,9 +593,7 @@ theme = ExtResource("26_1th3s")
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
 
 [node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/PanelContainer/MarginContainer"]
 layout_mode = 2
@@ -1414,7 +1431,6 @@ text = "Utility description of the Skill / Item."
 autowrap_mode = 2
 
 [node name="EquipSlot_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

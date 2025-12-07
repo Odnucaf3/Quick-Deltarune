@@ -4,13 +4,17 @@ class_name Party_Member
 @export var id: StringName
 @export var texture2d: Texture2D
 var hp: int
-var max_hp: int = 30
+var max_hp: int = 999
 var sp: int
 var max_sp: int = 20
 var is_in_guard: bool
+var damage_label_array: Array[Label] = []
 #-------------------------------------------------------------------------------
 @export var skill_array: Array[Item_Resource]
 var skill_array_in_battle: Array[Item_Resource]
+#-------------------------------------------------------------------------------
+@export var equip_array: Array[Equip_Resource] = [null, null, null, null, null, null, null, null]
+var equip_array_in_battle: Array[Equip_Resource]
 #-------------------------------------------------------------------------------
 @export var status_array: Array[Status_Resource]
 var status_array_in_battle: Array[Status_Resource]
