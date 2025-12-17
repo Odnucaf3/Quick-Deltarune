@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://da1odroc62jt3"]
+[gd_scene load_steps=35 format=3 uid="uid://da1odroc62jt3"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_hjtjb"]
 [ext_resource type="Texture2D" uid="uid://ci6773anv87c4" path="res://Assets/ansimuz/warped city files/v1/sprites/player/idle-1.png" id="2_rm4mx"]
@@ -729,7 +729,10 @@ states/Walk/position = Vector2(566, 3)
 transitions = ["Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_lleqo"), "Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_fbyh6")]
 graph_offset = Vector2(-29, 78)
 
-[node name="Party_Member" type="CharacterBody2D" node_paths=PackedStringArray("pivot", "sprite", "collider", "animation_tree")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_rm4mx"]
+radius = 16.0
+
+[node name="Party_Member" type="CharacterBody2D" node_paths=PackedStringArray("pivot", "sprite", "collider", "interactable_area2d", "interactable_collision", "animation_tree")]
 y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_hjtjb")
@@ -737,6 +740,8 @@ texture2d = ExtResource("2_rm4mx")
 pivot = NodePath("Marker2D")
 sprite = NodePath("Marker2D/Sprite2D")
 collider = NodePath("CollisionShape2D")
+interactable_area2d = NodePath("Area2D")
+interactable_collision = NodePath("Area2D/CollisionShape2D")
 animation_tree = NodePath("Marker2D/AnimationTree")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -759,3 +764,10 @@ libraries = {
 root_node = NodePath("../Sprite2D")
 tree_root = SubResource("AnimationNodeStateMachine_1o8lw")
 anim_player = NodePath("../AnimationPlayer")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_rm4mx")

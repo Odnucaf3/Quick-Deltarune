@@ -5,7 +5,8 @@ var game_scene: Game_Scene
 @export var room_limits: Control
 @export var enemy: Array[Party_Member]
 @export var warp_array: Array[Warp_Script]
-
+@export var item_script_array: Array[Item_Script]
+#-------------------------------------------------------------------------------
 var limit_top: float
 var limit_botton: float
 var limit_left: float
@@ -28,6 +29,10 @@ func Set_Room():
 	#-------------------------------------------------------------------------------
 	for _i in warp_array.size():
 		warp_array[_i].body_entered.connect(warp_array[_i].Move_to_Next_Room)
+	#-------------------------------------------------------------------------------
+	for _i in item_script_array.size():
+		if(game_scene.bool_dictionary.get(Get_Item_Script_ID(item_script_array[_i]), false) == true):
+			item_script_array[_i].queue_free()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Set_Camera_Limits():
@@ -57,4 +62,8 @@ func Check_for_Enemy(_game_scene: Game_Scene):
 			_game_scene.EnterBattle()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Get_Item_Script_ID(_item_scrit:Item_Script) -> String:
+	var _s: String = name+"_"+_item_scrit.name
+	return _s
 #-------------------------------------------------------------------------------

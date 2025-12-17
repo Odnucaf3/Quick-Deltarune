@@ -1,10 +1,9 @@
-[gd_scene load_steps=35 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=34 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="2_tnh07"]
-[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/potion.tres" id="3_xrh8u"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="5_rpgth"]
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/defense.tres" id="6_lujb4"]
 [ext_resource type="Script" uid="uid://iisb6sawv4tc" path="res://Scripts/Resources/key_items.gd" id="7_igypo"]
@@ -65,12 +64,12 @@ bg_color = Color(0.5568628, 1, 0.4392157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "audioStreamPlayer_select", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "dialogue_menu", "dialogue_menu_label", "player", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_content", "status_menu", "status_menu_content", "status_menu_stats_button_array", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "audioStreamPlayer_select", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "dialogue_menu", "dialogue_menu_label", "player", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_content", "status_menu", "status_menu_content", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
 world2d = NodePath("World2D")
 ui_theme = ExtResource("26_1th3s")
-room_test = NodePath("World2D/room_test_1")
+room_test = NodePath("World2D/room_test_03")
 audioStreamPlayer_select = NodePath("CanvasLayer/AudioStreamPlayer_select")
 audioStreamPlayer_submit = NodePath("CanvasLayer/AudioStreamPlayer_submit")
 audioStreamPlayer_cancel = NodePath("CanvasLayer/AudioStreamPlayer_cancel")
@@ -78,7 +77,7 @@ dialogue_menu = NodePath("CanvasLayer/Dialogue_PanelContainer")
 dialogue_menu_label = NodePath("CanvasLayer/Dialogue_PanelContainer/Dialogue_MarginContainer/Dialogue_Label")
 ally_ui_prefab = ExtResource("20_ik87f")
 enemy_ui_prefab = ExtResource("16_mapp4")
-player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member3"), NodePath("World2D/Party_Member2")]
+player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member2"), NodePath("World2D/Party_Member3")]
 item_menu = NodePath("CanvasLayer/All Menues/Items_TabContainer")
 item_menu_consumable_scrollContainer = NodePath("CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_consumable_content = NodePath("CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
@@ -95,7 +94,6 @@ item_menu_keyitems_content = NodePath("CanvasLayer/All Menues/Items_TabContainer
 item_menu_keyitems_title = NodePath("CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/Label")
 item_menu_keyitems_lore = NodePath("CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer/Label2")
 item_menu_keyitems_description = NodePath("CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2/Label2")
-item_array = Array[ExtResource("2_tnh07")]([ExtResource("3_xrh8u")])
 key_item_array = Array[ExtResource("7_igypo")]([ExtResource("8_gg6rv"), ExtResource("9_lujb4")])
 iten_resource_attack = ExtResource("5_rpgth")
 iten_resource_defense = ExtResource("6_lujb4")
@@ -113,7 +111,6 @@ equipslot_menu_content = NodePath("CanvasLayer/All Menues/EquipSlot_TabContainer
 equip_array = Array[ExtResource("9_ik87f")]([ExtResource("10_hxoxt")])
 status_menu = NodePath("CanvasLayer/All Menues/Status_TabContainer")
 status_menu_content = NodePath("CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
-status_menu_stats_button_array = [NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button6"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button7"), NodePath("CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button8")]
 status_menu_image = NodePath("CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
@@ -210,7 +207,7 @@ skill_array = Array[ExtResource("2_tnh07")]([ExtResource("25_3p4s7")])
 [node name="Party_Member3" parent="World2D" instance=ExtResource("21_rpgth")]
 position = Vector2(-24, 8)
 
-[node name="room_test_1" parent="World2D" instance=ExtResource("11_tnh07")]
+[node name="room_test_03" parent="World2D" instance=ExtResource("11_tnh07")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://ckdq3xhi07i1g"]
+[gd_scene load_steps=9 format=4 uid="uid://ckdq3xhi07i1g"]
 
 [ext_resource type="Script" uid="uid://dkpbd3o7n34ul" path="res://Scripts/Prefabs/Rooms/room_test_1.gd" id="1_0ji40"]
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_0ji40"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_1.tscn" id="3_8dt50"]
 [ext_resource type="Script" uid="uid://dbwty41uhfl16" path="res://Scripts/Prefabs/warp_script.gd" id="4_svtcd"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="5_8dt50"]
+[ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8dt50"]
 size = Vector2(48, 8)
@@ -12,12 +13,13 @@ size = Vector2(48, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_svtcd"]
 size = Vector2(48, 8)
 
-[node name="room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits", "enemy", "warp_array")]
+[node name="room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits", "enemy", "warp_array", "item_script_array")]
 y_sort_enabled = true
 script = ExtResource("1_0ji40")
 room_limits = NodePath("room_limits")
 enemy = [NodePath("Enemy1"), NodePath("Enemy2"), NodePath("Enemy3")]
 warp_array = [NodePath("Warp_Script"), NodePath("Warp_Script2")]
+item_script_array = [NodePath("Item"), NodePath("Item2"), NodePath("Item3"), NodePath("Item4"), NodePath("Item5")]
 
 [node name="room_limits" type="Control" parent="."]
 layout_mode = 3
@@ -114,3 +116,17 @@ animation = &"monitorface"
 position = Vector2(296, 144)
 animation = &"banner-neon"
 autoplay = "banner-neon"
+
+[node name="Item" parent="." instance=ExtResource("6_7i8dt")]
+
+[node name="Item2" parent="." instance=ExtResource("6_7i8dt")]
+position = Vector2(-40, 32)
+
+[node name="Item3" parent="." instance=ExtResource("6_7i8dt")]
+position = Vector2(24, 64)
+
+[node name="Item4" parent="." instance=ExtResource("6_7i8dt")]
+position = Vector2(-32, 32)
+
+[node name="Item5" parent="." instance=ExtResource("6_7i8dt")]
+position = Vector2(-40, 24)

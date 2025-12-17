@@ -8,6 +8,8 @@ enum GAME_STATE{IN_WORLD, IN_MENU, IN_BATTLE}
 @export var ui_theme: Theme
 @export var room_test: Room_Script
 #-------------------------------------------------------------------------------
+@export var bool_dictionary: Dictionary[String, bool]
+#-------------------------------------------------------------------------------
 @export var audioStreamPlayer_select: AudioStreamPlayer
 @export var audioStreamPlayer_submit: AudioStreamPlayer
 @export var audioStreamPlayer_cancel: AudioStreamPlayer
@@ -235,6 +237,15 @@ func _physics_process(_delta: float) -> void:
 				Followers_Movement()
 				Camera_Follow()
 				room_test.Check_for_Enemy(self)
+				#-------------------------------------------------------------------------------
+				if(Input.is_action_just_pressed("ui_accept")):
+					var _interactable_array : Array[Area2D] = player[0].interactable_area2d.get_overlapping_areas()
+					#-------------------------------------------------------------------------------
+					if(_interactable_array.size() > 0):
+						var _interactable_item: Item_Script = _interactable_array[0]
+						PickUp_Item(_interactable_item)
+					#-------------------------------------------------------------------------------
+				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		GAME_STATE.IN_BATTLE:
@@ -458,6 +469,25 @@ func Face_Left(_user:Party_Member, _b:bool):
 		_user.pivot.scale.x = 1
 	#-------------------------------------------------------------------------------
 	_user.is_Facing_Left = _b
+#-------------------------------------------------------------------------------
+func PickUp_Item(_item_script:Item_Script):
+	_item_script.queue_free()
+	bool_dictionary.set(room_test.Get_Item_Script_ID(_item_script), true)
+	#-------------------------------------------------------------------------------
+	var _item_id: String = get_resource_filename(_item_script.pickable_item)
+	for _i in item_array.size():
+		#-------------------------------------------------------------------------------
+		if(item_array[_i].id == _item_id):
+			item_array[_i].hold += 1
+			return
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _new_item: Item_Resource = _item_script.pickable_item.Constructor()
+	_new_item.id = _item_id
+	_new_item.hold = 1
+	item_array.append(_new_item)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region SET BATTLEFIELD

@@ -32,6 +32,10 @@ var item_resource: Item_Resource
 @export var pivot: Marker2D
 @export var sprite: Sprite2D
 @export var collider: CollisionShape2D
+#-------------------------------------------------------------------------------
+@export var interactable_area2d: Area2D
+@export var interactable_collision: CollisionShape2D
+#-------------------------------------------------------------------------------
 @export var animation_tree: AnimationTree
 var playback : AnimationNodeStateMachinePlayback
 #-------------------------------------------------------------------------------
