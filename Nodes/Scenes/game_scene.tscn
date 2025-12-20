@@ -1,9 +1,8 @@
-[gd_scene load_steps=34 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=31 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
-[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="2_tnh07"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="5_rpgth"]
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/defense.tres" id="6_lujb4"]
 [ext_resource type="Script" uid="uid://iisb6sawv4tc" path="res://Scripts/Resources/key_items.gd" id="7_igypo"]
@@ -14,16 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/party_member.tscn" id="13_hxoxt"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
-[ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="17_gg6rv"]
-[ext_resource type="Script" uid="uid://cnxg5h2oypmxr" path="res://Scripts/Resources/status_resource.gd" id="17_rpgth"]
-[ext_resource type="Resource" uid="uid://bnrjjakhyhhuk" path="res://Resources/Status/poison.tres" id="18_lujb4"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 [ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
 [ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
 [ext_resource type="AudioStream" uid="uid://ctboksgyydra2" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Cursor_tones/cursor_style_1.wav" id="24_3p4s7"]
-[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="25_3p4s7"]
 [ext_resource type="AudioStream" uid="uid://diiwnxpxavytu" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Confirm_tones/style1/confirm_style_1_001.wav" id="25_xhx7r"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
 [ext_resource type="AudioStream" uid="uid://cl6xwf2nly41l" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Error_tones/style1/error_style_1_001.wav" id="26_42b3h"]
@@ -42,6 +37,12 @@ expand_margin_left = 2.0
 expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ik87f"]
+size = Vector2(16, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
+radius = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnh07"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -64,7 +65,7 @@ bg_color = Color(0.5568628, 1, 0.4392157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "audioStreamPlayer_select", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "dialogue_menu", "dialogue_menu_label", "player", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_content", "status_menu", "status_menu_content", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" node_paths=PackedStringArray("world2d", "room_test", "audioStreamPlayer_select", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "dialogue_menu", "dialogue_menu_label", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_content", "status_menu", "status_menu_content", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 3
 script = ExtResource("1_xqt5u")
 world2d = NodePath("World2D")
@@ -77,7 +78,11 @@ dialogue_menu = NodePath("CanvasLayer/Dialogue_PanelContainer")
 dialogue_menu_label = NodePath("CanvasLayer/Dialogue_PanelContainer/Dialogue_MarginContainer/Dialogue_Label")
 ally_ui_prefab = ExtResource("20_ik87f")
 enemy_ui_prefab = ExtResource("16_mapp4")
-player = [NodePath("World2D/Party_Member"), NodePath("World2D/Party_Member2"), NodePath("World2D/Party_Member3")]
+player_characterbody2d = NodePath("World2D/Player")
+player_collider = NodePath("World2D/Player/CollisionShape2D")
+player_interactable_area2d = NodePath("World2D/Player/interactable_Area2D")
+player_enemyDetector_area2d = NodePath("World2D/Player/enemy_detector_Area2D2")
+friend_party = [NodePath("World2D/Player/Friend_01"), NodePath("World2D/Friend_02"), NodePath("World2D/Friend_03")]
 item_menu = NodePath("CanvasLayer/All Menues/Items_TabContainer")
 item_menu_consumable_scrollContainer = NodePath("CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_consumable_content = NodePath("CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
@@ -195,19 +200,35 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 zoom = Vector2(3.5, 3.5)
 
-[node name="Party_Member" parent="World2D" instance=ExtResource("13_hxoxt")]
-id = &"Kris"
-skill_array = Array[ExtResource("2_tnh07")]([ExtResource("17_gg6rv")])
-status_array = Array[ExtResource("17_rpgth")]([ExtResource("18_lujb4")])
-
-[node name="Party_Member2" parent="World2D" instance=ExtResource("20_lujb4")]
-position = Vector2(-24, -8)
-skill_array = Array[ExtResource("2_tnh07")]([ExtResource("25_3p4s7")])
-
-[node name="Party_Member3" parent="World2D" instance=ExtResource("21_rpgth")]
-position = Vector2(-24, 8)
-
 [node name="room_test_03" parent="World2D" instance=ExtResource("11_tnh07")]
+
+[node name="Player" type="CharacterBody2D" parent="World2D"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World2D/Player"]
+shape = SubResource("RectangleShape2D_ik87f")
+
+[node name="Friend_01" parent="World2D/Player" instance=ExtResource("13_hxoxt")]
+
+[node name="interactable_Area2D" type="Area2D" parent="World2D/Player"]
+collision_layer = 0
+collision_mask = 8
+
+[node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_Area2D"]
+shape = SubResource("CircleShape2D_hxoxt")
+
+[node name="enemy_detector_Area2D2" type="Area2D" parent="World2D/Player"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/enemy_detector_Area2D2"]
+shape = SubResource("CircleShape2D_hxoxt")
+
+[node name="Friend_02" parent="World2D" instance=ExtResource("21_rpgth")]
+position = Vector2(-24, -8)
+
+[node name="Friend_03" parent="World2D" instance=ExtResource("20_lujb4")]
+position = Vector2(-48, 8)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

@@ -3,14 +3,13 @@
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_hjtjb"]
 [ext_resource type="Texture2D" uid="uid://ci6773anv87c4" path="res://Assets/ansimuz/warped city files/v1/sprites/player/idle-1.png" id="2_rm4mx"]
 [ext_resource type="Texture2D" uid="uid://b0402pg2o182n" path="res://Assets/ansimuz/warped city files/v1/sprites/player/idle.png" id="2_wl5sh"]
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="3_3pxk4"]
 [ext_resource type="Texture2D" uid="uid://bveu3hvcd82oy" path="res://Assets/ansimuz/warped city files/v1/sprites/player/crouch.png" id="3_tojc2"]
 [ext_resource type="Texture2D" uid="uid://crrtdbmmayw3a" path="res://Assets/ansimuz/warped city files/v1/sprites/player/hurt.png" id="4_agwf3"]
+[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="4_ek5q1"]
 [ext_resource type="Texture2D" uid="uid://doav3l76si2wh" path="res://Assets/ansimuz/warped city files/v1/sprites/player/run.png" id="5_vkmoi"]
 [ext_resource type="Texture2D" uid="uid://b8wieo7nga7xe" path="res://Assets/ansimuz/warped city files/v1/sprites/player/shoot.png" id="6_oac30"]
 [ext_resource type="Texture2D" uid="uid://xfmiejntkjq" path="res://Assets/ansimuz/warped city files/v1/sprites/player/walk.png" id="7_ys8se"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1o8lw"]
-size = Vector2(24, 8)
 
 [sub_resource type="Animation" id="Animation_hjtjb"]
 resource_name = "Aim"
@@ -448,10 +447,10 @@ tracks/4/path = NodePath(".:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.001),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -472,10 +471,10 @@ tracks/6/path = NodePath(".:offset")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.001),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, -33)]
+"values": [Vector2(-3, -33), Vector2(-3, -33)]
 }
 
 [sub_resource type="Animation" id="Animation_bykob"]
@@ -729,45 +728,29 @@ states/Walk/position = Vector2(566, 3)
 transitions = ["Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_lleqo"), "Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_fbyh6")]
 graph_offset = Vector2(-29, 78)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_rm4mx"]
-radius = 16.0
-
-[node name="Party_Member" type="CharacterBody2D" node_paths=PackedStringArray("pivot", "sprite", "collider", "interactable_area2d", "interactable_collision", "animation_tree")]
-y_sort_enabled = true
-collision_layer = 2
+[node name="Friend_01" type="Node2D" node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_hjtjb")
+id = &"Kristo"
 texture2d = ExtResource("2_rm4mx")
-pivot = NodePath("Marker2D")
-sprite = NodePath("Marker2D/Sprite2D")
-collider = NodePath("CollisionShape2D")
-interactable_area2d = NodePath("Area2D")
-interactable_collision = NodePath("Area2D/CollisionShape2D")
-animation_tree = NodePath("Marker2D/AnimationTree")
+skill_array = Array[ExtResource("3_3pxk4")]([ExtResource("4_ek5q1")])
+pivot = NodePath("Pivot")
+sprite = NodePath("Pivot/Sprite2D")
+animation_tree = NodePath("Pivot/AnimationTree")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_1o8lw")
+[node name="Pivot" type="Marker2D" parent="."]
 
-[node name="Marker2D" type="Marker2D" parent="."]
-
-[node name="Sprite2D" type="Sprite2D" parent="Marker2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Pivot"]
 texture = ExtResource("2_wl5sh")
-offset = Vector2(0, -33)
+offset = Vector2(-3, -33)
 hframes = 4
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Marker2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Pivot"]
 root_node = NodePath("../Sprite2D")
 libraries = {
 &"": SubResource("AnimationLibrary_mqnqo")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="Marker2D"]
+[node name="AnimationTree" type="AnimationTree" parent="Pivot"]
 root_node = NodePath("../Sprite2D")
 tree_root = SubResource("AnimationNodeStateMachine_1o8lw")
 anim_player = NodePath("../AnimationPlayer")
-
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 8
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_rm4mx")

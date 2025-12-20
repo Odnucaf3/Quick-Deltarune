@@ -3,7 +3,7 @@ class_name Room_Script
 #-------------------------------------------------------------------------------
 var game_scene: Game_Scene
 @export var room_limits: Control
-@export var enemy: Array[Party_Member]
+@export var enemy_chaser: Array[Enemy_Chaser]
 @export var warp_array: Array[Warp_Script]
 @export var item_script_array: Array[Item_Script]
 #-------------------------------------------------------------------------------
@@ -15,17 +15,14 @@ var limit_right: float
 func Set_Room():
 	Set_Camera_Limits()
 	#-------------------------------------------------------------------------------
-	for _i in enemy.size():
-		enemy[_i].playback = enemy[_i].animation_tree.get("parameters/playback")
-		game_scene.PlayAnimation(enemy[_i].playback, "Idle")
+	for _i in enemy_chaser.size():
 		#-------------------------------------------------------------------------------
-		var _party_member_ui: Party_Member_UI = game_scene.enemy_ui_prefab.instantiate() as Party_Member_UI
-		enemy[_i].party_member_ui = _party_member_ui
-		enemy[_i].party_member_ui.hide()
-		enemy[_i].party_member_ui.button_pivot.hide()
-		enemy[_i].party_member_ui.label_sp.hide()
-		enemy[_i].party_member_ui.bar_sp.hide()
-		game_scene.battle_control.add_child(_party_member_ui)
+		if(game_scene.bool_dictionary.get(Get_Item_Script_ID(enemy_chaser[_i]), false) == true):
+			enemy_chaser[_i].queue_free()
+		#-------------------------------------------------------------------------------
+		else:
+			enemy_chaser[_i].Set_Enemies(game_scene)
+		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	for _i in warp_array.size():
 		warp_array[_i].body_entered.connect(warp_array[_i].Move_to_Next_Room)
@@ -50,20 +47,7 @@ func Set_Camera_Limits():
 	if(limit_right < _center_x): limit_right = _center_x
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Check_for_Enemy(_game_scene: Game_Scene):
-	if(enemy.size() > 0):
-		#-------------------------------------------------------------------------------
-		if(_game_scene.player[0].position.distance_to(enemy[0].position) < 20 and _game_scene.can_enter_fight):
-			_game_scene.enemy.clear()
-			#-------------------------------------------------------------------------------
-			for _i in enemy.size():
-				_game_scene.enemy.append(enemy[_i])
-			#-------------------------------------------------------------------------------
-			_game_scene.EnterBattle()
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Get_Item_Script_ID(_item_scrit:Item_Script) -> String:
-	var _s: String = name+"_"+_item_scrit.name
+func Get_Item_Script_ID(_node:Node) -> String:
+	var _s: String = name+"_"+_node.name
 	return _s
 #-------------------------------------------------------------------------------

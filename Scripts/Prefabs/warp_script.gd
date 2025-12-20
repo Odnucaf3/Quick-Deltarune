@@ -11,15 +11,21 @@ class_name Warp_Script
 func Move_to_Next_Room(_body:Node2D):
 	var _game_scene: Game_Scene = current_room.game_scene
 	#-------------------------------------------------------------------------------
-	if(_body == _game_scene.player[0]):
+	if(_body == _game_scene.player_characterbody2d):
 		#var _new_room: Room_Script = next_room_prefab.instantiate() as Room_Script
 		var _new_room: Room_Script = load("res://Nodes/Prefabs/Rooms/"+room_name+".tscn").instantiate() as Room_Script
 		_new_room.game_scene = _game_scene
 		#-------------------------------------------------------------------------------
-		for _i in _game_scene.player.size():
-			_game_scene.PlayAnimation(_game_scene.player[_i].playback, "Idle")
-			_game_scene.player[_i].is_Moving = false
-			_game_scene.player[_i].position = _new_room.warp_array[room_warp_index].position
+		for _i in _game_scene.friend_party.size():
+			_game_scene.PlayAnimation(_game_scene.friend_party[_i].playback, "Idle")
+			_game_scene.friend_party[_i].is_Moving = false
+			#-------------------------------------------------------------------------------
+			if(_i > 0):
+				_game_scene.friend_party[_i].position = _new_room.warp_array[room_warp_index].position
+			#-------------------------------------------------------------------------------
+			else:
+				_game_scene.player_characterbody2d.position = _new_room.warp_array[room_warp_index].position
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		_game_scene.room_test = _new_room
 		#_game_scene.world2d.add_child(_new_room)
