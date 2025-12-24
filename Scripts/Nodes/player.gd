@@ -4,9 +4,9 @@ class_name Party_Member
 @export var id: StringName
 @export var texture2d: Texture2D
 var hp: int
-var max_hp: int = 15
+@export var max_hp: int = 15
 var sp: int
-var max_sp: int = 20
+@export var max_sp: int = 20
 var is_in_guard: bool
 var damage_label_array: Array[Label] = []
 #-------------------------------------------------------------------------------

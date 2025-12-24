@@ -799,6 +799,7 @@ graph_offset = Vector2(-43, 65.58026)
 script = ExtResource("1_8v33q")
 id = &"Ralsay"
 texture2d = ExtResource("5_o041u")
+max_hp = 360
 skill_array = Array[ExtResource("3_jbqvd")]([ExtResource("4_ton5n"), ExtResource("5_lea5u")])
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")

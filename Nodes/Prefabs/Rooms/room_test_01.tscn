@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://ckdq3xhi07i1g"]
+[gd_scene load_steps=13 format=4 uid="uid://ckdq3xhi07i1g"]
 
 [ext_resource type="Script" uid="uid://dkpbd3o7n34ul" path="res://Scripts/Prefabs/Rooms/room_test_1.gd" id="1_0ji40"]
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_0ji40"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="5_8dt50"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_1.tscn" id="6_jyvag"]
+[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="6_wkx03"]
 [ext_resource type="Script" uid="uid://fiae7cnj4tl8" path="res://Scripts/Nodes/enemy_chaser_script.gd" id="7_jyvag"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8dt50"]
@@ -127,6 +128,7 @@ position = Vector2(-32, 32)
 
 [node name="Item5" parent="." instance=ExtResource("6_7i8dt")]
 position = Vector2(-40, 24)
+pickable_item = ExtResource("6_wkx03")
 
 [node name="Enemy1" type="CharacterBody2D" parent="." node_paths=PackedStringArray("collider", "player_detector_area2d", "enemy")]
 y_sort_enabled = true

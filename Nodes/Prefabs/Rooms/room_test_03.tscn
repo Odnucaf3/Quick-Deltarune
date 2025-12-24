@@ -1,18 +1,21 @@
-[gd_scene load_steps=6 format=4 uid="uid://b0gmlepnqkt3t"]
+[gd_scene load_steps=8 format=4 uid="uid://b0gmlepnqkt3t"]
 
 [ext_resource type="Script" uid="uid://dkpbd3o7n34ul" path="res://Scripts/Prefabs/Rooms/room_test_1.gd" id="1_jme6e"]
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_6mw6j"]
 [ext_resource type="Script" uid="uid://dbwty41uhfl16" path="res://Scripts/Prefabs/warp_script.gd" id="3_47s0u"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="4_6mw6j"]
+[ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="5_25x5p"]
+[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="6_37vpw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2c8rj"]
 size = Vector2(48, 8)
 
-[node name="Room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits", "warp_array")]
+[node name="Room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits", "warp_array", "item_script_array")]
 y_sort_enabled = true
 script = ExtResource("1_jme6e")
 room_limits = NodePath("Control")
 warp_array = [NodePath("Warp_Script")]
+item_script_array = [NodePath("Item")]
 metadata/_custom_type_script = "uid://dkpbd3o7n34ul"
 
 [node name="Control" type="Control" parent="."]
@@ -55,3 +58,7 @@ autoplay = "banner-coke"
 position = Vector2(-24, -312)
 animation = &"banner-neon"
 autoplay = "banner-neon"
+
+[node name="Item" parent="." instance=ExtResource("5_25x5p")]
+position = Vector2(-160, -456)
+pickable_item = ExtResource("6_37vpw")
