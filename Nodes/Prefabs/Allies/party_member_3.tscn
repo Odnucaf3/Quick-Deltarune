@@ -1,10 +1,10 @@
-[gd_scene load_steps=50 format=3 uid="uid://vt43nxol7i3t"]
+[gd_scene load_steps=52 format=3 uid="uid://vt43nxol7i3t"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_8v33q"]
-[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="3_jbqvd"]
+[ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_jbqvd"]
 [ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/Skills/heal.tres" id="4_ton5n"]
-[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="5_lea5u"]
 [ext_resource type="Texture2D" uid="uid://ccv5xpttu6mqy" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle1.png" id="5_o041u"]
+[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="5_ton5n"]
 [ext_resource type="Texture2D" uid="uid://io8f7o6inlv6" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle2.png" id="6_xwnir"]
 [ext_resource type="Texture2D" uid="uid://drcr74enj3r3s" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle3.png" id="7_ykxxv"]
 [ext_resource type="Texture2D" uid="uid://csxqly0yxihgj" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle4.png" id="8_xohib"]
@@ -24,6 +24,16 @@
 [ext_resource type="Texture2D" uid="uid://cl1024abymhs3" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot1.png" id="22_m00yb"]
 [ext_resource type="Texture2D" uid="uid://bem4oqftkijho" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot2.png" id="23_i878o"]
 [ext_resource type="Texture2D" uid="uid://coahfhwulry5y" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot3.png" id="24_lqmrt"]
+
+[sub_resource type="Resource" id="Resource_lea5u"]
+script = ExtResource("3_jbqvd")
+item_resource = ExtResource("4_ton5n")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_wuufr"]
+script = ExtResource("3_jbqvd")
+item_resource = ExtResource("5_ton5n")
+metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Animation" id="Animation_s1r55"]
 resource_name = "Aim"
@@ -800,7 +810,9 @@ script = ExtResource("1_8v33q")
 id = &"Ralsay"
 texture2d = ExtResource("5_o041u")
 max_hp = 360
-skill_array = Array[ExtResource("3_jbqvd")]([ExtResource("4_ton5n"), ExtResource("5_lea5u")])
+lore = "* An generic cyber punk foot soldier."
+description = "* Strong to Ice, weak to electriciy."
+skill_array = Array[ExtResource("3_jbqvd")]([SubResource("Resource_lea5u"), SubResource("Resource_wuufr")])
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")

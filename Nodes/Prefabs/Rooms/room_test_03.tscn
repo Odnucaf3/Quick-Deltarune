@@ -1,24 +1,32 @@
-[gd_scene load_steps=8 format=4 uid="uid://b0gmlepnqkt3t"]
+[gd_scene load_steps=9 format=4 uid="uid://b0gmlepnqkt3t"]
 
-[ext_resource type="Script" uid="uid://dkpbd3o7n34ul" path="res://Scripts/Prefabs/Rooms/room_test_1.gd" id="1_jme6e"]
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_6mw6j"]
-[ext_resource type="Script" uid="uid://dbwty41uhfl16" path="res://Scripts/Prefabs/warp_script.gd" id="3_47s0u"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="4_6mw6j"]
+[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="4_25x5p"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="5_25x5p"]
-[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="6_37vpw"]
+[ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="5_37vpw"]
+[ext_resource type="PackedScene" uid="uid://dace4b2raluo2" path="res://Nodes/Prefabs/Warps/warp_down.tscn" id="6_25x5p"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2c8rj"]
-size = Vector2(48, 8)
+[sub_resource type="GDScript" id="GDScript_47s0u"]
+script/source = "extends Room_Script
+#-------------------------------------------------------------------------------
+func Room_Event():
+	print(name)
+#-------------------------------------------------------------------------------
+"
 
-[node name="Room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits", "warp_array", "item_script_array")]
+[sub_resource type="Resource" id="Resource_fw0vv"]
+script = ExtResource("5_37vpw")
+item_resource = ExtResource("4_25x5p")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[node name="room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits")]
 y_sort_enabled = true
-script = ExtResource("1_jme6e")
-room_limits = NodePath("Control")
-warp_array = [NodePath("Warp_Script")]
-item_script_array = [NodePath("Item")]
+script = SubResource("GDScript_47s0u")
+room_limits = NodePath("room_limits")
 metadata/_custom_type_script = "uid://dkpbd3o7n34ul"
 
-[node name="Control" type="Control" parent="."]
+[node name="room_limits" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_left = -344.0
@@ -31,22 +39,8 @@ z_index = -1
 tile_map_data = PackedByteArray("AAD///P/AAAHAAcAAAD+/+//AAAHAAcAAAD+//D/AAAHAAcAAAD+//H/AAAHAAcAAAD+//L/AAAHAAcAAAD+//P/AAAHAAcAAAD//+//AAAHAAcAAAD///D/AAAHAAcAAAD///H/AAAHAAcAAAD///L/AAAHAAcAAAAAAO//AAAHAAcAAAAAAPD/AAAHAAcAAAAAAPH/AAAHAAcAAAAAAPL/AAAHAAcAAAAAAPP/AAAHAAcAAAD+/+j/AAAHAAcAAAD+/+n/AAAHAAcAAAD+/+r/AAAHAAcAAAD+/+v/AAAHAAcAAAD+/+z/AAAHAAcAAAD+/+3/AAAHAAcAAAD+/+7/AAAHAAcAAAD//+j/AAAHAAcAAAD//+n/AAAHAAcAAAD//+r/AAAHAAcAAAD//+v/AAAHAAcAAAD//+z/AAAHAAcAAAD//+3/AAAHAAcAAAD//+7/AAAHAAcAAAAAAOj/AAAHAAcAAAAAAOn/AAAHAAcAAAAAAOr/AAAHAAcAAAAAAOv/AAAHAAcAAAAAAOz/AAAHAAcAAAAAAO3/AAAHAAcAAAAAAO7/AAAHAAcAAAD+/+X/AAAHAAcAAAD+/+b/AAAHAAcAAAD+/+f/AAAHAAcAAAD//+X/AAAHAAcAAAD//+b/AAAHAAcAAAD//+f/AAAHAAcAAAAAAOX/AAAHAAcAAAAAAOb/AAAHAAcAAAAAAOf/AAAHAAcAAAD0/+X/AAAAAAAAAAD0/+b/AAAHAAcAAAD0/+f/AAAAAAAAAAD1/+X/AAAHAAcAAAD1/+b/AAAHAAcAAAD1/+f/AAAHAAcAAAD2/+X/AAAAAAAAAAD2/+b/AAAHAAcAAAD2/+f/AAAHAAcAAAD3/+X/AAAHAAcAAAD3/+b/AAAHAAcAAAD3/+f/AAAHAAcAAAD4/+X/AAAHAAcAAAD4/+b/AAAHAAcAAAD4/+f/AAAHAAcAAAD5/+X/AAAHAAcAAAD5/+b/AAAAAAAAAAD5/+f/AAAHAAcAAAD6/+X/AAAHAAcAAAD6/+b/AAAHAAcAAAD6/+f/AAAHAAcAAAD7/+X/AAAHAAcAAAD7/+b/AAAHAAcAAAD7/+f/AAAAAAAAAAD8/+X/AAAHAAcAAAD8/+b/AAAHAAcAAAD8/+f/AAAHAAcAAAD9/+X/AAAHAAcAAAD9/+b/AAAHAAcAAAD9/+f/AAAHAAcAAAD9/+j/AQAEAAQAAAD9/+n/AQAEAAQAAAD9/+r/AQAEAAQAAAD9/+v/AQAEAAQAAAD9/+z/AQAEAAQAAAD9/+3/AQAEAAQAAAD9/+7/AQAEAAQAAAD9/+//AQAEAAQAAAD9//D/AQAEAAQAAAD9//H/AQAEAAQAAAD9//L/AQAEAAQAAAD9//P/AQAEAAQAAAD0/+j/AQAEAAQAAAD1/+j/AQAEAAQAAAD2/+j/AQAEAAQAAAD3/+j/AQAEAAQAAAD4/+j/AQAEAAQAAAD5/+j/AQAEAAQAAAD6/+j/AQAEAAQAAAD7/+j/AQAEAAQAAAD8/+j/AQAEAAQAAAABAOj/AQAEAAQAAAABAOn/AQAEAAQAAAABAOr/AQAEAAQAAAABAOv/AQAEAAQAAAABAOz/AQAEAAQAAAABAO3/AQAEAAQAAAABAO7/AQAEAAQAAAABAO//AQAEAAQAAAABAPD/AQAEAAQAAAABAPH/AQAEAAQAAAABAPL/AQAEAAQAAAABAPP/AQAEAAQAAADz/+T/AQAEAAQAAADz/+X/AAAHAAcAAADz/+b/AAAHAAcAAADz/+f/AAAHAAcAAADz/+j/AQAEAAQAAAABAOT/AQAEAAQAAAABAOX/AQAEAAQAAAABAOb/AQAEAAQAAAABAOf/AQAEAAQAAADz/+H/AQAEAAQAAADz/+L/AQAEAAQAAADz/+P/AQAEAAQAAAD0/+H/AAALAAcAAAD0/+L/AAALAAgAAAD0/+P/AAALAAkAAAD0/+T/AAAHAAcAAAD1/+H/AAAMAAcAAAD1/+L/AAAMAAgAAAD1/+P/AAAMAAkAAAD1/+T/AAAHAAcAAAD2/+H/AAANAAcAAAD2/+L/AAANAAgAAAD2/+P/AAANAAkAAAD2/+T/AAAHAAcAAAD3/+H/AAAHAAcAAAD3/+L/AAAHAAcAAAD3/+P/AAAHAAcAAAD3/+T/AAAHAAcAAAD4/+H/AQAEAAQAAAD4/+L/AQAEAAQAAAD4/+P/AQAEAAQAAAD4/+T/AQAEAAQAAAD5/+H/AQADAAEAAAD5/+L/AQADAAIAAAD5/+P/AQADAAMAAAD5/+T/AQADAAQAAAD6/+H/AQAEAAEAAAD6/+L/AQAEAAIAAAD6/+P/AQAEAAMAAAD6/+T/AQAEAAQAAAD7/+H/AQAFAAEAAAD7/+L/AQAFAAIAAAD7/+P/AQAFAAMAAAD7/+T/AQAFAAQAAAD8/+H/AQAEAAQAAAD8/+L/AQAEAAQAAAD8/+P/AQAEAAQAAAD8/+T/AQAEAAQAAAD9/+H/AQAEAAQAAAD9/+L/AQAEAAQAAAD9/+P/AQAEAAQAAAD9/+T/AQAEAAQAAAD+/+H/AQAEAAQAAAD+/+L/AQAEAAQAAAD+/+P/AQAEAAQAAAD+/+T/AQAEAAQAAAD//+H/AQAEAAQAAAD//+L/AQAEAAQAAAD//+P/AQAEAAQAAAD//+T/AQAEAAQAAAAAAOH/AQAEAAQAAAAAAOL/AQAEAAQAAAAAAOP/AQAEAAQAAAAAAOT/AQAEAAQAAAABAOH/AQAEAAQAAAABAOL/AQAEAAQAAAABAOP/AQAEAAQAAADy/+f/AAAHAAcAAADy/+b/AAAAAAAAAADy/+X/AAAHAAcAAADy/+j/AQAEAAQAAADx/+j/AQAEAAQAAADx/+f/AAAHAAcAAADx/+b/AAAHAAcAAADx/+X/AAAHAAcAAADy/+T/AQAFAAQAAADx/+T/AQAEAAQAAADx/+P/AQAEAAMAAADx/+L/AQAEAAIAAADx/+H/AQAEAAEAAADy/+H/AQAFAAEAAADy/+L/AQAFAAIAAADy/+P/AQAFAAMAAADv/+X/AAAHAAcAAADv/+b/AAAHAAcAAADv/+f/AAAHAAcAAADw/+X/AAAHAAcAAADw/+b/AAAAAAAAAADw/+f/AAAHAAcAAADu/+H/AQAEAAQAAADu/+L/AQAEAAQAAADu/+P/AQAEAAQAAADu/+T/AQAEAAQAAADv/+H/AQAEAAQAAADv/+L/AQAEAAQAAADv/+P/AQAEAAQAAADv/+T/AQAEAAQAAADw/+H/AQADAAEAAADw/+L/AQADAAIAAADw/+P/AQADAAMAAADw/+T/AQADAAQAAADu/+j/AQAEAAQAAADv/+j/AQAEAAQAAADw/+j/AQAEAAQAAADu/+X/AAAHAAcAAADu/+b/AAAAAAAAAADu/+f/AAAHAAcAAADs/+X/AAAAAAAAAADs/+b/AAAHAAcAAADs/+f/AAAHAAcAAADt/+X/AAAHAAcAAADt/+b/AAAHAAcAAADt/+f/AAAAAAAAAADr/+H/AQAEAAQAAADr/+L/AQAEAAQAAADr/+P/AQAEAAQAAADr/+T/AQAEAAQAAADs/+H/AQAEAAQAAADs/+L/AQAEAAQAAADs/+P/AQAEAAQAAADs/+T/AQAEAAQAAADt/+H/AQAEAAQAAADt/+L/AQAEAAQAAADt/+P/AQAEAAQAAADt/+T/AQAEAAQAAADr/+j/AQAEAAQAAADs/+j/AQAEAAQAAADt/+j/AQAEAAQAAADr/+X/AQAEAAQAAADr/+b/AQAEAAQAAADr/+f/AQAEAAQAAADz/93/AQAEAAQAAADz/97/AQAEAAQAAADz/9//AQAEAAQAAADz/+D/AQAEAAQAAAD0/93/AQAEAAQAAAD0/97/AQAEAAQAAAD0/9//AQAEAAQAAAD0/+D/AQAEAAQAAAD1/93/AQAEAAQAAAD1/97/AQAEAAQAAAD1/9//AQAEAAQAAAD1/+D/AQAEAAQAAAD2/93/AQAEAAQAAAD2/97/AQAEAAQAAAD2/9//AQAEAAQAAAD2/+D/AQAEAAQAAAD3/93/AQAEAAQAAAD3/97/AQAEAAQAAAD3/9//AQAEAAQAAAD3/+D/AQAEAAQAAAD4/93/AQAEAAQAAAD4/97/AQAEAAQAAAD4/9//AQAEAAQAAAD4/+D/AQAEAAQAAAA=")
 tile_set = ExtResource("2_6mw6j")
 
-[node name="Warp_Script" type="Area2D" parent="." node_paths=PackedStringArray("current_room", "collider")]
-position = Vector2(-8, -208)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("3_47s0u")
-current_room = NodePath("..")
-room_warp_index = 1
-collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://dbwty41uhfl16"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Warp_Script"]
-position = Vector2(0, 20)
-shape = SubResource("RectangleShape2D_2c8rj")
-
 [node name="props_prefab" parent="." instance=ExtResource("4_6mw6j")]
-position = Vector2(-280, -400)
+position = Vector2(-304, -400)
 autoplay = "banner-big"
 
 [node name="props_prefab2" parent="." instance=ExtResource("4_6mw6j")]
@@ -61,4 +55,8 @@ autoplay = "banner-neon"
 
 [node name="Item" parent="." instance=ExtResource("5_25x5p")]
 position = Vector2(-160, -456)
-pickable_item = ExtResource("6_37vpw")
+pickable_item = SubResource("Resource_fw0vv")
+
+[node name="Warp_Down" parent="." instance=ExtResource("6_25x5p")]
+position = Vector2(-8, -208)
+warp_name = &"Warp_Up2"

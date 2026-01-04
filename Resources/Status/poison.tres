@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="Status_Resource" load_steps=2 format=3 uid="uid://bnrjjakhyhhuk"]
+[gd_resource type="Resource" script_class="StatusEffect_Resource" load_steps=2 format=3 uid="uid://bnrjjakhyhhuk"]
 
-[ext_resource type="Script" uid="uid://cnxg5h2oypmxr" path="res://Scripts/Resources/status_resource.gd" id="1_fp0mn"]
+[ext_resource type="Script" uid="uid://cnxg5h2oypmxr" path="res://Scripts/Resources/statuseffect_resource.gd" id="1_fp0mn"]
 
 [resource]
 script = ExtResource("1_fp0mn")
+lore = "* An venimous stuff."
+description = "* Reveice 8% damage each turn."
 metadata/_custom_type_script = "uid://cnxg5h2oypmxr"

@@ -1,26 +1,57 @@
-[gd_scene load_steps=30 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=43 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="5_rpgth"]
+[ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="6_1th3s"]
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/defense.tres" id="6_lujb4"]
-[ext_resource type="Script" uid="uid://kyu7ufkbhotc" path="res://Scripts/Resources/equip_resource.gd" id="9_ik87f"]
+[ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="7_igypo"]
+[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/mystery_key.tres" id="7_mitwg"]
+[ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/money.tres" id="8_3p4s7"]
 [ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip/coil_sword.tres" id="10_hxoxt"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="10_igypo"]
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
 [ext_resource type="Script" uid="uid://csnm33ej8nc54" path="res://Scripts/Scenes/world_2d.gd" id="13_gg6rv"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/party_member.tscn" id="13_hxoxt"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
+[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="18_1th3s"]
+[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="18_3p4s7"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
+[ext_resource type="Resource" uid="uid://bnrjjakhyhhuk" path="res://Resources/Status/poison.tres" id="19_mitwg"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 [ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
 [ext_resource type="Texture2D" uid="uid://bkwxpp3bs0jvk" path="res://icon.svg" id="21_hxoxt"]
 [ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
-[ext_resource type="AudioStream" uid="uid://ctboksgyydra2" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Cursor_tones/cursor_style_1.wav" id="24_3p4s7"]
-[ext_resource type="AudioStream" uid="uid://diiwnxpxavytu" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Confirm_tones/style1/confirm_style_1_001.wav" id="25_xhx7r"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
-[ext_resource type="AudioStream" uid="uid://cl6xwf2nly41l" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Error_tones/style1/error_style_1_001.wav" id="26_42b3h"]
+
+[sub_resource type="Resource" id="Resource_xhx7r"]
+script = ExtResource("6_1th3s")
+key_item_resource = ExtResource("7_mitwg")
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
+
+[sub_resource type="Resource" id="Resource_42b3h"]
+script = ExtResource("6_1th3s")
+key_item_resource = ExtResource("8_3p4s7")
+hold = 9999
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
+
+[sub_resource type="Resource" id="Resource_gg6rv"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("5_rpgth")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_rpgth"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("6_lujb4")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_hxoxt"]
+script = ExtResource("10_igypo")
+equip_resource = ExtResource("10_hxoxt")
+hold = 4
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -40,8 +71,29 @@ expand_margin_bottom = 2.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ik87f"]
 size = Vector2(16, 8)
 
+[sub_resource type="Resource" id="Resource_yqvj6"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("5_rpgth")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_hko5v"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("6_lujb4")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_ek5q1"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("18_3p4s7")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_mitwg"]
+script = ExtResource("18_1th3s")
+statuseffect_resource = ExtResource("19_mitwg")
+hold = 4
+metadata/_custom_type_script = "uid://mdn2h1nh8s14"
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
-radius = 7.0
+radius = 8.062258
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnh07"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -69,25 +121,25 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "audioStreamPlayer_select", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "dialogue_menu", "dialogue_menu_image", "dialogue_menu_label", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equipslot_menu", "equipslot_menu_content", "status_menu", "status_menu_content", "status_menu_stats_button_array", "status_menu_image", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "dialogue_menu", "dialogue_menu_image", "dialogue_menu_name_label", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equip_menu_title", "equip_menu_lore", "equip_menu_description", "equipslot_menu", "equipslot_menu_content", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
 game_scene = NodePath("..")
 ui_theme = ExtResource("26_1th3s")
-room_test = NodePath("room_test_03")
-audioStreamPlayer_select = NodePath("../CanvasLayer/AudioStreamPlayer_select")
-audioStreamPlayer_submit = NodePath("../CanvasLayer/AudioStreamPlayer_submit")
-audioStreamPlayer_cancel = NodePath("../CanvasLayer/AudioStreamPlayer_cancel")
-dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu2")
-dialogue_menu_image = NodePath("../CanvasLayer/Dialogue_Menu2/HBoxContainer/TextureRect")
-dialogue_menu_label = NodePath("../CanvasLayer/Dialogue_Menu2/HBoxContainer/Dialogue_MarginContainer/RichTextLabel")
+room_test = NodePath("room_test_01")
+dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu")
+dialogue_menu_image = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/TextureRect")
+dialogue_menu_name_label = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer/Label")
+dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer/RichTextLabel")
+savespot_menu = NodePath("../CanvasLayer/Save_Menu")
+savespot_menu_button_array = [NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
 enemy_ui_prefab = ExtResource("16_mapp4")
 player_characterbody2d = NodePath("Player")
 player_collider = NodePath("Player/CollisionShape2D")
-player_interactable_area2d = NodePath("Player/interactable_Area2D")
-player_enemyDetector_area2d = NodePath("Player/enemy_detector_Area2D2")
+player_interactable_area2d = NodePath("Player/interactable_by_Action_Area2D")
+player_enemyDetector_area2d = NodePath("Player/enemy_by_Touch_Area2D")
 friend_party = [NodePath("Player/Friend_01"), NodePath("Friend_02"), NodePath("Friend_03")]
 item_menu = NodePath("../CanvasLayer/All Menues/Items_TabContainer")
 item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
@@ -105,8 +157,9 @@ item_menu_keyitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContai
 item_menu_keyitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/Label")
 item_menu_keyitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_keyitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
-iten_resource_attack = ExtResource("5_rpgth")
-iten_resource_defense = ExtResource("6_lujb4")
+key_item_array = Array[ExtResource("6_1th3s")]([SubResource("Resource_xhx7r"), SubResource("Resource_42b3h")])
+iten_resource_attack = SubResource("Resource_gg6rv")
+iten_resource_defense = SubResource("Resource_rpgth")
 skill_menu = NodePath("../CanvasLayer/All Menues/Skills_TabContainer")
 skill_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Skills_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 skill_menu_content = NodePath("../CanvasLayer/All Menues/Skills_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
@@ -116,19 +169,34 @@ skill_menu_description = NodePath("../CanvasLayer/All Menues/Skills_TabContainer
 equip_menu = NodePath("../CanvasLayer/All Menues/Equip_TabContainer")
 equip_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 equip_menu_content = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+equip_menu_title = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/Label")
+equip_menu_lore = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+equip_menu_description = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 equipslot_menu = NodePath("../CanvasLayer/All Menues/EquipSlot_TabContainer")
 equipslot_menu_content = NodePath("../CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer")
-equip_array = Array[ExtResource("9_ik87f")]([ExtResource("10_hxoxt")])
+equipslot_menu_title = NodePath("../CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/Label")
+equipslot_menu_lore = NodePath("../CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+equipslot_menu_description = NodePath("../CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_hxoxt")])
 status_menu = NodePath("../CanvasLayer/All Menues/Status_TabContainer")
-status_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+status_menu_information_image = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
+status_menu_information_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/Label")
+status_menu_information_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/MarginContainer/RichTextLabel")
+status_menu_information_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/MarginContainer2/RichTextLabel")
 status_menu_stats_button_array = [NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button2"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button3"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button4"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button5"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button6"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button7"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button8")]
-status_menu_image = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
+status_menu_stats_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/Label")
+status_menu_stats_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/MarginContainer/RichTextLabel")
+status_menu_stats_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/MarginContainer2/RichTextLabel")
+status_menu_statuseffect_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+status_menu_statuseffect_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/Label")
+status_menu_statuseffect_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+status_menu_statuseffect_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 black_panel = NodePath("../CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("Battle_Black_Panel")
 pause_menu_panel = NodePath("../CanvasLayer/Pause_Menu_Panel")
 pause_menu = NodePath("../CanvasLayer/Pause_Menu")
-pause_menu_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
-pause_menu_party_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer/VBoxContainer2/Party_Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/VBoxContainer2/Party_Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/VBoxContainer2/Party_Button3")]
+pause_menu_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
+pause_menu_party_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button3")]
 win_label = NodePath("../CanvasLayer/Battle_UI/win_Label")
 retry_menu = NodePath("../CanvasLayer/Battle_UI/win_Label/Retry Menu")
 retry_menu_button = [NodePath("../CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button"), NodePath("../CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button2"), NodePath("../CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button3")]
@@ -202,7 +270,7 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 zoom = Vector2(3.5, 3.5)
 
-[node name="room_test_03" parent="World2D" instance=ExtResource("11_tnh07")]
+[node name="room_test_01" parent="World2D" instance=ExtResource("11_tnh07")]
 
 [node name="Player" type="CharacterBody2D" parent="World2D"]
 y_sort_enabled = true
@@ -212,19 +280,21 @@ collision_layer = 2
 shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" instance=ExtResource("13_hxoxt")]
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1")])
+statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_mitwg")])
 
-[node name="interactable_Area2D" type="Area2D" parent="World2D/Player"]
+[node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player"]
 collision_layer = 0
 collision_mask = 8
 
-[node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_Area2D"]
+[node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Action_Area2D"]
 shape = SubResource("CircleShape2D_hxoxt")
 
-[node name="enemy_detector_Area2D2" type="Area2D" parent="World2D/Player"]
+[node name="enemy_by_Touch_Area2D" type="Area2D" parent="World2D/Player"]
 collision_layer = 0
 collision_mask = 4
 
-[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/enemy_detector_Area2D2"]
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/enemy_by_Touch_Area2D"]
 shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" instance=ExtResource("21_rpgth")]
@@ -235,15 +305,98 @@ position = Vector2(-48, 8)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="AudioStreamPlayer_select" type="AudioStreamPlayer" parent="CanvasLayer"]
-stream = ExtResource("24_3p4s7")
-volume_db = 5.0
+[node name="Dialogue_Menu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -148.0
+offset_right = 350.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="AudioStreamPlayer_submit" type="AudioStreamPlayer" parent="CanvasLayer"]
-stream = ExtResource("25_xhx7r")
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 8
 
-[node name="AudioStreamPlayer_cancel" type="AudioStreamPlayer" parent="CanvasLayer"]
-stream = ExtResource("26_42b3h")
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("21_hxoxt")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "[Speaker's Name]"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla."
+
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu"]
+visible = false
+layout_mode = 1
+anchors_preset = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Dialogue_Menu/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+offset_right = 9.0
+grow_vertical = 0
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/Control/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "[Speker's Name]"
+horizontal_alignment = 1
 
 [node name="Pause_Menu_Panel" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -304,10 +457,10 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 42.0
-offset_top = 89.0
-offset_right = 391.0
-offset_bottom = 103.0
+offset_left = 21.0
+offset_top = 90.0
+offset_right = 370.0
+offset_bottom = 104.0
 grow_vertical = 2
 rotation = -1.5707964
 theme_override_styles/background = SubResource("StyleBoxFlat_xrh8u")
@@ -518,7 +671,6 @@ theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
 
 [node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -533,90 +685,121 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Pause_Menu/MarginContainer2"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer"]
+[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 80
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Skills  "
 
-[node name="Button2" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Button2" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Items  "
 
-[node name="Button3" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Button3" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Equip  "
 
-[node name="Button4" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Button4" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Status  "
 
-[node name="Button5" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Button5" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Options  "
 
-[node name="Button6" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Button6" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Quit  "
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2"]
+[node name="Control" type="Control" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -25.0
+offset_right = 117.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
 size_flags_vertical = 8
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/PanelContainer/MarginContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
@@ -631,17 +814,42 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Pause_Menu/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Party_Button" parent="CanvasLayer/Pause_Menu/MarginContainer/VBoxContainer2" instance=ExtResource("19_xrh8u")]
+[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "Party Members"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Party_Button" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" instance=ExtResource("19_xrh8u")]
 layout_mode = 2
 
-[node name="Party_Button2" parent="CanvasLayer/Pause_Menu/MarginContainer/VBoxContainer2" instance=ExtResource("19_xrh8u")]
+[node name="Party_Button2" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" instance=ExtResource("19_xrh8u")]
 layout_mode = 2
 
-[node name="Party_Button3" parent="CanvasLayer/Pause_Menu/MarginContainer/VBoxContainer2" instance=ExtResource("19_xrh8u")]
+[node name="Party_Button3" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" instance=ExtResource("19_xrh8u")]
 layout_mode = 2
 
 [node name="Black_Panel" type="Panel" parent="CanvasLayer"]
@@ -668,6 +876,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1468,7 +1677,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 6
 
@@ -1759,13 +1967,10 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer"]
-custom_minimum_size = Vector2(0, 100)
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "Lore description of the Skill / Item."
-autowrap_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "* Lore description of the Equipment."
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -1775,13 +1980,10 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer2"]
-custom_minimum_size = Vector2(0, 100)
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer2"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "Utility description of the Skill / Item."
-autowrap_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "* Utility description of the Equipment."
 
 [node name="Status_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
 visible = false
@@ -2824,6 +3026,60 @@ size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
 text = "* Description"
 
+[node name="Save_Menu" type="HBoxContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -291.5
+offset_top = -143.5
+offset_right = 291.5
+offset_bottom = 143.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Save_Menu"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Save_Menu/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Save_Menu/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 100
+text = "Save Spot"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "Save"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "Teleport"
+
 [node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -2844,79 +3100,9 @@ theme_override_font_sizes/font_size = 12
 text = "aaaaaaaaaaaaa"
 
 [node name="fps_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/outline_size = 4
 text = "60.00 fps"
-
-[node name="Dialogue_Menu" type="PanelContainer" parent="CanvasLayer"]
-visible = false
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -130.0
-offset_right = 250.0
-offset_bottom = -58.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_vertical = 8
-theme = ExtResource("26_1th3s")
-
-[node name="Dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="Dialogue_Menu_Label" type="Label" parent="CanvasLayer/Dialogue_Menu/Dialogue_MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 30
-text = "Player 1 uses V-Slash to Enemy 1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Dialogue_Menu2" type="PanelContainer" parent="CanvasLayer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -375.0
-offset_top = -163.0
-offset_right = 375.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 0
-size_flags_vertical = 8
-theme = ExtResource("26_1th3s")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu2"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu2/HBoxContainer"]
-visible = false
-layout_mode = 2
-texture = ExtResource("21_hxoxt")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="Dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu2/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu2/HBoxContainer/Dialogue_MarginContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 30
-bbcode_enabled = true
-text = "[Speaker´s Name]
-* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."

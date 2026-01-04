@@ -1,10 +1,15 @@
-[gd_scene load_steps=30 format=3 uid="uid://dottqr7xoeeuf"]
+[gd_scene load_steps=31 format=3 uid="uid://dottqr7xoeeuf"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_d1kby"]
 [ext_resource type="Texture2D" uid="uid://qw62qdjg350n" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/idle1.png" id="2_a6kb6"]
-[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="3_a6kb6"]
+[ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_a6kb6"]
 [ext_resource type="Texture2D" uid="uid://dlm8ht7qj8se4" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/player.png" id="4_mnlw8"]
 [ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="4_rc083"]
+
+[sub_resource type="Resource" id="Resource_rc083"]
+script = ExtResource("3_a6kb6")
+item_resource = ExtResource("4_rc083")
+metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Animation" id="Animation_yqvj6"]
 resource_name = "Aim"
@@ -763,7 +768,9 @@ script = ExtResource("1_d1kby")
 id = &"Susana"
 texture2d = ExtResource("2_a6kb6")
 max_hp = 220
-skill_array = Array[ExtResource("3_a6kb6")]([ExtResource("4_rc083")])
+lore = "* An police lady"
+description = "* Strong to electricity, weal to fire."
+skill_array = Array[ExtResource("3_a6kb6")]([SubResource("Resource_rc083")])
 pivot = NodePath("Marker2D")
 sprite = NodePath("Marker2D/Sprite2D")
 animation_tree = NodePath("Marker2D/AnimationTree")

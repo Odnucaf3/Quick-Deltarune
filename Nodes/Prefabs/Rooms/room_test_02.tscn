@@ -1,22 +1,22 @@
-[gd_scene load_steps=7 format=4 uid="uid://c7ehw7h0jv22a"]
+[gd_scene load_steps=6 format=4 uid="uid://c7ehw7h0jv22a"]
 
-[ext_resource type="Script" uid="uid://dkpbd3o7n34ul" path="res://Scripts/Prefabs/Rooms/room_test_1.gd" id="1_0w4yx"]
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_ml7fc"]
-[ext_resource type="Script" uid="uid://dbwty41uhfl16" path="res://Scripts/Prefabs/warp_script.gd" id="3_ml7fc"]
+[ext_resource type="PackedScene" uid="uid://dace4b2raluo2" path="res://Nodes/Prefabs/Warps/warp_down.tscn" id="3_rj2mv"]
+[ext_resource type="PackedScene" uid="uid://eio8fpyvkvua" path="res://Nodes/Prefabs/Warps/warp_right.tscn" id="4_he6hk"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="4_rj2mv"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rj2mv"]
-size = Vector2(48, 8)
+[sub_resource type="GDScript" id="GDScript_rj2mv"]
+script/source = "extends Room_Script
+#-------------------------------------------------------------------------------
+func Room_Event():
+	print(name)
+#-------------------------------------------------------------------------------
+"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_he6hk"]
-size = Vector2(8, 48)
-
-[node name="Room_test_02" type="Node2D" node_paths=PackedStringArray("room_limits", "warp_array")]
+[node name="room_test_02" type="Node2D" node_paths=PackedStringArray("room_limits")]
 y_sort_enabled = true
-script = ExtResource("1_0w4yx")
+script = SubResource("GDScript_rj2mv")
 room_limits = NodePath("room_limits")
-warp_array = [NodePath("Warp_Script"), NodePath("Warp_Script2")]
-metadata/_custom_type_script = "uid://dkpbd3o7n34ul"
 
 [node name="room_limits" type="Control" parent="."]
 layout_mode = 3
@@ -31,35 +31,8 @@ z_index = -1
 tile_map_data = PackedByteArray("AAAYAPP/AAAHAAcAAAAZAPP/AAAHAAcAAAAaAPP/AAAHAAcAAAAYAPL/AAAHAAcAAAAZAPL/AAAHAAcAAAAZAPH/AAAHAAcAAAAaAPH/AAAHAAcAAAAaAPD/AAAHAAcAAAAaAO//AAAHAAcAAAAaAO7/AAAHAAcAAAAaAO3/AAAHAAcAAAAaAOz/AQAEAAQAAAAaAOv/AQAEAAQAAAAaAOr/AQAEAAQAAAAaAOn/AQAEAAQAAAAYAOn/AQAEAAQAAAAYAOr/AQAEAAQAAAAYAOv/AQAEAAQAAAAYAOz/AQAEAAQAAAAYAO3/AAAHAAcAAAAYAO7/AAAHAAcAAAAYAO//AAAHAAcAAAAYAPD/AAAHAAcAAAAYAPH/AAAHAAcAAAAZAOn/AQAEAAQAAAAZAOr/AQAEAAQAAAAZAOv/AQAEAAQAAAAZAOz/AQAEAAQAAAAZAO3/AAAHAAcAAAAZAO7/AAAHAAcAAAAZAO//AAAHAAcAAAAZAPD/AAAHAAcAAAAaAPL/AAAHAAcAAAAVAOn/AQAEAAQAAAAVAOr/AQAEAAQAAAAVAOv/AQAEAAQAAAAVAOz/AQAEAAQAAAAWAOn/AQAEAAQAAAAWAOr/AQAEAAQAAAAWAOv/AQAEAAQAAAAWAOz/AQAEAAQAAAAXAOn/AQAEAAQAAAAXAOr/AQAEAAQAAAAXAOv/AQAEAAQAAAAXAOz/AQAEAAQAAAAbAOn/AQAEAAQAAAAbAOr/AQAEAAQAAAAbAOv/AQAEAAQAAAAbAOz/AQAEAAQAAAAcAOn/AQAEAAQAAAAcAOr/AQAEAAQAAAAcAOv/AQAEAAQAAAAcAOz/AQAEAAQAAAAXAO3/AAAHAAcAAAAXAO7/AAAHAAcAAAAXAO//AAAHAAcAAAAXAPD/AAAHAAcAAAAXAPH/AAAHAAcAAAAXAPL/AQAEAAQAAAAXAPP/AQAEAAQAAAAVAO3/AAAHAAcAAAAWAO3/AAAHAAcAAAAbAO3/AAAHAAcAAAAbAO7/AAAHAAcAAAAbAO//AAAHAAcAAAAbAPD/AAAHAAcAAAAbAPH/AAAHAAcAAAAbAPL/AQAEAAQAAAAbAPP/AQAEAAQAAAAcAO3/AAAHAAcAAAAdAOn/AQAEAAQAAAAdAOr/AQAEAAQAAAAdAOv/AQAEAAQAAAAdAOz/AQAEAAQAAAAdAO3/AAAHAAcAAAATAOn/AQAEAAQAAAATAOr/AQAEAAQAAAATAOv/AQAEAAQAAAATAOz/AQAEAAQAAAATAO3/AAAHAAcAAAATAO7/AAAHAAcAAAATAO//AAAHAAcAAAATAPD/AAAHAAcAAAAUAOn/AQAEAAQAAAAUAOr/AQAEAAQAAAAUAOv/AQAEAAQAAAAUAOz/AQAEAAQAAAAUAO3/AAAHAAcAAAAUAO7/AAAHAAcAAAAUAO//AAAHAAcAAAAUAPD/AAAHAAcAAAAVAO7/AAAHAAcAAAAVAO//AAAHAAcAAAAVAPD/AAAHAAcAAAAWAO7/AAAHAAcAAAAWAO//AAAHAAcAAAAWAPD/AAAHAAcAAAAcAO7/AAAHAAcAAAAcAO//AAAHAAcAAAAcAPD/AAAHAAcAAAAdAO7/AAAHAAcAAAAdAO//AAAHAAcAAAAdAPD/AAAHAAcAAAAeAOn/AQAEAAQAAAAeAOr/AQAEAAQAAAAeAOv/AQAEAAQAAAAeAOz/AQAEAAQAAAAeAO3/AAAHAAcAAAAeAO7/AAAHAAcAAAAeAO//AAAHAAcAAAAeAPD/AAAHAAcAAAAfAOn/AQAEAAQAAAAfAOr/AQAEAAQAAAAfAOv/AQAEAAQAAAAfAOz/AQAEAAQAAAAfAO3/AAAHAAcAAAAfAO7/AAAHAAcAAAAfAO//AAAHAAcAAAAfAPD/AAAHAAcAAAAgAOn/AQAEAAQAAAAgAOr/AQAEAAQAAAAgAOv/AQAEAAQAAAAgAOz/AQAEAAQAAAAgAO3/AAAHAAcAAAAgAO7/AAAHAAcAAAAgAO//AAAHAAcAAAAgAPD/AAAHAAcAAAAhAOn/AQAEAAQAAAAhAOr/AQAEAAQAAAAhAOv/AQAEAAQAAAAhAOz/AQAEAAQAAAAhAO3/AAAHAAcAAAAhAO7/AAAHAAcAAAAhAO//AAAHAAcAAAAhAPD/AAAHAAcAAAARAOn/AQAEAAQAAAARAOr/AQAEAAQAAAARAOv/AQAEAAQAAAARAOz/AQAEAAQAAAARAO3/AAAHAAcAAAARAO7/AAAHAAcAAAARAO//AAAHAAcAAAARAPD/AAAHAAcAAAASAOn/AQAEAAQAAAASAOr/AQAEAAQAAAASAOv/AQAEAAQAAAASAOz/AQAEAAQAAAASAO3/AAAHAAcAAAASAO7/AAAHAAcAAAASAO//AAAHAAcAAAASAPD/AAAHAAcAAAAiAOr/AQAEAAQAAAAiAOv/AQAEAAQAAAAiAOz/AQAEAAQAAAAiAO3/AQAEAAQAAAAiAO7/AAAHAAcAAAAiAO//AAAHAAcAAAAiAPD/AAAHAAcAAAAQAPH/AQAEAAQAAAARAPH/AAAHAAcAAAASAPH/AAAHAAcAAAATAPH/AAAHAAcAAAAUAPH/AAAHAAcAAAAVAPH/AAAHAAcAAAAWAPH/AAAHAAcAAAAQAOn/AQAEAAQAAAAQAOr/AQAEAAQAAAAQAOv/AQAEAAQAAAAQAOz/AQAEAAQAAAAQAO3/AQAEAAQAAAAQAO7/AQAEAAQAAAAQAO//AQAEAAQAAAAQAPD/AQAEAAQAAAAcAPH/AAAHAAcAAAAdAPH/AAAHAAcAAAAeAPH/AAAHAAcAAAAfAPH/AAAHAAcAAAAgAPH/AAAHAAcAAAAhAPH/AAAHAAcAAAAiAPH/AQAEAAQAAAAQAPL/AQAEAAQAAAARAPL/AQAEAAQAAAASAPL/AQAEAAQAAAATAPL/AQAEAAQAAAAUAPL/AQAEAAQAAAAVAPL/AQAEAAQAAAAWAPL/AQAEAAQAAAAcAPL/AQAEAAQAAAAdAPL/AQAEAAQAAAAeAPL/AQAEAAQAAAAfAPL/AQAEAAQAAAAgAPL/AQAEAAQAAAAhAPL/AQAEAAQAAAAiAPL/AQAEAAQAAAAjAO7/AAAHAAcAAAAjAO//AAAHAAcAAAAjAPD/AAAHAAcAAAAjAPH/AQAEAAQAAAAjAOr/AQAEAAQAAAAjAOv/AQAEAAQAAAAjAOz/AQAEAAQAAAAjAO3/AQAEAAQAAAAiAOn/AQAEAAQAAAA=")
 tile_set = ExtResource("2_ml7fc")
 
-[node name="Warp_Script" type="Area2D" parent="." node_paths=PackedStringArray("current_room", "collider")]
-position = Vector2(408, -208)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("3_ml7fc")
-current_room = NodePath("..")
-collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://dbwty41uhfl16"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Warp_Script"]
-position = Vector2(0, 20)
-shape = SubResource("RectangleShape2D_rj2mv")
-
-[node name="Warp_Script2" type="Area2D" parent="." node_paths=PackedStringArray("current_room", "collider")]
-position = Vector2(560, -264)
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("3_ml7fc")
-current_room = NodePath("..")
-room_name = &"room_test_04"
-collider = NodePath("CollisionShape2D")
-metadata/_custom_type_script = "uid://dbwty41uhfl16"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Warp_Script2"]
-position = Vector2(20, 0)
-shape = SubResource("RectangleShape2D_he6hk")
-
 [node name="props_prefab" parent="." instance=ExtResource("4_rj2mv")]
-position = Vector2(296, -264)
+position = Vector2(320, -264)
 autoplay = "banner-big"
 
 [node name="props_prefab2" parent="." instance=ExtResource("4_rj2mv")]
@@ -72,6 +45,13 @@ animation = &"banner-side"
 autoplay = "banner-side"
 
 [node name="props_prefab4" parent="." instance=ExtResource("4_rj2mv")]
-position = Vector2(456, -304)
+position = Vector2(416, -304)
 animation = &"banner-sushi"
 autoplay = "banner-sushi"
+
+[node name="Warp_Down" parent="." instance=ExtResource("3_rj2mv")]
+position = Vector2(408, -208)
+
+[node name="Warp_Right" parent="." instance=ExtResource("4_he6hk")]
+position = Vector2(560, -264)
+room_name = &"room_test_04"

@@ -455,7 +455,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.42857146),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(0, 0), Vector2(0, 0.061222404)]
+"values": [Vector2(0, 0), Vector2(0, -1.758337e-06)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -467,7 +467,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.42857146),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(1, 1), Vector2(1, 0.97619045)]
+"values": [Vector2(1, 1), Vector2(1, 0.9751701)]
 }
 
 [sub_resource type="Animation" id="Animation_xhx7r"]
@@ -554,7 +554,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -27.42857)]
+"values": [Vector2(0, -29.5)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -890,6 +890,9 @@ graph_offset = Vector2(-5, 20)
 script = ExtResource("1_84owv")
 id = &"Soldier"
 texture2d = ExtResource("2_n5ixp")
+max_hp = 1
+lore = "* An enemy with towering efence."
+description = "* Weak to hacking."
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")
@@ -898,7 +901,7 @@ animation_tree = NodePath("Pivot/AnimationTree")
 
 [node name="Sprite2D" type="Sprite2D" parent="Pivot"]
 texture = ExtResource("2_vs54o")
-offset = Vector2(0, -27.42857)
+offset = Vector2(0, -29.5)
 hframes = 6
 vframes = 7
 

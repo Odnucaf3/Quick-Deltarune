@@ -1,0 +1,273 @@
+[gd_scene load_steps=9 format=3 uid="uid://4qk6dymnp741"]
+
+[ext_resource type="Script" uid="uid://d1xgk00n12kl5" path="res://Scripts/Scenes/singleton.gd" id="1_ixejq"]
+[ext_resource type="AudioStream" uid="uid://ctboksgyydra2" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Cursor_tones/cursor_style_1.wav" id="2_5xdky"]
+[ext_resource type="AudioStream" uid="uid://b2of1agkpd36m" path="res://Assets/bgm/toby fox - UNDERTALE Soundtrack - 65 CORE.mp3" id="2_6qxr7"]
+[ext_resource type="Script" uid="uid://ugjgndtknor8" path="res://Scripts/Scenes/Option_Menu.gd" id="2_ar5in"]
+[ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="3_ihmui"]
+[ext_resource type="AudioStream" uid="uid://bi0wgy80yv16v" path="res://Assets/bgm/toby fox - UNDERTALE Soundtrack - 53 Stronger Monsters.mp3" id="3_j0hcl"]
+[ext_resource type="AudioStream" uid="uid://diiwnxpxavytu" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Confirm_tones/style1/confirm_style_1_001.wav" id="3_t14r8"]
+[ext_resource type="AudioStream" uid="uid://cl6xwf2nly41l" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Error_tones/style1/error_style_1_001.wav" id="4_6qxr7"]
+
+[node name="singleton" type="Node" node_paths=PackedStringArray("optionMenu", "sfx_Selected", "sfx_Submited", "sfx_Canceled", "bgmPlayer", "fps")]
+process_mode = 3
+script = ExtResource("1_ixejq")
+optionMenu = NodePath("CanvasLayer/Option_Menu")
+sfx_Selected = NodePath("CanvasLayer/AudioStreamPlayer_select")
+sfx_Submited = NodePath("CanvasLayer/AudioStreamPlayer_submit")
+sfx_Canceled = NodePath("CanvasLayer/AudioStreamPlayer_cancel")
+bgmPlayer = NodePath("CanvasLayer/AudioStreamPlayer_bgm")
+stage1 = ExtResource("2_6qxr7")
+battle1 = ExtResource("3_j0hcl")
+fps = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="AudioStreamPlayer_select" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("2_5xdky")
+volume_db = 5.0
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_submit" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("3_t14r8")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_cancel" type="AudioStreamPlayer" parent="CanvasLayer"]
+stream = ExtResource("4_6qxr7")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_bgm" type="AudioStreamPlayer" parent="CanvasLayer"]
+bus = &"bgm"
+
+[node name="Option_Menu" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("mySingleton", "title", "idiome_label", "idiome_optionbutton", "resolution_label", "resolution_optionbutton", "fullscreen_label", "fullscreen_checkbutton", "borderless_label", "borderless_checkbutton", "vsync_label", "vsync_checkbutton", "master_label", "master_number", "master_slider", "sfx_label", "sfx_number", "sfx_slider", "bgm_label", "bgm_number", "bgm_slider", "back")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_ar5in")
+mySingleton = NodePath("../..")
+title = NodePath("PanelContainer/MarginContainer/VBoxContainer/Label")
+idiome_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Idiome/Label")
+idiome_optionbutton = NodePath("PanelContainer/MarginContainer/VBoxContainer/Idiome/OptionButton")
+resolution_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Resolution/Label")
+resolution_optionbutton = NodePath("PanelContainer/MarginContainer/VBoxContainer/Resolution/OptionButton")
+fullscreen_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Fullscreen/Label")
+fullscreen_checkbutton = NodePath("PanelContainer/MarginContainer/VBoxContainer/Fullscreen/CheckButton")
+borderless_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Borderless/Label")
+borderless_checkbutton = NodePath("PanelContainer/MarginContainer/VBoxContainer/Borderless/CheckButton")
+vsync_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Vsync/Label")
+vsync_checkbutton = NodePath("PanelContainer/MarginContainer/VBoxContainer/Vsync/CheckButton")
+master_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Master/Label")
+master_number = NodePath("PanelContainer/MarginContainer/VBoxContainer/Master/Label2")
+master_slider = NodePath("PanelContainer/MarginContainer/VBoxContainer/Master/HSlider")
+sfx_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/sfx/Label")
+sfx_number = NodePath("PanelContainer/MarginContainer/VBoxContainer/sfx/Label2")
+sfx_slider = NodePath("PanelContainer/MarginContainer/VBoxContainer/sfx/HSlider")
+bgm_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/bgm/Label")
+bgm_number = NodePath("PanelContainer/MarginContainer/VBoxContainer/bgm/Label2")
+bgm_slider = NodePath("PanelContainer/MarginContainer/VBoxContainer/bgm/HSlider")
+back = NodePath("PanelContainer/MarginContainer/VBoxContainer/Button")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Option_Menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -337.75
+offset_top = -271.5
+offset_right = 337.75
+offset_bottom = 271.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_ihmui")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Option_Menu/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 60
+text = "Option Menu"
+horizontal_alignment = 1
+
+[node name="Idiome" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Idiome"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Idiome"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Idiome"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+allow_reselect = true
+
+[node name="Resolution" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Resolution"
+
+[node name="OptionButton" type="OptionButton" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+allow_reselect = true
+
+[node name="Fullscreen" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Resolution"
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Fullscreen"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="Borderless" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Borderless"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Borderless"
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Borderless"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="Vsync" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Vsync"
+
+[node name="CheckButton" type="CheckButton" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Vsync"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="Master" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Master"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Master"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Master"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+
+[node name="Label2" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Master"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "100%"
+
+[node name="sfx" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/sfx"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "SFX"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/sfx"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+
+[node name="Label2" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/sfx"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "100%"
+
+[node name="bgm" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/bgm"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "BGM"
+
+[node name="HSlider" type="HSlider" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/bgm"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.05
+
+[node name="Label2" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/bgm"]
+layout_mode = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "100%"
+
+[node name="Button" type="Button" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "  Back  "
+
+[node name="debug_MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="fps_Label" type="Label" parent="CanvasLayer/debug_MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/outline_size = 4
+text = "60.00 fps"

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://kty6sii5hhfk"]
+
+[sub_resource type="GDScript" id="GDScript_52n5y"]
+script/source = "extends Interactable_Script
+#-------------------------------------------------------------------------------
+@export var room_name: StringName = \"room_test_01\"
+@export var warp_name: StringName = \"Warp_Down\"
+#-------------------------------------------------------------------------------
+func Interactable_Ready(_world_2d:World_2D):
+	pass
+#-------------------------------------------------------------------------------
+func Interactable_Action(_world_2d:World_2D):
+	_world_2d.Teleport_From_1_Room_to_Another(room_name, warp_name)
+#-------------------------------------------------------------------------------
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8dt50"]
+size = Vector2(48, 8)
+
+[node name="Warp_Up" type="Area2D"]
+collision_layer = 4
+collision_mask = 0
+script = SubResource("GDScript_52n5y")
+room_name = &"room_test_02"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -44)
+shape = SubResource("RectangleShape2D_8dt50")

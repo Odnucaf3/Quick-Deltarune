@@ -1,9 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgtnu7kmoncu6"]
+[gd_scene load_steps=9 format=3 uid="uid://cgtnu7kmoncu6"]
 
 [ext_resource type="Script" uid="uid://d041tl00vwj7q" path="res://Scripts/Prefabs/item_script.gd" id="1_osx0n"]
 [ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/potion.tres" id="2_jndvo"]
+[ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_8uf5p"]
 [ext_resource type="Texture2D" uid="uid://bjdhbu401x5h7" path="res://Assets/ansimuz/Starfighter Files/sprites/FX/Bullet-c/bullet-c1.png" id="4_jndvo"]
 [ext_resource type="Texture2D" uid="uid://dfujl2xglygk1" path="res://Assets/ansimuz/Starfighter Files/sprites/FX/Bullet-c/bullet-c2.png" id="5_8uf5p"]
+
+[sub_resource type="Resource" id="Resource_8uf5p"]
+script = ExtResource("3_8uf5p")
+item_resource = ExtResource("2_jndvo")
+metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_i1672"]
 animations = [{
@@ -26,16 +32,16 @@ radius = 5.0
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_osx0n")
-pickable_item = ExtResource("2_jndvo")
+pickable_item = SubResource("Resource_8uf5p")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0.60784316)
 rotation = 1.5707964
 sprite_frames = SubResource("SpriteFrames_i1672")
 autoplay = "default"
-frame_progress = 0.9946273
-offset = Vector2(-8.806475, -0.067995906)
+frame_progress = 0.33245534
+offset = Vector2(-7.017412, -0.07580848)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -6)
+position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_jyvag")

@@ -15,6 +15,10 @@ run/main_scene="uid://dk4sbf5s4wg0y"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+singleton="*res://Nodes/Scenes/singleton.tscn"
+
 [display]
 
 window/stretch/mode="canvas_items"
@@ -80,12 +84,16 @@ Debug_Info={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://Translations/Translation - Hoja 1.de_DE.translation", "res://Translations/Translation - Hoja 1.en_US.translation", "res://Translations/Translation - Hoja 1.es_AR.translation", "res://Translations/Translation - Hoja 1.ja_JP.translation", "res://Translations/Translation - Hoja 1.pt_BR.translation")
+
 [layer_names]
 
 2d_physics/layer_1="Static Object"
 2d_physics/layer_2="Player"
-2d_physics/layer_3="Enemy"
-2d_physics/layer_4="Interactable"
+2d_physics/layer_3="Interactable_by_Touch"
+2d_physics/layer_4="Interactable_by_Action"
 
 [rendering]
 
