@@ -2,6 +2,7 @@ extends Node2D
 class_name Room_Script
 #-------------------------------------------------------------------------------
 @export var room_limits: Control
+var room_id: String
 #-------------------------------------------------------------------------------
 var limit_top: float
 var limit_botton: float
@@ -38,6 +39,6 @@ func Set_Camera_Limits(_world_2d: World_2D):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Get_Item_Script_ID(_node:Node) -> String:
-	var _s: String = name+"_"+_node.name
+	var _s: String = room_id+"_"+_node.name
 	return _s
 #-------------------------------------------------------------------------------

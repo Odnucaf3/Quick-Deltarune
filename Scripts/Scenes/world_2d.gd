@@ -13,8 +13,9 @@ var singleton: Singleton
 @export var key_dictionary: Dictionary[String, int]
 #-------------------------------------------------------------------------------
 @export var dialogue_menu: Control
-@export var dialogue_menu_image: TextureRect
-@export var dialogue_menu_name_label: Label
+@export var dialogue_menu_speaker1: Control
+@export var dialogue_menu_speaker1_image: TextureRect
+@export var dialogue_menu_speaker1_name: Control
 @export var dialogue_menu_speaking_label: RichTextLabel
 #-------------------------------------------------------------------------------
 @export var savespot_menu: Control
@@ -65,13 +66,20 @@ var item_array_in_battle: Array[Item_Serializable]
 @export var iten_resource_defense: Item_Serializable
 #-------------------------------------------------------------------------------
 @export var skill_menu: TabContainer
-#-------------------------------------------------------------------------------
 @export var skill_menu_scrollContainer: ScrollContainer
 @export var skill_menu_content: VBoxContainer
 var skill_menu_button_array: Array[Button]
 @export var skill_menu_title: Label
 @export var skill_menu_lore: RichTextLabel
 @export var skill_menu_description: RichTextLabel
+#-------------------------------------------------------------------------------
+@export var teleporty_menu: TabContainer
+@export var teleporty_menu_scrollContainer: ScrollContainer
+@export var teleporty_menu_content: VBoxContainer
+var teleporty_menu_button_array: Array[Button]
+@export var teleporty_menu_title: Label
+@export var teleporty_menu_lore: RichTextLabel
+@export var teleporty_menu_description: RichTextLabel
 #-------------------------------------------------------------------------------
 @export var equip_menu: TabContainer
 @export var equip_menu_scrollContainer: ScrollContainer
@@ -208,6 +216,7 @@ func _ready() -> void:
 	savespot_menu.hide()
 	item_menu.hide()
 	skill_menu.hide()
+	teleporty_menu.hide()
 	equipslot_menu.hide()
 	equip_menu.hide()
 	status_menu.hide()
@@ -235,6 +244,7 @@ func _ready() -> void:
 	Destroy_Childrens(equipslot_menu_content)
 	Destroy_Childrens(equip_menu_content)
 	Destroy_Childrens(status_menu_statuseffect_content)
+	Destroy_Childrens(teleporty_menu_content)
 	#-------------------------------------------------------------------------------
 	Create_EnemyBullets_Disabled(2000)
 	PauseMenu_Close()
@@ -481,12 +491,12 @@ func Dialogue(_b:bool, _s:String):
 	dialogue_menu.show()
 	#-------------------------------------------------------------------------------
 	if(_b):
-		dialogue_menu_image.show()
-		dialogue_menu_name_label.show()
+		dialogue_menu_speaker1.show()
+		dialogue_menu_speaker1_name.show()
 	#-------------------------------------------------------------------------------
 	else:
-		dialogue_menu_image.hide()
-		dialogue_menu_name_label.hide()
+		dialogue_menu_speaker1.hide()
+		dialogue_menu_speaker1_name.hide()
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaking_label.text = _s
 	singleton.Common_Submited()
@@ -520,9 +530,9 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	var _center: Vector2 = camera.position
 	#-------------------------------------------------------------------------------
 	#var _top_limit: float = 0.45
-	var _top_limit: float = 0.44
+	var _top_limit: float = 0.41
 	#var _botton_limit: float = 1.15
-	var _botton_limit: float = 0.89
+	var _botton_limit: float = 0.79
 	#-------------------------------------------------------------------------------
 	player_last_position.clear()
 	#-------------------------------------------------------------------------------
@@ -568,14 +578,14 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(friend_party.size()+1))
-		var _x_pos: float = -camera_size.x*0.3
+		var _x_pos: float = -camera_size.x*0.275
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
 		friend_party[_i].party_member_ui.global_position = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
 		_tween.parallel().tween_property(friend_party[_i], "global_position", _position, 0.5)
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
 		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(enemy_party.size()+1))
-		var _x_pos: float = camera_size.x*0.3
+		var _x_pos: float = camera_size.x*0.275
 		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
 		enemy_party[_i].party_member_ui.global_position = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
 		_tween.parallel().tween_property(enemy_party[_i], "global_position", _position, 0.5)
@@ -584,8 +594,8 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	_tween.tween_interval(0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
-		dialogue_menu_image.hide()
-		dialogue_menu_name_label.hide()
+		dialogue_menu_speaker1.hide()
+		dialogue_menu_speaker1_name.hide()
 		dialogue_menu_speaking_label.text = "* The Battle began!"
 		dialogue_menu.show()
 		battle_menu.show()
@@ -815,7 +825,7 @@ func BattleMenu_EquipButton_Submit():
 		#-------------------------------------------------------------------------------
 		var _equip_serializable: Equip_Serializable = friend_party_alive[current_player_turn].equip_array[_i]
 		#-------------------------------------------------------------------------------
-		if(_equip_serializable == null):
+		if(_equip_serializable.equip_resource == null):
 			_button.text = "  [Empty]  "
 		#-------------------------------------------------------------------------------
 		else:
@@ -1066,7 +1076,7 @@ func ItemMenu_KeyItem_ItemButton_Selected(keyitem_serializable:Key_Item_Serializ
 #-------------------------------------------------------------------------------
 func EquipSlotMenu_EquipButton_Selected(_equip_serializable_array:Array[Equip_Serializable], _index: int):
 	#-------------------------------------------------------------------------------
-	if(_equip_serializable_array[_index] == null):
+	if(_equip_serializable_array[_index].equip_resource == null):
 		EquipSlotMenu_No_Description()
 	#-------------------------------------------------------------------------------
 	else:
@@ -2568,6 +2578,12 @@ func StatusMenu_No_Description(_user:Party_Member):
 	status_menu_statuseffect_description.text = ""
 	status_menu_statuseffect_lore.text = ""
 #-------------------------------------------------------------------------------
+func TeleportMenu_No_Description():
+	singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+	teleporty_menu_lore.text = ""
+	teleporty_menu_description.text = ""
+#-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_Submit():
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
@@ -2679,7 +2695,7 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 		#-------------------------------------------------------------------------------
 		var _equip_serializable: Equip_Serializable = friend_party[_index].equip_array[_i]
 		#-------------------------------------------------------------------------------
-		if(_equip_serializable == null):
+		if(_equip_serializable.equip_resource == null):
 			_button.text = "  [Empty]  "
 		#-------------------------------------------------------------------------------
 		else:
@@ -2755,25 +2771,31 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Cancel(_index:int):
 	singleton.Move_to_Button(pause_menu_party_button_array[_index].button)
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member, _equip_serializable:Equip_Serializable, _index_slot:int):
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	var _equip_serializable_new: Equip_Serializable = _equip_serializable.Constructor()
-	_user.equip_array[_index_slot] = _equip_serializable_new
+	if(_user.equip_array[_index_slot].equip_resource != _equip_serializable.equip_resource):
+		
+		Remove_Equip_Serializable_to_Array(_equip_serializable)
+		#-------------------------------------------------------------------------------
+		_user.equip_array[_index_slot].equip_resource = _equip_serializable.equip_resource
+		_user.equip_array[_index_slot].hold = 1
+		#-------------------------------------------------------------------------------
+		equipslot_menu_button_array[_index_slot].text = get_resource_filename(_equip_serializable.equip_resource)
 	#-------------------------------------------------------------------------------
-	Remove_Equip_Serializable_to_Array(_equip_serializable)
-	#-------------------------------------------------------------------------------
-	equipslot_menu_button_array[_index_slot].text = get_resource_filename(_equip_serializable.equip_resource)
 	Destroy_All_Items(equip_menu_button_array)
 	equipslot_menu.show()
 	equip_menu.hide()
+	singleton.Common_Submited()
 	singleton.Move_to_Button(equipslot_menu_button_array[_index_slot])
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Party_Member, _index_slot:int):
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	if(_user.equip_array[_index_slot] != null):
+	if(_user.equip_array[_index_slot].equip_resource != null):
 		Add_Equip_Serializable_to_Array(_user.equip_array[_index_slot].equip_resource)
-		_user.equip_array[_index_slot] = null
+		#-------------------------------------------------------------------------------
+		_user.equip_array[_index_slot].equip_resource = null
+		_user.equip_array[_index_slot].hold = 0
+		#-------------------------------------------------------------------------------
 		equipslot_menu_button_array[_index_slot].text = "  [Empty]  "
 	#-------------------------------------------------------------------------------
 	Destroy_All_Items(equip_menu_button_array)
@@ -2901,22 +2923,62 @@ func OptionMenu_BackButton_Common() -> void:
 	pause_menu.show()
 	singleton.Move_to_Button(pause_menu_button_array[4])
 #-------------------------------------------------------------------------------
-func SaveMenu_Open(_s:String, _description:String):	# Used by "SaveSpot_Script".
+func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	Dialogue_Open()
-	await Dialogue(false, _description)
+	await Dialogue(false, _dialogue)
 	Dialogue_Close()
+	#-------------------------------------------------------------------------------
+	Add_New_SaveSpot_for_Teleporting_Options(_s)
 	#-------------------------------------------------------------------------------
 	pause_menu_panel.show()
 	savespot_menu.show()
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button(savespot_menu_button_array[0], func():singleton.Common_Selected(), func():SaveMenu_SaveButton_Submit(_s), func():SaveMenu_Close())
-	singleton.Set_Button(savespot_menu_button_array[1], func():singleton.Common_Selected(), func():pass, func():SaveMenu_Close())
+	singleton.Set_Button(savespot_menu_button_array[1], func():singleton.Common_Selected(), func():SaveMenu_TeleportButton_Submit(), func():SaveMenu_Close())
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(savespot_menu_button_array[0])
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	PauseOn()
+#-------------------------------------------------------------------------------
+func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String):
+	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		if(_array[_i].get("room", "") == room_test.room_id):
+			_array[_i]["savespot"] = _savespot
+			#-------------------------------------------------------------------------------
+			sort_by_name_ascending(_array)
+			#-------------------------------------------------------------------------------
+			singleton.currentSaveData_Json["teleport_options"] = _array
+			return
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _dictionaty: Dictionary = {}
+	_dictionaty["room"] = room_test.room_id
+	_dictionaty["savespot"] = _savespot
+	_array.append(_dictionaty)
+	#-------------------------------------------------------------------------------
+	sort_by_name_ascending(_array)
+	#-------------------------------------------------------------------------------
+	singleton.currentSaveData_Json["teleport_options"] = _array
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func sort_by_name_ascending(_array: Array):
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		for _j in range(_i+1, _array.size()):
+			#-------------------------------------------------------------------------------
+			if(_array[_i]["room"] > _array[_j]["room"]):
+				var _a: Dictionary = _array[_i]
+				_array[_i] = _array[_j]
+				_array[_j] = _a
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func SaveMenu_Close():
 	pause_menu_panel.hide()
@@ -2928,9 +2990,9 @@ func SaveMenu_Close():
 	PauseOff()
 #-------------------------------------------------------------------------------
 func SaveMenu_SaveButton_Submit(_s:String):
-	singleton.currentSaveData_Json.set("current_savespot", [room_test.name, _s])
 	singleton.currentSaveData_Json.set("key_dictionary", key_dictionary)
 	#-------------------------------------------------------------------------------
+	Save_SaveSpot(_s)
 	Save_Items()
 	Save_KeyItems()
 	Save_Equip()
@@ -2938,6 +3000,111 @@ func SaveMenu_SaveButton_Submit(_s:String):
 	#-------------------------------------------------------------------------------
 	singleton.SaveCurrent_SaveData_Json()
 	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func SaveMenu_TeleportButton_Submit():
+	savespot_menu.hide()
+	teleporty_menu.show()
+	#-------------------------------------------------------------------------------
+	singleton.Common_Submited()
+	#-------------------------------------------------------------------------------
+	var _cancel: Callable = func():
+		Destroy_All_Items(teleporty_menu_button_array)
+		savespot_menu.show()
+		teleporty_menu.hide()
+		singleton.Common_Canceled()
+		singleton.Move_to_Button(savespot_menu_button_array[1])
+	#-------------------------------------------------------------------------------
+	singleton.Set_TabBar(teleporty_menu.get_tab_bar(),func():TeleportMenu_No_Description(), _cancel)
+	#-------------------------------------------------------------------------------
+	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		var _button: Button = Button.new()
+		_button.theme = ui_theme
+		_button.text = "  "+_array[_i].get("room", "")+"  "
+		_button.add_theme_font_size_override("font_size", 24)
+		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		teleporty_menu_content.add_child(_button)
+		teleporty_menu_button_array.append(_button)
+		#-------------------------------------------------------------------------------
+		var _selected: Callable = TeleportMenu_TeleportButton_Select(_array[_i])
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(_button, _selected, func():TeleportMenu_TeleportButton_Submit(_array[_i]), _cancel)
+	#-------------------------------------------------------------------------------
+	if(teleporty_menu_button_array.size() > 0):
+		singleton.Move_to_Button(teleporty_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Move_to_Button(teleporty_menu.get_tab_bar())
+	#-------------------------------------------------------------------------------
+	teleporty_menu_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
+	var _selected: Callable
+	#-------------------------------------------------------------------------------
+	match(_dictionary.get("room", "")):
+		"room_test_01":
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				teleporty_menu_lore.text = "* Its a little buggi zone, some enemies com back to life when i leave the rooms."
+				teleporty_menu_description.text = "* Te first room of the game."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		"room_test_05":
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				teleporty_menu_lore.text = "* This plase is where some windows stars to appear, mayby it's a residential zone."
+				teleporty_menu_description.text = "* Te 5th room of the game."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		_:
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				teleporty_menu_lore.text = ""
+				teleporty_menu_description.text = ""
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	return _selected
+#-------------------------------------------------------------------------------
+func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
+	var _new_room: Room_Script = load(Get_Room_Path(_dictionary["room"])).instantiate() as Room_Script
+	_new_room.room_id = _dictionary.get("room", "")
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		PlayAnimation(friend_party[_i].playback, "Idle")
+		friend_party[_i].is_Moving = false
+		var _warp_array: Array[Node] = _new_room.find_children(_dictionary["savespot"], "Interactable_Script")
+		#-------------------------------------------------------------------------------
+		if(_i > 0):
+			friend_party[_i].position = _warp_array[0].position
+		#-------------------------------------------------------------------------------
+		else:
+			player_characterbody2d.position = _warp_array[0].position
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	call_deferred("add_child", _new_room)
+	#-------------------------------------------------------------------------------
+	room_test.queue_free()							#Importante: Cuidado con el Orden
+	room_test = _new_room							#Importante: Cuidado con el Orden
+	_new_room.Set_Room(self)						#Importante: Cuidado con el Orden
+	camera.position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
+	#-------------------------------------------------------------------------------
+	teleporty_menu.hide()
+	singleton.Play_BGM(singleton.stage1)
+	pause_menu_panel.hide()
+	PauseOff()
+	Destroy_All_Items(teleporty_menu_button_array)
+#-------------------------------------------------------------------------------
+func Save_SaveSpot(_s:String):
+	var _dictionaty: Dictionary = {}
+	_dictionaty["room"] = room_test.room_id
+	_dictionaty["savespot"] = _s
+	singleton.currentSaveData_Json.set("current_savespot", _dictionaty)
 #-------------------------------------------------------------------------------
 func Save_Items():
 	var _array: Array[Dictionary] = []
@@ -2975,12 +3142,13 @@ func Save_Friends():
 	singleton.currentSaveData_Json.set("friend_party", _array)
 #-------------------------------------------------------------------------------
 func Get_Item_Script_ID(_node:Node) -> String:
-	var _s: String = room_test.name+"_"+_node.name
+	var _s: String = room_test.room_id+"_"+_node.name
 	return _s
 #-------------------------------------------------------------------------------
 func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
 	#var _new_room: Room_Script = next_room_prefab.instantiate() as Room_Script
 	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
+	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		PlayAnimation(friend_party[_i].playback, "Idle")
@@ -3005,9 +3173,9 @@ func Get_Room_Path(_room_name:String) -> String:
 	return "res://Nodes/Prefabs/Rooms/"+_room_name+".tscn"
 #-------------------------------------------------------------------------------
 func Load_Room_and_SaveSpot():
-	var _array: Array = singleton.currentSaveData_Json.get("current_savespot", ["",""])
-	var _room_name: String = _array[0]
-	var _room_savespot_name: String = _array[1]
+	var _dictionaty: Dictionary = singleton.currentSaveData_Json.get("current_savespot", {})
+	var _room_name: String = _dictionaty.get("room", "")
+	var _room_savespot_name: String = _dictionaty.get("savespot", "")
 	var _path: String = Get_Room_Path(_room_name)
 	#-------------------------------------------------------------------------------
 	if(ResourceLoader.exists(_path)):
@@ -3017,11 +3185,12 @@ func Load_Room_and_SaveSpot():
 		Load_Equip()
 		Load_FriendsParty()
 		#-------------------------------------------------------------------------------
-		room_test.queue_free()
 		var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
 		call_deferred("add_child", _new_room)
+		room_test.queue_free()
 		room_test = _new_room
-		print(room_test.name)
+		#-------------------------------------------------------------------------------
+		room_test.room_id = _room_name
 		var _interactable_array: Array[Node] = _new_room.find_children(_room_savespot_name, "Interactable_Script")
 		#-------------------------------------------------------------------------------
 		if(_interactable_array.size() > 0):
@@ -3031,6 +3200,9 @@ func Load_Room_and_SaveSpot():
 				friend_party[_i].global_position = _interactable_array[0].global_position
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	else:
+		room_test.room_id = room_test.name
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Load_Keys_Dictionary():

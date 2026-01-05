@@ -61,11 +61,8 @@ func SaveData_Constructor() -> Dictionary:
 	var _equip_data: Array[Dictionary] = []
 	#-------------------------------------------------------------------------------
 	for _i in equip_array.size():
-		if(equip_array[_i] == null):
-			_equip_data.append({})
-		else:
-			var _equip_dictionary: Dictionary = equip_array[_i].SaveData_Constructor()
-			_equip_data.append(_equip_dictionary)
+		var _equip_dictionary: Dictionary = equip_array[_i].SaveData_Constructor()
+		_equip_data.append(_equip_dictionary)
 	#-------------------------------------------------------------------------------
 	_dictionary["equip_array"] = _equip_data
 	#-------------------------------------------------------------------------------
@@ -86,11 +83,8 @@ func LoadData_Constructor(_dictionaty:Dictionary):
 	var _equip_array:Array = _dictionaty["equip_array"]
 	#-------------------------------------------------------------------------------
 	for _i in _equip_array.size():
-		if(_equip_array[_i] == {}):
-			equip_array.append(null)
-		else:
-			var _equip: Equip_Serializable = Equip_Serializable.new()
-			_equip.LoadData_Constructor(_equip_array[_i])
-			equip_array.append(_equip)
+		var _equip: Equip_Serializable = Equip_Serializable.new()
+		_equip.LoadData_Constructor(_equip_array[_i])
+		equip_array.append(_equip)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------

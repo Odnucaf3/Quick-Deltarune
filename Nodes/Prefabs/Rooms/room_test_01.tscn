@@ -14,7 +14,7 @@
 script/source = "extends Room_Script
 #-------------------------------------------------------------------------------
 func Room_Event():
-	print(name)
+	print(room_id)
 #-------------------------------------------------------------------------------
 "
 
@@ -267,7 +267,7 @@ shape = SubResource("CircleShape2D_wkx03")
 
 [node name="Savespot" parent="." instance=ExtResource("9_4u8d0")]
 position = Vector2(168, 56)
-savespot_description = "* Creating a ripoff deltarune game fills you with determination."
+dialogue = "* Creating a ripoff Deltarune videogame fills you with determination."
 
 [node name="Merchant_Area2D" type="Area2D" parent="." node_paths=PackedStringArray("user")]
 position = Vector2(-48, -96)

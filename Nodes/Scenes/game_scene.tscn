@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=67 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -86,6 +86,38 @@ script = ExtResource("7_igypo")
 item_resource = ExtResource("18_3p4s7")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
+[sub_resource type="Resource" id="Resource_lujb4"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_1th3s"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_3p4s7"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_s3ops"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_rka03"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ircg4"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_62d7h"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ftd8i"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="Resource" id="Resource_mitwg"]
 script = ExtResource("18_1th3s")
 statuseffect_resource = ExtResource("19_mitwg")
@@ -94,6 +126,70 @@ metadata/_custom_type_script = "uid://mdn2h1nh8s14"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
 radius = 8.062258
+
+[sub_resource type="Resource" id="Resource_why6j"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_pb3t7"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_a7t32"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_p4ejy"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_vap1g"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ibfam"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_s1r55"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_4kq1m"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_vqo7i"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_jsbcl"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ltkvx"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_0f0fx"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_mtlrx"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_uqsek"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_chh8w"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_eggap"]
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnh07"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -121,7 +217,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "dialogue_menu", "dialogue_menu_image", "dialogue_menu_name_label", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equip_menu_title", "equip_menu_lore", "equip_menu_description", "equipslot_menu", "equipslot_menu_content", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_lore", "teleporty_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equip_menu_title", "equip_menu_lore", "equip_menu_description", "equipslot_menu", "equipslot_menu_content", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -129,9 +225,10 @@ game_scene = NodePath("..")
 ui_theme = ExtResource("26_1th3s")
 room_test = NodePath("room_test_01")
 dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu")
-dialogue_menu_image = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/TextureRect")
-dialogue_menu_name_label = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer/Label")
-dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer/RichTextLabel")
+dialogue_menu_speaker1 = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control")
+dialogue_menu_speaker1_image = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control/Panel/TextureRect")
+dialogue_menu_speaker1_name = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer")
+dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer/RichTextLabel")
 savespot_menu = NodePath("../CanvasLayer/Save_Menu")
 savespot_menu_button_array = [NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
@@ -166,6 +263,12 @@ skill_menu_content = NodePath("../CanvasLayer/All Menues/Skills_TabContainer/Ski
 skill_menu_title = NodePath("../CanvasLayer/All Menues/Skills_TabContainer/Skills/HBoxContainer/VBoxContainer/Label")
 skill_menu_lore = NodePath("../CanvasLayer/All Menues/Skills_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 skill_menu_description = NodePath("../CanvasLayer/All Menues/Skills_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+teleporty_menu = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer")
+teleporty_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
+teleporty_menu_content = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+teleporty_menu_title = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/Label")
+teleporty_menu_lore = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+teleporty_menu_description = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 equip_menu = NodePath("../CanvasLayer/All Menues/Equip_TabContainer")
 equip_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 equip_menu_content = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
@@ -270,8 +373,6 @@ texture = ExtResource("2_hf1mx")
 [node name="Camera2D" type="Camera2D" parent="World2D"]
 zoom = Vector2(3.5, 3.5)
 
-[node name="room_test_01" parent="World2D" instance=ExtResource("11_tnh07")]
-
 [node name="Player" type="CharacterBody2D" parent="World2D"]
 y_sort_enabled = true
 collision_layer = 2
@@ -281,6 +382,7 @@ shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" instance=ExtResource("13_hxoxt")]
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i")])
 statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_mitwg")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player"]
@@ -299,26 +401,131 @@ shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m")])
 
 [node name="Friend_03" parent="World2D" instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap")])
+
+[node name="room_test_01" parent="World2D" instance=ExtResource("11_tnh07")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Dialogue_Menu" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -350.0
-offset_top = -148.0
-offset_right = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -190.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu"]
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -43.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("26_1th3s")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+offset_right = 197.0
+grow_vertical = 0
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "[Speker's Name]"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -197.0
+offset_top = -42.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "[Speker's Name]"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,11 +535,11 @@ grow_vertical = 2
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 8
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer"]
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -340,14 +547,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer"]
+visible = false
 clip_contents = true
 layout_mode = 2
 texture = ExtResource("21_hxoxt")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer"]
+[node name="Dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 15
@@ -355,48 +563,70 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "[Speaker's Name]"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla."
+text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu"]
+[node name="Control3" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
+show_behind_parent = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control3"]
 visible = false
 layout_mode = 1
-anchors_preset = 0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Dialogue_Menu/Control"]
-layout_mode = 1
-anchors_preset = 2
+anchors_preset = 7
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-offset_top = -42.0
-offset_right = 9.0
+grow_horizontal = 2
 grow_vertical = 0
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control3/Control"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 300.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -2.3561945
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/Control/PanelContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/Control/PanelContainer/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "[Speker's Name]"
-horizontal_alignment = 1
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control3/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -291.418
+offset_top = -500.0
+offset_right = 291.418
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+flip_h = true
 
 [node name="Pause_Menu_Panel" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -671,6 +901,7 @@ theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
 
 [node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -2512,6 +2743,201 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
+
+[node name="Teleport_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("26_1th3s")
+current_tab = 0
+
+[node name="Teleport" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Teleport"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Skill's Name"
+alignment = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "* Lore description of the Skill / Item."
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "* Utlity description of the Skill / Item."
 
 [node name="Unused Tabs" type="Control" parent="CanvasLayer/All Menues"]
 visible = false

@@ -15,12 +15,23 @@ func Constructor() -> Equip_Serializable:
 func SaveData_Constructor() -> Dictionary:
 	var _dictionary: Dictionary = {}
 	#-------------------------------------------------------------------------------
-	_dictionary["equip_resource"] = equip_resource.resource_path
+	if(equip_resource == null):
+		_dictionary["equip_resource"] = ""
+	#-------------------------------------------------------------------------------
+	else:
+		_dictionary["equip_resource"] = equip_resource.resource_path
+	#-------------------------------------------------------------------------------
 	_dictionary["hold"] = hold
 	#-------------------------------------------------------------------------------
 	return _dictionary
 #-------------------------------------------------------------------------------
 func LoadData_Constructor(_dictionaty:Dictionary):
-	equip_resource = load(_dictionaty["equip_resource"]) as Equip_Resource
+	#-------------------------------------------------------------------------------
+	if(ResourceLoader.exists(_dictionaty["equip_resource"])):
+		equip_resource = load(_dictionaty["equip_resource"]) as Equip_Resource
+	#-------------------------------------------------------------------------------
+	else:
+		equip_resource = null
+	#-------------------------------------------------------------------------------
 	hold = _dictionaty["hold"]
 #-------------------------------------------------------------------------------
