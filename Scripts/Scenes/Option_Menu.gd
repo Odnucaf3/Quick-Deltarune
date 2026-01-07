@@ -71,7 +71,6 @@ func Start() -> void:
 	SetValume_Start(bgm_slider, bgm_number, bgmSlider_Submit, bus_bgm_Index, optionSaveData_Json["bgmVolumen"])
 	#-------------------------------------------------------------------------------
 	hide()
-	print("lol")
 #endregion
 #-------------------------------------------------------------------------------
 #region OPTION SAVE SYSTEM

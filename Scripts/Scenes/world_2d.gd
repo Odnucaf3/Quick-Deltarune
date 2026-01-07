@@ -1229,10 +1229,12 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 	friend_party_alive[current_player_turn].item_serializable = _item_serializable
 	#-------------------------------------------------------------------------------
 	PlayAnimation(friend_party_alive[current_player_turn].playback, _item_serializable.item_resource.anim)
+	#-------------------------------------------------------------------------------
 	Destroy_All_Items(item_menu_consumable_button_array)
 	Destroy_All_Items(item_menu_equipment_button_array)
 	Destroy_All_Items(item_menu_keyitems_button_array)
 	Destroy_All_Items(skill_menu_button_array)
+	#-------------------------------------------------------------------------------
 	After_Choose_Target_Logic()
 #-------------------------------------------------------------------------------
 func TargetMenu_TargetButton_Cancel():
@@ -1348,7 +1350,8 @@ func Party_Actions():
 	if(enemy_party_alive.size() > 0):
 		if(friend_party_alive.size() > 0):
 			Set_Players_and_Enemies_before_action()
-			await Start_BulletHell()
+			#-------------------------------------------------------------------------------
+			await Start_BulletHell(func():Stage1_Fire2())
 		else:
 			You_Lose()
 	#-------------------------------------------------------------------------------
@@ -1468,7 +1471,7 @@ func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
 func Do_Nothing(_user:Party_Member):
 	print("The actions Does not exist")
 #-------------------------------------------------------------------------------
-func Start_BulletHell():
+func Start_BulletHell(_callable: Callable):
 	battle_box.show()
 	dialogue_menu.hide()
 	#dialogue_menu_speaking_label.text = ""
@@ -1491,9 +1494,7 @@ func Start_BulletHell():
 		PlayAnimation(enemy_party_alive[_i].playback, "Aim")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.5)
-	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
-	_tween.set_loops()
-	Stage1_Fire2(_tween)
+	_callable.call()
 	#-------------------------------------------------------------------------------
 	await TimeOut_Tween(15)
 	myGAME_STATE = GAME_STATE.IN_MENU
@@ -1866,7 +1867,10 @@ func Set_Difficulty() -> float:
 	#return enemy_party.size() - enemy_party_alive.size()
 	return 3.0 - enemy_party_alive.size()
 #-------------------------------------------------------------------------------
-func Stage1_Fire2(_tween:Tween):
+func Stage1_Fire2():
+	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
+	_tween.set_loops()
+	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	var _mirror = 1
 	#-------------------------------------------------------------------------------
@@ -2773,7 +2777,6 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Cancel(_index:int):
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member, _equip_serializable:Equip_Serializable, _index_slot:int):
 	#-------------------------------------------------------------------------------
 	if(_user.equip_array[_index_slot].equip_resource != _equip_serializable.equip_resource):
-		
 		Remove_Equip_Serializable_to_Array(_equip_serializable)
 		#-------------------------------------------------------------------------------
 		_user.equip_array[_index_slot].equip_resource = _equip_serializable.equip_resource
@@ -2927,8 +2930,6 @@ func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	Dialogue_Open()
 	await Dialogue(false, _dialogue)
 	Dialogue_Close()
-	#-------------------------------------------------------------------------------
-	Add_New_SaveSpot_for_Teleporting_Options(_s)
 	#-------------------------------------------------------------------------------
 	pause_menu_panel.show()
 	savespot_menu.show()
