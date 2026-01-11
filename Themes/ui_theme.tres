@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=14 format=3 uid="uid://wd0u0jfbqnww"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p08fh"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -17,7 +17,7 @@ border_width_bottom = 4
 border_color = Color(1, 0.8980392, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4x3fk"]
-bg_color = Color(0.09803922, 0.09803922, 0.09803922, 0.60784316)
+bg_color = Color(0.09803922, 0.09803922, 0.09803922, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -25,7 +25,7 @@ border_width_bottom = 4
 border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nstmv"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -33,7 +33,7 @@ border_width_bottom = 4
 border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muhxk"]
-bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.60784316)
+bg_color = Color(0.21568628, 0.21568628, 0.21568628, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -41,7 +41,7 @@ border_width_bottom = 4
 border_color = Color(0.9843137, 0.4745098, 0.15294118, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6busg"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -53,7 +53,7 @@ expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y72x4"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -65,7 +65,7 @@ expand_margin_right = 4.0
 expand_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3mcu"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -98,7 +98,7 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_61xiw"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -109,7 +109,7 @@ expand_margin_top = 4.0
 expand_margin_right = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_suh8o"]
-bg_color = Color(0, 0, 0, 0.60784316)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4

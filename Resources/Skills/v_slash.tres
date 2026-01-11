@@ -7,4 +7,6 @@ script = ExtResource("1_m46nq")
 action_string = "Skill_0_0"
 lore = "* An bull´seye shoot."
 description = "* Do big damage."
+tp_cost = 13
+max_cooldown = 1
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

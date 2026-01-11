@@ -5,6 +5,5 @@
 [resource]
 script = ExtResource("1_wdcqm")
 lore = "* A twister weapon for a twisted mind."
-description = "* +25 Damange
-* Do piercing damage."
+description = "* +25 Damange, do piercing damage."
 metadata/_custom_type_script = "uid://kyu7ufkbhotc"

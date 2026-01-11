@@ -16,10 +16,11 @@ enum TARGET_TYPE{ENEMY_1, ALLY_1, ALLY_DEATH, USER}
 @export_category("Skill Paramenters")
 @export var hp_cost: int
 @export var sp_cost: int
-@export var max_cooldown: int = 3
+@export var tp_cost: int
+@export var max_cooldown: int
 #-------------------------------------------------------------------------------
 @export_category("Item Paramenters")
-@export var max_hold: int = 10
-@export var price: int = 0
+@export var max_hold: int
+@export var price: int
 #endregion
 #-------------------------------------------------------------------------------

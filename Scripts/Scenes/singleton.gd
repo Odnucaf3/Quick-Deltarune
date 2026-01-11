@@ -235,8 +235,15 @@ func Move_to_Button(_b) -> void:
 func Move_to_Last_Button(_b:Array[Button]) -> void:
 	Move_to_Button(_b[_b.size()-1])
 #-------------------------------------------------------------------------------
-func Move_to_First_Button(_b:Array[Button]) -> void:
-	Move_to_Button(_b[0])
+func Move_to_First_Button(_array:Array[Button]) -> void:
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		if(_array[_i].is_visible_in_tree()):
+			Move_to_Button(_array[_i])
+			return
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Play_BGM(_bgm:AudioStream) -> void:
 	bgmPlayer.stream = _bgm

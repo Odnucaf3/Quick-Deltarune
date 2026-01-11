@@ -61,11 +61,24 @@ func Interactable_Ready(_world_2d:World_2D):
 #-------------------------------------------------------------------------------
 func Interactable_Action(_world_2d:World_2D):
 	_world_2d.can_enter_fight = false
-	_world_2d.clearbattle_callable = func(): After_Battle_Callable(_world_2d)
 	#-------------------------------------------------------------------------------
 	#await Dialogue_Before_Battle(_world_2d)
 	#-------------------------------------------------------------------------------
-	_world_2d.EnterBattle(enemy)
+	await _world_2d.EnterBattle(enemy)
+	await Battle(_world_2d)
+#-------------------------------------------------------------------------------
+func Battle(_world_2d:World_2D):
+	#-------------------------------------------------------------------------------
+	while (_world_2d.myBATTLE_STATE == _world_2d.BATTLE_STATE.STILL_FIGHTING):
+		await _world_2d.Wait_for_Player()
+		await _world_2d.Start_BulletHell(func():_world_2d.Stage1_Fire1(), 1)
+		await _world_2d.Wait_for_Player()
+		await _world_2d.Start_BulletHell(func():_world_2d.Stage1_Fire2(), 1)
+		#await _world_2d.Wait_for_Player()
+		#await _world_2d.Start_BulletHell(func():print(\"C Actio\"), 2)
+	#-------------------------------------------------------------------------------
+	_world_2d.ExitBatle(func():Battle(_world_2d), func():Win_Battle(_world_2d))
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Dialogue_Before_Battle(_world_2d: World_2D):
 	_world_2d.Dialogue_Open()
@@ -73,13 +86,12 @@ func Dialogue_Before_Battle(_world_2d: World_2D):
 	await _world_2d.Dialogue(true, \"* Because I am gonna beat you.\")
 	_world_2d.Dialogue_Close()
 #-------------------------------------------------------------------------------
-func After_Battle_Callable(_world_2d: World_2D):
+func Win_Battle(_world_2d: World_2D):
 	_world_2d.key_dictionary.set(_world_2d.room_test.Get_Item_Script_ID(enemy_characterbody2d), 1)
 	#-------------------------------------------------------------------------------
 	enemy_collider.set_deferred(\"disabled\", true)
 	area2d_collider.set_deferred(\"disabled\", true)
 	#-------------------------------------------------------------------------------
-	_world_2d.clearbattle_callable = func(): pass
 	_world_2d.can_enter_fight = true
 #-------------------------------------------------------------------------------
 "
@@ -231,6 +243,7 @@ enemy_characterbody2d = NodePath("..")
 enemy_collider = NodePath("../CollisionShape2D")
 area2d_collider = NodePath("CollisionShape2D")
 enemy = [NodePath("../Foe_01"), NodePath("../Foe_03"), NodePath("../Foe_02")]
+is_enemy = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1/Area2D"]
 shape = SubResource("CircleShape2D_wkx03")
@@ -261,6 +274,7 @@ enemy_characterbody2d = NodePath("..")
 enemy_collider = NodePath("../CollisionShape2D")
 area2d_collider = NodePath("CollisionShape2D")
 enemy = [NodePath("../Foe_01"), NodePath("../Foe_03"), NodePath("../Foe_02")]
+is_enemy = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2/Area2D"]
 shape = SubResource("CircleShape2D_wkx03")

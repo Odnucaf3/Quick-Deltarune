@@ -1,13 +1,12 @@
 [gd_resource type="Resource" script_class="Item_Resource" load_steps=2 format=3 uid="uid://cqpa4wrjsrbky"]
 
-[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_lrqvx"]
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_33g7f"]
 
 [resource]
-script = ExtResource("1_lrqvx")
+script = ExtResource("1_33g7f")
 myTARGET_TYPE = 3
 anim = "Crouch"
 action_string = "Defense"
 lore = "* An basic manuber where you just crouch guard against enemy attacks"
-description = "* The user takes half damage of enemies attack for 1 turn."
-max_cooldown = 0
+description = "* The user takes half damage of enemies attack for 1 turn, and gain 5 TP."
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

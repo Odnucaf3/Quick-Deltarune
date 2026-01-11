@@ -9,4 +9,5 @@ anim = "Crouch"
 action_string = "Skill_0_2"
 lore = "* And advance spell."
 description = "* Revive and restores 100% of an Down Ally's HP."
+tp_cost = 30
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

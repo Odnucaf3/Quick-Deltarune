@@ -890,7 +890,6 @@ graph_offset = Vector2(-5, 20)
 script = ExtResource("1_84owv")
 id = &"Soldier"
 texture2d = ExtResource("2_n5ixp")
-max_hp = 1
 lore = "* An enemy with towering efence."
 description = "* Weak to hacking."
 pivot = NodePath("Pivot")

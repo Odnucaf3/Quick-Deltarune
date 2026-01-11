@@ -9,4 +9,5 @@ anim = "Crouch"
 action_string = "Skill_0_2"
 lore = "* An powerfull spell used by the cyber punk healers of the west."
 description = "* Restore 50% of an Alive Ally's HP."
+tp_cost = 10
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

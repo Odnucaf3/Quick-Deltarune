@@ -7,4 +7,5 @@ script = ExtResource("1_rmimv")
 action_string = "Skill_0_1"
 lore = "* A shoot that ricochets everywhere."
 description = "* Do 4 consecutive attack."
+tp_cost = 15
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

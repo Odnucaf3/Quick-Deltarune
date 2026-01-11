@@ -9,4 +9,5 @@ anim = "Crouch"
 action_string = "Item_0_1"
 lore = "* An expensive item."
 description = "* Revive and restoes the 100% of and Down Ally."
+max_hold = 3
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"
