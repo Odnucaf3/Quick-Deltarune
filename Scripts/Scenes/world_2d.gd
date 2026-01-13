@@ -487,7 +487,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 	_item_script.queue_free()
 	key_dictionary.set(room_test.Get_Item_Script_ID(_item_script), 1)
 	#-------------------------------------------------------------------------------
-	var _s:String = "* "+get_resource_filename(_item_script.pickable_item.item_resource)+" (x"+str(_item_script.pickable_item.hold)+")"+" was picked."
+	var _s:String = "* "+get_resource_filename(_item_script.pickable_item.item_resource)+" [x"+str(_item_script.pickable_item.hold)+"]"+" was picked."
 	#-------------------------------------------------------------------------------
 	for _i in item_array.size():
 		#-------------------------------------------------------------------------------
@@ -697,7 +697,7 @@ func ExitBatle(_retry_callable:Callable, _win_callable:Callable):
 func BattleMenu_AttackButton_Submit():
 	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func():
-		Set_TP_Label_from_the_future(0)
+		Set_TP_Label_from_the_future()
 		#-------------------------------------------------------------------------------
 		TargetMenu_TargetButton_Cancel()
 		battle_menu.show()
@@ -709,7 +709,7 @@ func BattleMenu_AttackButton_Submit():
 func BattleMenu_DefenseButton_Submit():
 	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func():
-		Set_TP_Label_from_the_future(0)
+		Set_TP_Label_from_the_future()
 		#-------------------------------------------------------------------------------
 		TargetMenu_TargetButton_Cancel()
 		battle_menu.show()
@@ -745,13 +745,7 @@ func BattleMenu_SkillButton_Submit():
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_label2.text = ""
 		#-------------------------------------------------------------------------------
-		if(_item_serializable.cooldown > 0):
-			_label2.text += "("+str(_item_serializable.cooldown)+"CD)  "
-		#-------------------------------------------------------------------------------
-		else:
-			#-------------------------------------------------------------------------------
-			if(_item_serializable.item_resource.max_hold > 0):
-				_label2.text += "["+str(_item_serializable.hold)+"/"+str(_item_serializable.item_resource.max_hold)+"]  "
+		if(_item_serializable.cooldown <= 0 or _item_serializable.item_resource.max_cooldown <= 0):
 			#-------------------------------------------------------------------------------
 			if(_item_serializable.item_resource.hp_cost > 0):
 				_label2.text += "("+str(_item_serializable.item_resource.hp_cost)+" HP)  "
@@ -762,6 +756,12 @@ func BattleMenu_SkillButton_Submit():
 			if(_item_serializable.item_resource.tp_cost > 0):
 				_label2.text += "("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
 			#-------------------------------------------------------------------------------
+			if(_item_serializable.item_resource.max_hold > 0 ):
+				_label2.text += "["+str(_item_serializable.hold)+"/"+str(_item_serializable.item_resource.max_hold)+"]  "
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		else:
+			_label2.text += "("+str(_item_serializable.cooldown)+" CD)  "
 		#-------------------------------------------------------------------------------
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
@@ -771,7 +771,7 @@ func BattleMenu_SkillButton_Submit():
 			dialogue_menu.hide()
 			singleton.Move_to_Button(skill_menu_button_array[_i])
 			#-------------------------------------------------------------------------------
-			Set_TP_Label_from_the_future(0)
+			Set_TP_Label_from_the_future()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_button, func():SkillMenu_SkillButton_Selected(_item_serializable), func(): SkillMenu_SkillButton_Submit(_item_serializable, _cancel), func():SkillMenu_SkillButton_Cancel())
 	#-------------------------------------------------------------------------------
@@ -795,13 +795,6 @@ func BattleMenu_ItemButton_Submit():
 	for _i in item_array_in_battle.size():
 		#-------------------------------------------------------------------------------
 		var _button: Button = Button.new()
-		var _hold: int = item_array_in_battle[_i].hold
-		#-------------------------------------------------------------------------------
-		for _j in current_player_turn:
-			#-------------------------------------------------------------------------------
-			if(item_array_in_battle[_i].item_resource == (friend_party[_j].item_serializable.item_resource)):
-				_hold -= 1
-			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		_button.theme = ui_theme
 		_button.text = "  "+get_resource_filename(item_array_in_battle[_i].item_resource)+"  "
@@ -816,13 +809,24 @@ func BattleMenu_ItemButton_Submit():
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_label2.text = ""
 		#-------------------------------------------------------------------------------
-		if(item_array[_i].cooldown > 0):
-			_label2.text += "("+str(item_array[_i].cooldown)+"CD)  "
+		var _hold: int = item_array_in_battle[_i].hold
 		#-------------------------------------------------------------------------------
-		else:
+		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(item_array[_i].item_resource.max_hold > 0):
-				_label2.text += "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
+			if(item_array_in_battle[_i].item_resource == (friend_party[_j].item_serializable.item_resource)):
+				_hold -= 1
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		var _cooldown: int = item_array_in_battle[_i].cooldown
+		#-------------------------------------------------------------------------------
+		for _j in current_player_turn:
+			#-------------------------------------------------------------------------------
+			if(item_array_in_battle[_i].item_resource == (friend_party[_j].item_serializable.item_resource)):
+				
+				_cooldown += item_array_in_battle[_i].item_resource.max_cooldown
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		if(_cooldown <= 0 or item_array_in_battle[_i].item_resource.max_cooldown <= 0):
 			#-------------------------------------------------------------------------------
 			if(item_array[_i].item_resource.hp_cost > 0):
 				_label2.text += "("+str(item_array[_i].item_resource.hp_cost)+" HP)  "
@@ -833,6 +837,20 @@ func BattleMenu_ItemButton_Submit():
 			if(item_array[_i].item_resource.tp_cost > 0):
 				_label2.text += "("+str(item_array[_i].item_resource.tp_cost)+" TP)  "
 			#-------------------------------------------------------------------------------
+			if(item_array[_i].item_resource.max_hold > 0):
+				#-------------------------------------------------------------------------------
+				if(_hold < item_array_in_battle[_i].hold):
+					_label2.add_theme_color_override("font_color", Color.YELLOW)
+				#-------------------------------------------------------------------------------
+				_label2.text += "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		else:
+			#-------------------------------------------------------------------------------
+			if(_cooldown > item_array_in_battle[_i].cooldown):
+				_label2.add_theme_color_override("font_color", Color.YELLOW)
+			#-------------------------------------------------------------------------------
+			_label2.text += "("+str(_cooldown)+" CD)  "
 		#-------------------------------------------------------------------------------
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
@@ -841,12 +859,10 @@ func BattleMenu_ItemButton_Submit():
 			item_menu.show()
 			dialogue_menu.hide()
 			singleton.Move_to_Button(item_menu_consumable_button_array[_i])
+			#-------------------------------------------------------------------------------
+			Set_TP_Label_from_the_future()
 		#-------------------------------------------------------------------------------
-		if(_hold > 0 or item_array[_i].item_resource.max_hold <= 0):
-			singleton.Set_Button(_button, func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i]), func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _cancel), func():ItemMenu_ItemButton_Cancel())
-		#-------------------------------------------------------------------------------
-		else:
-			singleton.Set_Button(_button, func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i]), func():singleton.Common_Canceled(), func():ItemMenu_ItemButton_Cancel())
+		singleton.Set_Button(_button, func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i]), func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _cancel), func():ItemMenu_ItemButton_Cancel())
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	for _i in equip_array.size():
@@ -864,7 +880,7 @@ func BattleMenu_ItemButton_Submit():
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(equip_array[_i].hold)+"  "
+		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_button, func():ItemMenu_Equipment_ItemButton_Selected(equip_array[_i]), func():pass, func():ItemMenu_ItemButton_Cancel())
@@ -884,7 +900,7 @@ func BattleMenu_ItemButton_Submit():
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(key_item_array[_i].hold)+"  "
+		_label2.text = "[x"+str(key_item_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_button, func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i]), func():pass, func():ItemMenu_ItemButton_Cancel())
@@ -966,7 +982,7 @@ func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(equip_array[_i].hold)+"  "
+		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		var _cancel: Callable = func():
@@ -1048,7 +1064,7 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member):
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(_user.statuseffect_array[_i].hold)+"  "
+		_label2.text = "[x"+str(_user.statuseffect_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		var _cancel: Callable = func():
@@ -1095,7 +1111,7 @@ func BattleMenu_AnyButton_Cancel():
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	current_player_turn -= 1
-	Set_TP_Label_from_the_future(0)
+	Set_TP_Label_from_the_future()
 	#-------------------------------------------------------------------------------
 	if(current_player_turn < 0):
 		current_player_turn = 0
@@ -1130,7 +1146,19 @@ func SkillMenu_SkillButton_Selected(_item_serializable:Item_Serializable):
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func SkillMenu_SkillButton_Submit(_item_serializable:Item_Serializable, _cancel:Callable):
-	TargetMenu_Enter(_item_serializable, skill_menu, _cancel)
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.hold > 0 or _item_serializable.item_resource.max_hold <= 0):
+		#-------------------------------------------------------------------------------
+		if(_item_serializable.cooldown <= 0 or _item_serializable.item_resource.max_cooldown <= 0):
+			TargetMenu_Enter(_item_serializable, skill_menu, _cancel)
+		#-------------------------------------------------------------------------------
+		else:
+			singleton.Common_Canceled()
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func SkillMenu_SkillButton_Cancel():
 	skill_menu.hide()
@@ -1225,8 +1253,20 @@ func StatusMenu_StatsButton_Selected(_index:int):
 	#-------------------------------------------------------------------------------
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
-func ItemMenu_ItemButton_Submit(_item_serializable:Item_Serializable, _cancel:Callable):
-	TargetMenu_Enter(_item_serializable, item_menu, _cancel)
+func ItemMenu_ItemButton_Submit(_item_serializable:Item_Serializable, _hold:int, _cooldown:int, _cancel:Callable):
+	#-------------------------------------------------------------------------------
+	if(_hold > 0 or _item_serializable.item_resource.max_hold <= 0):
+		#-------------------------------------------------------------------------------
+		if(_cooldown <= 0 or _item_serializable.item_resource.max_cooldown <= 0):
+			TargetMenu_Enter(_item_serializable, item_menu, _cancel)
+		#-------------------------------------------------------------------------------
+		else:
+			singleton.Common_Canceled()
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Cancel():
 	item_menu.hide()
@@ -1258,92 +1298,80 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 		_tp -= friend_party[_i].item_serializable.item_resource.tp_cost
 	#-------------------------------------------------------------------------------
 	if(friend_party[current_player_turn].hp >= _item_serializable.item_resource.hp_cost and friend_party[current_player_turn].sp >= _item_serializable.item_resource.sp_cost and _tp >= _item_serializable.item_resource.tp_cost):
-		if(_item_serializable.cooldown <= 0 or _item_serializable.item_resource.max_cooldown <= 0):
-			#-------------------------------------------------------------------------------
-			if(_item_serializable.hold > 0 or _item_serializable.item_resource.max_hold <= 0):
+		match(_item_serializable.item_resource.myTARGET_TYPE):
+			Item_Resource.TARGET_TYPE.ENEMY_1:
 				#-------------------------------------------------------------------------------
-				match(_item_serializable.item_resource.myTARGET_TYPE):
-					Item_Resource.TARGET_TYPE.ENEMY_1:
-						#-------------------------------------------------------------------------------
-						if(enemy_party_alive.size() > 0):
-							_last_menu.hide()
-							dialogue_menu.show()
-							#-------------------------------------------------------------------------------
-							_tp -= _item_serializable.item_resource.tp_cost
-							Set_TP_Label(_tp)
-							singleton.Common_Submited()
-							#-------------------------------------------------------------------------------
-							for _i in enemy_party_alive.size():
-								enemy_party_alive[_i].party_member_ui.button_pivot.show()
-								singleton.Set_Button(enemy_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, enemy_party_alive[_i], enemy_party_alive, _item_serializable), _cancel)
-							#-------------------------------------------------------------------------------
-							singleton.Move_to_Button(enemy_party_alive[0].party_member_ui.button)
-						#-------------------------------------------------------------------------------
-						else:
-							singleton.Common_Canceled()
-						#-------------------------------------------------------------------------------
+				if(enemy_party_alive.size() > 0):
+					_last_menu.hide()
+					dialogue_menu.show()
 					#-------------------------------------------------------------------------------
-					Item_Resource.TARGET_TYPE.ALLY_1:
-						#-------------------------------------------------------------------------------
-						if(friend_party_alive.size() > 0):
-							_last_menu.hide()
-							dialogue_menu.show()
-							#-------------------------------------------------------------------------------
-							_tp -= _item_serializable.item_resource.tp_cost
-							Set_TP_Label(_tp)
-							singleton.Common_Submited()
-							#-------------------------------------------------------------------------------
-							for _i in friend_party_alive.size():
-								friend_party_alive[_i].party_member_ui.button_pivot.show()
-								singleton.Set_Button(friend_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[_i], friend_party_alive, _item_serializable), _cancel)
-							#-------------------------------------------------------------------------------
-							singleton.Move_to_Button(friend_party_alive[0].party_member_ui.button)
-						#-------------------------------------------------------------------------------
-						else:
-							singleton.Common_Canceled()
-						#-------------------------------------------------------------------------------
+					_tp -= _item_serializable.item_resource.tp_cost
+					Set_TP_Label(_tp)
+					singleton.Common_Submited()
 					#-------------------------------------------------------------------------------
-					Item_Resource.TARGET_TYPE.ALLY_DEATH:
-						#-------------------------------------------------------------------------------
-						if(friend_party_dead.size() > 0):
-							_last_menu.hide()
-							dialogue_menu.show()
-							#-------------------------------------------------------------------------------
-							_tp -= _item_serializable.item_resource.tp_cost
-							Set_TP_Label(_tp)
-							singleton.Common_Submited()
-							#-------------------------------------------------------------------------------
-							for _i in friend_party_dead.size():
-								friend_party_dead[_i].party_member_ui.button_pivot.show()
-								singleton.Set_Button(friend_party_dead[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_dead, friend_party_dead[_i], friend_party_dead, _item_serializable), _cancel)
-							#-------------------------------------------------------------------------------
-							singleton.Move_to_Button(friend_party_dead[0].party_member_ui.button)
-						#-------------------------------------------------------------------------------
-						else:
-							singleton.Common_Canceled()
-						#-------------------------------------------------------------------------------
+					for _i in enemy_party_alive.size():
+						enemy_party_alive[_i].party_member_ui.button_pivot.show()
+						singleton.Set_Button(enemy_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, enemy_party_alive[_i], enemy_party_alive, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
-					Item_Resource.TARGET_TYPE.USER:
-						_last_menu.hide()
-						dialogue_menu.show()
-						#-------------------------------------------------------------------------------
-						_tp -= _item_serializable.item_resource.tp_cost
-						Set_TP_Label(_tp)
-						singleton.Common_Submited()
-						#-------------------------------------------------------------------------------
-						friend_party_alive[current_player_turn].party_member_ui.button_pivot.show()
-						singleton.Set_Button(friend_party_alive[current_player_turn].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[current_player_turn], friend_party_alive, _item_serializable), _cancel)
-						#-------------------------------------------------------------------------------
-						singleton.Move_to_Button(friend_party_alive[current_player_turn].party_member_ui.button)
-					#-------------------------------------------------------------------------------
+					singleton.Move_to_Button(enemy_party_alive[0].party_member_ui.button)
+				#-------------------------------------------------------------------------------
+				else:
+					singleton.Common_Canceled()
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
-			else:
-				singleton.Common_Canceled()
+			Item_Resource.TARGET_TYPE.ALLY_1:
+				#-------------------------------------------------------------------------------
+				if(friend_party_alive.size() > 0):
+					_last_menu.hide()
+					dialogue_menu.show()
+					#-------------------------------------------------------------------------------
+					_tp -= _item_serializable.item_resource.tp_cost
+					Set_TP_Label(_tp)
+					singleton.Common_Submited()
+					#-------------------------------------------------------------------------------
+					for _i in friend_party_alive.size():
+						friend_party_alive[_i].party_member_ui.button_pivot.show()
+						singleton.Set_Button(friend_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[_i], friend_party_alive, _item_serializable), _cancel)
+					#-------------------------------------------------------------------------------
+					singleton.Move_to_Button(friend_party_alive[0].party_member_ui.button)
+				#-------------------------------------------------------------------------------
+				else:
+					singleton.Common_Canceled()
+				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		else:
-			singleton.Common_Canceled()
+			Item_Resource.TARGET_TYPE.ALLY_DEATH:
+				#-------------------------------------------------------------------------------
+				if(friend_party_dead.size() > 0):
+					_last_menu.hide()
+					dialogue_menu.show()
+					#-------------------------------------------------------------------------------
+					_tp -= _item_serializable.item_resource.tp_cost
+					Set_TP_Label(_tp)
+					singleton.Common_Submited()
+					#-------------------------------------------------------------------------------
+					for _i in friend_party_dead.size():
+						friend_party_dead[_i].party_member_ui.button_pivot.show()
+						singleton.Set_Button(friend_party_dead[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_dead, friend_party_dead[_i], friend_party_dead, _item_serializable), _cancel)
+					#-------------------------------------------------------------------------------
+					singleton.Move_to_Button(friend_party_dead[0].party_member_ui.button)
+				#-------------------------------------------------------------------------------
+				else:
+					singleton.Common_Canceled()
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			Item_Resource.TARGET_TYPE.USER:
+				_last_menu.hide()
+				dialogue_menu.show()
+				#-------------------------------------------------------------------------------
+				_tp -= _item_serializable.item_resource.tp_cost
+				Set_TP_Label(_tp)
+				singleton.Common_Submited()
+				#-------------------------------------------------------------------------------
+				friend_party_alive[current_player_turn].party_member_ui.button_pivot.show()
+				singleton.Set_Button(friend_party_alive[current_player_turn].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[current_player_turn], friend_party_alive, _item_serializable), _cancel)
+				#-------------------------------------------------------------------------------
+				singleton.Move_to_Button(friend_party_alive[current_player_turn].party_member_ui.button)
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	else:
@@ -2554,13 +2582,11 @@ func Set_TP_Label(_i: int):
 	tp_bar_progressbar_present.max_value = max_tp
 	tp_bar_progressbar_present.value = _i
 #-------------------------------------------------------------------------------
-func Set_TP_Label_from_the_future(_value:int):
+func Set_TP_Label_from_the_future():
 	var _tp: int = tp
 	#-------------------------------------------------------------------------------
 	for _i in current_player_turn:
 		_tp -= friend_party[_i].item_serializable.item_resource.tp_cost
-	#-------------------------------------------------------------------------------
-	_tp -= _value
 	#-------------------------------------------------------------------------------
 	Set_TP_Label(_tp)
 #-------------------------------------------------------------------------------
@@ -2769,9 +2795,6 @@ func PauseMenu_ItemButton_Submit():
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_label2.text = ""
 		#-------------------------------------------------------------------------------
-		if(item_array[_i].item_resource.max_hold > 0):
-			_label2.text += "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
-		#-------------------------------------------------------------------------------
 		if(item_array[_i].item_resource.hp_cost > 0):
 			_label2.text += "("+str(item_array[_i].item_resource.hp_cost)+" HP)  "
 		#-------------------------------------------------------------------------------
@@ -2780,6 +2803,9 @@ func PauseMenu_ItemButton_Submit():
 		#-------------------------------------------------------------------------------
 		if(item_array[_i].item_resource.tp_cost > 0):
 			_label2.text += "("+str(item_array[_i].item_resource.tp_cost)+" TP)  "
+		#-------------------------------------------------------------------------------
+		if(item_array[_i].item_resource.max_hold > 0):
+			_label2.text += "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
 		#-------------------------------------------------------------------------------
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
@@ -2806,7 +2832,7 @@ func PauseMenu_ItemButton_Submit():
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(equip_array[_i].hold)+"  "
+		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_button, func():ItemMenu_Equipment_ItemButton_Selected(equip_array[_i]), func():pass, func():PauseMenu_ItemButton_ItemMenu_Cancel())
@@ -2826,7 +2852,7 @@ func PauseMenu_ItemButton_Submit():
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(key_item_array[_i].hold)+"  "
+		_label2.text = "[x"+str(key_item_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_button, func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i]), func():pass, func():PauseMenu_ItemButton_ItemMenu_Cancel())
@@ -2952,6 +2978,9 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 		if(_item_serializable.item_resource.tp_cost > 0):
 			_label2.text += "  ("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
 		#-------------------------------------------------------------------------------
+		if(_item_serializable.item_resource.max_hold > 0):
+			_label2.text += "["+str(_item_serializable.hold)+" / "+str(_item_serializable.item_resource.max_hold)+"]  "
+		#-------------------------------------------------------------------------------
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		var _cancel: Callable = func():
@@ -3060,7 +3089,7 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _ind
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(equip_array[_i].hold)+"  "
+		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		var _cancel: Callable = func():
@@ -3183,7 +3212,7 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "x"+str(friend_party[_index].statuseffect_array[_i].hold)+"  "
+		_label2.text = "[x"+str(friend_party[_index].statuseffect_array[_i].hold)+"]  "
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------
 		var _cancel: Callable = func():

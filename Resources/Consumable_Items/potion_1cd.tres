@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Item_Resource" load_steps=2 format=3 uid="uid://c03am3sxypfu3"]
+
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_np4we"]
+
+[resource]
+script = ExtResource("1_np4we")
+myTARGET_TYPE = 1
+anim = "Crouch"
+action_string = "Item_0_0"
+lore = "* An common elixir."
+description = "* Resores 50% of an ally's health."
+max_cooldown = 1
+max_hold = 4
+metadata/_custom_type_script = "uid://cutcj8e6g23o2"

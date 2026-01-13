@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://ckdq3xhi07i1g"]
+[gd_scene load_steps=27 format=4 uid="uid://ckdq3xhi07i1g"]
 
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_0ji40"]
 [ext_resource type="PackedScene" uid="uid://kty6sii5hhfk" path="res://Nodes/Prefabs/Warps/warp_up.tscn" id="3_52n5y"]
@@ -6,7 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_1.tscn" id="6_jyvag"]
 [ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="7_rqg47"]
+[ext_resource type="Resource" uid="uid://b34sv7sxnkjlc" path="res://Resources/Consumable_Items/potion_2cd.tres" id="8_52n5y"]
+[ext_resource type="Resource" uid="uid://b2nrnfuff0r7b" path="res://Resources/Consumable_Items/potion_1cd_10tp.tres" id="8_w87vk"]
 [ext_resource type="PackedScene" uid="uid://c8fmwkm58xib0" path="res://Nodes/Prefabs/savespot_prefab.tscn" id="9_4u8d0"]
+[ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/potion_3cd.tres" id="9_ygji3"]
 [ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/potion.tres" id="12_ygji3"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="13_mxnnk"]
 
@@ -21,16 +24,43 @@ func Room_Event():
 [sub_resource type="Resource" id="Resource_rqg47"]
 script = ExtResource("13_mxnnk")
 item_resource = ExtResource("12_ygji3")
+hold = 2
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_ygji3"]
 script = ExtResource("13_mxnnk")
 item_resource = ExtResource("7_rqg47")
+hold = 2
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_52n5y"]
+[sub_resource type="Resource" id="Resource_mxnnk"]
 script = ExtResource("13_mxnnk")
-item_resource = ExtResource("12_ygji3")
+item_resource = ExtResource("8_52n5y")
+hold = 2
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_5drey"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("9_ygji3")
+hold = 2
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_8ss50"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("8_w87vk")
+hold = 2
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_srwso"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("9_ygji3")
+hold = 2
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_kcmek"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("8_w87vk")
+hold = 2
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wkx03"]
@@ -207,15 +237,23 @@ pickable_item = SubResource("Resource_ygji3")
 
 [node name="Item3" parent="." instance=ExtResource("6_7i8dt")]
 position = Vector2(24, 16)
-pickable_item = SubResource("Resource_52n5y")
+pickable_item = SubResource("Resource_mxnnk")
 
 [node name="Item4" parent="." instance=ExtResource("6_7i8dt")]
 position = Vector2(-40, 0)
-pickable_item = SubResource("Resource_52n5y")
+pickable_item = SubResource("Resource_5drey")
 
 [node name="Item5" parent="." instance=ExtResource("6_7i8dt")]
 position = Vector2(-32, 0)
-pickable_item = SubResource("Resource_52n5y")
+pickable_item = SubResource("Resource_8ss50")
+
+[node name="Item6" parent="." instance=ExtResource("6_7i8dt")]
+position = Vector2(0, -8)
+pickable_item = SubResource("Resource_srwso")
+
+[node name="Item7" parent="." instance=ExtResource("6_7i8dt")]
+position = Vector2(32, -8)
+pickable_item = SubResource("Resource_kcmek")
 
 [node name="Enemy1" type="CharacterBody2D" parent="."]
 y_sort_enabled = true

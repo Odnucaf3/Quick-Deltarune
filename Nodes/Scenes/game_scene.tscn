@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=95 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -17,13 +17,17 @@
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
 [ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="18_1th3s"]
 [ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="18_3p4s7"]
+[ext_resource type="Resource" uid="uid://b6yn1vwdvrl10" path="res://Resources/Skills/ricochet.tres" id="18_hko5v"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
 [ext_resource type="Resource" uid="uid://bnrjjakhyhhuk" path="res://Resources/Status/poison.tres" id="19_mitwg"]
+[ext_resource type="Resource" uid="uid://chu4cb3eiww1t" path="res://Resources/Skills/ricochet_1cd.tres" id="19_s3ops"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 [ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
+[ext_resource type="Resource" uid="uid://bt62ujg15jkav" path="res://Resources/Skills/ricochet_2cd.tres" id="20_rka03"]
 [ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/Skills/heal.tres" id="21_3p4s7"]
 [ext_resource type="Texture2D" uid="uid://bkwxpp3bs0jvk" path="res://icon.svg" id="21_hxoxt"]
+[ext_resource type="Resource" uid="uid://blwy2xm425v5c" path="res://Resources/Skills/ricochet_3cd.tres" id="21_ircg4"]
 [ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
 [ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="22_xhx7r"]
 [ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="24_42b3h"]
@@ -87,6 +91,26 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 [sub_resource type="Resource" id="Resource_ek5q1"]
 script = ExtResource("7_igypo")
 item_resource = ExtResource("18_3p4s7")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_oi8hy"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("18_hko5v")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_1e5l7"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("19_s3ops")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_ugbf0"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("20_rka03")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_05voo"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("21_ircg4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_lujb4"]
@@ -158,6 +182,26 @@ script = ExtResource("7_igypo")
 item_resource = ExtResource("22_xhx7r")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
+[sub_resource type="Resource" id="Resource_6t0ck"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("18_hko5v")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_g75sp"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("19_s3ops")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_f727r"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("20_rka03")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_7rkat"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("21_ircg4")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
 [sub_resource type="Resource" id="Resource_why6j"]
 script = ExtResource("10_igypo")
 hold = 0
@@ -211,6 +255,26 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 [sub_resource type="Resource" id="Resource_rc083"]
 script = ExtResource("7_igypo")
 item_resource = ExtResource("24_42b3h")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_50cdf"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("18_hko5v")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_0bk15"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("19_s3ops")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_3042r"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("20_rka03")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_60x7l"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("21_ircg4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_vqo7i"]
@@ -453,7 +517,7 @@ collision_layer = 2
 shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" instance=ExtResource("13_hxoxt")]
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1"), SubResource("Resource_oi8hy"), SubResource("Resource_1e5l7"), SubResource("Resource_ugbf0"), SubResource("Resource_05voo")])
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i")])
 statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_mitwg")])
 
@@ -473,12 +537,12 @@ shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_76bql"), SubResource("Resource_l8r6y"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_76bql"), SubResource("Resource_l8r6y"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr"), SubResource("Resource_6t0ck"), SubResource("Resource_g75sp"), SubResource("Resource_f727r"), SubResource("Resource_7rkat")])
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m")])
 
 [node name="Friend_03" parent="World2D" instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_inygc"), SubResource("Resource_tln7l"), SubResource("Resource_rc083")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_inygc"), SubResource("Resource_tln7l"), SubResource("Resource_rc083"), SubResource("Resource_50cdf"), SubResource("Resource_0bk15"), SubResource("Resource_3042r"), SubResource("Resource_60x7l")])
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap")])
 
 [node name="room_test_01" parent="World2D" instance=ExtResource("11_tnh07")]
@@ -1206,6 +1270,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1933,7 +1998,6 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utlity description of the Skill / Item."
 
 [node name="EquipSlot_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1982,14 +2046,14 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/line_spacing = 12
 theme_override_font_sizes/font_size = 24
-text = "Weapon 1:
-Weapon 2:
+text = "Weapon:
 Head:
-Torso:
-Botton:
-Arns:
-Legs:
-Ring:"
+Body:
+Chip #1:
+Chip #2:
+Chip #3:
+Chip #4:
+Chip #5:"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
