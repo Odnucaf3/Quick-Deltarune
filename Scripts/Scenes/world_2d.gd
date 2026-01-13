@@ -739,7 +739,8 @@ func BattleMenu_SkillButton_Submit():
 		skill_menu_content.add_child(_button)
 		skill_menu_button_array.append(_button)
 		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
+		var _label2: RichTextLabel = RichTextLabel.new()
+		_label2.bbcode_enabled = true
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -803,7 +804,8 @@ func BattleMenu_ItemButton_Submit():
 		item_menu_consumable_content.add_child(_button)
 		item_menu_consumable_button_array.append(_button)
 		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
+		var _label2: RichTextLabel = RichTextLabel.new()
+		_label2.bbcode_enabled = true
 		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -838,19 +840,25 @@ func BattleMenu_ItemButton_Submit():
 				_label2.text += "("+str(item_array[_i].item_resource.tp_cost)+" TP)  "
 			#-------------------------------------------------------------------------------
 			if(item_array[_i].item_resource.max_hold > 0):
+				var _s: String = "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
 				#-------------------------------------------------------------------------------
 				if(_hold < item_array_in_battle[_i].hold):
-					_label2.add_theme_color_override("font_color", Color.YELLOW)
+					_label2.text += "[color=yellow]"+_s+"[/color]"
 				#-------------------------------------------------------------------------------
-				_label2.text += "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
+				else:
+					_label2.text += _s
+				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
+			var _s: String = "("+str(_cooldown)+" CD)  "
 			#-------------------------------------------------------------------------------
 			if(_cooldown > item_array_in_battle[_i].cooldown):
-				_label2.add_theme_color_override("font_color", Color.YELLOW)
+				_label2.text = "[color=yellow]"+_s+"[/color]"
 			#-------------------------------------------------------------------------------
-			_label2.text += "("+str(_cooldown)+" CD)  "
+			else:
+				_label2.text = _s
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		_button.add_child(_label2)
 		#-------------------------------------------------------------------------------

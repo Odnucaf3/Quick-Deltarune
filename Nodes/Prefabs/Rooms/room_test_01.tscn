@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_1.tscn" id="6_jyvag"]
 [ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="7_rqg47"]
-[ext_resource type="Resource" uid="uid://b34sv7sxnkjlc" path="res://Resources/Consumable_Items/potion_2cd.tres" id="8_52n5y"]
+[ext_resource type="Resource" uid="uid://c03am3sxypfu3" path="res://Resources/Consumable_Items/potion_10tp.tres" id="8_52n5y"]
 [ext_resource type="Resource" uid="uid://b2nrnfuff0r7b" path="res://Resources/Consumable_Items/potion_1cd_10tp.tres" id="8_w87vk"]
 [ext_resource type="PackedScene" uid="uid://c8fmwkm58xib0" path="res://Nodes/Prefabs/savespot_prefab.tscn" id="9_4u8d0"]
 [ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/potion_3cd.tres" id="9_ygji3"]
