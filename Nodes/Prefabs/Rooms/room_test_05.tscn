@@ -40,5 +40,5 @@ position = Vector2(1456, -288)
 autoplay = "banner-big"
 
 [node name="Savespot" parent="." instance=ExtResource("4_xj8ee")]
-position = Vector2(1416, -248)
+position = Vector2(1424, -256)
 dialogue = "* Creating a second Savespot fills you with determination."

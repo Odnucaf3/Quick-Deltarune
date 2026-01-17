@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=99 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -32,6 +32,7 @@
 [ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="22_xhx7r"]
 [ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="24_42b3h"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
+[ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
 
 [sub_resource type="Resource" id="Resource_xhx7r"]
 script = ExtResource("6_1th3s")
@@ -64,7 +65,7 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 bg_color = Color(0, 0, 0, 0.88235295)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muxe8"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
+bg_color = Color(0, 0, 0, 0.8039216)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -149,6 +150,11 @@ hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_ftd8i"]
+script = ExtResource("10_igypo")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_xvxdo"]
 script = ExtResource("10_igypo")
 hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
@@ -242,6 +248,11 @@ script = ExtResource("10_igypo")
 hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
+[sub_resource type="Resource" id="Resource_74fp5"]
+script = ExtResource("10_igypo")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="Resource" id="Resource_inygc"]
 script = ExtResource("7_igypo")
 item_resource = ExtResource("5_rpgth")
@@ -317,6 +328,11 @@ script = ExtResource("10_igypo")
 hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
+[sub_resource type="Resource" id="Resource_kqnir"]
+script = ExtResource("10_igypo")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnh07"]
 bg_color = Color(0, 0, 0, 0.88235295)
 
@@ -349,7 +365,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_lore", "teleporty_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equip_menu_title", "equip_menu_lore", "equip_menu_description", "equipslot_menu", "equipslot_menu_content", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equip_menu", "equip_menu_scrollContainer", "equip_menu_content", "equip_menu_title", "equip_menu_lore", "equip_menu_description", "equipslot_menu", "equipslot_menu_content", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -361,10 +377,10 @@ tp_bar_progressbar_present = NodePath("../CanvasLayer/Battle_UI/tp_root/Control/
 tp_bar_progressbar_future = NodePath("../CanvasLayer/Battle_UI/tp_root/Control/ProgressBar/ProgressBar2")
 tp_bar_label = NodePath("../CanvasLayer/Battle_UI/tp_root/sp_Label")
 dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu")
-dialogue_menu_speaker1 = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control")
-dialogue_menu_speaker1_image = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control/Panel/TextureRect")
-dialogue_menu_speaker1_name = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer")
-dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer/RichTextLabel")
+dialogue_menu_speaker1 = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2")
+dialogue_menu_speaker1_image = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2/TextureRect")
+dialogue_menu_speaker1_name = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Label")
+dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel")
 savespot_menu = NodePath("../CanvasLayer/Save_Menu")
 savespot_menu_button_array = [NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
@@ -375,16 +391,16 @@ player_interactable_area2d = NodePath("Player/interactable_by_Action_Area2D")
 player_enemyDetector_area2d = NodePath("Player/enemy_by_Touch_Area2D")
 friend_party = [NodePath("Player/Friend_01"), NodePath("Friend_02"), NodePath("Friend_03")]
 item_menu = NodePath("../CanvasLayer/All Menues/Items_TabContainer")
-item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-item_menu_consumable_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
-item_menu_consumable_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/Label")
-item_menu_consumable_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-item_menu_consumable_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
-item_menu_equipment_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-item_menu_equipment_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
-item_menu_equipment_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/Label")
-item_menu_equipment_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-item_menu_equipment_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
+item_menu_consumable_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_consumable_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/Label")
+item_menu_consumable_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+item_menu_consumable_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_equipment_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
+item_menu_equipment_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_equipment_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/Label")
+item_menu_equipment_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+item_menu_equipment_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 item_menu_keyitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_keyitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_keyitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/Label")
@@ -403,7 +419,7 @@ teleporty_menu = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer")
 teleporty_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 teleporty_menu_content = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 teleporty_menu_title = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/Label")
-teleporty_menu_lore = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+teleporty_menu_rect = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/Control/TextureRect")
 teleporty_menu_description = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 equip_menu = NodePath("../CanvasLayer/All Menues/Equip_TabContainer")
 equip_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Equip_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
@@ -469,7 +485,6 @@ pivot_offset = Vector2(600, 350)
 theme_override_styles/panel = SubResource("StyleBoxFlat_4usn6")
 
 [node name="Battle_Box" type="Panel" parent="World2D"]
-visible = false
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -518,7 +533,7 @@ shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" instance=ExtResource("13_hxoxt")]
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1"), SubResource("Resource_oi8hy"), SubResource("Resource_1e5l7"), SubResource("Resource_ugbf0"), SubResource("Resource_05voo")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i"), SubResource("Resource_xvxdo")])
 statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_mitwg")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player"]
@@ -538,66 +553,49 @@ shape = SubResource("CircleShape2D_hxoxt")
 [node name="Friend_02" parent="World2D" instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_76bql"), SubResource("Resource_l8r6y"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr"), SubResource("Resource_6t0ck"), SubResource("Resource_g75sp"), SubResource("Resource_f727r"), SubResource("Resource_7rkat")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_74fp5")])
 
 [node name="Friend_03" parent="World2D" instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_inygc"), SubResource("Resource_tln7l"), SubResource("Resource_rc083"), SubResource("Resource_50cdf"), SubResource("Resource_0bk15"), SubResource("Resource_3042r"), SubResource("Resource_60x7l")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap"), SubResource("Resource_kqnir")])
 
 [node name="room_test_01" parent="World2D" instance=ExtResource("11_tnh07")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Dialogue_Menu" type="Control" parent="CanvasLayer"]
+[node name="Dialogue_Menu" type="MarginContainer" parent="CanvasLayer"]
 visible = false
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -190.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer"]
-layout_mode = 2
-
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control"]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -43.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/MarginContainer/Control/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -608,77 +606,22 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-grow_horizontal = 2
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
-offset_right = 197.0
-grow_vertical = 0
-theme = ExtResource("26_1th3s")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer/MarginContainer"]
-layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "[Speker's Name]"
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 30
+text = "  [Name of the Speaker]  "
 
-[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -197.0
-offset_top = -42.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("26_1th3s")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Control/PanelContainer2/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "[Speker's Name]"
-horizontal_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_bottom = 8
-
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer"]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel"]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer/Label"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -686,82 +629,122 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer"]
-visible = false
-clip_contents = true
+[node name="Label2" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
-texture = ExtResource("21_hxoxt")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 30
+text = "  [Name of the Speaker]  "
 
-[node name="Dialogue_MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer"]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer/Label2"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(750, 178)
 layout_mode = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer"]
 layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("21_hxoxt")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
-visible = false
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "[Speaker's Name]"
+text = "[Name of the Speaker]"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/MarginContainer/Panel/HBoxContainer/Dialogue_MarginContainer/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 30
-bbcode_enabled = true
-text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
+text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 
-[node name="Control3" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
-show_behind_parent = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control3"]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
 visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("21_hxoxt")
+expand_mode = 3
+stretch_mode = 5
+flip_h = true
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control3/Control"]
-show_behind_parent = true
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_right = 300.0
-offset_bottom = 300.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -2.3561945
-theme = ExtResource("26_1th3s")
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+flip_h = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control3/Control"]
+[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2"]
+visible = false
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -291.418
-offset_top = -500.0
-offset_right = 291.418
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
@@ -862,6 +845,7 @@ value = 15.0
 show_percentage = false
 
 [node name="Battle_Menu" type="Control" parent="CanvasLayer/Battle_UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1270,7 +1254,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1280,7 +1263,7 @@ grow_vertical = 2
 theme = ExtResource("26_1th3s")
 current_tab = 0
 
-[node name="Consumables" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
+[node name="Consumables Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -1288,21 +1271,21 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 metadata/_tab_index = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Consumables"
+text = "Consumable Items"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1310,7 +1293,7 @@ theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -1318,145 +1301,145 @@ follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_right = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Lore description of the Skill / Item."
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables/HBoxContainer/VBoxContainer2/MarginContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer2"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
-[node name="Equipment" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
+[node name="Equip Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
@@ -1465,21 +1448,21 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 metadata/_tab_index = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Equipment"
+text = "Equip Items"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -1487,7 +1470,7 @@ theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -1495,140 +1478,140 @@ follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/margin_right = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2"]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Lore description of the Skill / Item."
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equipment/HBoxContainer/VBoxContainer2/MarginContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer2"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
@@ -1998,6 +1981,7 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utlity description of the Skill / Item."
 
 [node name="EquipSlot_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2053,7 +2037,8 @@ Chip #1:
 Chip #2:
 Chip #3:
 Chip #4:
-Chip #5:"
+Chip #5:
+Chip #6:"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/EquipSlot_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
@@ -3007,14 +2992,34 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer"]
+[node name="Control" type="Control" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer"]
+clip_contents = true
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -338.88754
+offset_top = -102.5
+offset_right = 338.88754
+offset_bottom = 102.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("33_s3ops")
+expand_mode = 5
+stretch_mode = 5
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2"]
 layout_mode = 2

@@ -86,7 +86,7 @@ var skill_menu_button_array: Array[Button]
 @export var teleporty_menu_content: VBoxContainer
 var teleporty_menu_button_array: Array[Button]
 @export var teleporty_menu_title: Label
-@export var teleporty_menu_lore: RichTextLabel
+@export var teleporty_menu_rect: TextureRect
 @export var teleporty_menu_description: RichTextLabel
 #-------------------------------------------------------------------------------
 @export var equip_menu: TabContainer
@@ -124,7 +124,7 @@ var status_menu_statuseffect_button_array: Array[Button]
 @export var status_menu_statuseffect_lore: RichTextLabel
 @export var status_menu_statuseffect_description: RichTextLabel
 #-------------------------------------------------------------------------------
-var camera_offset_y: float = 40
+var camera_offset_y: float = 28
 var current_player_turn: int = 0
 @export var black_panel: Panel
 @export var battle_black_panel: Panel
@@ -599,26 +599,12 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
 	_tween.tween_interval(0.3)
-	_tween.tween_interval(0.3)
-	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
-		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(friend_party.size()+1))
-		var _x_pos: float = -camera_size.x*0.27
-		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
-		friend_party[_i].party_member_ui.global_position = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
-		_tween.parallel().tween_property(friend_party[_i], "global_position", _position, 0.5)
-	#-------------------------------------------------------------------------------
-	for _i in enemy_party.size():
-		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(enemy_party.size()+1))
-		var _x_pos: float = camera_size.x*0.27
-		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
-		enemy_party[_i].party_member_ui.global_position = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
-		_tween.parallel().tween_property(enemy_party[_i], "global_position", _position, 0.5)
-	#-------------------------------------------------------------------------------
-	battle_menu.global_position = friend_party[current_player_turn].party_member_ui.button_pivot.global_position
+	Move_Fighters_to_Position(_tween, true, 0.5)
 	_tween.tween_interval(0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
+		battle_menu.global_position = friend_party[current_player_turn].party_member_ui.button_pivot.global_position
+		#-------------------------------------------------------------------------------
 		dialogue_menu_speaker1.hide()
 		dialogue_menu_speaker1_name.hide()
 		dialogue_menu_speaking_label.text = "* The Battle began!"
@@ -673,6 +659,44 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	)
 	#-------------------------------------------------------------------------------
 	await _tween.finished
+#-------------------------------------------------------------------------------
+func Move_Fighters_to_Position_2(_position_type:bool):
+	var _tween: Tween = create_tween()
+	Move_Fighters_to_Position(_tween, _position_type, 0.3)
+	_tween.tween_interval(0.2)
+	await _tween.finished
+#-------------------------------------------------------------------------------
+func Move_Fighters_to_Position(_tween:Tween, _position_type:bool, _timer:float):
+	var _center: Vector2 = camera.position
+	var _top_limit: float
+	var _botton_limit: float
+	#-------------------------------------------------------------------------------
+	if(_position_type):
+		_top_limit = 0.41
+		_botton_limit = 0.79
+	#-------------------------------------------------------------------------------
+	else:
+		_top_limit = 0.45
+		_botton_limit = 1.15
+	#-------------------------------------------------------------------------------
+	_tween.tween_interval(_timer)
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(friend_party.size()+1))
+		var _x_pos: float = -camera_size.x*0.27
+		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
+		_tween.parallel().tween_property(friend_party[_i], "global_position", _position, _timer)
+		var _ui_position: Vector2 = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
+		_tween.parallel().tween_property(friend_party[_i].party_member_ui, "global_position", _ui_position, _timer)
+	#-------------------------------------------------------------------------------
+	for _i in enemy_party.size():
+		var _y_pos: float = -camera_size.y*_top_limit + camera_size.y*_botton_limit* (float(_i+1)/(enemy_party.size()+1))
+		var _x_pos: float = camera_size.x*0.27
+		var _position: Vector2 =  _center + Vector2(_x_pos, _y_pos)
+		_tween.parallel().tween_property(enemy_party[_i], "global_position", _position, _timer)
+		var _ui_position: Vector2 = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
+		_tween.parallel().tween_property(enemy_party[_i].party_member_ui, "global_position", _ui_position, _timer)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ExitBatle(_retry_callable:Callable, _win_callable:Callable):
 	match(myBATTLE_STATE):
@@ -1703,10 +1727,10 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	for _i in enemy_party_alive.size():
 		PlayAnimation(enemy_party_alive[_i].playback, "Aim")
 	#-------------------------------------------------------------------------------
-	await Seconds(0.5)
+	await Move_Fighters_to_Position_2(false)
 	_callable.call()
-	#-------------------------------------------------------------------------------
 	await TimeOut_Tween(_timer)
+	#-------------------------------------------------------------------------------
 	myGAME_STATE = GAME_STATE.IN_MENU
 	current_player_turn = 0
 	#-------------------------------------------------------------------------------
@@ -1742,6 +1766,8 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	if(enemy_party_alive.size() > 0):
 		#-------------------------------------------------------------------------------
 		if(friend_party_alive.size() > 0):
+			await Move_Fighters_to_Position_2(true)
+			#-------------------------------------------------------------------------------
 			battle_menu.show()
 			dialogue_menu.show()
 			battle_box.hide()
@@ -1821,6 +1847,7 @@ func You_Retry(_callable: Callable):
 	#-------------------------------------------------------------------------------
 	black_panel.self_modulate = Color.TRANSPARENT
 	_tween.tween_property(black_panel, "self_modulate", Color.BLACK, 0.3)
+	
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		retry_menu.hide()
@@ -1875,7 +1902,8 @@ func You_Retry(_callable: Callable):
 		singleton.Move_to_First_Button(battle_menu_button)
 	)
 	#-------------------------------------------------------------------------------
-	_tween.tween_interval(0.05)
+	#_tween.tween_interval(0.05)
+	Move_Fighters_to_Position(_tween, true, 0.05)
 	#-------------------------------------------------------------------------------
 	_tween.tween_property(black_panel, "self_modulate", Color.TRANSPARENT, 0.3)
 	#-------------------------------------------------------------------------------
@@ -2920,7 +2948,7 @@ func StatusMenu_No_Description(_user:Party_Member):
 func TeleportMenu_No_Description():
 	singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
-	teleporty_menu_lore.text = ""
+	teleporty_menu_rect.texture = null
 	teleporty_menu_description.text = ""
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_Submit():
@@ -3396,25 +3424,25 @@ func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
 		"room_test_01":
 			#-------------------------------------------------------------------------------
 			_selected = func():
-				teleporty_menu_lore.text = "* Its a little buggi zone, some enemies com back to life when i leave the rooms."
-				teleporty_menu_description.text = "* Te first room of the game."
+				teleporty_menu_rect.show()
+				teleporty_menu_rect.texture = load("res://Assets/room_previews/room_test_01.jpg")
+				teleporty_menu_description.text = "* Its a little buggi zone, some enemies com back to life when i leave the rooms."
 				singleton.Common_Selected()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		"room_test_05":
 			#-------------------------------------------------------------------------------
 			_selected = func():
-				teleporty_menu_lore.text = "* This plase is where some windows stars to appear, mayby it's a residential zone."
-				teleporty_menu_description.text = "* Te 5th room of the game."
+				teleporty_menu_rect.show()
+				teleporty_menu_rect.texture = load("res://Assets/room_previews/room_test_05.jpg")
+				teleporty_menu_description.text = "* This plase is where some windows stars to appear, mayby it's a residential zone."
 				singleton.Common_Selected()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		_:
 			#-------------------------------------------------------------------------------
 			_selected = func():
-				teleporty_menu_lore.text = ""
-				teleporty_menu_description.text = ""
-				singleton.Common_Selected()
+				TeleportMenu_No_Description()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
