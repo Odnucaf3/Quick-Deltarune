@@ -66,12 +66,20 @@ func SaveData_Constructor() -> Dictionary:
 	#-------------------------------------------------------------------------------
 	_dictionary["equip_array"] = _equip_data
 	#-------------------------------------------------------------------------------
+	var _statuseffect_data: Array[Dictionary] = []
+	#-------------------------------------------------------------------------------
+	for _i in statuseffect_array.size():
+		var _statuseffect_dictionary: Dictionary = statuseffect_array[_i].SaveData_Constructor()
+		_statuseffect_data.append(_statuseffect_dictionary)
+	#-------------------------------------------------------------------------------
+	_dictionary["statuseffect_array"] = _statuseffect_data
+	#-------------------------------------------------------------------------------
 	return _dictionary
 #-------------------------------------------------------------------------------
 func LoadData_Constructor(_dictionaty:Dictionary):
 	skill_array.clear()
 	#-------------------------------------------------------------------------------
-	var _skill_array:Array = _dictionaty["skill_array"]
+	var _skill_array:Array = _dictionaty.get("skill_array", [])
 	#-------------------------------------------------------------------------------
 	for _i in _skill_array.size():
 		var _skill: Item_Serializable = Item_Serializable.new()
@@ -80,11 +88,18 @@ func LoadData_Constructor(_dictionaty:Dictionary):
 	#-------------------------------------------------------------------------------
 	equip_array.clear()
 	#-------------------------------------------------------------------------------
-	var _equip_array:Array = _dictionaty["equip_array"]
+	var _equip_array:Array = _dictionaty.get("equip_array", [])
 	#-------------------------------------------------------------------------------
 	for _i in _equip_array.size():
 		var _equip: Equip_Serializable = Equip_Serializable.new()
 		_equip.LoadData_Constructor(_equip_array[_i])
 		equip_array.append(_equip)
+	#-------------------------------------------------------------------------------
+	var _statuseffect_array:Array = _dictionaty.get("statuseffect_array", [])
+	#-------------------------------------------------------------------------------
+	for _i in _statuseffect_array.size():
+		var _statuseffect: StatusEffect_Serializable = StatusEffect_Serializable.new()
+		_statuseffect.LoadData_Constructor(_statuseffect_array[_i])
+		equip_array.append(_statuseffect)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
