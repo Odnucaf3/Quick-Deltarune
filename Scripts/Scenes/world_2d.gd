@@ -49,6 +49,13 @@ var enemy_party_dead: Array[Party_Member]
 #-------------------------------------------------------------------------------
 @export var item_menu: TabContainer
 #-------------------------------------------------------------------------------
+@export var item_menu_allitems_scrollContainer: ScrollContainer
+@export var item_menu_allitems_content: VBoxContainer
+var item_menu_allitems_button_array: Array[Button]
+@export var item_menu_allitems_title: Label
+@export var item_menu_allitems_lore: RichTextLabel
+@export var item_menu_allitems_description: RichTextLabel
+#-------------------------------------------------------------------------------
 @export var item_menu_consumable_scrollContainer: ScrollContainer
 @export var item_menu_consumable_content: VBoxContainer
 var item_menu_consumable_button_array: Array[Button]
@@ -71,8 +78,14 @@ var item_menu_keyitems_button_array: Array[Button]
 @export var item_menu_keyitems_description: RichTextLabel
 #-------------------------------------------------------------------------------
 @export var item_array: Array[Item_Serializable]
-@export var key_item_array: Array[Key_Item_Serializable]
 var item_array_in_battle: Array[Item_Serializable]
+#-------------------------------------------------------------------------------
+@export var equip_array: Array[Equip_Serializable]
+var equip_array_in_battle: Array[Equip_Serializable]
+#-------------------------------------------------------------------------------
+@export var key_item_array: Array[Key_Item_Serializable]
+@export var key_item_array_in_battle: Array[Key_Item_Serializable]
+#-------------------------------------------------------------------------------
 @export var iten_resource_attack: Item_Serializable
 @export var iten_resource_defense: Item_Serializable
 #-------------------------------------------------------------------------------
@@ -93,11 +106,10 @@ var teleporty_menu_button_array: Array[Button]
 #-------------------------------------------------------------------------------
 @export var equipslot_menu_content: VBoxContainer
 var equipslot_menu_button_array: Array[Button]
+@export var equipslot_menu_button_label: Label
 @export var equipslot_menu_title: Label
 @export var equipslot_menu_lore: RichTextLabel
 @export var equipslot_menu_description: RichTextLabel
-#-------------------------------------------------------------------------------
-@export var equip_array: Array[Equip_Serializable]
 #-------------------------------------------------------------------------------
 @export var status_menu: TabContainer
 #-------------------------------------------------------------------------------
@@ -122,6 +134,8 @@ var current_player_turn: int = 0
 @export var black_panel: Panel
 @export var battle_black_panel: Panel
 @export var pause_menu_panel: Panel
+@export var pause_menu_money_label: Label
+@export var money_resource: Key_Item_Resource
 @export var pause_menu: Control
 @export var pause_menu_button_array: Array[Button]
 @export var pause_menu_party_button_array: Array[Party_Button]
@@ -244,6 +258,7 @@ func _ready() -> void:
 	hitbox.global_scale = Get_CircleSprite_Scale(hitBox_radius) + Vector2(0.01, 0.01)
 	grazebox.global_scale = Get_CircleSprite_Scale(grazeBox_radius) + Vector2(0.01, 0.01)
 	#-------------------------------------------------------------------------------
+	Destroy_Childrens(item_menu_allitems_content)
 	Destroy_Childrens(item_menu_consumable_content)
 	Destroy_Childrens(item_menu_equipment_content)
 	Destroy_Childrens(item_menu_keyitems_content)
@@ -592,9 +607,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	battle_black_panel.global_position = _center-battle_black_panel.size/2.0
 	battle_black_panel.show()
 	#-------------------------------------------------------------------------------
-	item_array_in_battle.clear()
-	for _i in item_array.size():
-		item_array_in_battle.append(item_array[_i].Constructor())
+	Set_AllItems_When_Enter_Battle()
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
 	_tween.tween_interval(0.3)
@@ -629,28 +642,17 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		friend_party_dead.clear()
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
-			#-------------------------------------------------------------------------------
-			friend_party[_i].skill_array_in_battle.clear()
-			#-------------------------------------------------------------------------------
-			for _j in friend_party[_i].skill_array.size():
-				friend_party[_i].skill_array_in_battle.append(friend_party[_i].skill_array[_j].Constructor())
-			#-------------------------------------------------------------------------------
-			friend_party[_i].equip_array_in_battle.clear()
-			#-------------------------------------------------------------------------------
-			for _j in friend_party[_i].equip_array.size():
-				friend_party[_i].equip_array_in_battle.append(friend_party[_i].equip_array[_j].Constructor())
-			#-------------------------------------------------------------------------------
-			friend_party[_i].statuseffect_array_in_battle.clear()
-			#-------------------------------------------------------------------------------
-			for _j in friend_party[_i].statuseffect_array.size():
-				friend_party[_i].statuseffect_array_in_battle.append(friend_party[_i].statuseffect_array[_j].Constructor())
+			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(friend_party[_i])
 			#-------------------------------------------------------------------------------
 			friend_party[_i].hp = friend_party[_i].max_hp
 			Set_HP_Label(friend_party[_i])
+			#-------------------------------------------------------------------------------
 			friend_party[_i].sp = 0
 			Set_SP_Label(friend_party[_i])
+			#-------------------------------------------------------------------------------
 			friend_party[_i].party_member_ui.show()
 			friend_party[_i].party_member_ui.button_pivot.hide()
+			#-------------------------------------------------------------------------------
 			friend_party_alive.append(friend_party[_i])
 		#-------------------------------------------------------------------------------
 		enemy_party_alive.clear()
@@ -668,6 +670,76 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	)
 	#-------------------------------------------------------------------------------
 	await _tween.finished
+#-------------------------------------------------------------------------------
+func Set_AllItems_When_Enter_Battle():
+	#-------------------------------------------------------------------------------
+	item_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _i in item_array.size():
+		item_array_in_battle.append(item_array[_i].Constructor())
+	#-------------------------------------------------------------------------------
+	equip_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _i in equip_array.size():
+		equip_array_in_battle.append(equip_array[_i].Constructor())
+	#-------------------------------------------------------------------------------
+	key_item_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _i in key_item_array.size():
+		key_item_array_in_battle.append(key_item_array[_i].Constructor())
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Set_AllItems_When_Exit_Battle():
+	#-------------------------------------------------------------------------------
+	item_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in item_array_in_battle.size():
+		item_array.append(item_array_in_battle[_i].Constructor())
+	#-------------------------------------------------------------------------------
+	equip_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in equip_array_in_battle.size():
+		equip_array.append(equip_array_in_battle[_i].Constructor())
+	#-------------------------------------------------------------------------------
+	key_item_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in key_item_array_in_battle.size():
+		key_item_array.append(key_item_array_in_battle[_i].Constructor())
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(_user:Party_Member):
+	_user.skill_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.skill_array.size():
+		_user.skill_array_in_battle.append(_user.skill_array[_j].Constructor())
+	#-------------------------------------------------------------------------------
+	_user.equip_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.equip_array.size():
+		_user.equip_array_in_battle.append(_user.equip_array[_j].Constructor())
+	#-------------------------------------------------------------------------------
+	_user.statuseffect_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.statuseffect_array.size():
+		_user.statuseffect_array_in_battle.append(_user.statuseffect_array[_j].Constructor())
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(_user:Party_Member):
+	_user.skill_array.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.skill_array_in_battle.size():
+		_user.skill_array.append(_user.skill_array_in_battle[_j].Constructor())
+	#-------------------------------------------------------------------------------
+	_user.equip_array.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.equip_array_in_battle.size():
+		_user.equip_array.append(_user.equip_array_in_battle[_j].Constructor())
+	#-------------------------------------------------------------------------------
+	_user.statuseffect_array.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.statuseffect_array_in_battle.size():
+		_user.statuseffect_array.append(_user.statuseffect_array_in_battle[_j].Constructor())
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Move_Fighters_to_Position_2(_position_type:bool):
 	var _tween: Tween = create_tween()
@@ -755,53 +827,14 @@ func BattleMenu_SkillButton_Submit():
 	battle_menu.hide()
 	dialogue_menu.hide()
 	status_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party_alive[current_player_turn]
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(status_menu.get_tab_bar(),func():StatusMenu_No_Description(_user), func():SkillMenu_SkillButton_Cancel())
-	#-------------------------------------------------------------------------------
 	for _i in _user.skill_array_in_battle.size():
-		#-------------------------------------------------------------------------------
 		var _item_serializable: Item_Serializable = _user.skill_array_in_battle[_i]
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		skill_menu_content.add_child(_button)
-		skill_menu_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: RichTextLabel = RichTextLabel.new()
-		_label2.bbcode_enabled = true
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = ""
-		#-------------------------------------------------------------------------------
-		if(_item_serializable.cooldown <= 0 or _item_serializable.item_resource.max_cooldown <= 0):
-			#-------------------------------------------------------------------------------
-			if(_item_serializable.item_resource.hp_cost > 0):
-				_label2.text += "("+str(_item_serializable.item_resource.hp_cost)+" HP)  "
-			#-------------------------------------------------------------------------------
-			if(_item_serializable.item_resource.sp_cost > 0):
-				_label2.text += "("+str(_item_serializable.item_resource.sp_cost)+" SP)  "
-			#-------------------------------------------------------------------------------
-			if(_item_serializable.item_resource.tp_cost > 0):
-				_label2.text += "("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
-			#-------------------------------------------------------------------------------
-			if(_item_serializable.item_resource.max_hold > 0 ):
-				_label2.text += "["+str(_item_serializable.hold)+"/"+str(_item_serializable.item_resource.max_hold)+"]  "
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		else:
-			_label2.text += "("+str(_item_serializable.cooldown)+" CD)  "
-		#-------------------------------------------------------------------------------
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
+		var _cancel_back: Callable = func():
 			TargetMenu_TargetButton_Cancel()
 			status_menu.show()
 			dialogue_menu.hide()
@@ -809,15 +842,19 @@ func BattleMenu_SkillButton_Submit():
 			#-------------------------------------------------------------------------------
 			Set_TP_Label_from_the_future()
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():SkillMenu_SkillButton_Selected(_item_serializable), func(): SkillMenu_SkillButton_Submit(_item_serializable, _cancel), func():SkillMenu_SkillButton_Cancel())
+		var _selected: Callable = func():SkillMenu_SkillButton_Selected(_item_serializable)
+		var _submit: Callable = func(): SkillMenu_SkillButton_Submit(_item_serializable, _cancel_back)
+		var _cancel: Callable = func():SkillMenu_SkillButton_Cancel()
+		#-------------------------------------------------------------------------------
+		var _button: Button = Create_Skill_Button(_item_serializable, _selected, _submit, _cancel)
+		skill_menu_content.add_child(_button)
+		skill_menu_button_array.append(_button)
+	#-------------------------------------------------------------------------------
+	var selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var cancel_tabbar: Callable = func():SkillMenu_SkillButton_Cancel()
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
-	#-------------------------------------------------------------------------------
-	if(skill_menu_button_array.size() > 0):
-		singleton.Move_to_Button(skill_menu_button_array[0])
-	#-------------------------------------------------------------------------------
-	else:
-		singleton.Move_to_Button(_tabbar)
+	singleton.Set_TabBar(_tabbar,selected_tabbar, cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, true)
@@ -826,36 +863,25 @@ func BattleMenu_SkillButton_Submit():
 	_tabbar.set_tab_disabled(4, true)
 	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 3
+	#-------------------------------------------------------------------------------
+	if(skill_menu_button_array.size() > 0):
+		singleton.Move_to_Button(skill_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Move_to_Button(_tabbar)
+	#-------------------------------------------------------------------------------
+	_tabbar.current_tab = 3
 	skill_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_ItemButton_Submit():
 	battle_menu.hide()
 	dialogue_menu.hide()
 	item_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(item_menu.get_tab_bar(),func():ItemMenu_No_Description(), func():ItemMenu_ItemButton_Cancel())
-	#-------------------------------------------------------------------------------
 	for _i in item_array_in_battle.size():
-		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
-		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(item_array_in_battle[_i].item_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_consumable_content.add_child(_button)
-		item_menu_consumable_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: RichTextLabel = RichTextLabel.new()
-		_label2.bbcode_enabled = true
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = ""
-		#-------------------------------------------------------------------------------
 		var _hold: int = item_array_in_battle[_i].hold
+		var _cooldown: int = item_array_in_battle[_i].cooldown
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
@@ -863,49 +889,13 @@ func BattleMenu_ItemButton_Submit():
 				_hold -= 1
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		var _cooldown: int = item_array_in_battle[_i].cooldown
-		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
 			if(item_array_in_battle[_i].item_resource == (friend_party[_j].item_serializable.item_resource)):
 				_cooldown += item_array_in_battle[_i].item_resource.max_cooldown
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		if(_cooldown <= 0 or item_array_in_battle[_i].item_resource.max_cooldown <= 0):
-			#-------------------------------------------------------------------------------
-			if(item_array[_i].item_resource.hp_cost > 0):
-				_label2.text += "("+str(item_array[_i].item_resource.hp_cost)+" HP)  "
-			#-------------------------------------------------------------------------------
-			if(item_array[_i].item_resource.sp_cost > 0):
-				_label2.text += "("+str(item_array[_i].item_resource.sp_cost)+" SP)  "
-			#-------------------------------------------------------------------------------
-			if(item_array[_i].item_resource.tp_cost > 0):
-				_label2.text += "("+str(item_array[_i].item_resource.tp_cost)+" TP)  "
-			#-------------------------------------------------------------------------------
-			if(item_array[_i].item_resource.max_hold > 0):
-				var _s: String = "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
-				#-------------------------------------------------------------------------------
-				if(_hold < item_array_in_battle[_i].hold):
-					_label2.text += "[color=yellow]"+_s+"[/color]"
-				#-------------------------------------------------------------------------------
-				else:
-					_label2.text += _s
-				#-------------------------------------------------------------------------------
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		else:
-			var _s: String = "("+str(_cooldown)+" CD)  "
-			#-------------------------------------------------------------------------------
-			if(_cooldown > item_array_in_battle[_i].cooldown):
-				_label2.text = "[color=yellow]"+_s+"[/color]"
-			#-------------------------------------------------------------------------------
-			else:
-				_label2.text = _s
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
+		var _cancel_back: Callable = func():
 			TargetMenu_TargetButton_Cancel()
 			item_menu.show()
 			dialogue_menu.hide()
@@ -913,50 +903,56 @@ func BattleMenu_ItemButton_Submit():
 			#-------------------------------------------------------------------------------
 			Set_TP_Label_from_the_future()
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i]), func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _cancel), func():ItemMenu_ItemButton_Cancel())
+		var _selected: Callable = func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i])
+		var _submit: Callable = func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _cancel_back)
+		var _cancel: Callable = func():ItemMenu_ItemButton_Cancel()
 		#-------------------------------------------------------------------------------
+		var _consumableitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown, _selected, _submit, _cancel)
+		item_menu_consumable_content.add_child(_consumableitem_button)
+		item_menu_consumable_button_array.append(_consumableitem_button)
+		#-------------------------------------------------------------------------------
+		var _allitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown, _selected, _submit, _cancel)
+		item_menu_allitems_content.add_child(_allitem_button)
+		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	for _i in equip_array.size():
+	for _i in equip_array_in_battle.size():
+		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_array_in_battle[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():ItemMenu_ItemButton_Cancel()
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
+		var _equipitem_button: Button = Create_EquipItem_Button(equip_array_in_battle[_i], _selected, _submit, _cancel)
+		item_menu_equipment_content.add_child(_equipitem_button)
+		item_menu_equipment_button_array.append(_equipitem_button)
 		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(equip_array[_i].equip_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_equipment_content.add_child(_button)
-		item_menu_equipment_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():ItemMenu_Equipment_ItemButton_Selected(equip_array[_i]), func():pass, func():ItemMenu_ItemButton_Cancel())
+		var _allitem_button: Button = Create_EquipItem_Button(equip_array_in_battle[_i], _selected, _submit, _cancel)
+		item_menu_allitems_content.add_child(_allitem_button)
+		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	for _i in key_item_array.size():
+	for _i in key_item_array_in_battle.size():
+		var _selected: Callable = func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array_in_battle[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():ItemMenu_ItemButton_Cancel()
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
+		var _keyitem_button: Button = Create_KeyItem_Button(key_item_array_in_battle[_i], _selected, _submit, _cancel)
+		item_menu_keyitems_content.add_child(_keyitem_button)
+		item_menu_keyitems_button_array.append(_keyitem_button)
 		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(key_item_array[_i].key_item_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_keyitems_content.add_child(_button)
-		item_menu_keyitems_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(key_item_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i]), func():pass, func():ItemMenu_ItemButton_Cancel())
+		var _allitem_button: Button = Create_KeyItem_Button(key_item_array_in_battle[_i], _selected, _submit, _cancel)
+		item_menu_allitems_content.add_child(_allitem_button)
+		item_menu_allitems_button_array.append(_allitem_button)
+	#-------------------------------------------------------------------------------
+	var selected_tabbar: Callable = func():ItemMenu_No_Description()
+	var cancel_tabbar: Callable = func():ItemMenu_ItemButton_Cancel()
 	#-------------------------------------------------------------------------------
 	var _tabbar:TabBar = item_menu.get_tab_bar()
+	singleton.Set_TabBar(_tabbar, selected_tabbar, cancel_tabbar)
+	#-------------------------------------------------------------------------------
+	_tabbar.set_tab_disabled(0, false)
+	_tabbar.set_tab_disabled(1, false)
+	_tabbar.set_tab_disabled(2, false)
+	_tabbar.set_tab_disabled(3, false)
+	#-------------------------------------------------------------------------------
+	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	if(item_menu_consumable_button_array.size() > 0):
 		singleton.Move_to_Button(item_menu_consumable_button_array[0])
@@ -964,50 +960,32 @@ func BattleMenu_ItemButton_Submit():
 	else:
 		singleton.Move_to_Button(_tabbar)
 	#-------------------------------------------------------------------------------
-	_tabbar.set_tab_disabled(0, false)
-	_tabbar.set_tab_disabled(1, false)
-	_tabbar.set_tab_disabled(2, false)
-	#-------------------------------------------------------------------------------
-	_tabbar.current_tab = 0
 	item_menu_consumable_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_EquipButton_Submit():
 	status_menu.show()
 	battle_menu.hide()
 	dialogue_menu.hide()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party_alive[current_player_turn]
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(status_menu.get_tab_bar(), func():StatusMenu_No_Description(_user), func():BattleMenu_EquipButton_EquipSlot_Cancel())
-	#-------------------------------------------------------------------------------
-	for _i in _user.equip_array.size():
-		var _button:Button = Button.new()
-		_button.theme = ui_theme
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	for _i in _user.equip_array_in_battle.size():
+		var _selected: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array_in_battle, _i)
+		var _submit: Callable = func():BattleMenu_EquipButton_EquipSlot_Submit(_user, _i)
+		var _cancel: Callable = func():BattleMenu_EquipButton_EquipSlot_Cancel()
 		#-------------------------------------------------------------------------------
-		var _equip_serializable: Equip_Serializable = _user.equip_array[_i]
-		#-------------------------------------------------------------------------------
-		if(_equip_serializable.equip_resource == null):
-			_button.text = "  [Empty]  "
-		#-------------------------------------------------------------------------------
-		else:
-			_button.text = get_resource_filename(_equip_serializable.equip_resource)
-		#-------------------------------------------------------------------------------
+		var _button:Button = Create_EquipSlot_Button(_user.equip_array_in_battle[_i], _selected, _submit, _cancel)
 		equipslot_menu_button_array.append(_button)
 		equipslot_menu_content.add_child(_button)
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(equipslot_menu_button_array[_i], func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array_in_battle, _i), func():BattleMenu_EquipButton_EquipSlot_Submit(_user, _i), func():BattleMenu_EquipButton_EquipSlot_Cancel())
+		Create_EquipSlot_Label(_user.equip_array_in_battle)
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var _cancel_tabbar: Callable = func():BattleMenu_EquipButton_EquipSlot_Cancel()
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
-	#-------------------------------------------------------------------------------
-	if(equipslot_menu_button_array.size() > 0):
-		singleton.Move_to_Button(equipslot_menu_button_array[0])
-	#-------------------------------------------------------------------------------
-	else:
-		singleton.Move_to_Button(_tabbar)
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, true)
@@ -1016,59 +994,49 @@ func BattleMenu_EquipButton_Submit():
 	_tabbar.set_tab_disabled(4, true)
 	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 2
+	#-------------------------------------------------------------------------------
+	if(equipslot_menu_button_array.size() > 0):
+		singleton.Move_to_Button(equipslot_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Move_to_Button(_tabbar)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
 	status_menu.hide()
 	item_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(item_menu.get_tab_bar(), func():EquipMenu_No_Description(), func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index))
+	var _selected_empty: Callable = func():EquipMenu_No_Description()
+	var _submit_empty: Callable = func():pass
+	var _cancel_empty: Callable = func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index)
 	#-------------------------------------------------------------------------------
-	var _empty_button: Button = Button.new()
-	_empty_button.theme = ui_theme
-	_empty_button.text = "  [Empty]  "
-	_empty_button.add_theme_font_size_override("font_size", 24)
-	_empty_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-	item_menu_equipment_content.add_child(_empty_button)
-	item_menu_equipment_button_array.append(_empty_button)
-	singleton.Set_Button(_empty_button, func():EquipMenu_No_Description(), func():pass, func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index))
+	var _empty_button: Button = Create_EquipEmpty_Button(_selected_empty, _submit_empty, _cancel_empty)
 	#-------------------------------------------------------------------------------
-	for _i in equip_array.size():
+	for _i in equip_array_in_battle.size():
+		var _selected: Callable = func():EquipMenu_EquipButton_Selected(equip_array_in_battle[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index)
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
-		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(equip_array[_i].equip_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		var _button: Button = Create_EquipItem_Button(equip_array_in_battle[_i], _selected, _submit, _cancel)
 		item_menu_equipment_content.add_child(_button)
 		item_menu_equipment_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
-			TargetMenu_TargetButton_Cancel()
-			item_menu.show()
-			dialogue_menu.hide()
-			singleton.Move_to_Button(item_menu_equipment_button_array[_i])
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():EquipMenu_EquipButton_Selected(equip_array[_i]), func():pass, func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index))
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():EquipMenu_No_Description()
+	var _cancel_tabbar: Callable = func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index)
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = item_menu.get_tab_bar()
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, false)
 	_tabbar.set_tab_disabled(2, true)
+	_tabbar.set_tab_disabled(3, true)
 	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 1
-	item_menu_equipment_scrollContainer.scroll_vertical = 0
+	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(item_menu_equipment_button_array[0])
+	item_menu_equipment_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_EquipButton_EquipSlot_Cancel():
 	Battle_Menu_StatusMenu_Exit_Common()
@@ -1099,11 +1067,10 @@ func BattleMenu_StatusButton_Submit():
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:bool):
 	status_menu.show()
-	Show_Status_Data(_user)
 	dialogue_menu.hide()
-	status_menu.current_tab = 0
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
+	#-------------------------------------------------------------------------------
+	Show_Status_Data(_user)
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.button_pivot.hide()
@@ -1111,74 +1078,60 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 	for _i in enemy_party.size():
 		enemy_party[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(status_menu.get_tab_bar(), func():StatusMenu_No_Description(_user), func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user))
-	#-------------------------------------------------------------------------------
 	for _i in status_menu_stats_button_array.size():
 		singleton.Set_Button(status_menu_stats_button_array[_i], func():StatusMenu_StatsButton_Selected(_i), func():pass, func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user))
 	#-------------------------------------------------------------------------------
 	for _i in _user.statuseffect_array_in_battle.size():
+		var _selected: Callable = func():StatusMenu_StatusEffectButton_Selected(_user.statuseffect_array_in_battle[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user)
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
+		var _statuseffect_button: Button = Create_StatusEffect_Button(_user.statuseffect_array_in_battle[_i], _selected, _submit, _cancel)
+		status_menu_statuseffect_content.add_child(_statuseffect_button)
+		status_menu_statuseffect_button_array.append(_statuseffect_button)
+	#-------------------------------------------------------------------------------
+	for _i in _user.equip_array_in_battle.size():
+		var _selected: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array_in_battle, _i)
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user)
 		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(_user.statuseffect_array_in_battle[_i].statuseffect_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		status_menu_statuseffect_content.add_child(_button)
-		status_menu_statuseffect_button_array.append(_button)
+		var _equipslot_button:Button = Create_EquipSlot_Button(_user.equip_array_in_battle[_i], _selected, _submit, _cancel)
+		equipslot_menu_button_array.append(_equipslot_button)
+		equipslot_menu_content.add_child(_equipslot_button)
 		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(_user.statuseffect_array_in_battle[_i].hold)+"]  "
-		_button.add_child(_label2)
+		Create_EquipSlot_Label(_user.equip_array_in_battle)
+	#-------------------------------------------------------------------------------
+	for _i in _user.skill_array_in_battle.size():
+		var _selected: Callable = func():SkillMenu_SkillButton_Selected(_user.skill_array_in_battle[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user)
 		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
-			TargetMenu_TargetButton_Cancel()
-			item_menu.show()
-			dialogue_menu.hide()
-			singleton.Move_to_Button(status_menu_statuseffect_button_array[_i])
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():StatusMenu_StatusEffectButton_Selected(_user.statuseffect_array_in_battle[_i]), func():pass, func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user))
+		var _skill_button:Button = Create_Skill_Button(_user.skill_array_in_battle[_i], _selected, _submit, _cancel)
+		skill_menu_button_array.append(_skill_button)
+		skill_menu_content.add_child(_skill_button)
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var _cancel_tabbar: Callable = func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user)
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
-	singleton.Move_to_Button(_tabbar)
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, false)
 	_tabbar.set_tab_disabled(1, false)
 	#-------------------------------------------------------------------------------
-	if(!_is_enemy and !can_equip_midbattle):
-		#-------------------------------------------------------------------------------
-		for _i in _user.equip_array_in_battle.size():
-			var _button:Button = Button.new()
-			_button.theme = ui_theme
-			_button.add_theme_font_size_override("font_size", 24)
-			_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-			#-------------------------------------------------------------------------------
-			var _equip_serializable: Equip_Serializable = _user.equip_array_in_battle[_i]
-			#-------------------------------------------------------------------------------
-			if(_equip_serializable.equip_resource == null):
-				_button.text = "  [Empty]  "
-			#-------------------------------------------------------------------------------
-			else:
-				_button.text = get_resource_filename(_equip_serializable.equip_resource)
-			#-------------------------------------------------------------------------------
-			equipslot_menu_button_array.append(_button)
-			equipslot_menu_content.add_child(_button)
-			#-------------------------------------------------------------------------------
-			singleton.Set_Button(equipslot_menu_button_array[_i], func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array_in_battle, _i), func():pass, func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user))
-		#-------------------------------------------------------------------------------
+	if(!_is_enemy):
 		_tabbar.set_tab_disabled(2, false)
+		_tabbar.set_tab_disabled(3, false)
 	#-------------------------------------------------------------------------------
 	else:
 		_tabbar.set_tab_disabled(2, true)
+		_tabbar.set_tab_disabled(3, true)
 	#-------------------------------------------------------------------------------
-	_tabbar.set_tab_disabled(3, true)
 	_tabbar.set_tab_disabled(4, false)
 	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(_tabbar)
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user:Party_Member):
 	Battle_Menu_StatusMenu_Exit_Common()
@@ -1384,6 +1337,7 @@ func BattleMenu_ItemMenu_Exit_Common():
 	Destroy_All_Items(item_menu_consumable_button_array)
 	Destroy_All_Items(item_menu_equipment_button_array)
 	Destroy_All_Items(item_menu_keyitems_button_array)
+	Destroy_All_Items(item_menu_allitems_button_array)
 	#-------------------------------------------------------------------------------
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
@@ -1870,20 +1824,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 func You_Win(_callable:Callable):
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
-		friend_party[_i].skill_array.clear()
-		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].skill_array_in_battle.size():
-			friend_party[_i].skill_array.append(friend_party[_i].skill_array_in_battle[_j].Constructor())
-		#-------------------------------------------------------------------------------
-		friend_party[_i].equip_array.clear()
-		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].equip_array_in_battle.size():
-			friend_party[_i].equip_array.append(friend_party[_i].equip_array_in_battle[_j].Constructor())
-		#-------------------------------------------------------------------------------
-		friend_party[_i].statuseffect_array.clear()
-		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].statuseffect_array_in_battle.size():
-			friend_party[_i].statuseffect_array.append(friend_party[_i].statuseffect_array_in_battle[_j].Constructor())
+		Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(friend_party[_i])
 		#-------------------------------------------------------------------------------
 		friend_party[_i].party_member_ui.hide()
 		friend_party[_i].party_member_ui.button_pivot.hide()
@@ -1893,9 +1834,7 @@ func You_Win(_callable:Callable):
 		enemy_party[_i].party_member_ui.button_pivot.hide()
 		enemy_party[_i].party_member_ui.queue_free()
 	#-------------------------------------------------------------------------------
-	item_array.clear()
-	for _i in item_array_in_battle.size():
-		item_array.append(item_array_in_battle[_i].Constructor())
+	Set_AllItems_When_Exit_Battle()
 	#-------------------------------------------------------------------------------
 	retry_menu.hide()
 	dialogue_menu.hide()
@@ -1967,20 +1906,7 @@ func You_Retry(_callable: Callable):
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
 			#-------------------------------------------------------------------------------
-			friend_party[_i].skill_array_in_battle.clear()
-			#-------------------------------------------------------------------------------
-			for _j in friend_party[_i].skill_array.size():
-				friend_party[_i].skill_array_in_battle.append(friend_party[_i].skill_array[_j].Constructor())
-			#-------------------------------------------------------------------------------
-			friend_party[_i].equip_array_in_battle.clear()
-			#-------------------------------------------------------------------------------
-			for _j in friend_party[_i].equip_array.size():
-				friend_party[_i].equip_array_in_battle.append(friend_party[_i].equip_array[_j].Constructor())
-			#-------------------------------------------------------------------------------
-			friend_party[_i].statuseffect_array_in_battle.clear()
-			#-------------------------------------------------------------------------------
-			for _j in friend_party[_i].statuseffect_array.size():
-				friend_party[_i].statuseffect_array_in_battle.append(friend_party[_i].statuseffect_array[_j].Constructor())
+			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(friend_party[_i])
 			#-------------------------------------------------------------------------------
 			PlayAnimation(friend_party[_i].playback, "Idle")
 			#-------------------------------------------------------------------------------
@@ -2846,11 +2772,24 @@ func PauseMenu_Open():
 	pause_menu_panel.show()
 	pause_menu.show()
 	#-------------------------------------------------------------------------------
-	singleton.Move_to_Button(pause_menu_button_array[0])
+	SetMoney_Label()
 	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(pause_menu_button_array[0])
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	PauseOn()
+#-------------------------------------------------------------------------------
+func SetMoney_Label():
+	pause_menu_money_label.text = "Money: "
+	#-------------------------------------------------------------------------------
+	for _i in key_item_array.size():
+		if(key_item_array[_i].key_item_resource == money_resource):
+			pause_menu_money_label.text += str(key_item_array[_i].hold)+" G"
+			return
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	pause_menu_money_label.text += "0 G"
+	return
 #-------------------------------------------------------------------------------
 func PauseOn():
 	#-------------------------------------------------------------------------------
@@ -2912,101 +2851,65 @@ func PauseMenu_SkillButton_Submit():
 func PauseMenu_ItemButton_Submit():
 	pause_menu.hide()
 	item_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(item_menu.get_tab_bar(),func():ItemMenu_No_Description(), func():PauseMenu_ItemButton_ItemMenu_Cancel())
-	#-------------------------------------------------------------------------------
 	for _i in item_array.size():
-		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
 		var _hold: int = item_array[_i].hold
+		var _cooldown: int = item_array[_i].cooldown
 		#-------------------------------------------------------------------------------
-		for _j in current_player_turn:
-			#-------------------------------------------------------------------------------
-			if(item_array[_i] == (friend_party[_j].item_serializable)):
-				_hold -= 1
-			#-------------------------------------------------------------------------------
+		var _selected: Callable = func():ItemMenu_Consumable_ItemButton_Selected(item_array[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_ItemButton_ItemMenu_Cancel()
 		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(item_array[_i].item_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_consumable_content.add_child(_button)
-		item_menu_consumable_button_array.append(_button)
+		var _consumableitem_button: Button = Create_ConsumableItem_Button(item_array[_i], _hold, _cooldown, _selected, _submit, _cancel)
+		item_menu_consumable_content.add_child(_consumableitem_button)
+		item_menu_consumable_button_array.append(_consumableitem_button)
 		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = ""
-		#-------------------------------------------------------------------------------
-		if(item_array[_i].item_resource.hp_cost > 0):
-			_label2.text += "("+str(item_array[_i].item_resource.hp_cost)+" HP)  "
-		#-------------------------------------------------------------------------------
-		if(item_array[_i].item_resource.sp_cost > 0):
-			_label2.text += "("+str(item_array[_i].item_resource.sp_cost)+" SP)  "
-		#-------------------------------------------------------------------------------
-		if(item_array[_i].item_resource.tp_cost > 0):
-			_label2.text += "("+str(item_array[_i].item_resource.tp_cost)+" TP)  "
-		#-------------------------------------------------------------------------------
-		if(item_array[_i].item_resource.max_hold > 0):
-			_label2.text += "["+str(_hold)+" / "+str(item_array[_i].item_resource.max_hold)+"]  "
-		#-------------------------------------------------------------------------------
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
-			TargetMenu_TargetButton_Cancel()
-			item_menu.show()
-			singleton.Move_to_Button(item_menu_consumable_button_array[_i])
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():ItemMenu_Consumable_ItemButton_Selected(item_array[_i]), func():pass, func():PauseMenu_ItemButton_ItemMenu_Cancel())
+		var _allitem_button: Button = Create_ConsumableItem_Button(item_array[_i], _hold, _cooldown, _selected, _submit, _cancel)
+		item_menu_allitems_content.add_child(_allitem_button)
+		item_menu_allitems_button_array.append(_allitem_button)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	for _i in equip_array.size():
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
+		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_array[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_ItemButton_ItemMenu_Cancel()
 		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(equip_array[_i].equip_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_equipment_content.add_child(_button)
-		item_menu_equipment_button_array.append(_button)
+		var _equipitem_button: Button = Create_EquipItem_Button(equip_array[_i], _selected, _submit, _cancel)
+		item_menu_equipment_content.add_child(_equipitem_button)
+		item_menu_equipment_button_array.append(_equipitem_button)
 		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():ItemMenu_Equipment_ItemButton_Selected(equip_array[_i]), func():pass, func():PauseMenu_ItemButton_ItemMenu_Cancel())
+		var _allitem_button: Button = Create_EquipItem_Button(equip_array[_i], _selected, _submit, _cancel)
+		item_menu_allitems_content.add_child(_allitem_button)
+		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
 	for _i in key_item_array.size():
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
+		var _selected: Callable = func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_ItemButton_ItemMenu_Cancel()
 		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(key_item_array[_i].key_item_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_keyitems_content.add_child(_button)
-		item_menu_keyitems_button_array.append(_button)
+		var _keyitem_button: Button = Create_KeyItem_Button(key_item_array[_i], _selected, _submit, _cancel)
+		item_menu_keyitems_content.add_child(_keyitem_button)
+		item_menu_keyitems_button_array.append(_keyitem_button)
 		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(key_item_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i]), func():pass, func():PauseMenu_ItemButton_ItemMenu_Cancel())
+		var _allitem_button: Button = Create_KeyItem_Button(key_item_array[_i], _selected, _submit, _cancel)
+		item_menu_allitems_content.add_child(_allitem_button)
+		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	item_menu.current_tab = 0
-	item_menu_consumable_scrollContainer.scroll_vertical = 0
+	var _selected_tabbar: Callable = func():ItemMenu_No_Description()
+	var _cancel_tabbar: Callable = func():PauseMenu_ItemButton_ItemMenu_Cancel()
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = item_menu.get_tab_bar()
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
+	#-------------------------------------------------------------------------------
+	_tabbar.set_tab_disabled(0, false)
+	_tabbar.set_tab_disabled(1, false)
+	_tabbar.set_tab_disabled(2, false)
+	_tabbar.set_tab_disabled(3, false)
+	#-------------------------------------------------------------------------------
+	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	if(item_menu_consumable_button_array.size() > 0):
 		singleton.Move_to_Button(item_menu_consumable_button_array[0])
@@ -3014,11 +2917,190 @@ func PauseMenu_ItemButton_Submit():
 	else:
 		singleton.Move_to_Button(_tabbar)
 	#-------------------------------------------------------------------------------
-	_tabbar.set_tab_disabled(0, false)
-	_tabbar.set_tab_disabled(1, false)
-	_tabbar.set_tab_disabled(2, false)
+	item_menu_consumable_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func Create_Skill_Button(_item_serializable: Item_Serializable, _selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
 	#-------------------------------------------------------------------------------
-	_tabbar.current_tab = 0
+	var _button: Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	#-------------------------------------------------------------------------------
+	var _label2: Label = Label.new()
+	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.text = ""
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.item_resource.hp_cost > 0):
+		_label2.text += "  ("+str(_item_serializable.item_resource.hp_cost)+" HP)  "
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.item_resource.sp_cost > 0):
+		_label2.text += "  ("+str(_item_serializable.item_resource.sp_cost)+" SP)  "
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.item_resource.tp_cost > 0):
+		_label2.text += "  ("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.item_resource.max_hold > 0):
+		_label2.text += "["+str(_item_serializable.hold)+" / "+str(_item_serializable.item_resource.max_hold)+"]  "
+	#-------------------------------------------------------------------------------
+	_button.add_child(_label2)
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _button
+#-------------------------------------------------------------------------------
+func Create_ConsumableItem_Button(_item_serializable: Item_Serializable, _hold:int, _cooldown:int, _selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
+	var _button: Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	#-------------------------------------------------------------------------------
+	var _label2: RichTextLabel = RichTextLabel.new()
+	_label2.bbcode_enabled = true
+	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.text = ""
+	var _hex_color: String = "ffe500"
+	#var _hex_color: String = "yellow"
+	#-------------------------------------------------------------------------------
+	if(_cooldown <= 0 or _item_serializable.item_resource.max_cooldown <= 0):
+		#-------------------------------------------------------------------------------
+		if(_item_serializable.item_resource.hp_cost > 0):
+			_label2.text += "("+str(_item_serializable.item_resource.hp_cost)+" HP)  "
+		#-------------------------------------------------------------------------------
+		if(_item_serializable.item_resource.sp_cost > 0):
+			_label2.text += "("+str(_item_serializable.item_resource.sp_cost)+" SP)  "
+		#-------------------------------------------------------------------------------
+		if(_item_serializable.item_resource.tp_cost > 0):
+			_label2.text += "("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
+		#-------------------------------------------------------------------------------
+		if(_item_serializable.item_resource.max_hold > 0):
+			var _s: String = "["+str(_hold)+" / "+str(_item_serializable.item_resource.max_hold)+"]  "
+			#-------------------------------------------------------------------------------
+			if(_hold < _item_serializable.hold):
+				_label2.text += "[color="+_hex_color+"]"+_s+"[/color]"
+			#-------------------------------------------------------------------------------
+			else:
+				_label2.text += _s
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	else:
+		var _s: String = "("+str(_cooldown)+" CD)  "
+		#-------------------------------------------------------------------------------
+		if(_cooldown > _item_serializable.cooldown):
+			_label2.text = "[color="+_hex_color+"]"+_s+"[/color]"
+		#-------------------------------------------------------------------------------
+		else:
+			_label2.text = _s
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	_button.add_child(_label2)
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _button
+#-------------------------------------------------------------------------------
+func Create_EquipItem_Button(_equip_serializable: Equip_Serializable, _selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
+	var _button: Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.text = "  "+get_resource_filename(_equip_serializable.equip_resource)+"  "
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	#-------------------------------------------------------------------------------
+	var _label2: Label = Label.new()
+	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.text = "[x"+str(_equip_serializable.hold)+"]  "
+	_button.add_child(_label2)
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _button
+#-------------------------------------------------------------------------------
+func Create_EquipEmpty_Button(_selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
+	var _empty_button: Button = Button.new()
+	_empty_button.theme = ui_theme
+	_empty_button.text = "  [Empty]  "
+	_empty_button.add_theme_font_size_override("font_size", 24)
+	_empty_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	singleton.Set_Button(_empty_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _empty_button
+#-------------------------------------------------------------------------------
+func Create_EquipSlot_Button(_equip_serializable: Equip_Serializable, _selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
+	var _button:Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	#-------------------------------------------------------------------------------
+	if(_equip_serializable.equip_resource == null):
+		_button.text = "  [Empty]  "
+	#-------------------------------------------------------------------------------
+	else:
+		_button.text = get_resource_filename(_equip_serializable.equip_resource)
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _button
+#-------------------------------------------------------------------------------
+func Create_EquipSlot_Label(_equip_array: Array[Equip_Serializable]):
+	equipslot_menu_button_label.text = ""
+	#-------------------------------------------------------------------------------
+	for _i in _equip_array.size():
+		equipslot_menu_button_label.text += "Slot #"+str(_i)+":"
+		#-------------------------------------------------------------------------------
+		if(_i < _equip_array.size()-1):
+			equipslot_menu_button_label.text += "\n"
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Create_KeyItem_Button(_keyitem_serializable: Key_Item_Serializable, _selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
+	var _button: Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.text = "  "+get_resource_filename(_keyitem_serializable.key_item_resource)+"  "
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	#-------------------------------------------------------------------------------
+	var _label2: Label = Label.new()
+	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.text = "[x"+str(_keyitem_serializable.hold)+"]  "
+	_button.add_child(_label2)
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _button
+#-------------------------------------------------------------------------------
+func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Serializable, _selected:Callable, _submit:Callable, _cancel:Callable) -> Button:
+	var _button: Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.text = "  "+get_resource_filename(_statuseffect_serializable.statuseffect_resource)+"  "
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	#-------------------------------------------------------------------------------
+	var _label2: Label = Label.new()
+	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.text = "[x"+str(_statuseffect_serializable.hold)+"]  "
+	_button.add_child(_label2)
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(_button, _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	return _button
 #-------------------------------------------------------------------------------
 func ItemMenu_No_Description():
 	singleton.Common_Selected()
@@ -3094,59 +3176,25 @@ func PauseMenu_AnyButton_Cancel():
 func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	status_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party[_index]
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(status_menu.get_tab_bar(),func():StatusMenu_No_Description(_user), func():PauseMenu_StatusMenu_Exit_Common(_index))
-	#-------------------------------------------------------------------------------
 	for _i in _user.skill_array.size():
 		#-------------------------------------------------------------------------------
-		var _item_serializable: Item_Serializable = _user.skill_array[_i]
+		var _selected: Callable = func():SkillMenu_SkillButton_Selected(_user.skill_array[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		skill_menu_content.add_child(_button)
-		skill_menu_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = ""
-		#-------------------------------------------------------------------------------
-		if(_item_serializable.item_resource.hp_cost > 0):
-			_label2.text += "  ("+str(_item_serializable.item_resource.hp_cost)+" HP)  "
-		#-------------------------------------------------------------------------------
-		if(_item_serializable.item_resource.sp_cost > 0):
-			_label2.text += "  ("+str(_item_serializable.item_resource.sp_cost)+" SP)  "
-		#-------------------------------------------------------------------------------
-		if(_item_serializable.item_resource.tp_cost > 0):
-			_label2.text += "  ("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
-		#-------------------------------------------------------------------------------
-		if(_item_serializable.item_resource.max_hold > 0):
-			_label2.text += "["+str(_item_serializable.hold)+" / "+str(_item_serializable.item_resource.max_hold)+"]  "
-		#-------------------------------------------------------------------------------
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
-			TargetMenu_TargetButton_Cancel()
-			status_menu.show()
-			singleton.Move_to_Button(skill_menu_button_array[_i])
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():SkillMenu_SkillButton_Selected(_item_serializable), func():pass, func():PauseMenu_StatusMenu_Exit_Common(_index))
+		var _skill_button: Button = Create_Skill_Button(_user.skill_array[_i], _selected, _submit, _cancel)
+		skill_menu_content.add_child(_skill_button)
+		skill_menu_button_array.append(_skill_button)
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var _cancel_tabbar: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
-	#-------------------------------------------------------------------------------
-	if(skill_menu_button_array.size() > 0):
-		singleton.Move_to_Button(skill_menu_button_array[0])
-	#-------------------------------------------------------------------------------
-	else:
-		singleton.Move_to_Button(_tabbar)
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, true)
@@ -3155,6 +3203,13 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	_tabbar.set_tab_disabled(4, true)
 	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 3
+	#-------------------------------------------------------------------------------
+	if(skill_menu_button_array.size() > 0):
+		singleton.Move_to_Button(skill_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Move_to_Button(_tabbar)
+	#-------------------------------------------------------------------------------
 	skill_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func PauseMenu_SkillButton_PartyButton_Cancel():
@@ -3176,43 +3231,31 @@ func PauseMenu_ItemMenu_Exit_Common():
 	Destroy_All_Items(item_menu_consumable_button_array)
 	Destroy_All_Items(item_menu_equipment_button_array)
 	Destroy_All_Items(item_menu_keyitems_button_array)
+	Destroy_All_Items(item_menu_allitems_button_array)
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	status_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party[_index]
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(status_menu.get_tab_bar(), func():StatusMenu_No_Description(_user), func():PauseMenu_StatusMenu_Exit_Common(_index))
-	#-------------------------------------------------------------------------------
 	for _i in _user.equip_array.size():
-		var _button:Button = Button.new()
-		_button.theme = ui_theme
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var _selected: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array, _i)
+		var _submit: Callable = func(): PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user, _i)
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 		#-------------------------------------------------------------------------------
-		var _equip_serializable: Equip_Serializable = _user.equip_array[_i]
+		var _equipslot_button:Button = Create_EquipSlot_Button(_user.equip_array[_i], _selected, _submit, _cancel)
+		equipslot_menu_button_array.append(_equipslot_button)
+		equipslot_menu_content.add_child(_equipslot_button)
 		#-------------------------------------------------------------------------------
-		if(_equip_serializable.equip_resource == null):
-			_button.text = "  [Empty]  "
-		#-------------------------------------------------------------------------------
-		else:
-			_button.text = get_resource_filename(_equip_serializable.equip_resource)
-		#-------------------------------------------------------------------------------
-		equipslot_menu_button_array.append(_button)
-		equipslot_menu_content.add_child(_button)
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(equipslot_menu_button_array[_i], func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array, _i), func(): PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user, _i), func():PauseMenu_StatusMenu_Exit_Common(_index))
+		Create_EquipSlot_Label(_user.equip_array)
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var _cancel_tabbar: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
-	#-------------------------------------------------------------------------------
-	if(equipslot_menu_button_array.size() > 0):
-		singleton.Move_to_Button(equipslot_menu_button_array[0])
-	#-------------------------------------------------------------------------------
-	else:
-		singleton.Move_to_Button(_tabbar)
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, true)
@@ -3221,62 +3264,56 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	_tabbar.set_tab_disabled(4, true)
 	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 2
+	#-------------------------------------------------------------------------------
+	if(equipslot_menu_button_array.size() > 0):
+		singleton.Move_to_Button(equipslot_menu_button_array[0])
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Move_to_Button(_tabbar)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _index_slot:int):
 	status_menu.hide()
 	item_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(item_menu.get_tab_bar(), func():EquipMenu_No_Description(), func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot))
+	var _selected_empty: Callable = func():EquipMenu_No_Description()
+	var _submit_empty: Callable = func():PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user, _index_slot)
+	var _cancel_empty: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot)
 	#-------------------------------------------------------------------------------
-	var _empty_button: Button = Button.new()
-	_empty_button.theme = ui_theme
-	_empty_button.text = "  [Empty]  "
-	_empty_button.add_theme_font_size_override("font_size", 24)
-	_empty_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var _empty_button: Button = Create_EquipEmpty_Button(_selected_empty, _submit_empty, _cancel_empty)
 	item_menu_equipment_content.add_child(_empty_button)
 	item_menu_equipment_button_array.append(_empty_button)
-	singleton.Set_Button(_empty_button, func():EquipMenu_No_Description(), func():PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user, _index_slot), func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot))
 	#-------------------------------------------------------------------------------
 	for _i in equip_array.size():
+		var _selected: Callable = func():EquipMenu_EquipButton_Selected(equip_array[_i])
+		var _submit: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user, equip_array[_i], _index_slot)
+		var _cancel: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot)
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
-		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(equip_array[_i].equip_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		item_menu_equipment_content.add_child(_button)
-		item_menu_equipment_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(equip_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
-			TargetMenu_TargetButton_Cancel()
-			item_menu.show()
-			singleton.Move_to_Button(item_menu_equipment_button_array[_i])
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():EquipMenu_EquipButton_Selected(equip_array[_i]), func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user, equip_array[_i], _index_slot), func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot))
+		var _equipitem_button: Button = Create_EquipItem_Button(equip_array[_i], _selected, _submit, _cancel)
+		item_menu_equipment_content.add_child(_equipitem_button)
+		item_menu_equipment_button_array.append(_equipitem_button)
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():EquipMenu_No_Description()
+	var _cancel_tabbar: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot)
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = item_menu.get_tab_bar()
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
+	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, false)
 	_tabbar.set_tab_disabled(2, true)
+	_tabbar.set_tab_disabled(3, true)
 	#-------------------------------------------------------------------------------
 	item_menu.current_tab = 1
+	#-------------------------------------------------------------------------------
 	item_menu_equipment_scrollContainer.scroll_vertical = 0
 	singleton.Move_to_Button(item_menu_equipment_button_array[0])
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member, _equip_serializable:Equip_Serializable, _index_slot:int):
 	#-------------------------------------------------------------------------------
 	if(_user.equip_array[_index_slot].equip_resource != _equip_serializable.equip_resource):
-		Remove_Equip_Serializable_to_Array(_equip_serializable)
+		Remove_Equip_Serializable_to_Array(equip_array, _equip_serializable)
 		#-------------------------------------------------------------------------------
 		_user.equip_array[_index_slot].equip_resource = _equip_serializable.equip_resource
 		_user.equip_array[_index_slot].hold = 1
@@ -3292,7 +3329,7 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_M
 func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Party_Member, _index_slot:int):
 	#-------------------------------------------------------------------------------
 	if(_user.equip_array[_index_slot].equip_resource != null):
-		Add_Equip_Serializable_to_Array(_user.equip_array[_index_slot].equip_resource)
+		Add_Equip_Serializable_to_Array(equip_array, _user.equip_array[_index_slot].equip_resource)
 		#-------------------------------------------------------------------------------
 		_user.equip_array[_index_slot].equip_resource = null
 		_user.equip_array[_index_slot].hold = 0
@@ -3305,27 +3342,39 @@ func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Pa
 	singleton.Common_Submited()
 	singleton.Move_to_Button(equipslot_menu_button_array[_index_slot])
 #-------------------------------------------------------------------------------
-func Add_Equip_Serializable_to_Array(_equip_resource: Equip_Resource):
+func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_resource:Equip_Resource):
 	#-------------------------------------------------------------------------------
-	for _i in equip_array.size():
+	for _i in _equip_array.size():
 		#-------------------------------------------------------------------------------
-		if(equip_array[_i].equip_resource == _equip_resource):
-			equip_array[_i].hold += 1
+		if(_equip_array[_i].equip_resource == _equip_resource):
+			_equip_array[_i].hold += 1
 			return
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
 	_equip_serializable.equip_resource = _equip_resource
 	_equip_serializable.hold = 1
-	equip_array.append(_equip_serializable)
+	_equip_array.append(_equip_serializable)
 	return
 #-------------------------------------------------------------------------------
-func Remove_Equip_Serializable_to_Array(_equip_serializable: Equip_Serializable):
+func Remove_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_serializable: Equip_Serializable):
 	_equip_serializable.hold -= 1
 	#-------------------------------------------------------------------------------
 	if(_equip_serializable.hold <= 0):
-		equip_array.erase(_equip_serializable)
+		_equip_array.erase(_equip_serializable)
 	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffect_Serializable):	#NOT USED YET
+	#-------------------------------------------------------------------------------
+	for _i in _user.statuseffect_array.size():
+		#-------------------------------------------------------------------------------
+		if(_user.statuseffect_array[_i].statuseffect_resource == _statuseffect_serializable.statuseffect_resource):
+			_user.statuseffect_array[_i].hold += _statuseffect_serializable.hold
+			return
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	_user.statuseffect_array.append(_statuseffect_serializable)
+	return
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot:int):
 	PauseMenu_ItemMenu_Exit_Common()
@@ -3343,72 +3392,63 @@ func PauseMenu_EquipButton_PartyButton_Cancel():
 func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	status_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party[_index]
 	#-------------------------------------------------------------------------------
 	Show_Status_Data(_user)
 	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(status_menu.get_tab_bar(), func():StatusMenu_No_Description(_user), func():PauseMenu_StatusMenu_Exit_Common(_index))
-	#-------------------------------------------------------------------------------
 	for _i in status_menu_stats_button_array.size():
-		singleton.Set_Button(status_menu_stats_button_array[_i], func():StatusMenu_StatsButton_Selected(_i), func():pass, func():PauseMenu_StatusMenu_Exit_Common(_index))
+		var _selected: Callable = func():StatusMenu_StatsButton_Selected(_i)
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(status_menu_stats_button_array[_i], _selected, _submit, _cancel)
+	#-------------------------------------------------------------------------------
+	for _i in _user.skill_array.size():
+		var _selected: Callable = func():SkillMenu_SkillButton_Selected(_user.skill_array[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
+		#-------------------------------------------------------------------------------
+		var _skill_button:Button = Create_Skill_Button(_user.skill_array[_i], _selected, _submit, _cancel)
+		skill_menu_button_array.append(_skill_button)
+		skill_menu_content.add_child(_skill_button)
 	#-------------------------------------------------------------------------------
 	for _i in _user.equip_array.size():
-		var _button:Button = Button.new()
-		_button.theme = ui_theme
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var _selected: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array, _i)
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 		#-------------------------------------------------------------------------------
-		var _equip_serializable: Equip_Serializable = _user.equip_array[_i]
+		var _equipslot_button:Button = Create_EquipSlot_Button(_user.equip_array[_i], _selected, _submit, _cancel)
+		equipslot_menu_button_array.append(_equipslot_button)
+		equipslot_menu_content.add_child(_equipslot_button)
 		#-------------------------------------------------------------------------------
-		if(_equip_serializable.equip_resource == null):
-			_button.text = "  [Empty]  "
-		#-------------------------------------------------------------------------------
-		else:
-			_button.text = get_resource_filename(_equip_serializable.equip_resource)
-		#-------------------------------------------------------------------------------
-		equipslot_menu_button_array.append(_button)
-		equipslot_menu_content.add_child(_button)
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(equipslot_menu_button_array[_i], func():EquipSlotMenu_EquipButton_Selected(_user, _user.equip_array, _i), func(): pass, func():PauseMenu_StatusMenu_Exit_Common(_index))
+		Create_EquipSlot_Label(_user.equip_array)
 	#-------------------------------------------------------------------------------
 	for _i in _user.statuseffect_array.size():
+		var _selected: Callable = func():StatusMenu_StatusEffectButton_Selected(friend_party[_index].statuseffect_array[_i])
+		var _submit: Callable = func():singleton.Common_Canceled()
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 		#-------------------------------------------------------------------------------
-		var _button: Button = Button.new()
-		#-------------------------------------------------------------------------------
-		_button.theme = ui_theme
-		_button.text = "  "+get_resource_filename(friend_party[_index].statuseffect_array[_i].statuseffect_resource)+"  "
-		_button.add_theme_font_size_override("font_size", 24)
-		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		status_menu_statuseffect_content.add_child(_button)
-		status_menu_statuseffect_button_array.append(_button)
-		#-------------------------------------------------------------------------------
-		var _label2: Label = Label.new()
-		_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
-		_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		_label2.text = "[x"+str(friend_party[_index].statuseffect_array[_i].hold)+"]  "
-		_button.add_child(_label2)
-		#-------------------------------------------------------------------------------
-		var _cancel: Callable = func():
-			TargetMenu_TargetButton_Cancel()
-			item_menu.show()
-			singleton.Move_to_Button(status_menu_statuseffect_button_array[_i])
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, func():StatusMenu_StatusEffectButton_Selected(friend_party[_index].statuseffect_array[_i]), func():pass, func():PauseMenu_StatusMenu_Exit_Common(_index))
+		var _statuseffect_button: Button = Create_StatusEffect_Button(friend_party[_index].statuseffect_array[_i], _selected, _submit, _cancel)
+		status_menu_statuseffect_content.add_child(_statuseffect_button)
+		status_menu_statuseffect_button_array.append(_statuseffect_button)
+	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var _cancel_tabbar: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, false)
 	_tabbar.set_tab_disabled(1, false)
-	_tabbar.set_tab_disabled(2, true)
-	_tabbar.set_tab_disabled(3, true)
+	_tabbar.set_tab_disabled(2, false)
+	_tabbar.set_tab_disabled(3, false)
 	_tabbar.set_tab_disabled(4, false)
 	#-------------------------------------------------------------------------------
-	singleton.Move_to_Button(_tabbar)
 	_tabbar.current_tab = 0
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(_tabbar)
 #-------------------------------------------------------------------------------
 func Show_Status_Data(_user:Party_Member):
 	status_menu_information_image.texture = _user.texture2d
@@ -3532,7 +3572,6 @@ func SaveMenu_SaveButton_Submit(_s:String):
 func SaveMenu_TeleportButton_Submit():
 	savespot_menu.hide()
 	teleporty_menu.show()
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func():
@@ -3541,8 +3580,6 @@ func SaveMenu_TeleportButton_Submit():
 		teleporty_menu.hide()
 		singleton.Common_Canceled()
 		singleton.Move_to_Button(savespot_menu_button_array[1])
-	#-------------------------------------------------------------------------------
-	singleton.Set_TabBar(teleporty_menu.get_tab_bar(),func():TeleportMenu_No_Description(), _cancel)
 	#-------------------------------------------------------------------------------
 	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
 	#-------------------------------------------------------------------------------
@@ -3560,7 +3597,13 @@ func SaveMenu_TeleportButton_Submit():
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_button, _selected, func():TeleportMenu_TeleportButton_Submit(_array[_i]), _cancel)
 	#-------------------------------------------------------------------------------
+	var _selected_tabbar: Callable = func():TeleportMenu_No_Description()
+	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = teleporty_menu.get_tab_bar()
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel)
+	#-------------------------------------------------------------------------------
+	_tabbar.set_tab_disabled(0, false)
+	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	if(teleporty_menu_button_array.size() > 0):
 		singleton.Move_to_Button(teleporty_menu_button_array[0])
@@ -3568,8 +3611,6 @@ func SaveMenu_TeleportButton_Submit():
 	else:
 		singleton.Move_to_Button(_tabbar)
 	#-------------------------------------------------------------------------------
-	_tabbar.set_tab_disabled(0, false)
-	_tabbar.current_tab = 0
 	teleporty_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:

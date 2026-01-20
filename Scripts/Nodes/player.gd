@@ -12,12 +12,12 @@ var sp: int
 @export_multiline  var description: String
 #-------------------------------------------------------------------------------
 var is_in_guard: bool
-var damage_label_array: Array[Label] = []
+var damage_label_array: Array[Label]
 #-------------------------------------------------------------------------------
 @export var skill_array: Array[Item_Serializable]
 var skill_array_in_battle: Array[Item_Serializable]
 #-------------------------------------------------------------------------------
-@export var equip_array: Array[Equip_Serializable] = [null, null, null, null, null, null, null, null]
+@export var equip_array: Array[Equip_Serializable]
 var equip_array_in_battle: Array[Equip_Serializable]
 #-------------------------------------------------------------------------------
 @export var statuseffect_array: Array[StatusEffect_Serializable]
@@ -95,11 +95,13 @@ func LoadData_Constructor(_dictionaty:Dictionary):
 		_equip.LoadData_Constructor(_equip_array[_i])
 		equip_array.append(_equip)
 	#-------------------------------------------------------------------------------
+	statuseffect_array.clear()
+	#-------------------------------------------------------------------------------
 	var _statuseffect_array:Array = _dictionaty.get("statuseffect_array", [])
 	#-------------------------------------------------------------------------------
 	for _i in _statuseffect_array.size():
 		var _statuseffect: StatusEffect_Serializable = StatusEffect_Serializable.new()
 		_statuseffect.LoadData_Constructor(_statuseffect_array[_i])
-		equip_array.append(_statuseffect)
+		statuseffect_array.append(_statuseffect)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------

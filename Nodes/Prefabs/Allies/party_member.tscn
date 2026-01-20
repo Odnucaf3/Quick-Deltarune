@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://da1odroc62jt3"]
+[gd_scene load_steps=49 format=3 uid="uid://da1odroc62jt3"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_hjtjb"]
 [ext_resource type="Texture2D" uid="uid://ci6773anv87c4" path="res://Assets/ansimuz/warped city files/v1/sprites/player/idle-1.png" id="2_rm4mx"]
@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/guard.tres" id="5_8r6oj"]
 [ext_resource type="Texture2D" uid="uid://doav3l76si2wh" path="res://Assets/ansimuz/warped city files/v1/sprites/player/run.png" id="5_vkmoi"]
 [ext_resource type="Texture2D" uid="uid://b8wieo7nga7xe" path="res://Assets/ansimuz/warped city files/v1/sprites/player/shoot.png" id="6_oac30"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="7_8r6oj"]
 [ext_resource type="Texture2D" uid="uid://xfmiejntkjq" path="res://Assets/ansimuz/warped city files/v1/sprites/player/walk.png" id="7_ys8se"]
 
 [sub_resource type="Resource" id="Resource_tq75w"]
@@ -27,6 +28,46 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 script = ExtResource("3_3pxk4")
 item_resource = ExtResource("4_ek5q1")
 metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_hyqkh"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_x6xa3"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_p8mwb"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_txphx"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_tt6h3"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_7fdcv"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_dhbps"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_x7brw"]
+script = ExtResource("7_8r6oj")
+hold = 0
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Animation" id="Animation_hjtjb"]
 resource_name = "Aim"
@@ -790,6 +831,7 @@ max_hp = 30
 lore = "* An cool lady with an awasome aim."
 description = "* Strong to fire, weak to ice."
 skill_array = Array[ExtResource("3_3pxk4")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1")])
+equip_array = Array[ExtResource("7_8r6oj")]([SubResource("Resource_hyqkh"), SubResource("Resource_x6xa3"), SubResource("Resource_p8mwb"), SubResource("Resource_txphx"), SubResource("Resource_tt6h3"), SubResource("Resource_7fdcv"), SubResource("Resource_dhbps"), SubResource("Resource_x7brw")])
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")

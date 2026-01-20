@@ -1,4 +1,4 @@
-[gd_scene load_steps=99 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=96 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -34,6 +34,12 @@
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
 [ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
 
+[sub_resource type="Resource" id="Resource_hxoxt"]
+script = ExtResource("10_igypo")
+equip_resource = ExtResource("10_hxoxt")
+hold = 4
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="Resource" id="Resource_xhx7r"]
 script = ExtResource("6_1th3s")
 key_item_resource = ExtResource("7_mitwg")
@@ -54,12 +60,6 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 script = ExtResource("7_igypo")
 item_resource = ExtResource("6_lujb4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_hxoxt"]
-script = ExtResource("10_igypo")
-equip_resource = ExtResource("10_hxoxt")
-hold = 4
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -149,16 +149,6 @@ script = ExtResource("10_igypo")
 hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_ftd8i"]
-script = ExtResource("10_igypo")
-hold = 0
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_xvxdo"]
-script = ExtResource("10_igypo")
-hold = 0
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
 [sub_resource type="Resource" id="Resource_mitwg"]
 script = ExtResource("18_1th3s")
 statuseffect_resource = ExtResource("19_mitwg")
@@ -244,11 +234,6 @@ hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_4kq1m"]
-script = ExtResource("10_igypo")
-hold = 0
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_74fp5"]
 script = ExtResource("10_igypo")
 hold = 0
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
@@ -365,7 +350,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -373,9 +358,9 @@ game_scene = NodePath("..")
 ui_theme = ExtResource("26_1th3s")
 room_test = NodePath("room_test_01")
 tp_bar_root = NodePath("../CanvasLayer/Battle_UI/tp_root")
-tp_bar_progressbar_present = NodePath("../CanvasLayer/Battle_UI/tp_root/Control/ProgressBar")
-tp_bar_progressbar_future = NodePath("../CanvasLayer/Battle_UI/tp_root/Control/ProgressBar/ProgressBar2")
-tp_bar_label = NodePath("../CanvasLayer/Battle_UI/tp_root/sp_Label")
+tp_bar_progressbar_present = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/Control/ProgressBar")
+tp_bar_progressbar_future = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/Control/ProgressBar/ProgressBar2")
+tp_bar_label = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/sp_Label")
 battlemenu_equipbutton_emptyspace = NodePath("../CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Control")
 dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu")
 dialogue_menu_speaker1 = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2")
@@ -392,6 +377,11 @@ player_interactable_area2d = NodePath("Player/interactable_by_Action_Area2D")
 player_enemyDetector_area2d = NodePath("Player/enemy_by_Touch_Area2D")
 friend_party = [NodePath("Player/Friend_01"), NodePath("Friend_02"), NodePath("Friend_03")]
 item_menu = NodePath("../CanvasLayer/All Menues/Items_TabContainer")
+item_menu_allitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
+item_menu_allitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_allitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/Label")
+item_menu_allitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
+item_menu_allitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_consumable_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_consumable_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/Label")
@@ -407,6 +397,7 @@ item_menu_keyitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContai
 item_menu_keyitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/Label")
 item_menu_keyitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_keyitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_hxoxt")])
 key_item_array = Array[ExtResource("6_1th3s")]([SubResource("Resource_xhx7r"), SubResource("Resource_42b3h")])
 iten_resource_attack = SubResource("Resource_gg6rv")
 iten_resource_defense = SubResource("Resource_rpgth")
@@ -422,10 +413,10 @@ teleporty_menu_title = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer
 teleporty_menu_rect = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/Control/TextureRect")
 teleporty_menu_description = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 equipslot_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer")
+equipslot_menu_button_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer/Label")
 equipslot_menu_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/Label")
 equipslot_menu_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 equipslot_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_hxoxt")])
 status_menu = NodePath("../CanvasLayer/All Menues/Status_TabContainer")
 status_menu_information_image = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
 status_menu_information_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/Label")
@@ -442,6 +433,8 @@ status_menu_statuseffect_description = NodePath("../CanvasLayer/All Menues/Statu
 black_panel = NodePath("../CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("Battle_Black_Panel")
 pause_menu_panel = NodePath("../CanvasLayer/Pause_Menu_Panel")
+pause_menu_money_label = NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
+money_resource = ExtResource("8_3p4s7")
 pause_menu = NodePath("../CanvasLayer/Pause_Menu")
 pause_menu_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
 pause_menu_party_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button3")]
@@ -526,7 +519,7 @@ shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" instance=ExtResource("13_hxoxt")]
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1"), SubResource("Resource_oi8hy"), SubResource("Resource_1e5l7"), SubResource("Resource_ugbf0"), SubResource("Resource_05voo")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i"), SubResource("Resource_xvxdo")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h")])
 statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_mitwg")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player"]
@@ -546,7 +539,7 @@ shape = SubResource("CircleShape2D_hxoxt")
 [node name="Friend_02" parent="World2D" instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_76bql"), SubResource("Resource_l8r6y"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr"), SubResource("Resource_6t0ck"), SubResource("Resource_g75sp"), SubResource("Resource_f727r"), SubResource("Resource_7rkat")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_74fp5")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m")])
 
 [node name="Friend_03" parent="World2D" instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
@@ -760,29 +753,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="tp_root" type="Control" parent="CanvasLayer/Battle_UI"]
-visible = false
-anchors_preset = 0
-offset_left = 60.0
-offset_top = 50.0
-offset_right = 60.0
-offset_bottom = 50.0
+[node name="tp_root" type="MarginContainer" parent="CanvasLayer/Battle_UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="sp_Label" type="Label" parent="CanvasLayer/Battle_UI/tp_root"]
+[node name="pivot" type="Control" parent="CanvasLayer/Battle_UI/tp_root"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="sp_Label" type="Label" parent="CanvasLayer/Battle_UI/tp_root/pivot"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -34.0
-offset_right = 139.0
+offset_top = -42.0
+offset_right = 173.0
 grow_vertical = 0
-size_flags_vertical = 1
+size_flags_horizontal = 8
+size_flags_vertical = 0
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 text = "100 / 100 TP"
-horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/tp_root/sp_Label"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/tp_root/pivot/sp_Label"]
 visible = false
 self_modulate = Color(0, 0, 0, 0.4117647)
 show_behind_parent = true
@@ -795,36 +797,29 @@ grow_vertical = 2
 texture = ExtResource("2_hf1mx")
 expand_mode = 1
 
-[node name="Control" type="Control" parent="CanvasLayer/Battle_UI/tp_root"]
+[node name="Control" type="Control" parent="CanvasLayer/Battle_UI/tp_root/pivot"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 0
 rotation = -1.5707964
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/Control"]
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/pivot/Control"]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 1
-anchors_preset = 6
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
 offset_left = -300.0
-offset_top = -7.5
-offset_bottom = 7.5
+offset_bottom = 15.0
 grow_horizontal = 0
-grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_xrh8u")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ik87f")
 value = 30.0
 show_percentage = false
 
-[node name="ProgressBar2" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/Control/ProgressBar"]
+[node name="ProgressBar2" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/pivot/Control/ProgressBar"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -1786,8 +1781,184 @@ layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
-[node name="Status_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
+[node name="All Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
 visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+metadata/_tab_index = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Consumable Items"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Consumable's Name"
+alignment = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "* Lore description of the Skill / Item."
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "* Utility description of the Skill / Item."
+
+[node name="Status_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1795,7 +1966,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
-current_tab = 4
+current_tab = 2
 
 [node name="Information" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
 visible = false
@@ -2115,7 +2286,6 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
 [node name="Equip Slots" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -2154,15 +2324,15 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/line_spacing = 12
 theme_override_font_sizes/font_size = 24
-text = "Weapon:
-Head:
-Body:
-Chip #1:
-Chip #2:
-Chip #3:
-Chip #4:
-Chip #5:
-Chip #6:"
+text = "Slot #1:
+Slot #2:
+Slot #3:
+Slot #4:
+Slot #5:
+Slot #6:
+Slot #7:
+Slot #8:
+Slot #9:"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
@@ -2430,6 +2600,7 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utlity description of the Skill / Item."
 
 [node name="Status Effects" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
