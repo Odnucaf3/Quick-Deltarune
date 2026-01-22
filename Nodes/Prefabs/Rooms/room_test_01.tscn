@@ -1,17 +1,20 @@
-[gd_scene load_steps=27 format=4 uid="uid://ckdq3xhi07i1g"]
+[gd_scene load_steps=31 format=4 uid="uid://ckdq3xhi07i1g"]
 
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_0ji40"]
 [ext_resource type="PackedScene" uid="uid://kty6sii5hhfk" path="res://Nodes/Prefabs/Warps/warp_up.tscn" id="3_52n5y"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="5_8dt50"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_1.tscn" id="6_jyvag"]
-[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="7_rqg47"]
 [ext_resource type="Resource" uid="uid://c03am3sxypfu3" path="res://Resources/Consumable_Items/potion_10tp.tres" id="8_52n5y"]
-[ext_resource type="Resource" uid="uid://b2nrnfuff0r7b" path="res://Resources/Consumable_Items/potion_1cd_10tp.tres" id="8_w87vk"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="8_ygji3"]
 [ext_resource type="PackedScene" uid="uid://c8fmwkm58xib0" path="res://Nodes/Prefabs/savespot_prefab.tscn" id="9_4u8d0"]
-[ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/potion_3cd.tres" id="9_ygji3"]
+[ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip/coil_sword.tres" id="9_mxnnk"]
+[ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="10_xdoc7"]
+[ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/money.tres" id="11_5drey"]
 [ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/potion.tres" id="12_ygji3"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="13_mxnnk"]
+[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="14_xdoc7"]
+[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/mystery_key.tres" id="15_5drey"]
 
 [sub_resource type="GDScript" id="GDScript_52n5y"]
 script/source = "extends Room_Script
@@ -21,47 +24,33 @@ func Room_Event():
 #-------------------------------------------------------------------------------
 "
 
-[sub_resource type="Resource" id="Resource_rqg47"]
+[sub_resource type="Resource" id="Resource_4u8d0"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("8_52n5y")
+hold = 4
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_w87vk"]
 script = ExtResource("13_mxnnk")
 item_resource = ExtResource("12_ygji3")
 hold = 2
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_ygji3"]
-script = ExtResource("13_mxnnk")
-item_resource = ExtResource("7_rqg47")
-hold = 2
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_mxnnk"]
-script = ExtResource("13_mxnnk")
-item_resource = ExtResource("8_52n5y")
-hold = 2
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_5drey"]
-script = ExtResource("13_mxnnk")
-item_resource = ExtResource("9_ygji3")
-hold = 2
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
 [sub_resource type="Resource" id="Resource_8ss50"]
-script = ExtResource("13_mxnnk")
-item_resource = ExtResource("8_w87vk")
-hold = 2
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("8_ygji3")
+equip_resource = ExtResource("9_mxnnk")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_srwso"]
-script = ExtResource("13_mxnnk")
-item_resource = ExtResource("9_ygji3")
-hold = 2
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_xdoc7")
+key_item_resource = ExtResource("11_5drey")
+hold = 25
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
-[sub_resource type="Resource" id="Resource_kcmek"]
-script = ExtResource("13_mxnnk")
-item_resource = ExtResource("8_w87vk")
-hold = 2
-metadata/_custom_type_script = "uid://beengnff5twcx"
+[sub_resource type="Resource" id="Resource_xdoc7"]
+script = ExtResource("10_xdoc7")
+key_item_resource = ExtResource("15_5drey")
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wkx03"]
 size = Vector2(16, 8)
@@ -130,8 +119,12 @@ func Win_Battle(_world_2d: World_2D):
 
 [sub_resource type="GDScript" id="GDScript_rqg47"]
 script/source = "extends Interactable_Script
-@export var items: Item_Serializable
+#-------------------------------------------------------------------------------
 @export var user: Party_Member
+#-------------------------------------------------------------------------------
+@export var _consumableitem_array: Array[Item_Serializable]
+@export var _equipitem_array: Array[Equip_Serializable]
+@export var _keyitem_array: Array[Key_Item_Serializable]
 #-------------------------------------------------------------------------------
 func Interactable_Ready(_world_2d:World_2D) -> void:
 	user.playback = user.animation_tree.get(\"parameters/playback\")
@@ -139,19 +132,44 @@ func Interactable_Ready(_world_2d:World_2D) -> void:
 #-------------------------------------------------------------------------------
 func Interactable_Action(_world_2d:World_2D):
 	_world_2d.PlayAnimation(user.playback, \"Walk\")
+	#-------------------------------------------------------------------------------
 	_world_2d.Dialogue_Open()
 	await _world_2d.Dialogue(true, \"* I am not an enemy, but a merchant.\")
 	await _world_2d.Dialogue(true, \"* Do you want to buy something?\")
 	_world_2d.Dialogue_Close()
+	#-------------------------------------------------------------------------------
+	await _world_2d.Open_Market(_consumableitem_array, _equipitem_array, _keyitem_array)
+	#-------------------------------------------------------------------------------
+	_world_2d.Dialogue_Open()
+	await _world_2d.Dialogue(true, \"* Thank you.\")
+	_world_2d.Dialogue_Close()
+	#-------------------------------------------------------------------------------
 	_world_2d.PlayAnimation(user.playback, \"Idle\")
 #-------------------------------------------------------------------------------
 "
 
-[sub_resource type="Resource" id="Resource_xdoc7"]
+[sub_resource type="Resource" id="Resource_kcmek"]
 script = ExtResource("13_mxnnk")
 item_resource = ExtResource("12_ygji3")
-hold = 4
+hold = 3
 metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_ptuk6"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("14_xdoc7")
+hold = 2
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_8opot"]
+script = ExtResource("8_ygji3")
+equip_resource = ExtResource("9_mxnnk")
+hold = 3
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_wrvon"]
+script = ExtResource("10_xdoc7")
+key_item_resource = ExtResource("15_5drey")
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rqg47"]
 radius = 16.0
@@ -229,31 +247,9 @@ autoplay = "banner-neon"
 
 [node name="Item" parent="." instance=ExtResource("6_7i8dt")]
 position = Vector2(-48, 112)
-pickable_item = SubResource("Resource_rqg47")
-
-[node name="Item2" parent="." instance=ExtResource("6_7i8dt")]
-position = Vector2(-32, 112)
-pickable_item = SubResource("Resource_ygji3")
-
-[node name="Item3" parent="." instance=ExtResource("6_7i8dt")]
-position = Vector2(-16, 112)
-pickable_item = SubResource("Resource_mxnnk")
-
-[node name="Item4" parent="." instance=ExtResource("6_7i8dt")]
-position = Vector2(0, 112)
-pickable_item = SubResource("Resource_5drey")
-
-[node name="Item5" parent="." instance=ExtResource("6_7i8dt")]
-position = Vector2(16, 112)
-pickable_item = SubResource("Resource_8ss50")
-
-[node name="Item6" parent="." instance=ExtResource("6_7i8dt")]
-position = Vector2(32, 112)
-pickable_item = SubResource("Resource_srwso")
-
-[node name="Item7" parent="." instance=ExtResource("6_7i8dt")]
-position = Vector2(48, 112)
-pickable_item = SubResource("Resource_kcmek")
+pickable_consumableitem = Array[ExtResource("13_mxnnk")]([SubResource("Resource_4u8d0"), SubResource("Resource_w87vk")])
+pickable_equipitem = Array[ExtResource("8_ygji3")]([SubResource("Resource_8ss50")])
+pickable_keyitem = Array[ExtResource("10_xdoc7")]([SubResource("Resource_srwso"), SubResource("Resource_xdoc7")])
 
 [node name="Enemy1" type="CharacterBody2D" parent="."]
 y_sort_enabled = true
@@ -326,8 +322,10 @@ position = Vector2(40, -96)
 collision_layer = 8
 collision_mask = 0
 script = SubResource("GDScript_rqg47")
-items = SubResource("Resource_xdoc7")
 user = NodePath("Foe_01")
+_consumableitem_array = Array[ExtResource("13_mxnnk")]([SubResource("Resource_kcmek"), SubResource("Resource_ptuk6")])
+_equipitem_array = Array[ExtResource("8_ygji3")]([SubResource("Resource_8opot")])
+_keyitem_array = Array[ExtResource("10_xdoc7")]([SubResource("Resource_wrvon")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Merchant_Area2D"]
 shape = SubResource("CircleShape2D_rqg47")

@@ -2,9 +2,9 @@
 
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_6mw6j"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="4_6mw6j"]
-[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="4_25x5p"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="5_25x5p"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="5_37vpw"]
+[ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/potion_3cd.tres" id="5_fw0vv"]
 [ext_resource type="PackedScene" uid="uid://dace4b2raluo2" path="res://Nodes/Prefabs/Warps/warp_down.tscn" id="6_25x5p"]
 
 [sub_resource type="GDScript" id="GDScript_47s0u"]
@@ -15,9 +15,10 @@ func Room_Event():
 #-------------------------------------------------------------------------------
 "
 
-[sub_resource type="Resource" id="Resource_fw0vv"]
+[sub_resource type="Resource" id="Resource_5g5si"]
 script = ExtResource("5_37vpw")
-item_resource = ExtResource("4_25x5p")
+item_resource = ExtResource("5_fw0vv")
+hold = 3
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [node name="room_test_03" type="Node2D" node_paths=PackedStringArray("room_limits")]
@@ -55,7 +56,7 @@ autoplay = "banner-neon"
 
 [node name="Item" parent="." instance=ExtResource("5_25x5p")]
 position = Vector2(-160, -456)
-pickable_item = SubResource("Resource_fw0vv")
+pickable_consumableitem = Array[ExtResource("5_37vpw")]([SubResource("Resource_5g5si")])
 
 [node name="Warp_Down" parent="." instance=ExtResource("6_25x5p")]
 position = Vector2(-8, -208)

@@ -1,7 +1,9 @@
 extends Interactable_Script
 class_name Item_Script
 #-------------------------------------------------------------------------------
-@export var pickable_item: Item_Serializable
+@export var pickable_consumableitem: Array[Item_Serializable]
+@export var pickable_equipitem: Array[Equip_Serializable]
+@export var pickable_keyitem: Array[Key_Item_Serializable]
 #-------------------------------------------------------------------------------
 func Interactable_Ready(_world_2d:World_2D):
 	if(_world_2d.key_dictionary.get(_world_2d.Get_Item_Script_ID(self), 0) == 1):

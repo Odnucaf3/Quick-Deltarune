@@ -99,6 +99,10 @@ func Get_SaveDataPath_Json(_i:int) -> String:
 	var _path: String = saveData_path+saveData_name+str(_i)+".json"
 	return _path
 #-------------------------------------------------------------------------------
+func GetCurrent_SaveDataPath_Json() -> String:
+	var _path: String = saveData_path+saveData_name+str(int(optionMenu.optionSaveData_Json["saveIndex"]))+".json"
+	return _path
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region UI FUNCTIONS

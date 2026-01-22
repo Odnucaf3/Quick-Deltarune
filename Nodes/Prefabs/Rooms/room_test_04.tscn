@@ -16,9 +16,10 @@ func Room_Event():
 #-------------------------------------------------------------------------------
 "
 
-[sub_resource type="Resource" id="Resource_fkxko"]
+[sub_resource type="Resource" id="Resource_0ptgt"]
 script = ExtResource("6_0ptgt")
 item_resource = ExtResource("5_lloiv")
+hold = 9
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [node name="room_test_04" type="Node2D" node_paths=PackedStringArray("room_limits")]
@@ -51,7 +52,7 @@ room_name = &"room_test_02"
 
 [node name="Item" parent="." instance=ExtResource("4_o0jg7")]
 position = Vector2(672, -264)
-pickable_item = SubResource("Resource_fkxko")
+pickable_consumableitem = Array[ExtResource("6_0ptgt")]([SubResource("Resource_0ptgt")])
 
 [node name="Warp_Right" parent="." instance=ExtResource("7_0ptgt")]
 position = Vector2(1120, -264)

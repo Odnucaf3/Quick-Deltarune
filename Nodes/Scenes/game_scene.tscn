@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://dk4sbf5s4wg0y"]
+[gd_scene load_steps=94 format=3 uid="uid://dk4sbf5s4wg0y"]
 
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="6_1th3s"]
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/guard.tres" id="6_lujb4"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="7_igypo"]
-[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/mystery_key.tres" id="7_mitwg"]
 [ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/money.tres" id="8_3p4s7"]
 [ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip/coil_sword.tres" id="10_hxoxt"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="10_igypo"]
@@ -40,12 +39,7 @@ equip_resource = ExtResource("10_hxoxt")
 hold = 4
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_xhx7r"]
-script = ExtResource("6_1th3s")
-key_item_resource = ExtResource("7_mitwg")
-metadata/_custom_type_script = "uid://dcdqq2gseak8d"
-
-[sub_resource type="Resource" id="Resource_42b3h"]
+[sub_resource type="Resource" id="Resource_ftd8i"]
 script = ExtResource("6_1th3s")
 key_item_resource = ExtResource("8_3p4s7")
 hold = 9999
@@ -398,7 +392,7 @@ item_menu_keyitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContaine
 item_menu_keyitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_keyitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_hxoxt")])
-key_item_array = Array[ExtResource("6_1th3s")]([SubResource("Resource_xhx7r"), SubResource("Resource_42b3h")])
+key_item_array = Array[ExtResource("6_1th3s")]([SubResource("Resource_ftd8i")])
 iten_resource_attack = SubResource("Resource_gg6rv")
 iten_resource_defense = SubResource("Resource_rpgth")
 skill_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
@@ -551,7 +545,6 @@ equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), Sub
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Dialogue_Menu" type="MarginContainer" parent="CanvasLayer"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -686,6 +679,7 @@ text = "[Name of the Speaker]"
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 
 [node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
