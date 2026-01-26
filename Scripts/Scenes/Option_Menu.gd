@@ -2,7 +2,7 @@ extends Control
 class_name Option_Menu
 #region VARIABLES
 #-------------------------------------------------------------------------------
-@export var mySingleton: Singleton
+@export var singleton: Singleton
 #-------------------------------------------------------------------------------
 @export var title : Label
 #-------------------------------------------------------------------------------
@@ -57,18 +57,18 @@ const resolution_dictionary : Dictionary = {
 #-------------------------------------------------------------------------------
 #region MONOVEHAVIOUR
 func Start() -> void:
-	#SetTheme()
 	optionSaveData_Json = Load_OptionSaveData_Json()
 	#-------------------------------------------------------------------------------
 	SetResolution_Start()
 	SetIdiome_Start()
+	#-------------------------------------------------------------------------------
 	SetFullScreen_Start()
 	SetBorderless_Start()
 	SetVsync_Start()
 	#-------------------------------------------------------------------------------
-	SetValume_Start(master_slider, master_number, MasterSlider_Submit, bus_master_Index, optionSaveData_Json["masterVolumen"])
-	SetValume_Start(sfx_slider, sfx_number, sfxSlider_Submit, bus_sfx_Index, optionSaveData_Json["sfxVolumen"])
-	SetValume_Start(bgm_slider, bgm_number, bgmSlider_Submit, bus_bgm_Index, optionSaveData_Json["bgmVolumen"])
+	Set_MasterValume_Start()
+	Set_sfxValume_Start()
+	Set_bgmValume_Start()
 	#-------------------------------------------------------------------------------
 	hide()
 #endregion
@@ -83,14 +83,17 @@ func Save_OptionSaveData_Json() -> void:
 #-------------------------------------------------------------------------------
 func Load_OptionSaveData_Json() -> Dictionary:
 	var _path: String = GetPath_OptionSaveData_Json()
+	#-------------------------------------------------------------------------------
 	if(ResourceLoader.exists(_path)):
 		var _jsonFile: FileAccess = FileAccess.open(_path, FileAccess.READ)
 		var _jsonString: String = _jsonFile.get_as_text()
 		_jsonFile.close()
 		var _optionSaveData: Dictionary = JSON.parse_string(_jsonString)
 		return _optionSaveData
+	#-------------------------------------------------------------------------------
 	else:
 		return CreateNew_OptionSaveData_Json()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func CreateNew_OptionSaveData_Json() -> Dictionary:
 	var _optionSaveData: Dictionary = {}
@@ -107,8 +110,10 @@ func CreateNew_OptionSaveData_Json() -> Dictionary:
 #-------------------------------------------------------------------------------
 func Delete_OptionSaveData_Json() -> void:
 	var _path: String = GetPath_OptionSaveData_Json()
+	#-------------------------------------------------------------------------------
 	if(ResourceLoader.exists(_path)):
 		DirAccess.remove_absolute(_path)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func GetPath_OptionSaveData_Json() -> String:
 	var _path: String = optionSaveData_path+optionSaveData_name+".json"
@@ -121,15 +126,22 @@ func SetResolution_Start():
 	Center_if_Windowed()
 	AddResolutionOptions(resolution_optionbutton, resolution_dictionary)
 	resolution_optionbutton.select(optionSaveData_Json["resolutionIndex"])
-	mySingleton.Set_OptionButtons(resolution_optionbutton, mySingleton.Common_Selected, ResolutionButton_Submited, AnyButton_Cancel)
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit: Callable = func(_index:int): ResolutionButton_Submited(_index)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_OptionButtons(resolution_optionbutton, _selected, _submit, _cancel)
 #-------------------------------------------------------------------------------
 func AddResolutionOptions(_ob:OptionButton, _dictionary:Dictionary) -> void:
 	_ob.clear()
+	#-------------------------------------------------------------------------------
 	for i in _dictionary:
-		_ob.add_item(i)
+		_ob.add_item("  "+i+"  ")
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ResolutionButton_Submited(_index:int) -> void:
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["resolutionIndex"] = _index
 	SetResolution(_index)
 	Center_if_Windowed()
@@ -148,37 +160,44 @@ func SetIdiome_Start():
 	SetIdiome(optionSaveData_Json["idiomeIndex"])
 	AddIdiomeButtons(idiome_optionbutton)
 	idiome_optionbutton.select(optionSaveData_Json["idiomeIndex"])
-	mySingleton.Set_OptionButtons(idiome_optionbutton, mySingleton.Common_Selected, IdiomeButton_Submited, AnyButton_Cancel)
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit: Callable = func(_index:int): IdiomeButton_Submited(_index)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_OptionButtons(idiome_optionbutton, _selected, _submit, _cancel)
 #-------------------------------------------------------------------------------
 func AddIdiomeButtons(_ob:OptionButton) -> void:
 	var _idiomes:PackedStringArray = TranslationServer.get_loaded_locales()
+	#-------------------------------------------------------------------------------
 	for _i in _idiomes.size():
-		_ob.add_item(TranslationServer.get_locale_name(_idiomes[_i]))
+		_ob.add_item("  "+TranslationServer.get_locale_name(_idiomes[_i])+"  ")
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func IdiomeButton_Submited(_index:int):
 	optionSaveData_Json["idiomeIndex"] = _index
 	SetIdiome(_index)
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func SetIdiome(_index:int):
 	var _idiomes:PackedStringArray = TranslationServer.get_loaded_locales()
 	TranslationServer.set_locale(_idiomes[_index])
 	#-------------------------------------------------------------------------------
-	title.text = tr("optionMenu_title")
+	title.text = tr("option_menu_label_title")
 	#-------------------------------------------------------------------------------
-	idiome_label.text = tr("optionMenu_idiome")
+	idiome_label.text = tr("option_menu_label_idiome")
 	#-------------------------------------------------------------------------------
-	resolution_label.text = tr("optionMenu_resolution")
-	fullscreen_label.text = tr("optionMenu_fullScreen")
-	borderless_label.text = tr("optionMenu_borderless")
+	resolution_label.text = tr("option_menu_label_resolution")
+	fullscreen_label.text = tr("option_menu_label_fullScreen")
+	borderless_label.text = tr("option_menu_label_borderless")
 	#-------------------------------------------------------------------------------
-	vsync_label.text = tr("optionMenu_vSync")
+	vsync_label.text = tr("option_menu_label_vSync")
 	#-------------------------------------------------------------------------------
-	master_label.text = tr("optionMenu_master")
-	sfx_label.text = tr("optionMenu_sfx")
-	bgm_label.text = tr("optionMenu_bgm")
+	master_label.text = tr("option_menu_label_master")
+	sfx_label.text = tr("option_menu_label_sfx")
+	bgm_label.text = tr("option_menu_label_bgm")
 	#-------------------------------------------------------------------------------
-	back.text = tr("optionMenu_back")
+	back.text = "  "+tr("option_menu_button_back")+"  "
 #endregion
 #-------------------------------------------------------------------------------
 #region FULLSCREEN SETTINGS
@@ -186,20 +205,29 @@ func SetFullScreen_Start():
 	var _b: bool = optionSaveData_Json["fullscreen"]
 	SetFullScreen(_b)
 	fullscreen_checkbutton.button_pressed = _b
-	mySingleton.Set_CheckButton(fullscreen_checkbutton, mySingleton.Common_Selected, FullScreenButton_Submited, AnyButton_Cancel)
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit: Callable = func(_bool:bool): FullScreenButton_Submited(_bool)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_CheckButton(fullscreen_checkbutton, _selected, _submit, _cancel)
 #-------------------------------------------------------------------------------
 func FullScreenButton_Submited(_b:bool):
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["fullscreen"] = _b
 	SetFullScreen(_b)
 #-------------------------------------------------------------------------------
 func SetFullScreen(_b: bool):
+	#-------------------------------------------------------------------------------
 	if(_b):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	#-------------------------------------------------------------------------------
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		SetResolution(optionSaveData_Json["resolutionIndex"])
 		CenterScreem()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region BORDERLESS SETTINGS
@@ -207,10 +235,15 @@ func SetBorderless_Start():
 	var _b: bool = optionSaveData_Json["borderless"]
 	SetBorderless(_b)
 	borderless_checkbutton.button_pressed = _b
-	mySingleton.Set_CheckButton(borderless_checkbutton, mySingleton.Common_Selected, BorderlessButton_Submited, AnyButton_Cancel)
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit: Callable = func(_bool:bool): BorderlessButton_Submited(_bool)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_CheckButton(borderless_checkbutton, _selected, _submit, _cancel)
 #-------------------------------------------------------------------------------
 func BorderlessButton_Submited(_b:bool):
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["borderless"] = _b
 	SetBorderless(_b)
 #-------------------------------------------------------------------------------
@@ -224,39 +257,75 @@ func SetVsync_Start():
 	var _b: bool = optionSaveData_Json["vsync"]
 	SetVsync(_b)
 	vsync_checkbutton.button_pressed = _b
-	mySingleton.Set_CheckButton(vsync_checkbutton, mySingleton.Common_Selected, VsyncButton_Submited, AnyButton_Cancel)
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit: Callable = func(_bool:bool): VsyncButton_Submited(_bool)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_CheckButton(vsync_checkbutton, _selected, _submit, _cancel)
 #-------------------------------------------------------------------------------
 func VsyncButton_Submited(_b:bool) -> void:
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["vsync"] = _b
 	SetVsync(_b)
 #-------------------------------------------------------------------------------
 func SetVsync(_b: bool) -> void:
+	#-------------------------------------------------------------------------------
 	if(_b):
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	#-------------------------------------------------------------------------------
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region VOLUME SETTINGS
-func SetValume_Start(_slider: Slider, _label: Label, _submit: Callable, _index:int, _value:float):
-	SetValume(_label, _index, _value)
-	_slider.value = db_to_linear(AudioServer.get_bus_volume_db(_index))
-	mySingleton.Set_Slider(_slider, mySingleton.Common_Selected, _submit, AnyButton_Cancel)
+func Set_MasterValume_Start():
+	SetValume(master_number, bus_master_Index, optionSaveData_Json["masterVolumen"])
+	#-------------------------------------------------------------------------------
+	master_slider.value = db_to_linear(AudioServer.get_bus_volume_db(bus_master_Index))
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit:Callable = func(_float:float): MasterSlider_Submit(_float)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_Slider(master_slider, _selected, _submit, _cancel)
+#-------------------------------------------------------------------------------
+func Set_sfxValume_Start():
+	SetValume(sfx_number, bus_sfx_Index, optionSaveData_Json["sfxVolumen"])
+	#-------------------------------------------------------------------------------
+	sfx_slider.value = db_to_linear(AudioServer.get_bus_volume_db(bus_sfx_Index))
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit:Callable = func(_float:float): sfxSlider_Submit(_float)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_Slider(sfx_slider, _selected, _submit, _cancel)
+#-------------------------------------------------------------------------------
+func Set_bgmValume_Start():
+	SetValume(bgm_number, bus_bgm_Index, optionSaveData_Json["bgmVolumen"])
+	#-------------------------------------------------------------------------------
+	bgm_slider.value = db_to_linear(AudioServer.get_bus_volume_db(bus_bgm_Index))
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func():singleton.Common_Selected()
+	var _submit:Callable = func(_float:float): bgmSlider_Submit(_float)
+	var _cancel: Callable = func(): AnyButton_Cancel()
+	#-------------------------------------------------------------------------------
+	singleton.Set_Slider(bgm_slider, _selected, _submit, _cancel)
 #-------------------------------------------------------------------------------
 func MasterSlider_Submit(_value:float) -> void:
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["masterVolumen"] = _value
 	SetValume(master_number, bus_master_Index, _value)
 	pass
 #-------------------------------------------------------------------------------
 func sfxSlider_Submit(_value:float) -> void:
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["sfxVolumen"] = _value
 	SetValume(sfx_number, bus_sfx_Index, _value)
 #-------------------------------------------------------------------------------
 func bgmSlider_Submit(_value:float) -> void:
-	mySingleton.Common_Submited()
+	singleton.Common_Submited()
 	optionSaveData_Json["bgmVolumen"] = _value
 	SetValume(bgm_number, bus_bgm_Index, _value)
 #-------------------------------------------------------------------------------
@@ -267,30 +336,19 @@ func SetValume(_label: Label, _index:int, _value:float):
 #endregion
 #-------------------------------------------------------------------------------
 #region BUTTON FUNCTIONS
+#-------------------------------------------------------------------------------
 func AnyButton_Cancel() -> void:
-	mySingleton.Move_to_Button(back)
-	mySingleton.Common_Canceled()
+	singleton.Common_Canceled()
+	singleton.Move_to_Button(back)
 #-------------------------------------------------------------------------------
 func Center_if_Windowed():
+	#-------------------------------------------------------------------------------
 	if(DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_WINDOWED):
 		CenterScreem()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func CenterScreem():
 	var _center: Vector2i = (DisplayServer.screen_get_size()-DisplayServer.window_get_size())/2
 	DisplayServer.window_set_position(_center)
-#endregion
-#-------------------------------------------------------------------------------
-#region MISC
-func SetTheme():
-	idiome_optionbutton.theme = mySingleton.myTheme
-	resolution_optionbutton.theme = mySingleton.myTheme
-	#-------------------------------------------------------------------------------
-	#vsync.theme = mySingleton.myTheme
-	#-------------------------------------------------------------------------------
-	master_label.theme = mySingleton.myTheme
-	sfx_label.theme = mySingleton.myTheme
-	bgm_label.theme = mySingleton.myTheme
-	#-------------------------------------------------------------------------------
-	back.theme = mySingleton.myTheme
 #endregion
 #-------------------------------------------------------------------------------

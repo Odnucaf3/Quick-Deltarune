@@ -344,7 +344,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -376,21 +376,37 @@ item_menu_allitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContai
 item_menu_allitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/Label")
 item_menu_allitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_allitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_allitems_cost_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
+item_menu_allitems_tp_cost_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
+item_menu_allitems_cooldown_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
+item_menu_allitems_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
+item_menu_allitems_hold_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
+item_menu_allitems_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_consumable_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_consumable_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/Label")
 item_menu_consumable_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_consumable_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_consumable_cost_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
+item_menu_consumable_tp_cost_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
+item_menu_consumable_cooldown_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
+item_menu_consumable_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
+item_menu_consumable_hold_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
+item_menu_consumable_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 item_menu_equipment_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_equipment_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_equipment_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/Label")
 item_menu_equipment_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_equipment_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_equipment_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
+item_menu_equipment_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 item_menu_keyitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 item_menu_keyitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
 item_menu_keyitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/Label")
 item_menu_keyitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 item_menu_keyitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_keyitems_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
+item_menu_keyitems_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_hxoxt")])
 key_item_array = Array[ExtResource("6_1th3s")]([SubResource("Resource_ftd8i")])
 iten_resource_attack = SubResource("Resource_gg6rv")
@@ -400,6 +416,12 @@ skill_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Ski
 skill_menu_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/Label")
 skill_menu_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 skill_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+skill_menu_cost_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
+skill_menu_tp_cost_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
+skill_menu_cooldown_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
+skill_menu_held_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
+skill_menu_hold_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
+skill_menu_storage_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 teleporty_menu = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer")
 teleporty_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
 teleporty_menu_content = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
@@ -545,6 +567,7 @@ equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), Sub
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Dialogue_Menu" type="MarginContainer" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -748,6 +771,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="tp_root" type="MarginContainer" parent="CanvasLayer/Battle_UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -827,6 +851,7 @@ value = 15.0
 show_percentage = false
 
 [node name="Battle_Menu" type="Control" parent="CanvasLayer/Battle_UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1235,7 +1260,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1243,7 +1267,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
-current_tab = 1
+current_tab = 2
 
 [node name="All Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
 visible = false
@@ -1422,7 +1446,54 @@ layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Cost:"
+
+[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "(13 TP)"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "(3 CD)"
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Held:"
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[4/5]"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[3]"
+horizontal_alignment = 2
+
 [node name="Consumables Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -1596,10 +1667,56 @@ size_flags_vertical = 3
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer2"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
-text = "* Utility description of the Skill / Item."
+bbcode_enabled = true
+text = "* Uses description of the Skill / Item."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Cost:"
+
+[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "(13 TP)"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "(3 CD)"
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Held:"
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[4/5]"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[3]"
+horizontal_alignment = 2
 
 [node name="Equip Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -1774,6 +1891,36 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Held:"
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[3]"
+horizontal_alignment = 2
 
 [node name="Key Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer"]
 visible = false
@@ -1952,7 +2099,38 @@ layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Held:"
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[3]"
+horizontal_alignment = 2
+
 [node name="Status_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1960,7 +2138,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
-current_tab = 2
+current_tab = 3
 
 [node name="Information" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
 visible = false
@@ -2280,6 +2458,7 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
 [node name="Equip Slots" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -2417,7 +2596,6 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
 [node name="Skills" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -2592,6 +2770,51 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utlity description of the Skill / Item."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Cost:"
+
+[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "(13 TP)"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "(3 CD)"
+horizontal_alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "* Held:"
+
+[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "[4/5]"
+horizontal_alignment = 2
+
+[node name="Label4" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
 
 [node name="Status Effects" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer"]
 visible = false

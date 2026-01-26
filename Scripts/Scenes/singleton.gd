@@ -6,9 +6,12 @@ class_name Singleton
 @export var optionMenu: Option_Menu
 #-------------------------------------------------------------------------------
 @export_group("Audio and SFXs")
-@export var sfx_Selected : AudioStreamPlayer
-@export var sfx_Submited : AudioStreamPlayer
-@export var sfx_Canceled : AudioStreamPlayer
+@export var audioStreamPlayer_selected: AudioStreamPlayer
+@export var audioStreamPlayer_submit: AudioStreamPlayer
+@export var audioStreamPlayer_cancel: AudioStreamPlayer
+@export var audioStreamPlayer_equip: AudioStreamPlayer
+@export var audioStreamPlayer_save: AudioStreamPlayer
+@export var audioStreamPlayer_shop: AudioStreamPlayer
 #-------------------------------------------------------------------------------
 @export var bgmPlayer : AudioStreamPlayer
 #-------------------------------------------------------------------------------
@@ -254,13 +257,26 @@ func Play_BGM(_bgm:AudioStream) -> void:
 	bgmPlayer.play()
 #-------------------------------------------------------------------------------
 func Common_Selected() -> void:
-	sfx_Selected.play()
+	audioStreamPlayer_selected.play()
 #-------------------------------------------------------------------------------
 func Common_Submited() -> void:
-	sfx_Submited.play()
+	audioStreamPlayer_submit.play()
+	audioStreamPlayer_selected.stop()
 #-------------------------------------------------------------------------------
 func Common_Canceled() -> void:
-	sfx_Canceled.play()
+	audioStreamPlayer_cancel.play()
+	audioStreamPlayer_selected.stop()
+#-------------------------------------------------------------------------------
+func Play_SFX_Equip() -> void:
+	audioStreamPlayer_equip.play()
+	audioStreamPlayer_selected.stop()
+#-------------------------------------------------------------------------------
+func Play_SFX_Save() -> void:
+	audioStreamPlayer_save.play()
+#-------------------------------------------------------------------------------
+func Play_SFX_Shop() -> void:
+	audioStreamPlayer_shop.play()
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region DEBUG INPUTS

@@ -58,6 +58,12 @@ var item_menu_allitems_button_array: Array[Button]
 @export var item_menu_allitems_title: Label
 @export var item_menu_allitems_lore: RichTextLabel
 @export var item_menu_allitems_description: RichTextLabel
+@export var item_menu_allitems_cost_label: Label
+@export var item_menu_allitems_tp_cost_num_label: Label
+@export var item_menu_allitems_cooldown_num_label: Label
+@export var item_menu_allitems_held_label: Label
+@export var item_menu_allitems_hold_num_label: Label
+@export var item_menu_allitems_storage_num_label: Label
 #-------------------------------------------------------------------------------
 @export var item_menu_consumable_scrollContainer: ScrollContainer
 @export var item_menu_consumable_content: VBoxContainer
@@ -65,6 +71,12 @@ var item_menu_consumable_button_array: Array[Button]
 @export var item_menu_consumable_title: Label
 @export var item_menu_consumable_lore: RichTextLabel
 @export var item_menu_consumable_description: RichTextLabel
+@export var item_menu_consumable_cost_label: Label
+@export var item_menu_consumable_tp_cost_num_label: Label
+@export var item_menu_consumable_cooldown_num_label: Label
+@export var item_menu_consumable_held_label: Label
+@export var item_menu_consumable_hold_num_label: Label
+@export var item_menu_consumable_storage_num_label: Label
 #-------------------------------------------------------------------------------
 @export var item_menu_equipment_scrollContainer: ScrollContainer
 @export var item_menu_equipment_content: VBoxContainer
@@ -72,6 +84,8 @@ var item_menu_equipment_button_array: Array[Button]
 @export var item_menu_equipment_title: Label
 @export var item_menu_equipment_lore: RichTextLabel
 @export var item_menu_equipment_description: RichTextLabel
+@export var item_menu_equipment_held_label: Label
+@export var item_menu_equipment_storage_num_label: Label
 #-------------------------------------------------------------------------------
 @export var item_menu_keyitems_scrollContainer: ScrollContainer
 @export var item_menu_keyitems_content: VBoxContainer
@@ -79,6 +93,8 @@ var item_menu_keyitems_button_array: Array[Button]
 @export var item_menu_keyitems_title: Label
 @export var item_menu_keyitems_lore: RichTextLabel
 @export var item_menu_keyitems_description: RichTextLabel
+@export var item_menu_keyitems_held_label: Label
+@export var item_menu_keyitems_storage_num_label: Label
 #-------------------------------------------------------------------------------
 @export var item_array: Array[Item_Serializable]
 var item_array_in_battle: Array[Item_Serializable]
@@ -98,6 +114,12 @@ var skill_menu_button_array: Array[Button]
 @export var skill_menu_title: Label
 @export var skill_menu_lore: RichTextLabel
 @export var skill_menu_description: RichTextLabel
+@export var skill_menu_cost_label: Label
+@export var skill_menu_tp_cost_num_label: Label
+@export var skill_menu_cooldown_num_label: Label
+@export var skill_menu_held_label: Label
+@export var skill_menu_hold_num_label: Label
+@export var skill_menu_storage_num_label: Label
 #-------------------------------------------------------------------------------
 @export var teleporty_menu: TabContainer
 @export var teleporty_menu_scrollContainer: ScrollContainer
@@ -277,6 +299,8 @@ func _ready() -> void:
 	NormalMotion()
 	#-------------------------------------------------------------------------------
 	PauseMenu_Set()
+	#-------------------------------------------------------------------------------
+	Set_Idiome()
 #-------------------------------------------------------------------------------
 func _physics_process(_delta: float) -> void:
 	tween_Array = get_tree().get_processed_tweens()
@@ -519,7 +543,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 		else:
 			_s += " "
 		#-------------------------------------------------------------------------------
-		Add_ConsumableItem_to_Inventory(_item_script.pickable_consumableitem[_i])
+		Add_ConsumableItem_to_Inventory(_item_script.pickable_consumableitem[_i], _item_script.pickable_consumableitem[_i].hold)
 	#-------------------------------------------------------------------------------
 	if(_item_script.pickable_consumableitem.size() > 0):
 		_s += ", "
@@ -537,7 +561,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 		else:
 			_s += " "
 		#-------------------------------------------------------------------------------
-		Add_EquipItem_to_Inventory(_item_script.pickable_equipitem[_i])
+		Add_EquipItem_to_Inventory(_item_script.pickable_equipitem[_i], _item_script.pickable_equipitem[_i].hold)
 	#-------------------------------------------------------------------------------
 	if(_item_script.pickable_equipitem.size() > 0):
 		_s += ", "
@@ -555,52 +579,56 @@ func PickUp_Item_2(_item_script:Item_Script):
 		else:
 			_s += " "
 		#-------------------------------------------------------------------------------
-		Add_KeyItem_to_Inventory(_item_script.pickable_keyitem[_i])
+		Add_KeyItem_to_Inventory(_item_script.pickable_keyitem[_i], _item_script.pickable_keyitem[_i].hold)
 	#-------------------------------------------------------------------------------
 	_s += "was picked."
 	await Dialogue(false, _s)
 #-------------------------------------------------------------------------------
-func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable):
+func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable, _hold:int) -> Item_Serializable:
 	for _i in item_array.size():
 		#-------------------------------------------------------------------------------
 		if(item_array[_i].item_resource == _item_serializable.item_resource):
-			item_array[_i].hold += _item_serializable.hold
-			return
+			item_array[_i].hold += _hold
+			return item_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _new_item: Item_Serializable = _item_serializable.Constructor()
 	_new_item.item_resource = _item_serializable.item_resource
-	_new_item.hold = _item_serializable.hold
+	_new_item.hold = _hold
 	item_array.append(_new_item)
-	return
+	return _new_item
 #-------------------------------------------------------------------------------
-func Add_EquipItem_to_Inventory(_equip_serializable: Equip_Serializable):
-	for _i in equip_array.size():
+func Add_EquipItem_to_Inventory(_equip_serializable: Equip_Serializable, _hold:int) -> Equip_Serializable:
+	return Add_Equip_Serializable_to_Array(equip_array, _equip_serializable.equip_resource, _hold)
+#-------------------------------------------------------------------------------
+func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_resource:Equip_Resource, _hold: int) -> Equip_Serializable:
+	#-------------------------------------------------------------------------------
+	for _i in _equip_array.size():
 		#-------------------------------------------------------------------------------
-		if(equip_array[_i].equip_resource == _equip_serializable.equip_resource):
-			equip_array[_i].hold += _equip_serializable.hold
-			return
+		if(_equip_array[_i].equip_resource == _equip_resource):
+			_equip_array[_i].hold += _hold
+			return _equip_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	var _new_equip: Equip_Serializable = _equip_serializable.Constructor()
-	_new_equip.equip_resource = _equip_serializable.equip_resource
-	_new_equip.hold = _equip_serializable.hold
-	equip_array.append(_new_equip)
-	return
+	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
+	_equip_serializable.equip_resource = _equip_resource
+	_equip_serializable.hold = _hold
+	_equip_array.append(_equip_serializable)
+	return _equip_serializable
 #-------------------------------------------------------------------------------
-func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable):
+func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hold:int) -> Key_Item_Serializable:
 	for _i in key_item_array.size():
 		#-------------------------------------------------------------------------------
 		if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
-			key_item_array[_i].hold += _keyitem_serializable.hold
-			return
+			key_item_array[_i].hold += _hold
+			return key_item_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
 	_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
-	_new_keyitem.hold = _keyitem_serializable.hold
+	_new_keyitem.hold = _hold
 	key_item_array.append(_new_keyitem)
-	return
+	return _new_keyitem
 #-------------------------------------------------------------------------------
 func Dialogue_Open():
 	is_in_dialogue = false
@@ -620,11 +648,9 @@ func Dialogue(_b:bool, _s:String):
 		dialogue_menu_speaker1_name.hide()
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaking_label.text = _s
-	singleton.Common_Submited()
 	await dialogue_signal
 #-------------------------------------------------------------------------------
 func Dialogue_Close():
-	singleton.Common_Canceled()
 	is_in_dialogue = true
 	can_move = true
 	dialogue_menu.hide()
@@ -718,7 +744,10 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		singleton.Set_Button(battle_menu_button[3],func():singleton.Common_Selected() , func():BattleMenu_ItemButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		singleton.Set_Button(battle_menu_button[4],func():singleton.Common_Selected() , func():BattleMenu_EquipButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		singleton.Set_Button(battle_menu_button[5],func():singleton.Common_Selected() , func():BattleMenu_StatusButton_Submit(), func():BattleMenu_AnyButton_Cancel())
+		#-------------------------------------------------------------------------------
 		singleton.Move_to_First_Button(battle_menu_button)
+		singleton.Common_Submited()
+		#-------------------------------------------------------------------------------
 		singleton.Play_BGM(singleton.battle1)
 		#-------------------------------------------------------------------------------
 		friend_party_alive.clear()
@@ -872,9 +901,11 @@ func ExitBatle(_retry_callable:Callable, _win_callable:Callable):
 		#-------------------------------------------------------------------------------
 		BATTLE_STATE.YOU_ESCAPE:
 			You_Escape()
+			singleton.Common_Submited()
 		#-------------------------------------------------------------------------------
 		BATTLE_STATE.YOU_RETRY:
 			You_Retry(_retry_callable)
+			singleton.Common_Submited()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -885,24 +916,28 @@ func ExitBatle(_retry_callable:Callable, _win_callable:Callable):
 func BattleMenu_AttackButton_Submit():
 	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func():
-		Set_TP_Label_from_the_future()
-		#-------------------------------------------------------------------------------
-		TargetMenu_TargetButton_Cancel()
 		battle_menu.show()
 		dialogue_menu.show()
+		#-------------------------------------------------------------------------------
+		Set_TP_Label_from_the_future()
+		TargetMenu_TargetButton_Cancel()
+		#-------------------------------------------------------------------------------
 		singleton.Move_to_First_Button(battle_menu_button)
+		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	TargetMenu_Enter(iten_resource_attack, battle_menu, _cancel)
 #-------------------------------------------------------------------------------
 func BattleMenu_DefenseButton_Submit():
 	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func():
-		Set_TP_Label_from_the_future()
-		#-------------------------------------------------------------------------------
-		TargetMenu_TargetButton_Cancel()
 		battle_menu.show()
 		dialogue_menu.show()
+		#-------------------------------------------------------------------------------
+		TargetMenu_TargetButton_Cancel()
+		Set_TP_Label_from_the_future()
+		#-------------------------------------------------------------------------------
 		singleton.Move_to_Button(battle_menu_button[1])
+		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	TargetMenu_Enter(iten_resource_defense, battle_menu, _cancel)
 #-------------------------------------------------------------------------------
@@ -910,7 +945,6 @@ func BattleMenu_SkillButton_Submit():
 	battle_menu.hide()
 	dialogue_menu.hide()
 	status_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party_alive[current_player_turn]
 	#-------------------------------------------------------------------------------
@@ -918,12 +952,14 @@ func BattleMenu_SkillButton_Submit():
 		var _button: Button = Create_Skill_Button(_user.skill_array_in_battle[_i])
 		#-------------------------------------------------------------------------------
 		var _cancel_back: Callable = func():
-			TargetMenu_TargetButton_Cancel()
 			status_menu.show()
 			dialogue_menu.hide()
-			singleton.Move_to_Button(skill_menu_button_array[_i])
 			#-------------------------------------------------------------------------------
 			Set_TP_Label_from_the_future()
+			TargetMenu_TargetButton_Cancel()
+			#-------------------------------------------------------------------------------
+			singleton.Move_to_Button(skill_menu_button_array[_i])
+			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():SkillMenu_SkillButton_Selected(_user.skill_array_in_battle[_i])
 		var _submit: Callable = func(): SkillMenu_SkillButton_Submit(_user.skill_array_in_battle[_i], _cancel_back)
@@ -933,11 +969,11 @@ func BattleMenu_SkillButton_Submit():
 		skill_menu_content.add_child(_button)
 		skill_menu_button_array.append(_button)
 	#-------------------------------------------------------------------------------
-	var selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
-	var cancel_tabbar: Callable = func():SkillMenu_SkillButton_Cancel()
+	var _selected_tabbar: Callable = func():StatusMenu_No_Description(_user)
+	var _cancel_tabbar: Callable = func():SkillMenu_SkillButton_Cancel()
 	#-------------------------------------------------------------------------------
 	var _tabbar: TabBar = status_menu.get_tab_bar()
-	singleton.Set_TabBar(_tabbar,selected_tabbar, cancel_tabbar)
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, true)
 	_tabbar.set_tab_disabled(1, true)
@@ -949,18 +985,18 @@ func BattleMenu_SkillButton_Submit():
 	#-------------------------------------------------------------------------------
 	if(skill_menu_button_array.size() > 0):
 		singleton.Move_to_Button(skill_menu_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	_tabbar.current_tab = 3
 	skill_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_ItemButton_Submit():
 	battle_menu.hide()
 	dialogue_menu.hide()
 	item_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	for _i in item_array_in_battle.size():
 		var _hold: int = item_array_in_battle[_i].hold
@@ -981,12 +1017,14 @@ func BattleMenu_ItemButton_Submit():
 		var _consumableitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown)
 		#-------------------------------------------------------------------------------
 		var _back_consumableitem: Callable = func():
-			TargetMenu_TargetButton_Cancel()
 			item_menu.show()
 			dialogue_menu.hide()
-			singleton.Move_to_Button(_consumableitem_button)
 			#-------------------------------------------------------------------------------
+			TargetMenu_TargetButton_Cancel()
 			Set_TP_Label_from_the_future()
+			#-------------------------------------------------------------------------------
+			singleton.Move_to_Button(_consumableitem_button)
+			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i])
 		var _submit_consumableitem: Callable = func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _back_consumableitem)
@@ -999,12 +1037,14 @@ func BattleMenu_ItemButton_Submit():
 		var _allitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown)
 		#-------------------------------------------------------------------------------
 		var _back_allitem: Callable = func():
-			TargetMenu_TargetButton_Cancel()
 			item_menu.show()
 			dialogue_menu.hide()
-			singleton.Move_to_Button(_allitem_button)
 			#-------------------------------------------------------------------------------
+			TargetMenu_TargetButton_Cancel()
 			Set_TP_Label_from_the_future()
+			#-------------------------------------------------------------------------------
+			singleton.Move_to_Button(_allitem_button)
+			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		var _submit_allitem: Callable = func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _back_allitem)
 		#-------------------------------------------------------------------------------
@@ -1046,11 +1086,11 @@ func BattleMenu_ItemButton_Submit():
 		item_menu_allitems_content.add_child(_allitem_button)
 		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	var selected_tabbar: Callable = func():ItemMenu_No_Description()
-	var cancel_tabbar: Callable = func():ItemMenu_ItemButton_Cancel()
+	var _selected_tabbar: Callable = func():ItemMenu_No_Description()
+	var _cancel_tabbar: Callable = func():ItemMenu_ItemButton_Cancel()
 	#-------------------------------------------------------------------------------
 	var _tabbar:TabBar = item_menu.get_tab_bar()
-	singleton.Set_TabBar(_tabbar, selected_tabbar, cancel_tabbar)
+	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel_tabbar)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, false)
 	_tabbar.set_tab_disabled(1, false)
@@ -1061,9 +1101,11 @@ func BattleMenu_ItemButton_Submit():
 	#-------------------------------------------------------------------------------
 	if(item_menu_consumable_button_array.size() > 0):
 		singleton.Move_to_Button(item_menu_consumable_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	item_menu_consumable_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
@@ -1071,7 +1113,6 @@ func BattleMenu_EquipButton_Submit():
 	status_menu.show()
 	battle_menu.hide()
 	dialogue_menu.hide()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party_alive[current_player_turn]
 	#-------------------------------------------------------------------------------
@@ -1104,15 +1145,16 @@ func BattleMenu_EquipButton_Submit():
 	#-------------------------------------------------------------------------------
 	if(equipslot_menu_button_array.size() > 0):
 		singleton.Move_to_Button(equipslot_menu_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
 	status_menu.hide()
 	item_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _empty_button: Button = Create_EquipEmpty_Button()
 	#-------------------------------------------------------------------------------
@@ -1127,7 +1169,7 @@ func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
 	for _i in equip_array_in_battle.size():
 		var _button: Button = Create_EquipItem_Button(equip_array_in_battle[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():EquipMenu_EquipButton_Selected(equip_array_in_battle[_i])
+		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_array_in_battle[_i])
 		var _submit: Callable = func():singleton.Common_Canceled()
 		var _cancel: Callable = func():BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index)
 		#-------------------------------------------------------------------------------
@@ -1149,24 +1191,24 @@ func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
 	_tabbar.current_tab = 2
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(item_menu_equipment_button_array[0])
+	singleton.Common_Submited()
 	item_menu_equipment_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func BattleMenu_EquipButton_EquipSlot_Cancel():
-	Battle_Menu_StatusMenu_Exit_Common()
-	#-------------------------------------------------------------------------------
 	battle_menu.show()
+	Battle_Menu_StatusMenu_Exit_Common()
 	singleton.Move_to_Button(battle_menu_button[4])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func BattleMenu_EquipButton_EquipSlot_EquipMenu_Cancel(_index:int):
-	BattleMenu_ItemMenu_Exit_Common()
-	#-------------------------------------------------------------------------------
 	status_menu.show()
+	BattleMenu_ItemMenu_Exit_Common()
+	
 	singleton.Move_to_Button(equipslot_menu_button_array[_index])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_Submit():
 	battle_menu.hide()
-	#-------------------------------------------------------------------------------
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		singleton.Set_Button(friend_party[_i].party_member_ui.button, func():singleton.Common_Selected(), func():BattleMenu_StatusButton_TargetButton_Submit(friend_party[_i], false), func():BattleMenu_StatusButton_TargetButton_Cancel())
@@ -1177,11 +1219,11 @@ func BattleMenu_StatusButton_Submit():
 		enemy_party[_i].party_member_ui.button_pivot.show()
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(friend_party[0].party_member_ui.button)
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:bool):
 	status_menu.show()
 	dialogue_menu.hide()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	Show_Status_Data(_user)
 	#-------------------------------------------------------------------------------
@@ -1251,9 +1293,9 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(_tabbar)
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user:Party_Member):
-	Battle_Menu_StatusMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.button_pivot.show()
@@ -1261,7 +1303,9 @@ func BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user:Party_Member):
 	for _i in enemy_party.size():
 		enemy_party[_i].party_member_ui.button_pivot.show()
 	#-------------------------------------------------------------------------------
+	Battle_Menu_StatusMenu_Exit_Common()
 	singleton.Move_to_Button(_user.party_member_ui.button)
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func Battle_Menu_StatusMenu_Exit_Common():
 	status_menu.hide()
@@ -1270,14 +1314,10 @@ func Battle_Menu_StatusMenu_Exit_Common():
 	Destroy_All_Items(skill_menu_button_array)
 	Destroy_All_Items(equipslot_menu_button_array)
 	Destroy_All_Items(status_menu_statuseffect_button_array)
-	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_Cancel():
 	battle_menu.show()
 	dialogue_menu.show()
-	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.button_pivot.hide()
@@ -1286,10 +1326,9 @@ func BattleMenu_StatusButton_TargetButton_Cancel():
 		enemy_party[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(battle_menu_button[5])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func BattleMenu_AnyButton_Cancel():
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	current_player_turn -= 1
 	Set_TP_Label_from_the_future()
 	#-------------------------------------------------------------------------------
@@ -1300,10 +1339,12 @@ func BattleMenu_AnyButton_Cancel():
 		win_label.text = "Escape?"
 		win_label.show()
 		retry_menu.show()
-		singleton.Move_to_Button(retry_menu_button[0])
 		singleton.Set_Button(retry_menu_button[0], func():singleton.Common_Selected(), func():RetryMenu_RetryButton_Submit(), func():RetryMenu_AnyButton_Cancel())
 		singleton.Set_Button(retry_menu_button[1], func():singleton.Common_Selected(), func():RetryMenu_EscapeButton_Submit(), func():RetryMenu_AnyButton_Cancel())
 		singleton.Set_Button(retry_menu_button[2], func():singleton.Common_Selected(), func():RetryMenu_GiveUpButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+		#-------------------------------------------------------------------------------
+		singleton.Move_to_Button(retry_menu_button[0])
+		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	else:
 		#-------------------------------------------------------------------------------
@@ -1314,16 +1355,54 @@ func BattleMenu_AnyButton_Cancel():
 			PlayAnimation(enemy_party_alive[_i].playback, "Idle")
 		#-------------------------------------------------------------------------------
 		battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
+		#-------------------------------------------------------------------------------
 		singleton.Move_to_First_Button(battle_menu_button)
+		singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region SKILL MENU FUNCTIONS
 #-------------------------------------------------------------------------------
 func SkillMenu_SkillButton_Selected(_item_serializable:Item_Serializable):
+	Set_Skill_Information(_item_serializable)
+	singleton.Common_Selected()
+#-------------------------------------------------------------------------------
+func Set_Skill_Information(_item_serializable:Item_Serializable):
+	var _tp_cost: int = _item_serializable.item_resource.tp_cost
+	var _tp_cost_text: String
+	#----------------------------------------------------------------------------
+	if(_tp_cost > 0):
+		_tp_cost_text = "("+str(_tp_cost)+" TP)"
+	#----------------------------------------------------------------------------
+	else:
+		_tp_cost_text = "-"
+	#----------------------------------------------------------------------------
+	var _cooldown: int = _item_serializable.item_resource.max_cooldown
+	var _cooldown_text: String
+	#----------------------------------------------------------------------------
+	if(_cooldown > 0):
+		_cooldown_text = "("+str(_item_serializable.item_resource.max_cooldown)+" CD)"
+	#----------------------------------------------------------------------------
+	else:
+		_cooldown_text = "-"
+	#----------------------------------------------------------------------------
+	var _hold_text: String
+	var _max_hold: int = _item_serializable.item_resource.max_hold
+	#----------------------------------------------------------------------------
+	if(_max_hold > 0):
+		_hold_text = "["+str(_item_serializable.hold)+"/"+str(_max_hold)+" TP)"
+	#----------------------------------------------------------------------------
+	else:
+		_hold_text = "-"
+	#----------------------------------------------------------------------------
 	skill_menu_lore.text = _item_serializable.item_resource.lore
 	skill_menu_description.text = _item_serializable.item_resource.description
-	singleton.Common_Selected()
+	skill_menu_cost_label.text = "* Cost:"
+	skill_menu_tp_cost_num_label.text = _tp_cost_text
+	skill_menu_cooldown_num_label.text = _cooldown_text
+	skill_menu_held_label.text = "* Held:"
+	skill_menu_hold_num_label.text = _hold_text
+	skill_menu_storage_num_label.text = ""
 #-------------------------------------------------------------------------------
 func SkillMenu_SkillButton_Submit(_item_serializable:Item_Serializable, _cancel:Callable):
 	#-------------------------------------------------------------------------------
@@ -1341,41 +1420,132 @@ func SkillMenu_SkillButton_Submit(_item_serializable:Item_Serializable, _cancel:
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func SkillMenu_SkillButton_Cancel():
-	Battle_Menu_StatusMenu_Exit_Common()
-	#-------------------------------------------------------------------------------
 	battle_menu.show()
+	Battle_Menu_StatusMenu_Exit_Common()
 	singleton.Move_to_Button(battle_menu_button[2])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region ITEM MENU FUNCTIONS
 #-------------------------------------------------------------------------------
 func ItemMenu_Consumable_ItemButton_Selected(_item_serializable:Item_Serializable):
+	Set_ConsumableItem_Information(_item_serializable)
+	singleton.Common_Selected()
+#-------------------------------------------------------------------------------
+func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
+	var _max_hold: int = _item_serializable.item_resource.max_hold
+	#-------------------------------------------------------------------------------
+	var _hold_text: String
+	var _storage_text: String
+	#-------------------------------------------------------------------------------
+	if(_max_hold > 0):
+		var _hold: int = _item_serializable.hold
+		#-------------------------------------------------------------------------------
+		if(_hold > _max_hold):
+			_hold = _max_hold
+		#-------------------------------------------------------------------------------
+		_hold_text = "["+str(_hold)+"/"+str(_max_hold)+"]"
+		#-------------------------------------------------------------------------------
+		var _storage: int = _item_serializable.hold - _max_hold
+		#-------------------------------------------------------------------------------
+		if(_storage < 0):
+			_storage = 0
+		#-------------------------------------------------------------------------------
+		_storage_text = "["+str(_storage)+"]"
+	#-------------------------------------------------------------------------------
+	else:
+		_hold_text = "-"
+		_storage_text = "["+str(_item_serializable.hold)+"]"
+	#-------------------------------------------------------------------------------
+	var _tp_cost_text: String
+	var _tp_cost: int = _item_serializable.item_resource.tp_cost
+	#-------------------------------------------------------------------------------
+	if(_tp_cost>0):
+		_tp_cost_text = "("+str(_tp_cost)+" TP)"
+	#-------------------------------------------------------------------------------
+	else:
+		_tp_cost_text = "-"
+	#-------------------------------------------------------------------------------
+	var _cooldown_text: String
+	var _cooldown: int = _item_serializable.item_resource.max_cooldown
+	#-------------------------------------------------------------------------------
+	if(_cooldown>0):
+		_cooldown_text = "("+str(_cooldown)+" CD)"
+	#-------------------------------------------------------------------------------
+	else:
+		_cooldown_text = "-"
+	#-------------------------------------------------------------------------------
 	item_menu_consumable_lore.text = _item_serializable.item_resource.lore
 	item_menu_consumable_description.text = _item_serializable.item_resource.description
+	#-------------------------------------------------------------------------------
+	item_menu_consumable_cost_label.text = "* Cost:"
+	item_menu_consumable_tp_cost_num_label.text = _tp_cost_text
+	item_menu_consumable_cooldown_num_label.text = _cooldown_text
+	item_menu_consumable_held_label.text = "* Held:"
+	item_menu_consumable_hold_num_label.text = _hold_text
+	item_menu_consumable_storage_num_label.text = _storage_text
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_lore.text = _item_serializable.item_resource.lore
 	item_menu_allitems_description.text = _item_serializable.item_resource.description
 	#-------------------------------------------------------------------------------
-	singleton.Common_Selected()
+	item_menu_allitems_cost_label.text = "* Cost:"
+	item_menu_allitems_tp_cost_num_label.text = _tp_cost_text
+	item_menu_allitems_cooldown_num_label.text = _cooldown_text
+	item_menu_allitems_held_label.text = "* Held:"
+	item_menu_allitems_hold_num_label.text = _hold_text
+	item_menu_allitems_storage_num_label.text = _storage_text
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ItemMenu_Equipment_ItemButton_Selected(_equip_serializable:Equip_Serializable):
-	item_menu_equipment_lore.text = _equip_serializable.equip_resource.lore
-	item_menu_equipment_description.text = _equip_serializable.equip_resource.description
-	#-------------------------------------------------------------------------------
-	item_menu_allitems_lore.text = _equip_serializable.equip_resource.lore
-	item_menu_allitems_description.text = _equip_serializable.equip_resource.description
-	#-------------------------------------------------------------------------------
+	Set_EquipItem_Information(_equip_serializable)
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
+func Set_EquipItem_Information(_equip_serializable:Equip_Serializable):
+	var _lore: String = _equip_serializable.equip_resource.lore
+	var _description: String = _equip_serializable.equip_resource.description
+	var _stored: String = "["+str(_equip_serializable.hold)+"]"
+	#-------------------------------------------------------------------------------
+	item_menu_equipment_lore.text = _lore
+	item_menu_equipment_description.text = _description
+	#-------------------------------------------------------------------------------
+	item_menu_allitems_lore.text = _lore
+	item_menu_allitems_description.text = _description
+	#-------------------------------------------------------------------------------
+	item_menu_equipment_held_label.text = "* Held:"
+	item_menu_equipment_storage_num_label.text = _stored
+	#-------------------------------------------------------------------------------
+	item_menu_allitems_cost_label.text = ""
+	item_menu_allitems_tp_cost_num_label.text = ""
+	item_menu_allitems_cooldown_num_label.text = ""
+	item_menu_allitems_held_label.text = "* Held:"
+	item_menu_allitems_hold_num_label.text = ""
+	item_menu_allitems_storage_num_label.text = _stored
+#-------------------------------------------------------------------------------
 func ItemMenu_KeyItem_ItemButton_Selected(keyitem_serializable:Key_Item_Serializable):
-	item_menu_keyitems_lore.text = keyitem_serializable.key_item_resource.lore
-	item_menu_keyitems_description.text = keyitem_serializable.key_item_resource.description
-	#-------------------------------------------------------------------------------
-	item_menu_allitems_lore.text = keyitem_serializable.key_item_resource.lore
-	item_menu_allitems_description.text = keyitem_serializable.key_item_resource.description
-	#-------------------------------------------------------------------------------
+	Set_KeyItem_Information(keyitem_serializable)
 	singleton.Common_Selected()
+#-------------------------------------------------------------------------------
+func Set_KeyItem_Information(keyitem_serializable:Key_Item_Serializable):
+	var _lore: String = keyitem_serializable.key_item_resource.lore
+	var _description: String = keyitem_serializable.key_item_resource.description
+	var _stored: String = "["+str(keyitem_serializable.hold)+"]"
+	#-------------------------------------------------------------------------------
+	item_menu_keyitems_lore.text = _lore
+	item_menu_keyitems_description.text = _description
+	#-------------------------------------------------------------------------------
+	item_menu_allitems_lore.text = _lore
+	item_menu_allitems_description.text = _description
+	#-------------------------------------------------------------------------------
+	item_menu_keyitems_held_label.text = "* Held:"
+	item_menu_keyitems_storage_num_label.text = _stored
+	#-------------------------------------------------------------------------------
+	item_menu_allitems_cost_label.text = ""
+	item_menu_allitems_tp_cost_num_label.text = ""
+	item_menu_allitems_cooldown_num_label.text = ""
+	item_menu_allitems_held_label.text = "* Held:"
+	item_menu_allitems_hold_num_label.text = ""
+	item_menu_allitems_storage_num_label.text = _stored
 #-------------------------------------------------------------------------------
 func EquipSlotMenu_EquipButton_Selected(_user:Party_Member, _equip_serializable_array:Array[Equip_Serializable], _index: int):
 	#-------------------------------------------------------------------------------
@@ -1385,13 +1555,9 @@ func EquipSlotMenu_EquipButton_Selected(_user:Party_Member, _equip_serializable_
 	else:
 		equipslot_menu_lore.text = _equip_serializable_array[_index].equip_resource.lore
 		equipslot_menu_description.text = _equip_serializable_array[_index].equip_resource.description
+		#-------------------------------------------------------------------------------
 		singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func EquipMenu_EquipButton_Selected(_equip_serializable:Equip_Serializable):
-	item_menu_equipment_lore.text = _equip_serializable.equip_resource.lore
-	item_menu_equipment_description.text = _equip_serializable.equip_resource.description
-	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func StatusMenu_StatusEffectButton_Selected(_statuseffect_serializable:StatusEffect_Serializable):
 	status_menu_statuseffect_lore.text = _statuseffect_serializable.statuseffect_resource.lore
@@ -1456,11 +1622,11 @@ func ItemMenu_ItemButton_Submit(_item_serializable:Item_Serializable, _hold:int,
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Cancel():
-	BattleMenu_ItemMenu_Exit_Common()
-	#-------------------------------------------------------------------------------
 	battle_menu.show()
 	dialogue_menu.show()
+	BattleMenu_ItemMenu_Exit_Common()
 	singleton.Move_to_Button(battle_menu_button[3])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func BattleMenu_ItemMenu_Exit_Common():
 	item_menu.hide()
@@ -1469,8 +1635,6 @@ func BattleMenu_ItemMenu_Exit_Common():
 	Destroy_All_Items(item_menu_equipment_button_array)
 	Destroy_All_Items(item_menu_keyitems_button_array)
 	Destroy_All_Items(item_menu_allitems_button_array)
-	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func Destroy_All_Items(_button_array:Array[Button]):
 	for _i in _button_array.size():
@@ -1498,13 +1662,13 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
-					singleton.Common_Submited()
 					#-------------------------------------------------------------------------------
 					for _i in enemy_party_alive.size():
 						enemy_party_alive[_i].party_member_ui.button_pivot.show()
 						singleton.Set_Button(enemy_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, enemy_party_alive[_i], enemy_party_alive, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
 					singleton.Move_to_Button(enemy_party_alive[0].party_member_ui.button)
+					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
 					singleton.Common_Canceled()
@@ -1518,13 +1682,14 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
-					singleton.Common_Submited()
+					
 					#-------------------------------------------------------------------------------
 					for _i in friend_party_alive.size():
 						friend_party_alive[_i].party_member_ui.button_pivot.show()
 						singleton.Set_Button(friend_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[_i], friend_party_alive, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
 					singleton.Move_to_Button(friend_party_alive[0].party_member_ui.button)
+					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
 					singleton.Common_Canceled()
@@ -1538,13 +1703,14 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
-					singleton.Common_Submited()
+					
 					#-------------------------------------------------------------------------------
 					for _i in friend_party_dead.size():
 						friend_party_dead[_i].party_member_ui.button_pivot.show()
 						singleton.Set_Button(friend_party_dead[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_dead, friend_party_dead[_i], friend_party_dead, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
 					singleton.Move_to_Button(friend_party_dead[0].party_member_ui.button)
+					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
 					singleton.Common_Canceled()
@@ -1556,12 +1722,12 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				#-------------------------------------------------------------------------------
 				_tp -= _item_serializable.item_resource.tp_cost
 				Set_TP_Label(_tp)
-				singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				friend_party_alive[current_player_turn].party_member_ui.button_pivot.show()
 				singleton.Set_Button(friend_party_alive[current_player_turn].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[current_player_turn], friend_party_alive, _item_serializable), _cancel)
 				#-------------------------------------------------------------------------------
 				singleton.Move_to_Button(friend_party_alive[current_player_turn].party_member_ui.button)
+				singleton.Common_Submited()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -1569,8 +1735,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------	
 #-------------------------------------------------------------------------------
-func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Party_Member, _target_party:Array[Party_Member], _item_serializable:Item_Serializable):
-	singleton.Common_Submited()
+func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Party_Member, _target_party:Array[Party_Member], _item_serializable:Item_Serializable):	
 	#-------------------------------------------------------------------------------
 	friend_party_alive[current_player_turn].user_party = _user_party
 	friend_party_alive[current_player_turn].target = _target
@@ -1596,10 +1761,7 @@ func TargetMenu_TargetButton_Cancel():
 	friend_party_alive[current_player_turn].target_party = []
 	friend_party_alive[current_player_turn].item_serializable = null
 	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	Hide_AllTarget()
-	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -1615,8 +1777,10 @@ func After_Choose_Target_Logic():
 		battle_menu.show()
 		dialogue_menu.show()
 		singleton.Move_to_First_Button(battle_menu_button)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
+		singleton.Common_Submited()
 		await Party_Actions()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -1942,8 +2106,10 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			dialogue_menu.show()
 			battle_box.hide()
 			myGAME_STATE = GAME_STATE.IN_MENU
-			singleton.Move_to_First_Button(battle_menu_button)
 			battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
+			#-------------------------------------------------------------------------------
+			singleton.Move_to_First_Button(battle_menu_button)
+			singleton.Common_Submited()
 		#-------------------------------------------------------------------------------
 		else:
 			myBATTLE_STATE = BATTLE_STATE.YOU_LOSE
@@ -2007,8 +2173,6 @@ func You_Win(_callable:Callable):
 #region RETRY MENU FUNCTIONS
 #-------------------------------------------------------------------------------
 func RetryMenu_RetryButton_Submit():
-	singleton.Common_Submited()
-	#-------------------------------------------------------------------------------
 	myBATTLE_STATE = BATTLE_STATE.YOU_RETRY
 	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
@@ -2066,7 +2230,9 @@ func You_Retry(_callable: Callable):
 		#-------------------------------------------------------------------------------
 		battle_menu.show()
 		dialogue_menu.show()
+		#-------------------------------------------------------------------------------
 		singleton.Move_to_First_Button(battle_menu_button)
+		singleton.Common_Submited()
 	)
 	#-------------------------------------------------------------------------------
 	#_tween.tween_interval(0.05)
@@ -2080,15 +2246,12 @@ func You_Retry(_callable: Callable):
 	)
 #-------------------------------------------------------------------------------
 func RetryMenu_EscapeButton_Submit():
-	singleton.Common_Submited()
-	#-------------------------------------------------------------------------------
 	myBATTLE_STATE = BATTLE_STATE.YOU_ESCAPE
 	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
 func RetryMenu_GiveUpButton_Submit():
-	singleton.Common_Submited()
-	#-------------------------------------------------------------------------------
 	get_tree().reload_current_scene()
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func RetryMenu_AnyButton_Cancel():
 	battle_menu.show()
@@ -2096,9 +2259,8 @@ func RetryMenu_AnyButton_Cancel():
 	win_label.hide()
 	retry_menu.hide()
 	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	singleton.Move_to_First_Button(battle_menu_button)
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func You_Escape():
 	#-------------------------------------------------------------------------------
@@ -2174,7 +2336,7 @@ func TimeOut_Tween(_iMax: int):
 	await timer_tween.finished
 #-------------------------------------------------------------------------------
 func PrintTimer(_i:int, _iMax:int):
-	timer_label.text = "   "+str(_i).pad_zeros(2)+" / " +str(_iMax).pad_zeros(2) + " s"
+	timer_label.text = "   "+str(_i).pad_zeros(2)+"/" +str(_iMax).pad_zeros(2) + " s"
 #-------------------------------------------------------------------------------
 func StopEverithing_and_Timer():
 	StopEverithing()
@@ -2531,20 +2693,23 @@ func You_Lose(_callable:Callable):
 		singleton.Set_Button(retry_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(_callable), func():pass)
 		singleton.Set_Button(retry_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(), func():pass)
 		singleton.Set_Button(retry_menu_button[2], func():singleton.Common_Selected(), func():LoseMenu_GiveUpButton_Submit(), func():pass)
+		#-------------------------------------------------------------------------------
 		singleton.Move_to_Button(retry_menu_button[0])
+		singleton.Common_Submited()
 	)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func LoseMenu_RetryButton_Submit(_callable:Callable):
-	singleton.Common_Submited()
 	You_Retry(_callable)
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func LoseMenu_EscapeButton_Submit():
-	singleton.Common_Submited()
 	You_Escape()
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func LoseMenu_GiveUpButton_Submit():
-	RetryMenu_GiveUpButton_Submit()
+	get_tree().reload_current_scene()
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func Bullet_Grazed_SP_Gain():
 	var _target_party: Array[Party_Member] = []
@@ -2615,7 +2780,9 @@ func Skill_0_0(_user:Party_Member):
 	var _tween: Tween = create_tween()
 	var _dx: float = 15
 	var _dy: float = 15
+	#-------------------------------------------------------------------------------
 	for _i in 4:
+		#-------------------------------------------------------------------------------
 		_tween.tween_callback(func():
 			PlayAnimation(_user.playback, "Shot")
 			HP_Damage(_user.target, 5)
@@ -2771,17 +2938,17 @@ func HP_Heal_Porcentual(_target:Party_Member, _float:float):
 	Set_HP_Label(_target)
 #-------------------------------------------------------------------------------
 func Set_HP_Label(_user:Party_Member):
-	_user.party_member_ui.label_hp.text = "  "+str(_user.hp)+" / "+str(_user.max_hp)+" HP  "
+	_user.party_member_ui.label_hp.text = "  "+str(_user.hp)+"/"+str(_user.max_hp)+" HP  "
 	_user.party_member_ui.bar_hp.max_value = _user.max_hp
 	_user.party_member_ui.bar_hp.value = _user.hp
 #-------------------------------------------------------------------------------
 func Set_SP_Label(_user:Party_Member):
-	_user.party_member_ui.label_sp.text = "  "+str(_user.sp)+" / "+str(_user.max_sp)+" SP  "
+	_user.party_member_ui.label_sp.text = "  "+str(_user.sp)+"/"+str(_user.max_sp)+" SP  "
 	_user.party_member_ui.bar_sp.max_value = _user.max_sp
 	_user.party_member_ui.bar_sp.value = _user.sp
 #-------------------------------------------------------------------------------
 func Set_TP_Label(_i: int):
-	tp_bar_label.text = str(_i)+" / "+str(max_tp)+" TP"
+	tp_bar_label.text = str(_i)+"/"+str(max_tp)+" TP"
 	tp_bar_progressbar_present.max_value = max_tp
 	tp_bar_progressbar_present.value = _i
 #-------------------------------------------------------------------------------
@@ -2943,11 +3110,11 @@ func PauseMenu_Set():
 	for _i in pause_menu_party_button_array.size():
 		var _player_ui: Party_Button =pause_menu_party_button_array[_i]
 		#-------------------------------------------------------------------------------
-		_player_ui.label_hp.text = "  "+str(friend_party[_i].max_hp)+" / "+str(friend_party[_i].max_hp)+" HP  "
+		_player_ui.label_hp.text = "  "+str(friend_party[_i].max_hp)+"/"+str(friend_party[_i].max_hp)+" HP  "
 		_player_ui.bar_hp.max_value = friend_party[_i].max_hp
 		_player_ui.bar_hp.value = friend_party[_i].max_hp
 		#-------------------------------------------------------------------------------
-		_player_ui.label_sp.text = "  "+str(friend_party[_i].max_sp)+" / "+str(friend_party[_i].max_sp)+" SP  "
+		_player_ui.label_sp.text = "  "+str(friend_party[_i].max_sp)+"/"+str(friend_party[_i].max_sp)+" SP  "
 		_player_ui.bar_sp.max_value = friend_party[_i].max_sp
 		_player_ui.bar_sp.value = friend_party[_i].max_sp
 		#-------------------------------------------------------------------------------
@@ -2970,19 +3137,17 @@ func PauseMenu_Set():
 #-------------------------------------------------------------------------------
 func PauseMenu_SkillButton_Submit():
 	#-------------------------------------------------------------------------------
-	singleton.Common_Submited()
-	#-------------------------------------------------------------------------------
 	for _i in pause_menu_party_button_array.size():
 		var _b: Button = pause_menu_party_button_array[_i].button
 		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_SkillButton_PartyButton_Submit(_i), func():PauseMenu_SkillButton_PartyButton_Cancel())
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
+	singleton.Common_Submited()
 	pause_menu_button_array[0].disabled = true
 #-------------------------------------------------------------------------------
 func PauseMenu_ItemButton_Submit():
 	pause_menu.hide()
 	item_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	for _i in item_array.size():
 		var _hold: int = item_array[_i].hold
@@ -3054,9 +3219,12 @@ func PauseMenu_ItemButton_Submit():
 	#-------------------------------------------------------------------------------
 	if(item_menu_consumable_button_array.size() > 0):
 		singleton.Move_to_Button(item_menu_consumable_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
+		
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	item_menu_consumable_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
@@ -3086,8 +3254,15 @@ func Create_Skill_Button(_item_serializable: Item_Serializable) -> Button:
 		if(_item_serializable.item_resource.tp_cost > 0):
 			_label2.text += "("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
 		#-------------------------------------------------------------------------------
-		if(_item_serializable.item_resource.max_hold > 0):
-			_label2.text += "["+str(_item_serializable.hold)+" / "+str(_item_serializable.item_resource.max_hold)+"]  "
+		var _max_hold: int = _item_serializable.item_resource.max_hold
+		#-------------------------------------------------------------------------------
+		if(_max_hold > 0):
+			var _hold: int = _item_serializable.hold
+			#-------------------------------------------------------------------------------
+			if(_hold > _max_hold):
+				_hold = _max_hold
+			#-------------------------------------------------------------------------------
+			_label2.text += "["+str(_hold)+"/"+str(_max_hold)+"]  "
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	else:
@@ -3123,8 +3298,16 @@ func Create_ConsumableItem_Button(_item_serializable: Item_Serializable, _hold:i
 		if(_item_serializable.item_resource.tp_cost > 0):
 			_label2.text += "("+str(_item_serializable.item_resource.tp_cost)+" TP)  "
 		#-------------------------------------------------------------------------------
-		if(_item_serializable.item_resource.max_hold > 0):
-			var _s: String = "["+str(_hold)+" / "+str(_item_serializable.item_resource.max_hold)+"]  "
+		var _max_hold: int = _item_serializable.item_resource.max_hold
+		#-------------------------------------------------------------------------------
+		if(_max_hold > 0):
+			#-------------------------------------------------------------------------------
+			var _hold_capped: int = _hold
+			#-------------------------------------------------------------------------------
+			if(_hold_capped > _max_hold):
+				_hold_capped = _max_hold
+			#-------------------------------------------------------------------------------
+			var _s: String = "["+str(_hold_capped)+"/"+str(_max_hold)+"]  "
 			#-------------------------------------------------------------------------------
 			if(_hold < _item_serializable.hold):
 				_label2.text += "[color="+hex_color_yellow+"]"+_s+"[/color]"
@@ -3295,15 +3478,31 @@ func ItemMenu_No_Description():
 	#-------------------------------------------------------------------------------
 	item_menu_consumable_description.text = ""
 	item_menu_consumable_lore.text = ""
+	item_menu_consumable_cost_label.text = ""
+	item_menu_consumable_tp_cost_num_label.text = ""
+	item_menu_consumable_cooldown_num_label.text = ""
+	item_menu_consumable_held_label.text = ""
+	item_menu_consumable_hold_num_label.text = ""
+	item_menu_consumable_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	item_menu_equipment_description.text = ""
 	item_menu_equipment_lore.text = ""
+	item_menu_equipment_held_label.text = ""
+	item_menu_equipment_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	item_menu_keyitems_description.text = ""
 	item_menu_keyitems_lore.text = ""
+	item_menu_keyitems_held_label.text = ""
+	item_menu_keyitems_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_description.text = ""
 	item_menu_allitems_lore.text = ""
+	item_menu_allitems_cost_label.text = ""
+	item_menu_allitems_tp_cost_num_label.text = ""
+	item_menu_allitems_cooldown_num_label.text = ""
+	item_menu_allitems_held_label.text = ""
+	item_menu_allitems_hold_num_label.text = ""
+	item_menu_allitems_storage_num_label.text = ""
 #-------------------------------------------------------------------------------
 func StatusMenu_No_Description(_user:Party_Member):
 	singleton.Common_Selected()
@@ -3319,6 +3518,12 @@ func StatusMenu_No_Description(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	skill_menu_description.text = ""
 	skill_menu_lore.text = ""
+	skill_menu_cost_label.text = ""
+	skill_menu_tp_cost_num_label.text = ""
+	skill_menu_cooldown_num_label.text = ""
+	skill_menu_held_label.text = ""
+	skill_menu_hold_num_label.text = ""
+	skill_menu_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	status_menu_statuseffect_description.text = ""
 	status_menu_statuseffect_lore.text = ""
@@ -3331,24 +3536,22 @@ func TeleportMenu_No_Description():
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_Submit():
 	#-------------------------------------------------------------------------------
-	singleton.Common_Submited()
-	#-------------------------------------------------------------------------------
 	for _i in pause_menu_party_button_array.size():
 		var _b: Button = pause_menu_party_button_array[_i].button
 		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_EquipButton_PartyButton_Submit(_i), func():PauseMenu_EquipButton_PartyButton_Cancel())
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
+	singleton.Common_Submited()
 	pause_menu_button_array[2].disabled = true
 #-------------------------------------------------------------------------------
 func PauseMenu_StatusButton_Submit():
-	#-------------------------------------------------------------------------------
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	for _i in pause_menu_party_button_array.size():
 		var _b: Button = pause_menu_party_button_array[_i].button
 		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_StatusButton_PartyButton_Submit(_i), func():PauseMenu_StatusButton_PartyButton_Cancel())
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
+	singleton.Common_Submited()
 	pause_menu_button_array[3].disabled = true
 #-------------------------------------------------------------------------------
 func PauseMenu_AnyButton_Cancel():
@@ -3360,7 +3563,6 @@ func PauseMenu_AnyButton_Cancel():
 func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	status_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party[_index]
 	#-------------------------------------------------------------------------------
@@ -3391,17 +3593,18 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	if(skill_menu_button_array.size() > 0):
 		singleton.Move_to_Button(skill_menu_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	skill_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func PauseMenu_SkillButton_PartyButton_Cancel():
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	pause_menu_button_array[0].disabled = false
 	singleton.Move_to_Button(pause_menu_button_array[0])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func PauseMenu_ItemButton_ItemMenu_Cancel():
 	PauseMenu_ItemMenu_Exit_Common()
@@ -3421,7 +3624,6 @@ func PauseMenu_ItemMenu_Exit_Common():
 func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	status_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party[_index]
 	#-------------------------------------------------------------------------------
@@ -3454,15 +3656,17 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	if(equipslot_menu_button_array.size() > 0):
 		singleton.Move_to_Button(equipslot_menu_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
+		
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _index_slot:int):
 	status_menu.hide()
 	item_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _empty_button: Button = Create_EquipEmpty_Button()
 	#-------------------------------------------------------------------------------
@@ -3477,7 +3681,7 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _ind
 	for _i in equip_array.size():
 		var _equipitem_button: Button = Create_EquipItem_Button(equip_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():EquipMenu_EquipButton_Selected(equip_array[_i])
+		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_array[_i])
 		var _submit: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user, equip_array[_i], _index_slot)
 		var _cancel: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot)
 		#-------------------------------------------------------------------------------
@@ -3496,10 +3700,11 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _ind
 	_tabbar.set_tab_disabled(2, false)
 	_tabbar.set_tab_disabled(3, true)
 	#-------------------------------------------------------------------------------
-	item_menu.current_tab = 2
+	_tabbar.current_tab = 2
 	#-------------------------------------------------------------------------------
 	item_menu_equipment_scrollContainer.scroll_vertical = 0
 	singleton.Move_to_Button(item_menu_equipment_button_array[0])
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member, _equip_serializable:Equip_Serializable, _index_slot:int):
 	#-------------------------------------------------------------------------------
@@ -3514,13 +3719,13 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_M
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
 	status_menu.show()
-	singleton.Common_Submited()
 	singleton.Move_to_Button(equipslot_menu_button_array[_index_slot])
+	singleton.Play_SFX_Equip()
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Party_Member, _index_slot:int):
 	#-------------------------------------------------------------------------------
 	if(_user.equip_array[_index_slot].equip_resource != null):
-		Add_Equip_Serializable_to_Array(equip_array, _user.equip_array[_index_slot].equip_resource)
+		Add_Equip_Serializable_to_Array(equip_array, _user.equip_array[_index_slot].equip_resource, 1)
 		#-------------------------------------------------------------------------------
 		_user.equip_array[_index_slot].equip_resource = null
 		_user.equip_array[_index_slot].hold = 0
@@ -3530,23 +3735,8 @@ func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Pa
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
 	status_menu.show()
-	singleton.Common_Submited()
 	singleton.Move_to_Button(equipslot_menu_button_array[_index_slot])
-#-------------------------------------------------------------------------------
-func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_resource:Equip_Resource):
-	#-------------------------------------------------------------------------------
-	for _i in _equip_array.size():
-		#-------------------------------------------------------------------------------
-		if(_equip_array[_i].equip_resource == _equip_resource):
-			_equip_array[_i].hold += 1
-			return
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
-	_equip_serializable.equip_resource = _equip_resource
-	_equip_serializable.hold = 1
-	_equip_array.append(_equip_serializable)
-	return
+	singleton.Play_SFX_Equip()
 #-------------------------------------------------------------------------------
 func Remove_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_serializable: Equip_Serializable):
 	_equip_serializable.hold -= 1
@@ -3555,35 +3745,33 @@ func Remove_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], 
 		_equip_array.erase(_equip_serializable)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffect_Serializable):	#NOT USED YET
+func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffect_Serializable) -> StatusEffect_Serializable:	#NOT USED YET
 	#-------------------------------------------------------------------------------
 	for _i in _user.statuseffect_array.size():
 		#-------------------------------------------------------------------------------
 		if(_user.statuseffect_array[_i].statuseffect_resource == _statuseffect_serializable.statuseffect_resource):
 			_user.statuseffect_array[_i].hold += _statuseffect_serializable.hold
-			return
+			return _user.statuseffect_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	_user.statuseffect_array.append(_statuseffect_serializable)
-	return
+	return _statuseffect_serializable
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot:int):
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
 	status_menu.show()
-	singleton.Common_Canceled()
 	singleton.Move_to_Button(equipslot_menu_button_array[_index_slot])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_Cancel():
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	pause_menu_button_array[2].disabled = false
 	singleton.Move_to_Button(pause_menu_button_array[2])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	status_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member = friend_party[_index]
 	#-------------------------------------------------------------------------------
@@ -3646,6 +3834,7 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(_tabbar)
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func Show_Status_Data(_user:Party_Member):
 	status_menu_information_image.texture = _user.texture2d
@@ -3658,37 +3847,38 @@ func PauseMenu_StatusMenu_Exit_Common(_index:int):
 	Destroy_All_Items(equipslot_menu_button_array)
 	Destroy_All_Items(skill_menu_button_array)
 	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	pause_menu.show()
 	singleton.Move_to_Button(pause_menu_party_button_array[_index].button)
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func PauseMenu_StatusButton_PartyButton_Cancel():
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
 	pause_menu_button_array[3].disabled = false
 	singleton.Move_to_Button(pause_menu_button_array[3])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func PauseMenu_OptionButton_Submit():
 	singleton.optionMenu.show()
-	singleton.Move_to_Button(singleton.optionMenu.back)
-	pause_menu.hide()
-	singleton.Common_Submited()
 	singleton.Set_Button(singleton.optionMenu.back, func():singleton.Common_Selected(), func():OptionMenu_BackButton_Subited(), func():OptionMenu_BackButton_Canceled())
+	pause_menu.hide()
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(singleton.optionMenu.back)
+	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func OptionMenu_BackButton_Subited() -> void:
 	OptionMenu_BackButton_Common()
+	singleton.Move_to_Button(pause_menu_button_array[4])
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func OptionMenu_BackButton_Canceled() -> void:
 	OptionMenu_BackButton_Common()
+	singleton.Move_to_Button(pause_menu_button_array[4])
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func OptionMenu_BackButton_Common() -> void:
 	singleton.optionMenu.Save_OptionSaveData_Json()
 	singleton.optionMenu.hide()
+	Set_Idiome()
 	pause_menu.show()
-	singleton.Move_to_Button(pause_menu_button_array[4])
 #-------------------------------------------------------------------------------
 func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	Dialogue_Open()
@@ -3702,34 +3892,34 @@ func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	singleton.Set_Button(savespot_menu_button_array[1], func():singleton.Common_Selected(), func():SaveMenu_TeleportButton_Submit(), func():SaveMenu_Close())
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(savespot_menu_button_array[0])
-	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	PauseOn()
 #-------------------------------------------------------------------------------
-func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String):
+func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String) -> Dictionary:
 	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
 	#-------------------------------------------------------------------------------
 	for _i in _array.size():
 		#-------------------------------------------------------------------------------
 		if(_array[_i].get("room", "") == room_test.room_id):
-			_array[_i]["savespot"] = _savespot
+			var _dictionaty: Dictionary = _array[_i] as Dictionary
+			_dictionaty["savespot"] = _savespot
 			#-------------------------------------------------------------------------------
 			sort_by_name_ascending(_array)
 			#-------------------------------------------------------------------------------
 			singleton.currentSaveData_Json["teleport_options"] = _array
-			return
+			return _dictionaty
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	var _dictionaty: Dictionary = {}
-	_dictionaty["room"] = room_test.room_id
-	_dictionaty["savespot"] = _savespot
-	_array.append(_dictionaty)
+	var _dictionaty_new: Dictionary = {}
+	_dictionaty_new["room"] = room_test.room_id
+	_dictionaty_new["savespot"] = _savespot
+	_array.append(_dictionaty_new)
 	#-------------------------------------------------------------------------------
 	sort_by_name_ascending(_array)
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json["teleport_options"] = _array
-	#-------------------------------------------------------------------------------
+	return _dictionaty_new
 #-------------------------------------------------------------------------------
 func sort_by_name_ascending(_array: Array):
 	#-------------------------------------------------------------------------------
@@ -3756,19 +3946,18 @@ func SaveMenu_Close():
 #-------------------------------------------------------------------------------
 func SaveMenu_SaveButton_Submit(_s:String):
 	Save_All_Data(_s)
-	singleton.Common_Submited()
+	singleton.Play_SFX_Save()
 #-------------------------------------------------------------------------------
 func SaveMenu_TeleportButton_Submit():
 	savespot_menu.hide()
 	teleporty_menu.show()
-	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func():
 		Destroy_All_Items(teleporty_menu_button_array)
 		savespot_menu.show()
 		teleporty_menu.hide()
-		singleton.Common_Canceled()
 		singleton.Move_to_Button(savespot_menu_button_array[1])
+		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
 	#-------------------------------------------------------------------------------
@@ -3783,8 +3972,9 @@ func SaveMenu_TeleportButton_Submit():
 		teleporty_menu_button_array.append(_button)
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = TeleportMenu_TeleportButton_Select(_array[_i])
+		var _submit: Callable = func():TeleportMenu_TeleportButton_Submit(_array[_i])
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_button, _selected, func():TeleportMenu_TeleportButton_Submit(_array[_i]), _cancel)
+		singleton.Set_Button(_button, _selected, _submit, _cancel)
 	#-------------------------------------------------------------------------------
 	var _selected_tabbar: Callable = func():TeleportMenu_No_Description()
 	#-------------------------------------------------------------------------------
@@ -3792,13 +3982,16 @@ func SaveMenu_TeleportButton_Submit():
 	singleton.Set_TabBar(_tabbar, _selected_tabbar, _cancel)
 	#-------------------------------------------------------------------------------
 	_tabbar.set_tab_disabled(0, false)
+	#-------------------------------------------------------------------------------
 	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	if(teleporty_menu_button_array.size() > 0):
 		singleton.Move_to_Button(teleporty_menu_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	teleporty_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
@@ -3834,8 +4027,17 @@ func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
 	return _selected
 #-------------------------------------------------------------------------------
 func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
-	var _new_room: Room_Script = load(Get_Room_Path(_dictionary["room"])).instantiate() as Room_Script
-	_new_room.room_id = _dictionary.get("room", "")
+	var _room_name: String = _dictionary.get("room", "")
+	#-------------------------------------------------------------------------------
+	var _new_room: Room_Script
+	#-------------------------------------------------------------------------------
+	if(room_test.room_id == _room_name):
+		_new_room = ResourceLoader.load(Get_Room_Path(_room_name), "", ResourceLoader.CACHE_MODE_IGNORE).instantiate() as Room_Script
+	#-------------------------------------------------------------------------------
+	else:
+		_new_room = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
+	#-------------------------------------------------------------------------------
+	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		PlayAnimation(friend_party[_i].playback, "Idle")
@@ -3976,7 +4178,7 @@ func Load_Room_and_SaveSpot():
 	var _room_name: String = _dictionaty.get("room", "")
 	var _room_savespot_name: String = _dictionaty.get("savespot", "")
 	#-------------------------------------------------------------------------------
-	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
+	var _new_room: Room_Script = ResourceLoader.load(Get_Room_Path(_room_name), "", ResourceLoader.CACHE_MODE_IGNORE).instantiate() as Room_Script
 	call_deferred("add_child", _new_room)
 	room_test.queue_free()
 	room_test = _new_room
@@ -4058,8 +4260,8 @@ func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_arra
 		#-------------------------------------------------------------------------------
 		var _consumableitem_button: Button = Create_ConsumableItem_InMarket_Button(_consumableitem_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():ItemMenu_Consumable_ItemButton_Selected(_consumableitem_array[_i])
-		var _submit: Callable = func():singleton.Common_Canceled()
+		var _selected: Callable = func():BuyMenu_ItemConsumable_Selected(_consumableitem_array[_i])
+		var _submit: Callable = func():BuyMenu_ItemConsumable_Submit(_consumableitem_array[_i])
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_consumableitem_button, _selected, _submit, _cancel)
@@ -4076,15 +4278,15 @@ func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_arra
 	for _i in _equipitem_array.size():
 		var _equipitem_button: Button = Create_EquipItem_InMarket_Button(_equipitem_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(_equipitem_array[_i])
-		var _submit: Callable = func():singleton.Common_Canceled()
+		var _allitem_button: Button = Create_EquipItem_InMarket_Button(_equipitem_array[_i])
+		#-------------------------------------------------------------------------------
+		var _selected: Callable = func():BuyMenu_EquipItem_Selected(_equipitem_array[_i])
+		var _submit: Callable = func():BuyMenu_EquipItem_Submit(_equipitem_array[_i], _equipitem_button, _allitem_button)
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_equipitem_button, _selected, _submit, _cancel)
 		item_menu_equipment_content.add_child(_equipitem_button)
 		item_menu_equipment_button_array.append(_equipitem_button)
-		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_EquipItem_InMarket_Button(_equipitem_array[_i])
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_allitem_button, _selected, _submit, _cancel)
 		item_menu_allitems_content.add_child(_allitem_button)
@@ -4093,15 +4295,15 @@ func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_arra
 	for _i in _keyitem_array.size():
 		var _keyitem_button: Button = Create_KeyItem_InMarket_Button(_keyitem_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():ItemMenu_KeyItem_ItemButton_Selected(_keyitem_array[_i])
-		var _submit: Callable = func():singleton.Common_Canceled()
+		var _allitem_button: Button = Create_KeyItem_InMarket_Button(_keyitem_array[_i])
+		#-------------------------------------------------------------------------------
+		var _selected: Callable = func():BuyMenu_KeyItem_Selected(_keyitem_array[_i])
+		var _submit: Callable = func():BuyMenu_KeyItem_Submit(_keyitem_array[_i], _keyitem_button, _allitem_button)
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_keyitem_button, _selected, _submit, _cancel)
 		item_menu_keyitems_content.add_child(_keyitem_button)
 		item_menu_keyitems_button_array.append(_keyitem_button)
-		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_KeyItem_InMarket_Button(_keyitem_array[_i])
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_allitem_button, _selected, _submit, _cancel)
 		item_menu_allitems_content.add_child(_allitem_button)
@@ -4122,13 +4324,106 @@ func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_arra
 	#-------------------------------------------------------------------------------
 	if(item_menu_allitems_button_array.size() > 0):
 		singleton.Move_to_Button(item_menu_allitems_button_array[0])
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
+		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_scrollContainer.scroll_vertical = 0
 	#-------------------------------------------------------------------------------
 	await dialogue_signal
+#-------------------------------------------------------------------------------
+func BuyMenu_ItemConsumable_Selected(_item_serializable: Item_Serializable):
+	for _i in item_array.size():
+		#----------------------------------------------------------------
+		if(item_array[_i].item_resource == _item_serializable.item_resource):
+			ItemMenu_Consumable_ItemButton_Selected(item_array[_i])
+			return
+		#----------------------------------------------------------------
+	#----------------------------------------------------------------
+	var _item_serializable_new: Item_Serializable = _item_serializable.Constructor()
+	_item_serializable_new.hold = 0
+	ItemMenu_Consumable_ItemButton_Selected(_item_serializable_new)
+	return
+#-------------------------------------------------------------------------------
+func BuyMenu_ItemConsumable_Submit(_item_serializable: Item_Serializable):
+	_item_serializable.hold -= 1
+	#-------------------------------------------------------------------------------
+	var _inventory_item_serializable: Item_Serializable = Add_ConsumableItem_to_Inventory(_item_serializable, 1)
+	Set_ConsumableItem_Information(_inventory_item_serializable)
+	#-------------------------------------------------------------------------------
+	singleton.Play_SFX_Shop()
+#-------------------------------------------------------------------------------
+func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
+	for _i in equip_array.size():
+		#----------------------------------------------------------------
+		if(equip_array[_i].equip_resource == _equip_serializable.equip_resource):
+			ItemMenu_Equipment_ItemButton_Selected(equip_array[_i])
+			return
+		#----------------------------------------------------------------
+	#----------------------------------------------------------------
+	var _equip_serializable_new: Equip_Serializable = _equip_serializable.Constructor()
+	_equip_serializable_new.hold = 0
+	ItemMenu_Equipment_ItemButton_Selected(_equip_serializable_new)
+	return
+#-------------------------------------------------------------------------------
+func BuyMenu_EquipItem_Submit(_equip_serializable: Equip_Serializable, _equipitem_button:Button, _allitem_button:Button):
+	#-------------------------------------------------------------------------------
+	if(_equip_serializable.hold > 0):
+		_equip_serializable.hold -= 1
+		#-------------------------------------------------------------------------------
+		Change_EquipItem_Hold_Label(_equip_serializable, _equipitem_button)
+		Change_EquipItem_Hold_Label(_equip_serializable, _allitem_button)
+		#-------------------------------------------------------------------------------
+		var _inventory_equip_serializable: Equip_Serializable = Add_EquipItem_to_Inventory(_equip_serializable, 1)
+		Set_EquipItem_Information(_inventory_equip_serializable)
+		#-------------------------------------------------------------------------------
+		singleton.Play_SFX_Shop()
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
+	var _label: Label = _button.get_child(0) as Label
+	_label.text = "$200  "
+	_label.text += "["+str(_equip_serializable.hold)+"]  "
+#-------------------------------------------------------------------------------
+func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
+	for _i in key_item_array.size():
+		#----------------------------------------------------------------
+		if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
+			ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i])
+			return
+		#----------------------------------------------------------------
+	#----------------------------------------------------------------
+	var _keyitem_serializable_new: Key_Item_Serializable = _keyitem_serializable.Constructor()
+	_keyitem_serializable_new.hold = 0
+	ItemMenu_KeyItem_ItemButton_Selected(_keyitem_serializable_new)
+	return
+#-------------------------------------------------------------------------------
+func BuyMenu_KeyItem_Submit(_keyitem_serializable: Key_Item_Serializable, _keyitem_button:Button, _allitem_button:Button):
+	#-------------------------------------------------------------------------------
+	if(_keyitem_serializable.hold > 0):
+		_keyitem_serializable.hold -= 1
+		#-------------------------------------------------------------------------------
+		Change_KeyItem_Hold_Label(_keyitem_serializable, _keyitem_button)
+		Change_KeyItem_Hold_Label(_keyitem_serializable, _allitem_button)
+		#-------------------------------------------------------------------------------
+		var _inventory_keyitem_serializable: Key_Item_Serializable = Add_KeyItem_to_Inventory(_keyitem_serializable, 1)
+		Set_KeyItem_Information(_inventory_keyitem_serializable)
+		#-------------------------------------------------------------------------------
+		singleton.Play_SFX_Shop()
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _button:Button):
+	var _label: Label = _button.get_child(0) as Label
+	_label.text = "$500  "
+	_label.text += "["+str(_keyitem_serializable.hold)+"]  "
 #-------------------------------------------------------------------------------
 func Close_Market():
 	item_menu.hide()
@@ -4140,6 +4435,16 @@ func Close_Market():
 	Destroy_All_Items(item_menu_keyitems_button_array)
 	Destroy_All_Items(item_menu_allitems_button_array)
 	#-------------------------------------------------------------------------------
+	singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
 	await get_tree().physics_frame
 	PauseOff()
+#-------------------------------------------------------------------------------
+func Set_Idiome():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_button_array.size():
+		pause_menu_button_array[_i].text = tr("pause_menu_button_"+str(_i))
+	#-------------------------------------------------------------------------------
+	SetMoney_Label()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------

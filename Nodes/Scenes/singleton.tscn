@@ -1,46 +1,37 @@
-[gd_scene load_steps=9 format=3 uid="uid://4qk6dymnp741"]
+[gd_scene load_steps=13 format=3 uid="uid://4qk6dymnp741"]
 
 [ext_resource type="Script" uid="uid://d1xgk00n12kl5" path="res://Scripts/Scenes/singleton.gd" id="1_ixejq"]
-[ext_resource type="AudioStream" uid="uid://ctboksgyydra2" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Cursor_tones/cursor_style_1.wav" id="2_5xdky"]
-[ext_resource type="AudioStream" uid="uid://b2of1agkpd36m" path="res://Assets/bgm/toby fox - UNDERTALE Soundtrack - 65 CORE.mp3" id="2_6qxr7"]
 [ext_resource type="Script" uid="uid://ugjgndtknor8" path="res://Scripts/Scenes/Option_Menu.gd" id="2_ar5in"]
+[ext_resource type="AudioStream" uid="uid://btiqylj537e1c" path="res://Assets/rpg_maker_mv/audio/bgm/Dungeon3.ogg" id="2_pfk01"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="3_ihmui"]
-[ext_resource type="AudioStream" uid="uid://bi0wgy80yv16v" path="res://Assets/bgm/toby fox - UNDERTALE Soundtrack - 53 Stronger Monsters.mp3" id="3_j0hcl"]
-[ext_resource type="AudioStream" uid="uid://diiwnxpxavytu" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Confirm_tones/style1/confirm_style_1_001.wav" id="3_t14r8"]
-[ext_resource type="AudioStream" uid="uid://cl6xwf2nly41l" path="res://Assets/obsydianx/inteface_sfx_pack_1_wav/Error_tones/style1/error_style_1_001.wav" id="4_6qxr7"]
+[ext_resource type="AudioStream" uid="uid://ce1h3up0chofk" path="res://Assets/rpg_maker_mv/audio/bgm/Battle1.ogg" id="3_j0hcl"]
+[ext_resource type="AudioStream" uid="uid://baltlrphadqr3" path="res://Assets/rpg_maker_mv/audio/se/Equip1.ogg" id="4_34f2p"]
+[ext_resource type="AudioStream" uid="uid://baniygb18w4lg" path="res://Assets/rpg_maker_mv/audio/se/Cursor2.ogg" id="4_s3k3f"]
+[ext_resource type="AudioStream" uid="uid://ck13aarckp4hs" path="res://Assets/rpg_maker_mv/audio/se/Decision1.ogg" id="5_34f2p"]
+[ext_resource type="AudioStream" uid="uid://cqlwwawf65bsr" path="res://Assets/rpg_maker_mv/audio/se/Cancel2.ogg" id="6_pfk01"]
+[ext_resource type="AudioStream" uid="uid://bh07p8k8k7fbx" path="res://Assets/rpg_maker_mv/audio/se/Save.ogg" id="8_s3k3f"]
+[ext_resource type="AudioStream" uid="uid://dvc3vttkmxddw" path="res://Assets/rpg_maker_mv/audio/se/Buzzer1.ogg" id="9_pfk01"]
+[ext_resource type="AudioStream" uid="uid://c6yu7yrlqi22f" path="res://Assets/rpg_maker_mv/audio/se/Shop1.ogg" id="10_i4uux"]
 
-[node name="singleton" type="Node" node_paths=PackedStringArray("optionMenu", "sfx_Selected", "sfx_Submited", "sfx_Canceled", "bgmPlayer", "fps")]
+[node name="singleton" type="Node" node_paths=PackedStringArray("optionMenu", "audioStreamPlayer_selected", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "audioStreamPlayer_equip", "audioStreamPlayer_save", "audioStreamPlayer_shop", "bgmPlayer", "fps")]
 process_mode = 3
 script = ExtResource("1_ixejq")
 optionMenu = NodePath("CanvasLayer/Option_Menu")
-sfx_Selected = NodePath("CanvasLayer/AudioStreamPlayer_select")
-sfx_Submited = NodePath("CanvasLayer/AudioStreamPlayer_submit")
-sfx_Canceled = NodePath("CanvasLayer/AudioStreamPlayer_cancel")
-bgmPlayer = NodePath("CanvasLayer/AudioStreamPlayer_bgm")
-stage1 = ExtResource("2_6qxr7")
+audioStreamPlayer_selected = NodePath("AudioStreamPlayer_select")
+audioStreamPlayer_submit = NodePath("AudioStreamPlayer_submit")
+audioStreamPlayer_cancel = NodePath("AudioStreamPlayer_cancel")
+audioStreamPlayer_equip = NodePath("AudioStreamPlayer_equip")
+audioStreamPlayer_save = NodePath("AudioStreamPlayer_save")
+audioStreamPlayer_shop = NodePath("AudioStreamPlayer_shop")
+bgmPlayer = NodePath("AudioStreamPlayer_bgm")
+stage1 = ExtResource("2_pfk01")
 battle1 = ExtResource("3_j0hcl")
 fps = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 5
 
-[node name="AudioStreamPlayer_select" type="AudioStreamPlayer" parent="CanvasLayer"]
-stream = ExtResource("2_5xdky")
-volume_db = 5.0
-bus = &"sfx"
-
-[node name="AudioStreamPlayer_submit" type="AudioStreamPlayer" parent="CanvasLayer"]
-stream = ExtResource("3_t14r8")
-bus = &"sfx"
-
-[node name="AudioStreamPlayer_cancel" type="AudioStreamPlayer" parent="CanvasLayer"]
-stream = ExtResource("4_6qxr7")
-bus = &"sfx"
-
-[node name="AudioStreamPlayer_bgm" type="AudioStreamPlayer" parent="CanvasLayer"]
-bus = &"bgm"
-
-[node name="Option_Menu" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("mySingleton", "title", "idiome_label", "idiome_optionbutton", "resolution_label", "resolution_optionbutton", "fullscreen_label", "fullscreen_checkbutton", "borderless_label", "borderless_checkbutton", "vsync_label", "vsync_checkbutton", "master_label", "master_number", "master_slider", "sfx_label", "sfx_number", "sfx_slider", "bgm_label", "bgm_number", "bgm_slider", "back")]
+[node name="Option_Menu" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("singleton", "title", "idiome_label", "idiome_optionbutton", "resolution_label", "resolution_optionbutton", "fullscreen_label", "fullscreen_checkbutton", "borderless_label", "borderless_checkbutton", "vsync_label", "vsync_checkbutton", "master_label", "master_number", "master_slider", "sfx_label", "sfx_number", "sfx_slider", "bgm_label", "bgm_number", "bgm_slider", "back")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_ar5in")
-mySingleton = NodePath("../..")
+singleton = NodePath("../..")
 title = NodePath("PanelContainer/MarginContainer/VBoxContainer/Label")
 idiome_label = NodePath("PanelContainer/MarginContainer/VBoxContainer/Idiome/Label")
 idiome_optionbutton = NodePath("PanelContainer/MarginContainer/VBoxContainer/Idiome/OptionButton")
@@ -196,10 +187,12 @@ max_value = 1.0
 step = 0.05
 
 [node name="Label2" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/Master"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "100%"
+horizontal_alignment = 2
 
 [node name="sfx" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -219,10 +212,12 @@ max_value = 1.0
 step = 0.05
 
 [node name="Label2" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/sfx"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "100%"
+horizontal_alignment = 2
 
 [node name="bgm" type="HBoxContainer" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -242,10 +237,12 @@ max_value = 1.0
 step = 0.05
 
 [node name="Label2" type="Label" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer/bgm"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "100%"
+horizontal_alignment = 2
 
 [node name="Button" type="Button" parent="CanvasLayer/Option_Menu/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -271,3 +268,35 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/outline_size = 4
 text = "60.00 fps"
+
+[node name="AudioStreamPlayer_select" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_s3k3f")
+volume_db = 5.0
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_submit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_34f2p")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_cancel" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_pfk01")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_equip" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_34f2p")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_save" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_s3k3f")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_error" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_pfk01")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_shop" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_i4uux")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_bgm" type="AudioStreamPlayer" parent="."]
+bus = &"bgm"

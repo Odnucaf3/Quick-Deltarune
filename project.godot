@@ -86,7 +86,7 @@ Debug_Info={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Translations/Translation - Hoja 1.de_DE.translation", "res://Translations/Translation - Hoja 1.en_US.translation", "res://Translations/Translation - Hoja 1.es_AR.translation", "res://Translations/Translation - Hoja 1.ja_JP.translation", "res://Translations/Translation - Hoja 1.pt_BR.translation")
+locale/translations=PackedStringArray("res://Translations/Translation - Hoja 1.en_US.translation", "res://Translations/Translation - Hoja 1.es_AR.translation", "res://Translations/Translation - Hoja 1.ja_JP.translation")
 
 [layer_names]
 
