@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=21 format=3 uid="uid://cutyx4smls0s0"]
+[gd_resource type="TileSet" format=3 uid="uid://cutyx4smls0s0"]
 
 [ext_resource type="Texture2D" uid="uid://dg2sbnw1nhq88" path="res://Assets/ansimuz/warped city files/v1/props/antenna.png" id="1_u3m3a"]
 [ext_resource type="Texture2D" uid="uid://br1xmqdj7to7l" path="res://Assets/ansimuz/warped city files/v1/props/banner-arrow.png" id="2_jxa6n"]

@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://eynb8l6cn813"]
+[gd_resource type="TileSet" format=3 uid="uid://eynb8l6cn813"]
 
 [ext_resource type="Texture2D" uid="uid://ctjy5goss2wv7" path="res://Assets/ansimuz/warped city files/v1/preview-top-down-sci-fi.png" id="1_icbr3"]
 [ext_resource type="Texture2D" uid="uid://c1jjfr2vhckdq" path="res://Assets/ansimuz/warped city files/v1/tileset.png" id="2_by7yq"]

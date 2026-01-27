@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=4 uid="uid://ckdq3xhi07i1g"]
+[gd_scene format=4 uid="uid://ckdq3xhi07i1g"]
 
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_0ji40"]
 [ext_resource type="PackedScene" uid="uid://kty6sii5hhfk" path="res://Nodes/Prefabs/Warps/warp_up.tscn" id="3_52n5y"]
@@ -44,7 +44,6 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 [sub_resource type="Resource" id="Resource_srwso"]
 script = ExtResource("10_xdoc7")
 key_item_resource = ExtResource("11_5drey")
-hold = 25
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="Resource" id="Resource_xdoc7"]
@@ -129,6 +128,15 @@ script/source = "extends Interactable_Script
 func Interactable_Ready(_world_2d:World_2D) -> void:
 	user.playback = user.animation_tree.get(\"parameters/playback\")
 	_world_2d.PlayAnimation(user.playback, \"Idle\")
+	#-------------------------------------------------------------------------------
+	for _i in _equipitem_array.size():
+		var _id: String = _world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _equipitem_array[_i].equip_resource)
+		_equipitem_array[_i].stored = _world_2d.key_dictionary.get(_id, _equipitem_array[_i].stored)
+	#-------------------------------------------------------------------------------
+	for _i in _keyitem_array.size():
+		var _id: String = _world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _keyitem_array[_i].key_item_resource)
+		_keyitem_array[_i].stored = _world_2d.key_dictionary.get(_id, _keyitem_array[_i].stored)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Interactable_Action(_world_2d:World_2D):
 	_world_2d.PlayAnimation(user.playback, \"Walk\")
@@ -138,7 +146,7 @@ func Interactable_Action(_world_2d:World_2D):
 	await _world_2d.Dialogue(true, \"* Do you want to buy something?\")
 	_world_2d.Dialogue_Close()
 	#-------------------------------------------------------------------------------
-	await _world_2d.Open_Market(_consumableitem_array, _equipitem_array, _keyitem_array)
+	await _world_2d.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
 	_world_2d.Dialogue_Open()
 	await _world_2d.Dialogue(true, \"* Thank you.\")
@@ -163,7 +171,6 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 [sub_resource type="Resource" id="Resource_8opot"]
 script = ExtResource("8_ygji3")
 equip_resource = ExtResource("9_mxnnk")
-hold = 3
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_wrvon"]
@@ -174,12 +181,12 @@ metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 [sub_resource type="CircleShape2D" id="CircleShape2D_rqg47"]
 radius = 16.0
 
-[node name="room_test_01" type="Node2D" node_paths=PackedStringArray("room_limits")]
+[node name="room_test_01" type="Node2D" unique_id=1720227224 node_paths=PackedStringArray("room_limits")]
 y_sort_enabled = true
 script = SubResource("GDScript_52n5y")
 room_limits = NodePath("room_limits")
 
-[node name="room_limits" type="Control" parent="."]
+[node name="room_limits" type="Control" parent="." unique_id=607768976]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -195,81 +202,81 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="TileMapLayer1" type="TileMapLayer" parent="."]
+[node name="TileMapLayer1" type="TileMapLayer" parent="." unique_id=401863219]
 z_index = -1
 tile_map_data = PackedByteArray("AAD//wEAAAAHAAcAAAAAAAEAAAAHAAcAAAABAAEAAAAHAAcAAAACAAEAAAAHAAcAAAADAAEAAAAHAAcAAAAEAAEAAAAHAAcAAAAFAAEAAAAHAAcAAAAGAAEAAAAHAAcAAAAHAAEAAAAHAAcAAAAIAAEAAAAHAAcAAAAIAAIAAAAHAAcAAAAIAAMAAAAHAAcAAAAJAAMAAAAHAAcAAAAKAAMAAAAHAAcAAAALAAMAAAAHAAcAAAD//wIAAAAHAAcAAAAAAAIAAAAHAAcAAAABAAIAAAAHAAcAAAACAAIAAAAHAAcAAAADAAIAAAAHAAcAAAAEAAIAAAAHAAcAAAAFAAIAAAAHAAcAAAAGAAIAAAAHAAcAAAD//wMAAAAHAAcAAAAAAAMAAAAHAAcAAAABAAMAAAAHAAcAAAACAAMAAAAHAAcAAAADAAMAAAAHAAcAAAAEAAMAAAAHAAcAAAAFAAMAAAAHAAcAAAAGAAMAAAAHAAcAAAAHAAIAAAAHAAcAAAAHAAMAAAAHAAcAAAAJAAEAAAAHAAcAAAAJAAIAAAAHAAcAAAAKAAEAAAAHAAcAAAAKAAIAAAAHAAcAAAALAAEAAAAHAAcAAAALAAIAAAAHAAcAAAAMAAEAAAAHAAcAAAAMAAIAAAAHAAcAAAAMAAMAAAAHAAcAAAANAAEAAAALAAcAAAANAAIAAAALAAgAAAANAAMAAAALAAkAAAAOAAEAAAAMAAcAAAAOAAIAAAAMAAgAAAAOAAMAAAAMAAkAAAAPAAEAAAANAAcAAAAPAAIAAAANAAgAAAAPAAMAAAANAAkAAAAQAAEAAAAHAAcAAAAQAAIAAAAHAAcAAAAQAAMAAAAHAAcAAAARAAEAAAAHAAcAAAARAAIAAAAHAAcAAAARAAMAAAAHAAcAAAASAAEAAAAHAAcAAAASAAIAAAAHAAcAAAASAAMAAAAHAAcAAAATAAEAAAAHAAcAAAATAAIAAAAHAAcAAAATAAMAAAAHAAcAAAAUAAEAAAAHAAcAAAAUAAIAAAAHAAcAAAAUAAMAAAAHAAcAAAASAAQAAAAHAAcAAAASAAUAAAAHAAcAAAASAAYAAAALAAcAAAASAAcAAAALAAgAAAASAAgAAAALAAkAAAATAAQAAAAHAAcAAAATAAUAAAAHAAcAAAATAAYAAAAMAAcAAAATAAcAAAAMAAgAAAATAAgAAAAMAAkAAAAUAAQAAAAHAAcAAAAUAAUAAAAHAAcAAAAUAAYAAAANAAcAAAAUAAcAAAANAAgAAAAUAAgAAAANAAkAAAASAPz/AQAEAAQAAAASAP3/AAALAAcAAAASAP7/AAALAAgAAAASAP//AAALAAkAAAASAAAAAAAHAAcAAAATAPz/AQAEAAQAAAATAP3/AAAMAAcAAAATAP7/AAAMAAgAAAATAP//AAAMAAkAAAATAAAAAAAHAAcAAAAUAPz/AQAEAAQAAAAUAP3/AAANAAcAAAAUAP7/AAANAAgAAAAUAP//AAANAAkAAAAUAAAAAAAHAAcAAAAVAPz/AQAEAAQAAAAVAP3/AAAHAAcAAAAVAP7/AAAHAAcAAAAWAPz/AQAEAAQAAAAWAP3/AAAHAAcAAAAWAP7/AAAHAAcAAAAXAPz/AQAEAAQAAAAXAP3/AAAHAAcAAAAXAP7/AAAHAAcAAAAYAPz/AAAHAAcAAAAYAP3/AAAHAAcAAAAYAP7/AAAHAAcAAAAZAPz/AAAHAAcAAAAZAP3/AAAHAAcAAAAZAP7/AAAHAAcAAAAaAPz/AAAHAAcAAAAaAP3/AAAHAAcAAAAaAP7/AAAHAAcAAAAbAPz/AQAEAAQAAAAbAP3/AAAHAAcAAAAbAP7/AAAHAAcAAAAVAAYAAAAHAAcAAAAVAAcAAAAHAAcAAAAVAAgAAAAHAAcAAAAWAAYAAAAHAAcAAAAWAAcAAAAHAAcAAAAWAAgAAAAHAAcAAAAXAAYAAAAHAAcAAAAXAAcAAAAHAAcAAAAXAAgAAAAHAAcAAAAYAAYAAAAHAAcAAAAYAAcAAAAHAAcAAAAYAAgAAAAHAAcAAAAZAAYAAAAHAAcAAAAZAAcAAAAHAAcAAAAZAAgAAAAHAAcAAAAaAAYAAAAHAAcAAAAaAAcAAAAHAAcAAAAaAAgAAAAHAAcAAAAbAAYAAAAHAAcAAAAbAAcAAAAHAAcAAAAbAAgAAAAHAAcAAAAcAAYAAAAHAAcAAAAcAAcAAAAHAAcAAAAcAAgAAAAHAAcAAAD///7/AAAHAAcAAAD/////AAAHAAcAAAD//wAAAAAHAAcAAAAAAP7/AAAHAAcAAAAAAP//AAAHAAcAAAAAAAAAAAAHAAcAAAABAP7/AAAHAAcAAAABAP//AAAHAAcAAAABAAAAAAAHAAcAAAAVAP//AAAHAAcAAAAVAAAAAAAHAAcAAAAVAAEAAAAHAAcAAAAVAAIAAAAHAAcAAAAVAAMAAAAHAAcAAAAVAAQAAAAHAAcAAAAVAAUAAAAHAAcAAAAWAP//AAAHAAcAAAAWAAAAAAAHAAcAAAAWAAEAAAAHAAcAAAAWAAIAAAAHAAcAAAAWAAMAAAAHAAcAAAAWAAQAAAAHAAcAAAAWAAUAAAAHAAcAAAAXAP//AAAHAAcAAAAXAAAAAAAHAAcAAAAXAAEAAAAHAAcAAAAXAAIAAAAHAAcAAAAXAAMAAAAHAAcAAAAXAAQAAAAHAAcAAAAXAAUAAAAHAAcAAAAYAP//AAAHAAcAAAAYAAAAAAAHAAcAAAAYAAEAAAAHAAcAAAAYAAIAAAAHAAcAAAAYAAMAAAAHAAcAAAAYAAQAAAAHAAcAAAAYAAUAAAAHAAcAAAAZAP//AAAHAAcAAAAZAAAAAAAHAAcAAAAZAAEAAAAHAAcAAAAZAAIAAAAHAAcAAAAZAAMAAAAHAAcAAAAZAAQAAAAHAAcAAAAZAAUAAAAHAAcAAAAaAP//AAAHAAcAAAAaAAAAAAAHAAcAAAAaAAEAAAAHAAcAAAAaAAIAAAAHAAcAAAAaAAMAAAAHAAcAAAAaAAQAAAAHAAcAAAAaAAUAAAAHAAcAAAAbAP//AAAHAAcAAAAbAAAAAAAHAAcAAAAbAAEAAAAHAAcAAAAbAAIAAAAHAAcAAAAbAAMAAAAHAAcAAAAbAAQAAAAHAAcAAAAbAAUAAAAHAAcAAAAcAP//AAAHAAcAAAAcAAAAAAAHAAcAAAAcAAEAAAAHAAcAAAAcAAIAAAAHAAcAAAAcAAMAAAAHAAcAAAAcAAQAAAAHAAcAAAAcAAUAAAAHAAcAAAAcAPz/AQAEAAQAAAAcAP3/AAAHAAcAAAAcAP7/AAAHAAcAAAAdAPz/AQAEAAQAAAAdAP3/AAAHAAcAAAAdAP7/AAAHAAcAAAAdAP//AAAHAAcAAAAdAAAAAAAHAAcAAAAdAAEAAAAHAAcAAAAdAAIAAAAHAAcAAAAdAAMAAAAHAAcAAAAdAAQAAAAHAAcAAAAdAAUAAAAHAAcAAAAdAAYAAAAHAAcAAAAdAAcAAAAHAAcAAAAdAAgAAAAHAAcAAAAeAPz/AQAEAAQAAAAeAP3/AAAHAAcAAAAeAP7/AAAHAAcAAAAeAP//AAAHAAcAAAAeAAAAAAAHAAcAAAAeAAEAAAAHAAcAAAAeAAIAAAAHAAcAAAAeAAMAAAAHAAcAAAAeAAQAAAAHAAcAAAAeAAUAAAAHAAcAAAAeAAYAAAAHAAcAAAAeAAcAAAAHAAcAAAAeAAgAAAAHAAcAAAAfAPz/AQAEAAQAAAAfAP3/AAAHAAcAAAAfAP7/AAAHAAcAAAAfAP//AAAHAAcAAAAfAAAAAAAHAAcAAAAfAAEAAAAHAAcAAAAfAAIAAAAHAAcAAAAfAAMAAAAHAAcAAAAfAAQAAAAHAAcAAAAfAAUAAAAHAAcAAAAfAAYAAAAHAAcAAAAfAAcAAAAHAAcAAAAfAAgAAAAHAAcAAAD7//z/AAAAAAAAAAD7//3/AAAAAAAAAAD7//7/AAAAAAAAAAD7////AAAAAAAAAAD7/wAAAAAAAAAAAAD7/wEAAAAAAAAAAAD7/wIAAAAAAAAAAAD7/wMAAAAAAAAAAAD7/wQAAAAAAAAAAAD7/wUAAAAAAAAAAAD7/wYAAAAAAAAAAAD7/wcAAAAAAAAAAAD7/wgAAAAAAAAAAAD8//z/AAAHAAcAAAD8//3/AAAHAAcAAAD8//7/AAAHAAcAAAD8////AAAHAAcAAAD8/wAAAAAHAAcAAAD8/wEAAAAHAAcAAAD8/wIAAAAHAAcAAAD8/wMAAAAHAAcAAAD8/wQAAAAHAAcAAAD8/wUAAAAHAAcAAAD8/wYAAAAHAAcAAAD8/wcAAAAHAAcAAAD8/wgAAAAAAAAAAAD9//z/AAAHAAcAAAD9//3/AAAHAAcAAAD9//7/AAAHAAcAAAD9////AAAHAAcAAAD9/wAAAAAHAAcAAAD9/wEAAAAHAAcAAAD9/wIAAAAHAAcAAAD9/wMAAAAHAAcAAAD9/wQAAAAHAAcAAAD9/wUAAAAHAAcAAAD9/wYAAAAHAAcAAAD9/wcAAAAHAAcAAAD9/wgAAAAAAAAAAAD+//z/AAAHAAcAAAD+//3/AAAHAAcAAAD+//7/AAAHAAcAAAD+////AAAHAAcAAAD+/wAAAAAHAAcAAAD+/wEAAAAHAAcAAAD+/wIAAAAHAAcAAAD+/wMAAAAHAAcAAAD+/wQAAAAHAAcAAAD+/wUAAAAHAAcAAAD+/wYAAAAHAAcAAAD+/wcAAAAHAAcAAAD+/wgAAAAAAAAAAAD///z/AAAHAAcAAAD///3/AAAHAAcAAAD//wQAAAAHAAcAAAD//wUAAAAHAAcAAAD//wYAAAAHAAcAAAD//wcAAAAHAAcAAAD//wgAAAAAAAAAAAAAAPz/AAAHAAcAAAAAAP3/AAAHAAcAAAAAAAQAAAAHAAcAAAAAAAUAAAAHAAcAAAAAAAYAAAAHAAcAAAAAAAcAAAAHAAcAAAAAAAgAAAAAAAAAAAABAPz/AAAHAAcAAAABAP3/AAAHAAcAAAABAAQAAAAHAAcAAAABAAUAAAAHAAcAAAABAAYAAAAHAAcAAAABAAcAAAAHAAcAAAABAAgAAAAAAAAAAAACAPz/AAAHAAcAAAACAP3/AAAHAAcAAAACAP7/AAAHAAcAAAACAP//AAAHAAcAAAACAAAAAAAHAAcAAAACAAQAAAAHAAcAAAACAAUAAAAHAAcAAAACAAYAAAAHAAcAAAACAAcAAAAHAAcAAAACAAgAAAAAAAAAAAADAPz/AAAHAAcAAAADAP3/AAAHAAcAAAADAP7/AAAHAAcAAAADAP//AAAHAAcAAAADAAAAAAAHAAcAAAADAAQAAAAHAAcAAAADAAUAAAAHAAcAAAADAAYAAAAHAAcAAAADAAcAAAAHAAcAAAADAAgAAAAAAAAAAAAEAPz/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAEAAgAAAAAAAAAAAD7//j/AQAEAAQAAAD7//n/AAAAAAAAAAD7//r/AAAAAAAAAAD7//v/AAAAAAAAAAD8//j/AQAEAAQAAAD8//n/AAAAAAAAAAD8//r/AAAHAAcAAAD8//v/AAAHAAcAAAD9//j/AQAEAAQAAAD9//n/AAAAAAAAAAD9//r/AAAHAAcAAAD9//v/AAAHAAcAAAD+//j/AAAHAAcAAAD+//n/AAAAAAAAAAD+//r/AAAHAAcAAAD+//v/AAAHAAcAAAD///j/AAAHAAcAAAD///n/AAAAAAAAAAD///r/AAAHAAcAAAD///v/AAAHAAcAAAAAAPj/AAAHAAcAAAAAAPn/AAAAAAAAAAAAAPr/AAAHAAcAAAAAAPv/AAAHAAcA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AAAeAAkAAQAEAAQAAAAfAAkAAQAEAAQAAAAgAAkAAQAEAAQAAAAgAPv/AQAEAAQAAAAgAPz/AQAEAAQAAAAgAP3/AQAEAAQAAAAgAP7/AQAEAAQAAAAgAP//AQAEAAQAAAAgAAAAAQAEAAQAAAAgAAEAAQAEAAQAAAAgAAIAAQAEAAQAAAAgAAMAAQAEAAQAAAAgAAQAAQAEAAQAAAAgAAUAAQAEAAQAAAAgAAYAAQAEAAQAAAAgAAcAAQAEAAQAAAAgAAgAAQAEAAQAAAARAPn/AQAEAAQAAAARAPr/AQAEAAQAAAASAPn/AQAEAAQAAAASAPr/AQAEAAQAAAATAPn/AQAEAAQAAAATAPr/AQAEAAQAAAAUAPn/AQAEAAQAAAAUAPr/AQAEAAQAAAAVAPn/AQAEAAQAAAAVAPr/AQAEAAQAAAAWAPn/AQAEAAQAAAAWAPr/AQAEAAQAAAAXAPn/AQAEAAQAAAAXAPr/AQAEAAQAAAAYAPn/AAAHAAcAAAAYAPr/AAAHAAcAAAAZAPn/AAAHAAcAAAAZAPr/AAAHAAcAAAAaAPn/AAAHAAcAAAAaAPr/AAAHAAcAAAAbAPn/AQAEAAQAAAAbAPr/AQAEAAQAAAAbAPv/AQAEAAQAAAAcAPn/AQAEAAQAAAAcAPr/AQAEAAQAAAAcAPv/AQAEAAQAAAAdAPn/AQAEAAQAAAAdAPr/AQAEAAQAAAAdAPv/AQAEAAQAAAAeAPn/AQAEAAQAAAAeAPr/AQAEAAQAAAAeAPv/AQAEAAQAAAAfAPn/AQAEAAQAAAAfAPr/AQAEAAQAAAAfAPv/AQAEAAQAAAAgAPn/AQAEAAQAAAAgAPr/AQAEAAQAAAAYAPb/AAAHAAcAAAAYAPf/AAAHAAcAAAAYAPj/AAAHAAcAAAAZAPb/AAAHAAcAAAAZAPf/AAAHAAcAAAAZAPj/AAAHAAcAAAAaAPb/AAAHAAcAAAAaAPf/AAAHAAcAAAAaAPj/AAAHAAcAAAAZAPX/AAAHAAcAAAAaAPX/AAAHAAcAAAAYAPX/AAAHAAcAAAAXAPX/AQAEAAQAAAAXAPb/AQAEAAQAAAAXAPf/AQAEAAQAAAAXAPj/AQAEAAQAAAAbAPX/AQAEAAQAAAAbAPb/AQAEAAQAAAAbAPf/AQAEAAQAAAAbAPj/AQAEAAQAAAAGAP7/AQAEAAQAAAAGAP//AQAEAAQAAAAHAP7/AQAEAAQAAAAHAP//AQAEAAQAAAAIAP7/AQAEAAQAAAAIAP//AQAEAAQAAAAJAP7/AQAEAAQAAAAJAP//AQAEAAQAAAAKAP7/AQAEAAQAAAAKAP//AQAEAAQAAAALAP7/AQAEAAQAAAALAP//AQAEAAQAAAAMAP7/AQAEAAQAAAAMAP//AQAEAAQAAAANAP7/AQAEAAQAAAANAP//AQAEAAQAAAAOAP7/AQAEAAQAAAAOAP//AQAEAAQAAAAPAP7/AQAEAAQAAAAPAP//AQAEAAQAAAAQAP7/AQAEAAQAAAAQAP//AQAEAAQAAAAGAP3/AQAEAAQAAAAHAP3/AQAEAAQAAAAIAP3/AQAEAAQAAAAJAP3/AQAEAAQAAAAKAP3/AQAEAAQAAAALAP3/AQAEAAQAAAAMAP3/AQAEAAQAAAANAP3/AQAEAAQAAAAOAP3/AQAEAAQAAAAPAP3/AQAEAAQAAAAQAP3/AQAEAAQAAAA=")
 tile_set = ExtResource("2_0ji40")
 
-[node name="Warp_Up" parent="." instance=ExtResource("3_52n5y")]
+[node name="Warp_Up" parent="." unique_id=1860058009 instance=ExtResource("3_52n5y")]
 position = Vector2(408, -120)
 
-[node name="Warp_Up2" parent="." instance=ExtResource("3_52n5y")]
+[node name="Warp_Up2" parent="." unique_id=2071780214 instance=ExtResource("3_52n5y")]
 position = Vector2(-8, -120)
 room_name = &"room_test_03"
 
-[node name="props_prefab" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab" parent="." unique_id=1854762651 instance=ExtResource("5_8dt50")]
 position = Vector2(-64, -16)
 autoplay = "banner-big"
 
-[node name="props_prefab2" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab2" parent="." unique_id=1459694334 instance=ExtResource("5_8dt50")]
 position = Vector2(64, -8)
 animation = &"banner-coke"
 autoplay = "banner-coke"
 
-[node name="props_prefab3" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab3" parent="." unique_id=1047967720 instance=ExtResource("5_8dt50")]
 position = Vector2(-64, 72)
 animation = &"banner-neon"
 autoplay = "banner-neon"
 
-[node name="props_prefab4" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab4" parent="." unique_id=1966171419 instance=ExtResource("5_8dt50")]
 position = Vector2(72, 128)
 animation = &"banner-scroll"
 autoplay = "banner-scroll"
 
-[node name="props_prefab5" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab5" parent="." unique_id=892448257 instance=ExtResource("5_8dt50")]
 position = Vector2(368, -48)
 animation = &"banner-side"
 autoplay = "banner-side"
 
-[node name="props_prefab6" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab6" parent="." unique_id=1844422165 instance=ExtResource("5_8dt50")]
 position = Vector2(464, -48)
 animation = &"banner-sushi"
 autoplay = "banner-sushi"
 
-[node name="props_prefab7" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab7" parent="." unique_id=288232011 instance=ExtResource("5_8dt50")]
 position = Vector2(328, -40)
 animation = &"monitorface"
 
-[node name="props_prefab8" parent="." instance=ExtResource("5_8dt50")]
+[node name="props_prefab8" parent="." unique_id=563782957 instance=ExtResource("5_8dt50")]
 position = Vector2(296, 144)
 animation = &"banner-neon"
 autoplay = "banner-neon"
 
-[node name="Item" parent="." instance=ExtResource("6_7i8dt")]
+[node name="Item" parent="." unique_id=926208097 instance=ExtResource("6_7i8dt")]
 position = Vector2(-48, 112)
 pickable_consumableitem = Array[ExtResource("13_mxnnk")]([SubResource("Resource_4u8d0"), SubResource("Resource_w87vk")])
 pickable_equipitem = Array[ExtResource("8_ygji3")]([SubResource("Resource_8ss50")])
 pickable_keyitem = Array[ExtResource("10_xdoc7")]([SubResource("Resource_srwso"), SubResource("Resource_xdoc7")])
 
-[node name="Enemy1" type="CharacterBody2D" parent="."]
+[node name="Enemy1" type="CharacterBody2D" parent="." unique_id=825266602]
 y_sort_enabled = true
 position = Vector2(432, 64)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1" unique_id=1172717570]
 shape = SubResource("RectangleShape2D_wkx03")
 
-[node name="Foe_01" parent="Enemy1" instance=ExtResource("6_jyvag")]
+[node name="Foe_01" parent="Enemy1" unique_id=463040546 instance=ExtResource("6_jyvag")]
 
-[node name="Foe_03" parent="Enemy1" instance=ExtResource("6_jyvag")]
+[node name="Foe_03" parent="Enemy1" unique_id=102607479 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, 16)
 
-[node name="Foe_02" parent="Enemy1" instance=ExtResource("6_jyvag")]
+[node name="Foe_02" parent="Enemy1" unique_id=1810101425 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, -16)
 
-[node name="Area2D" type="Area2D" parent="Enemy1" node_paths=PackedStringArray("enemy_characterbody2d", "enemy_collider", "area2d_collider", "enemy")]
+[node name="Area2D" type="Area2D" parent="Enemy1" unique_id=733253951 node_paths=PackedStringArray("enemy_characterbody2d", "enemy_collider", "area2d_collider", "enemy")]
 collision_layer = 4
 collision_mask = 0
 script = SubResource("GDScript_ygji3")
@@ -279,28 +286,28 @@ area2d_collider = NodePath("CollisionShape2D")
 enemy = [NodePath("../Foe_01"), NodePath("../Foe_03"), NodePath("../Foe_02")]
 is_enemy = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1/Area2D" unique_id=693989030]
 shape = SubResource("CircleShape2D_wkx03")
 
-[node name="Enemy2" type="CharacterBody2D" parent="."]
+[node name="Enemy2" type="CharacterBody2D" parent="." unique_id=1109360009]
 y_sort_enabled = true
 position = Vector2(376, 120)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2" unique_id=1544976883]
 shape = SubResource("RectangleShape2D_wkx03")
 
-[node name="Foe_01" parent="Enemy2" instance=ExtResource("6_jyvag")]
+[node name="Foe_01" parent="Enemy2" unique_id=1093312370 instance=ExtResource("6_jyvag")]
 
-[node name="Foe_03" parent="Enemy2" instance=ExtResource("6_jyvag")]
+[node name="Foe_03" parent="Enemy2" unique_id=843825310 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, 16)
 
-[node name="Foe_02" parent="Enemy2" instance=ExtResource("6_jyvag")]
+[node name="Foe_02" parent="Enemy2" unique_id=222479882 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, -16)
 
-[node name="Area2D" type="Area2D" parent="Enemy2" node_paths=PackedStringArray("enemy_characterbody2d", "enemy_collider", "area2d_collider", "enemy")]
+[node name="Area2D" type="Area2D" parent="Enemy2" unique_id=46911473 node_paths=PackedStringArray("enemy_characterbody2d", "enemy_collider", "area2d_collider", "enemy")]
 collision_layer = 4
 collision_mask = 0
 script = SubResource("GDScript_ygji3")
@@ -310,14 +317,14 @@ area2d_collider = NodePath("CollisionShape2D")
 enemy = [NodePath("../Foe_01"), NodePath("../Foe_03"), NodePath("../Foe_02")]
 is_enemy = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2/Area2D" unique_id=175770277]
 shape = SubResource("CircleShape2D_wkx03")
 
-[node name="Savespot" parent="." instance=ExtResource("9_4u8d0")]
+[node name="Savespot" parent="." unique_id=555243044 instance=ExtResource("9_4u8d0")]
 position = Vector2(168, 48)
 dialogue = "* Creating a ripoff Deltarune videogame fills you with determination."
 
-[node name="Merchant_Area2D" type="Area2D" parent="." node_paths=PackedStringArray("user")]
+[node name="Merchant_01" type="Area2D" parent="." unique_id=116747151 node_paths=PackedStringArray("user")]
 position = Vector2(40, -96)
 collision_layer = 8
 collision_mask = 0
@@ -327,7 +334,7 @@ _consumableitem_array = Array[ExtResource("13_mxnnk")]([SubResource("Resource_kc
 _equipitem_array = Array[ExtResource("8_ygji3")]([SubResource("Resource_8opot")])
 _keyitem_array = Array[ExtResource("10_xdoc7")]([SubResource("Resource_wrvon")])
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Merchant_Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Merchant_01" unique_id=18736405]
 shape = SubResource("CircleShape2D_rqg47")
 
-[node name="Foe_01" parent="Merchant_Area2D" instance=ExtResource("6_jyvag")]
+[node name="Foe_01" parent="Merchant_01" unique_id=2119111307 instance=ExtResource("6_jyvag")]

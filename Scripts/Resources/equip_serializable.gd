@@ -2,13 +2,13 @@ extends Resource
 class_name Equip_Serializable
 #-------------------------------------------------------------------------------
 @export var equip_resource: Equip_Resource
-@export var hold: int = 1
+@export var stored: int = 1
 #-------------------------------------------------------------------------------
 func Constructor() -> Equip_Serializable:
 	var _equip_serializable_new: Equip_Serializable = Equip_Serializable.new()
 	#-------------------------------------------------------------------------------
 	_equip_serializable_new.equip_resource = equip_resource
-	_equip_serializable_new.hold = hold
+	_equip_serializable_new.stored = stored
 	#-------------------------------------------------------------------------------
 	return _equip_serializable_new
 #-------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ func SaveData_Constructor() -> Dictionary:
 	else:
 		_dictionary["equip_resource"] = equip_resource.resource_path
 	#-------------------------------------------------------------------------------
-	_dictionary["hold"] = hold
+	_dictionary["stored"] = stored
 	#-------------------------------------------------------------------------------
 	return _dictionary
 #-------------------------------------------------------------------------------
@@ -33,5 +33,5 @@ func LoadData_Constructor(_dictionaty:Dictionary):
 	else:
 		equip_resource = null
 	#-------------------------------------------------------------------------------
-	hold = _dictionaty["hold"]
+	stored = _dictionaty.get("stored", 1)
 #-------------------------------------------------------------------------------

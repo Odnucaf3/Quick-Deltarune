@@ -348,7 +348,7 @@ func Center_if_Windowed():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func CenterScreem():
-	var _center: Vector2i = (DisplayServer.screen_get_size()-DisplayServer.window_get_size())/2
+	var _center: Vector2i = Vector2i(Vector2(DisplayServer.screen_get_size()-DisplayServer.window_get_size())/2)
 	DisplayServer.window_set_position(_center)
 #endregion
 #-------------------------------------------------------------------------------

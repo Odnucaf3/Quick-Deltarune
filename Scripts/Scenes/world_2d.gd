@@ -103,7 +103,7 @@ var item_array_in_battle: Array[Item_Serializable]
 var equip_array_in_battle: Array[Equip_Serializable]
 #-------------------------------------------------------------------------------
 @export var key_item_array: Array[Key_Item_Serializable]
-@export var key_item_array_in_battle: Array[Key_Item_Serializable]
+var key_item_array_in_battle: Array[Key_Item_Serializable]
 #-------------------------------------------------------------------------------
 @export var iten_resource_attack: Item_Serializable
 @export var iten_resource_defense: Item_Serializable
@@ -234,6 +234,8 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json = singleton.LoadCurrent_SaveData_Json()
 	Load_All_Data()
+	Fill_the_ConsumableItems_Stored_from_Hold()
+	ReFill_All_Skills()
 	#-------------------------------------------------------------------------------
 	singleton.Play_BGM(singleton.stage1)
 	#-------------------------------------------------------------------------------
@@ -301,6 +303,7 @@ func _ready() -> void:
 	PauseMenu_Set()
 	#-------------------------------------------------------------------------------
 	Set_Idiome()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func _physics_process(_delta: float) -> void:
 	tween_Array = get_tree().get_processed_tweens()
@@ -531,9 +534,12 @@ func PickUp_Item_2(_item_script:Item_Script):
 	var _s:String = "* "
 	#-------------------------------------------------------------------------------
 	for _i in _item_script.pickable_consumableitem.size():
+		var _hold: int = _item_script.pickable_consumableitem[_i].hold
+		#-------------------------------------------------------------------------------
 		var _item_name: String = get_resource_filename(_item_script.pickable_consumableitem[_i].item_resource)
-		var _item_hold: String = " ["+str(_item_script.pickable_consumableitem[_i].hold)+"]"
-		var _item: String = "[color="+hex_color_yellow+"]"+_item_name+"[/color]"+_item_hold
+		var _hold_text: String = " ["+str(_hold)+"]"
+		#-------------------------------------------------------------------------------
+		var _item: String = "[color="+hex_color_yellow+"]"+_item_name+"[/color]"+_hold_text
 		#-------------------------------------------------------------------------------
 		_s += _item
 		#-------------------------------------------------------------------------------
@@ -543,15 +549,18 @@ func PickUp_Item_2(_item_script:Item_Script):
 		else:
 			_s += " "
 		#-------------------------------------------------------------------------------
-		Add_ConsumableItem_to_Inventory(_item_script.pickable_consumableitem[_i], _item_script.pickable_consumableitem[_i].hold)
+		Add_ConsumableItem_to_Inventory(_item_script.pickable_consumableitem[_i], _hold)
 	#-------------------------------------------------------------------------------
 	if(_item_script.pickable_consumableitem.size() > 0):
 		_s += ", "
 	#-------------------------------------------------------------------------------
 	for _i in _item_script.pickable_equipitem.size():
+		var _stored: int = _item_script.pickable_equipitem[_i].stored
+		#-------------------------------------------------------------------------------
 		var _equip_name: String = get_resource_filename(_item_script.pickable_equipitem[_i].equip_resource)
-		var _equip_hold: String = " ["+str(_item_script.pickable_equipitem[_i].hold)+"]"
-		var _equip: String = "[color="+hex_color_yellow+"]"+_equip_name+"[/color]"+_equip_hold
+		var _hold_text: String = " ["+str(_stored)+"]"
+		#-------------------------------------------------------------------------------
+		var _equip: String = "[color="+hex_color_yellow+"]"+_equip_name+"[/color]"+_hold_text
 		#-------------------------------------------------------------------------------
 		_s += _equip
 		#-------------------------------------------------------------------------------
@@ -561,15 +570,18 @@ func PickUp_Item_2(_item_script:Item_Script):
 		else:
 			_s += " "
 		#-------------------------------------------------------------------------------
-		Add_EquipItem_to_Inventory(_item_script.pickable_equipitem[_i], _item_script.pickable_equipitem[_i].hold)
+		Add_EquipItem_to_Inventory(_item_script.pickable_equipitem[_i], _stored)
 	#-------------------------------------------------------------------------------
 	if(_item_script.pickable_equipitem.size() > 0):
 		_s += ", "
 	#-------------------------------------------------------------------------------
 	for _i in _item_script.pickable_keyitem.size():
+		var _stored: int = _item_script.pickable_keyitem[_i].stored
+		#-------------------------------------------------------------------------------
 		var _keyitem_name: String = get_resource_filename(_item_script.pickable_keyitem[_i].key_item_resource)
-		var _keyitem_hold: String = " ["+str(_item_script.pickable_keyitem[_i].hold)+"]"
-		var _keyitem: String = "[color="+hex_color_yellow+"]"+_keyitem_name+"[/color]"+_keyitem_hold
+		var _hold_text: String = " ["+str(_stored)+"]"
+		#-------------------------------------------------------------------------------
+		var _keyitem: String = "[color="+hex_color_yellow+"]"+_keyitem_name+"[/color]"+_hold_text
 		#-------------------------------------------------------------------------------
 		_s += _keyitem
 		#-------------------------------------------------------------------------------
@@ -579,24 +591,57 @@ func PickUp_Item_2(_item_script:Item_Script):
 		else:
 			_s += " "
 		#-------------------------------------------------------------------------------
-		Add_KeyItem_to_Inventory(_item_script.pickable_keyitem[_i], _item_script.pickable_keyitem[_i].hold)
+		Add_KeyItem_to_Inventory(_item_script.pickable_keyitem[_i], _stored)
 	#-------------------------------------------------------------------------------
 	_s += "was picked."
 	await Dialogue(false, _s)
 #-------------------------------------------------------------------------------
 func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable, _hold:int) -> Item_Serializable:
+	#-------------------------------------------------------------------------------
 	for _i in item_array.size():
 		#-------------------------------------------------------------------------------
 		if(item_array[_i].item_resource == _item_serializable.item_resource):
-			item_array[_i].hold += _hold
-			return item_array[_i]
+			if(_item_serializable.item_resource.max_hold > 0):
+				item_array[_i].hold += _hold
+				#-------------------------------------------------------------------------------
+				if(item_array[_i].hold > _item_serializable.item_resource.max_hold):
+					var _extra: int = item_array[_i].hold - _item_serializable.item_resource.max_hold
+					item_array[_i].hold = _item_serializable.item_resource.max_hold
+					item_array[_i].stored += _extra
+					return item_array[_i]
+				#-------------------------------------------------------------------------------
+				else:
+					return item_array[_i]
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			else:
+				item_array[_i].stored += _hold
+				return item_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _new_item: Item_Serializable = _item_serializable.Constructor()
 	_new_item.item_resource = _item_serializable.item_resource
-	_new_item.hold = _hold
-	item_array.append(_new_item)
-	return _new_item
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.item_resource.max_hold > 0):
+		_new_item.hold = _hold
+		#-------------------------------------------------------------------------------
+		if(_new_item.hold > _item_serializable.item_resource.max_hold):
+			var _extra: int = _new_item.hold - _item_serializable.item_resource.max_hold
+			_new_item.hold = _item_serializable.item_resource.max_hold
+			_new_item.stored += _extra
+			item_array.append(_new_item)
+			return _new_item
+		#-------------------------------------------------------------------------------
+		else:
+			item_array.append(_new_item)
+			return _new_item
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	else:
+		_new_item.stored = _hold
+		item_array.append(_new_item)
+		return _new_item
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Add_EquipItem_to_Inventory(_equip_serializable: Equip_Serializable, _hold:int) -> Equip_Serializable:
 	return Add_Equip_Serializable_to_Array(equip_array, _equip_serializable.equip_resource, _hold)
@@ -606,13 +651,13 @@ func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _eq
 	for _i in _equip_array.size():
 		#-------------------------------------------------------------------------------
 		if(_equip_array[_i].equip_resource == _equip_resource):
-			_equip_array[_i].hold += _hold
+			_equip_array[_i].stored += _hold
 			return _equip_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
 	_equip_serializable.equip_resource = _equip_resource
-	_equip_serializable.hold = _hold
+	_equip_serializable.stored = _hold
 	_equip_array.append(_equip_serializable)
 	return _equip_serializable
 #-------------------------------------------------------------------------------
@@ -620,13 +665,13 @@ func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hol
 	for _i in key_item_array.size():
 		#-------------------------------------------------------------------------------
 		if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
-			key_item_array[_i].hold += _hold
+			key_item_array[_i].stored += _hold
 			return key_item_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
 	_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
-	_new_keyitem.hold = _hold
+	_new_keyitem.stored = _hold
 	key_item_array.append(_new_keyitem)
 	return _new_keyitem
 #-------------------------------------------------------------------------------
@@ -1004,35 +1049,36 @@ func BattleMenu_ItemButton_Submit():
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(item_array_in_battle[_i].item_resource == (friend_party[_j].item_serializable.item_resource)):
+			if(item_array_in_battle[_i].item_resource == (friend_party_alive[_j].item_serializable.item_resource)):
 				_hold -= 1
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(item_array_in_battle[_i].item_resource == (friend_party[_j].item_serializable.item_resource)):
+			if(item_array_in_battle[_i].item_resource == (friend_party_alive[_j].item_serializable.item_resource)):
 				_cooldown += item_array_in_battle[_i].item_resource.max_cooldown
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		var _consumableitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown)
-		#-------------------------------------------------------------------------------
-		var _back_consumableitem: Callable = func():
-			item_menu.show()
-			dialogue_menu.hide()
+		if(item_array_in_battle[_i].hold > 0):
+			var _consumableitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown)
 			#-------------------------------------------------------------------------------
-			TargetMenu_TargetButton_Cancel()
-			Set_TP_Label_from_the_future()
+			var _back_consumableitem: Callable = func():
+				item_menu.show()
+				dialogue_menu.hide()
+				#-------------------------------------------------------------------------------
+				TargetMenu_TargetButton_Cancel()
+				Set_TP_Label_from_the_future()
+				#-------------------------------------------------------------------------------
+				singleton.Move_to_Button(_consumableitem_button)
+				singleton.Common_Canceled()
 			#-------------------------------------------------------------------------------
-			singleton.Move_to_Button(_consumableitem_button)
-			singleton.Common_Canceled()
-		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i])
-		var _submit_consumableitem: Callable = func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _back_consumableitem)
-		var _cancel: Callable = func():ItemMenu_ItemButton_Cancel()
-		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_consumableitem_button, _selected, _submit_consumableitem, _cancel)
-		item_menu_consumable_content.add_child(_consumableitem_button)
-		item_menu_consumable_button_array.append(_consumableitem_button)
+			var _selected_consumableitem: Callable = func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i])
+			var _submit_consumableitem: Callable = func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _back_consumableitem)
+			var _cancel_consumableitem: Callable = func():ItemMenu_ItemButton_Cancel()
+			#-------------------------------------------------------------------------------
+			singleton.Set_Button(_consumableitem_button, _selected_consumableitem, _submit_consumableitem, _cancel_consumableitem)
+			item_menu_consumable_content.add_child(_consumableitem_button)
+			item_menu_consumable_button_array.append(_consumableitem_button)
 		#-------------------------------------------------------------------------------
 		var _allitem_button: Button = Create_ConsumableItem_Button(item_array_in_battle[_i], _hold, _cooldown)
 		#-------------------------------------------------------------------------------
@@ -1046,9 +1092,11 @@ func BattleMenu_ItemButton_Submit():
 			singleton.Move_to_Button(_allitem_button)
 			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
+		var _selected_allitem: Callable = func():ItemMenu_Consumable_ItemButton_Selected(item_array_in_battle[_i])
 		var _submit_allitem: Callable = func():ItemMenu_ItemButton_Submit(item_array_in_battle[_i], _hold, _cooldown, _back_allitem)
+		var _cancel_allitem: Callable = func():ItemMenu_ItemButton_Cancel()
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_allitem_button, _selected, _submit_allitem, _cancel)
+		singleton.Set_Button(_allitem_button, _selected_allitem, _submit_allitem, _cancel_allitem)
 		item_menu_allitems_content.add_child(_allitem_button)
 		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
@@ -1390,7 +1438,7 @@ func Set_Skill_Information(_item_serializable:Item_Serializable):
 	var _max_hold: int = _item_serializable.item_resource.max_hold
 	#----------------------------------------------------------------------------
 	if(_max_hold > 0):
-		_hold_text = "["+str(_item_serializable.hold)+"/"+str(_max_hold)+" TP)"
+		_hold_text = "["+str(_item_serializable.hold)+"/"+str(_max_hold)+"]"
 	#----------------------------------------------------------------------------
 	else:
 		_hold_text = "-"
@@ -1400,7 +1448,7 @@ func Set_Skill_Information(_item_serializable:Item_Serializable):
 	skill_menu_cost_label.text = "* Cost:"
 	skill_menu_tp_cost_num_label.text = _tp_cost_text
 	skill_menu_cooldown_num_label.text = _cooldown_text
-	skill_menu_held_label.text = "* Held:"
+	skill_menu_held_label.text = "* Hold:"
 	skill_menu_hold_num_label.text = _hold_text
 	skill_menu_storage_num_label.text = ""
 #-------------------------------------------------------------------------------
@@ -1434,29 +1482,19 @@ func ItemMenu_Consumable_ItemButton_Selected(_item_serializable:Item_Serializabl
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
-	var _max_hold: int = _item_serializable.item_resource.max_hold
-	#-------------------------------------------------------------------------------
 	var _hold_text: String
-	var _storage_text: String
+	var _max_hold: int = _item_serializable.item_resource.max_hold
 	#-------------------------------------------------------------------------------
 	if(_max_hold > 0):
 		var _hold: int = _item_serializable.hold
-		#-------------------------------------------------------------------------------
-		if(_hold > _max_hold):
-			_hold = _max_hold
-		#-------------------------------------------------------------------------------
 		_hold_text = "["+str(_hold)+"/"+str(_max_hold)+"]"
-		#-------------------------------------------------------------------------------
-		var _storage: int = _item_serializable.hold - _max_hold
-		#-------------------------------------------------------------------------------
-		if(_storage < 0):
-			_storage = 0
-		#-------------------------------------------------------------------------------
-		_storage_text = "["+str(_storage)+"]"
 	#-------------------------------------------------------------------------------
 	else:
 		_hold_text = "-"
-		_storage_text = "["+str(_item_serializable.hold)+"]"
+	#-------------------------------------------------------------------------------
+	var _stored_text: String
+	var _stored: int = _item_serializable.stored
+	_stored_text = "["+str(_stored)+"]"
 	#-------------------------------------------------------------------------------
 	var _tp_cost_text: String
 	var _tp_cost: int = _item_serializable.item_resource.tp_cost
@@ -1482,9 +1520,9 @@ func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
 	item_menu_consumable_cost_label.text = "* Cost:"
 	item_menu_consumable_tp_cost_num_label.text = _tp_cost_text
 	item_menu_consumable_cooldown_num_label.text = _cooldown_text
-	item_menu_consumable_held_label.text = "* Held:"
+	item_menu_consumable_held_label.text = "* Hold:"
 	item_menu_consumable_hold_num_label.text = _hold_text
-	item_menu_consumable_storage_num_label.text = _storage_text
+	item_menu_consumable_storage_num_label.text = _stored_text
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_lore.text = _item_serializable.item_resource.lore
 	item_menu_allitems_description.text = _item_serializable.item_resource.description
@@ -1492,9 +1530,9 @@ func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
 	item_menu_allitems_cost_label.text = "* Cost:"
 	item_menu_allitems_tp_cost_num_label.text = _tp_cost_text
 	item_menu_allitems_cooldown_num_label.text = _cooldown_text
-	item_menu_allitems_held_label.text = "* Held:"
+	item_menu_allitems_held_label.text = "* Hold:"
 	item_menu_allitems_hold_num_label.text = _hold_text
-	item_menu_allitems_storage_num_label.text = _storage_text
+	item_menu_allitems_storage_num_label.text = _stored_text
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func ItemMenu_Equipment_ItemButton_Selected(_equip_serializable:Equip_Serializable):
@@ -1504,7 +1542,7 @@ func ItemMenu_Equipment_ItemButton_Selected(_equip_serializable:Equip_Serializab
 func Set_EquipItem_Information(_equip_serializable:Equip_Serializable):
 	var _lore: String = _equip_serializable.equip_resource.lore
 	var _description: String = _equip_serializable.equip_resource.description
-	var _stored: String = "["+str(_equip_serializable.hold)+"]"
+	var _stored: String = "["+str(_equip_serializable.stored)+"]"
 	#-------------------------------------------------------------------------------
 	item_menu_equipment_lore.text = _lore
 	item_menu_equipment_description.text = _description
@@ -1512,13 +1550,13 @@ func Set_EquipItem_Information(_equip_serializable:Equip_Serializable):
 	item_menu_allitems_lore.text = _lore
 	item_menu_allitems_description.text = _description
 	#-------------------------------------------------------------------------------
-	item_menu_equipment_held_label.text = "* Held:"
+	item_menu_equipment_held_label.text = "* Hold:"
 	item_menu_equipment_storage_num_label.text = _stored
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_cost_label.text = ""
 	item_menu_allitems_tp_cost_num_label.text = ""
 	item_menu_allitems_cooldown_num_label.text = ""
-	item_menu_allitems_held_label.text = "* Held:"
+	item_menu_allitems_held_label.text = "* Hold:"
 	item_menu_allitems_hold_num_label.text = ""
 	item_menu_allitems_storage_num_label.text = _stored
 #-------------------------------------------------------------------------------
@@ -1529,7 +1567,7 @@ func ItemMenu_KeyItem_ItemButton_Selected(keyitem_serializable:Key_Item_Serializ
 func Set_KeyItem_Information(keyitem_serializable:Key_Item_Serializable):
 	var _lore: String = keyitem_serializable.key_item_resource.lore
 	var _description: String = keyitem_serializable.key_item_resource.description
-	var _stored: String = "["+str(keyitem_serializable.hold)+"]"
+	var _stored: String = "["+str(keyitem_serializable.stored)+"]"
 	#-------------------------------------------------------------------------------
 	item_menu_keyitems_lore.text = _lore
 	item_menu_keyitems_description.text = _description
@@ -1537,13 +1575,13 @@ func Set_KeyItem_Information(keyitem_serializable:Key_Item_Serializable):
 	item_menu_allitems_lore.text = _lore
 	item_menu_allitems_description.text = _description
 	#-------------------------------------------------------------------------------
-	item_menu_keyitems_held_label.text = "* Held:"
+	item_menu_keyitems_held_label.text = "* Hold:"
 	item_menu_keyitems_storage_num_label.text = _stored
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_cost_label.text = ""
 	item_menu_allitems_tp_cost_num_label.text = ""
 	item_menu_allitems_cooldown_num_label.text = ""
-	item_menu_allitems_held_label.text = "* Held:"
+	item_menu_allitems_held_label.text = "* Hold:"
 	item_menu_allitems_hold_num_label.text = ""
 	item_menu_allitems_storage_num_label.text = _stored
 #-------------------------------------------------------------------------------
@@ -1846,7 +1884,11 @@ func Party_Actions():
 	for _i in range(item_array_in_battle.size()-1, -1, -1):
 		#-------------------------------------------------------------------------------
 		if(item_array_in_battle[_i].hold <= 0):
-			item_array_in_battle.remove_at(_i)
+			item_array_in_battle[_i].hold = 0
+			#-------------------------------------------------------------------------------
+			if(item_array_in_battle[_i].stored <= 0):
+				item_array_in_battle.remove_at(_i)
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
 			item_array_in_battle[_i].cooldown -= 1
@@ -1862,6 +1904,10 @@ func Party_Actions():
 	for _i in friend_party.size():
 		#-------------------------------------------------------------------------------
 		for _j in friend_party[_i].skill_array_in_battle.size():
+			#-------------------------------------------------------------------------------
+			if(friend_party[_i].skill_array_in_battle[_j].hold < 0):
+				friend_party[_i].skill_array_in_battle[_j].hold = 0
+			#-------------------------------------------------------------------------------
 			friend_party[_i].skill_array_in_battle[_j].cooldown -= 1
 			#-------------------------------------------------------------------------------
 			if(friend_party[_i].skill_array_in_battle[_j].cooldown < 0):
@@ -1869,9 +1915,9 @@ func Party_Actions():
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		for _j in friend_party[_i].statuseffect_array_in_battle.size():
-			friend_party[_i].statuseffect_array_in_battle[_j].hold -= 1
+			friend_party[_i].statuseffect_array_in_battle[_j].stored -= 1
 			#-------------------------------------------------------------------------------
-			if(friend_party[_i].statuseffect_array_in_battle[_j].hold <= 0):
+			if(friend_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
 				friend_party[_i].statuseffect_array_in_battle.remove_at(_j)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -2133,6 +2179,8 @@ func You_Win(_callable:Callable):
 		enemy_party[_i].party_member_ui.queue_free()
 	#-------------------------------------------------------------------------------
 	Set_AllItems_When_Exit_Battle()
+	Fill_the_ConsumableItems_Hold_from_Stored()
+	ReFill_All_Skills()
 	#-------------------------------------------------------------------------------
 	retry_menu.hide()
 	dialogue_menu.hide()
@@ -2732,12 +2780,15 @@ func Bullet_Grazed_SP_Gain():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Bullet_Grazed_TP_Gain():
-	tp += 1
+	Gain_Tp(1)
+	Set_TP_Label(tp)
+#-------------------------------------------------------------------------------
+func Gain_Tp(_int:int):
+	tp += _int
 	#-------------------------------------------------------------------------------
 	if(tp > max_tp):
 		tp = max_tp
 	#-------------------------------------------------------------------------------
-	Set_TP_Label(tp)
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -2752,7 +2803,7 @@ func Attack(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		PlayAnimation(_user.playback, "Shot")
-		tp += 5
+		Gain_Tp(5)
 		Set_TP_Label(tp)
 		HP_Damage(_user.target, 5)
 	)
@@ -2768,7 +2819,7 @@ func Attack(_user:Party_Member):
 func Defense(_user:Party_Member):
 	_user.is_in_guard = true
 	var _label: Label = Spawn_Label_in_User(_user)
-	tp += 5
+	Gain_Tp(5)
 	Set_TP_Label(tp)
 	Flying_Label(_label, "+Guard")
 #-------------------------------------------------------------------------------
@@ -3025,13 +3076,13 @@ func Debug_Information() -> void:
 	_s += "Enemy Bullets Disabled: " + str(enemyBullets_Disabled_Array.size())+"\n"
 	_s += "-------------------------------------------------------\n"
 	if(item_array.size() > 0):
-		_s += "Potion Item: " + str(item_array[0].hold)+"\n"
+		_s += "Potion Item: " + str(item_array[0].stored)+"\n"
 	if(item_array_in_battle.size() > 0):
-		_s += "Potion Item in Battle: " + str(item_array_in_battle[0].hold)+"\n"
+		_s += "Potion Item in Battle: " + str(item_array_in_battle[0].stored)+"\n"
 	if(friend_party[2].skill_array.size() > 0):
-		_s += "Potion Skill: " + str(friend_party[2].skill_array[0].hold)+"\n"
+		_s += "Potion Skill: " + str(friend_party[2].skill_array[0].stored)+"\n"
 	if(friend_party[2].skill_array_in_battle.size() > 0):
-		_s += "Potion Skill in Battle: " + str(friend_party[2].skill_array_in_battle[0].hold)+"\n"
+		_s += "Potion Skill in Battle: " + str(friend_party[2].skill_array_in_battle[0].stored)+"\n"
 	debug_label.text = _s
 #-------------------------------------------------------------------------------
 func Show_fps():
@@ -3082,7 +3133,7 @@ func SetMoney_Label():
 	#-------------------------------------------------------------------------------
 	for _i in key_item_array.size():
 		if(key_item_array[_i].key_item_resource == money_resource):
-			pause_menu_money_label.text += str(key_item_array[_i].hold)+" G"
+			pause_menu_money_label.text += str(key_item_array[_i].stored)+" G"
 			return
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -3258,10 +3309,6 @@ func Create_Skill_Button(_item_serializable: Item_Serializable) -> Button:
 		#-------------------------------------------------------------------------------
 		if(_max_hold > 0):
 			var _hold: int = _item_serializable.hold
-			#-------------------------------------------------------------------------------
-			if(_hold > _max_hold):
-				_hold = _max_hold
-			#-------------------------------------------------------------------------------
 			_label2.text += "["+str(_hold)+"/"+str(_max_hold)+"]  "
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -3301,13 +3348,7 @@ func Create_ConsumableItem_Button(_item_serializable: Item_Serializable, _hold:i
 		var _max_hold: int = _item_serializable.item_resource.max_hold
 		#-------------------------------------------------------------------------------
 		if(_max_hold > 0):
-			#-------------------------------------------------------------------------------
-			var _hold_capped: int = _hold
-			#-------------------------------------------------------------------------------
-			if(_hold_capped > _max_hold):
-				_hold_capped = _max_hold
-			#-------------------------------------------------------------------------------
-			var _s: String = "["+str(_hold_capped)+"/"+str(_max_hold)+"]  "
+			var _s: String = "["+str(_hold)+"/"+str(_max_hold)+"]  "
 			#-------------------------------------------------------------------------------
 			if(_hold < _item_serializable.hold):
 				_label2.text += "[color="+hex_color_yellow+"]"+_s+"[/color]"
@@ -3345,7 +3386,7 @@ func Create_ConsumableItem_InMarket_Button(_item_serializable: Item_Serializable
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label2.text = "$30  "
-	#_label2.text += "["+str(_item_serializable.hold)+"]  "
+	#_label2.text += "["+str(_item_serializable.stored)+"]  "
 	#-------------------------------------------------------------------------------
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
@@ -3363,7 +3404,7 @@ func Create_EquipItem_Button(_equip_serializable: Equip_Serializable) -> Button:
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "["+str(_equip_serializable.hold)+"]  "
+	_label2.text = "["+str(_equip_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3381,7 +3422,7 @@ func Create_EquipItem_InMarket_Button(_equip_serializable: Equip_Serializable) -
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label2.text = "$200  "
-	_label2.text += "["+str(_equip_serializable.hold)+"]  "
+	_label2.text += "["+str(_equip_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3433,7 +3474,7 @@ func Create_KeyItem_Button(_keyitem_serializable: Key_Item_Serializable) -> Butt
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "["+str(_keyitem_serializable.hold)+"]  "
+	_label2.text = "["+str(_keyitem_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3451,7 +3492,7 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label2.text = "$500  "
-	_label2.text += "["+str(_keyitem_serializable.hold)+"]  "
+	_label2.text += "["+str(_keyitem_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3468,7 +3509,7 @@ func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Seriali
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "["+str(_statuseffect_serializable.hold)+"]  "
+	_label2.text = "["+str(_statuseffect_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3712,7 +3753,7 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_M
 		Remove_Equip_Serializable_to_Array(equip_array, _equip_serializable)
 		#-------------------------------------------------------------------------------
 		_user.equip_array[_index_slot].equip_resource = _equip_serializable.equip_resource
-		_user.equip_array[_index_slot].hold = 1
+		_user.equip_array[_index_slot].stored = 1
 		#-------------------------------------------------------------------------------
 		equipslot_menu_button_array[_index_slot].text = get_resource_filename(_equip_serializable.equip_resource)
 	#-------------------------------------------------------------------------------
@@ -3728,7 +3769,7 @@ func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Pa
 		Add_Equip_Serializable_to_Array(equip_array, _user.equip_array[_index_slot].equip_resource, 1)
 		#-------------------------------------------------------------------------------
 		_user.equip_array[_index_slot].equip_resource = null
-		_user.equip_array[_index_slot].hold = 0
+		_user.equip_array[_index_slot].stored = 0
 		#-------------------------------------------------------------------------------
 		equipslot_menu_button_array[_index_slot].text = "  [Empty]  "
 	#-------------------------------------------------------------------------------
@@ -3739,9 +3780,9 @@ func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Pa
 	singleton.Play_SFX_Equip()
 #-------------------------------------------------------------------------------
 func Remove_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_serializable: Equip_Serializable):
-	_equip_serializable.hold -= 1
+	_equip_serializable.stored -= 1
 	#-------------------------------------------------------------------------------
-	if(_equip_serializable.hold <= 0):
+	if(_equip_serializable.stored <= 0):
 		_equip_array.erase(_equip_serializable)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -3750,7 +3791,7 @@ func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffe
 	for _i in _user.statuseffect_array.size():
 		#-------------------------------------------------------------------------------
 		if(_user.statuseffect_array[_i].statuseffect_resource == _statuseffect_serializable.statuseffect_resource):
-			_user.statuseffect_array[_i].hold += _statuseffect_serializable.hold
+			_user.statuseffect_array[_i].stored += _statuseffect_serializable.stored
 			return _user.statuseffect_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -4249,19 +4290,19 @@ func Wait_for_Player():
 		await dialogue_signal
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_array:Array[Equip_Serializable], _keyitem_array:Array[Key_Item_Serializable]):
+func Open_Market(_name:String, _consumableitem_array:Array[Item_Serializable], _equipitem_array:Array[Equip_Serializable], _keyitem_array:Array[Key_Item_Serializable]):
 	item_menu.show()
 	PauseOn()
 	pause_menu_panel.show()
 	#-------------------------------------------------------------------------------
 	for _i in _consumableitem_array.size():
-		var _hold: int = _consumableitem_array[_i].hold
+		var _hold: int = _consumableitem_array[_i].stored
 		var _cooldown: int = _consumableitem_array[_i].cooldown
 		#-------------------------------------------------------------------------------
 		var _consumableitem_button: Button = Create_ConsumableItem_InMarket_Button(_consumableitem_array[_i])
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():BuyMenu_ItemConsumable_Selected(_consumableitem_array[_i])
-		var _submit: Callable = func():BuyMenu_ItemConsumable_Submit(_consumableitem_array[_i])
+		var _submit: Callable = func():BuyMenu_ItemConsumable_Submit(_name, _consumableitem_array[_i])
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_consumableitem_button, _selected, _submit, _cancel)
@@ -4281,7 +4322,7 @@ func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_arra
 		var _allitem_button: Button = Create_EquipItem_InMarket_Button(_equipitem_array[_i])
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():BuyMenu_EquipItem_Selected(_equipitem_array[_i])
-		var _submit: Callable = func():BuyMenu_EquipItem_Submit(_equipitem_array[_i], _equipitem_button, _allitem_button)
+		var _submit: Callable = func():BuyMenu_EquipItem_Submit(_name, _equipitem_array[_i], _equipitem_button, _allitem_button)
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_equipitem_button, _selected, _submit, _cancel)
@@ -4298,7 +4339,7 @@ func Open_Market(_consumableitem_array:Array[Item_Serializable], _equipitem_arra
 		var _allitem_button: Button = Create_KeyItem_InMarket_Button(_keyitem_array[_i])
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():BuyMenu_KeyItem_Selected(_keyitem_array[_i])
-		var _submit: Callable = func():BuyMenu_KeyItem_Submit(_keyitem_array[_i], _keyitem_button, _allitem_button)
+		var _submit: Callable = func():BuyMenu_KeyItem_Submit(_name, _keyitem_array[_i], _keyitem_button, _allitem_button)
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button(_keyitem_button, _selected, _submit, _cancel)
@@ -4344,11 +4385,13 @@ func BuyMenu_ItemConsumable_Selected(_item_serializable: Item_Serializable):
 	#----------------------------------------------------------------
 	var _item_serializable_new: Item_Serializable = _item_serializable.Constructor()
 	_item_serializable_new.hold = 0
+	_item_serializable_new.stored = 0
 	ItemMenu_Consumable_ItemButton_Selected(_item_serializable_new)
 	return
 #-------------------------------------------------------------------------------
-func BuyMenu_ItemConsumable_Submit(_item_serializable: Item_Serializable):
+func BuyMenu_ItemConsumable_Submit(_name: String, _item_serializable: Item_Serializable):
 	_item_serializable.hold -= 1
+	key_dictionary[Get_MerchantId_and_ItemId_and_Hold(_name, _item_serializable.item_resource)] = _item_serializable.stored
 	#-------------------------------------------------------------------------------
 	var _inventory_item_serializable: Item_Serializable = Add_ConsumableItem_to_Inventory(_item_serializable, 1)
 	Set_ConsumableItem_Information(_inventory_item_serializable)
@@ -4364,14 +4407,15 @@ func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
 		#----------------------------------------------------------------
 	#----------------------------------------------------------------
 	var _equip_serializable_new: Equip_Serializable = _equip_serializable.Constructor()
-	_equip_serializable_new.hold = 0
+	_equip_serializable_new.stored = 0
 	ItemMenu_Equipment_ItemButton_Selected(_equip_serializable_new)
 	return
 #-------------------------------------------------------------------------------
-func BuyMenu_EquipItem_Submit(_equip_serializable: Equip_Serializable, _equipitem_button:Button, _allitem_button:Button):
+func BuyMenu_EquipItem_Submit(_name: String, _equip_serializable: Equip_Serializable, _equipitem_button:Button, _allitem_button:Button):
 	#-------------------------------------------------------------------------------
-	if(_equip_serializable.hold > 0):
-		_equip_serializable.hold -= 1
+	if(_equip_serializable.stored > 0):
+		_equip_serializable.stored -= 1
+		key_dictionary[Get_MerchantId_and_ItemId_and_Hold(_name, _equip_serializable.equip_resource)] = _equip_serializable.stored
 		#-------------------------------------------------------------------------------
 		Change_EquipItem_Hold_Label(_equip_serializable, _equipitem_button)
 		Change_EquipItem_Hold_Label(_equip_serializable, _allitem_button)
@@ -4388,7 +4432,7 @@ func BuyMenu_EquipItem_Submit(_equip_serializable: Equip_Serializable, _equipite
 func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
 	_label.text = "$200  "
-	_label.text += "["+str(_equip_serializable.hold)+"]  "
+	_label.text += "["+str(_equip_serializable.stored)+"]  "
 #-------------------------------------------------------------------------------
 func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
 	for _i in key_item_array.size():
@@ -4399,14 +4443,15 @@ func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
 		#----------------------------------------------------------------
 	#----------------------------------------------------------------
 	var _keyitem_serializable_new: Key_Item_Serializable = _keyitem_serializable.Constructor()
-	_keyitem_serializable_new.hold = 0
+	_keyitem_serializable_new.stored = 0
 	ItemMenu_KeyItem_ItemButton_Selected(_keyitem_serializable_new)
 	return
 #-------------------------------------------------------------------------------
-func BuyMenu_KeyItem_Submit(_keyitem_serializable: Key_Item_Serializable, _keyitem_button:Button, _allitem_button:Button):
+func BuyMenu_KeyItem_Submit(_name: String, _keyitem_serializable: Key_Item_Serializable, _keyitem_button:Button, _allitem_button:Button):
 	#-------------------------------------------------------------------------------
-	if(_keyitem_serializable.hold > 0):
-		_keyitem_serializable.hold -= 1
+	if(_keyitem_serializable.stored > 0):
+		_keyitem_serializable.stored -= 1
+		key_dictionary[Get_MerchantId_and_ItemId_and_Hold(_name, _keyitem_serializable.key_item_resource)] = _keyitem_serializable.stored
 		#-------------------------------------------------------------------------------
 		Change_KeyItem_Hold_Label(_keyitem_serializable, _keyitem_button)
 		Change_KeyItem_Hold_Label(_keyitem_serializable, _allitem_button)
@@ -4423,7 +4468,7 @@ func BuyMenu_KeyItem_Submit(_keyitem_serializable: Key_Item_Serializable, _keyit
 func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
 	_label.text = "$500  "
-	_label.text += "["+str(_keyitem_serializable.hold)+"]  "
+	_label.text += "["+str(_keyitem_serializable.stored)+"]  "
 #-------------------------------------------------------------------------------
 func Close_Market():
 	item_menu.hide()
@@ -4446,5 +4491,45 @@ func Set_Idiome():
 		pause_menu_button_array[_i].text = tr("pause_menu_button_"+str(_i))
 	#-------------------------------------------------------------------------------
 	SetMoney_Label()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Get_MerchantId_and_ItemId_and_Hold(_name:String, _resource:Resource) -> String:
+	var _id: String = room_test.room_id+"_"+_name+"_"+get_resource_filename(_resource)+"_hold"
+	return _id
+#-------------------------------------------------------------------------------
+func Fill_the_ConsumableItems_Stored_from_Hold():
+	#-------------------------------------------------------------------------------
+	for _i in item_array.size():
+		#-------------------------------------------------------------------------------
+		if(item_array[_i].hold > item_array[_i].item_resource.max_hold):
+			var _extra: int = item_array[_i].hold - item_array[_i].item_resource.max_hold
+			item_array[_i].hold = item_array[_i].item_resource.max_hold
+			item_array[_i].stored += _extra
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Fill_the_ConsumableItems_Hold_from_Stored():
+	#-------------------------------------------------------------------------------
+	for _i in item_array.size():
+		#-------------------------------------------------------------------------------
+		if(item_array[_i].hold < item_array[_i].item_resource.max_hold):
+			var _lo_que_falta: int = item_array[_i].item_resource.max_hold - item_array[_i].hold 
+			item_array[_i].stored -= _lo_que_falta
+			#-------------------------------------------------------------------------------
+			if(item_array[_i].stored < 0):
+				_lo_que_falta -= item_array[_i].stored
+				item_array[_i].stored = 0
+			#-------------------------------------------------------------------------------
+			item_array[_i].hold += _lo_que_falta
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func ReFill_All_Skills():
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		#-------------------------------------------------------------------------------
+		for _j in friend_party[_i].skill_array.size():
+			friend_party[_i].skill_array[_j].hold = friend_party[_i].skill_array[_j].item_resource.max_hold
+		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
