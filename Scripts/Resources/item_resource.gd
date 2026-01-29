@@ -21,6 +21,5 @@ enum TARGET_TYPE{ENEMY_1, ALLY_1, ALLY_DEATH, USER}
 #-------------------------------------------------------------------------------
 @export_category("Item Paramenters")
 @export var max_hold: int
-@export var price: int
 #endregion
 #-------------------------------------------------------------------------------

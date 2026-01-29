@@ -14,7 +14,7 @@ func Interactable_Ready(_world_2d:World_2D):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Chek_if_savespot_was_activated(_world_2d:World_2D) -> bool:
-	var _array: Array = _world_2d.singleton.currentSaveData_Json.get("teleport_options", [])
+	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
 	#-------------------------------------------------------------------------------
 	for _i in _array.size():
 		#-------------------------------------------------------------------------------

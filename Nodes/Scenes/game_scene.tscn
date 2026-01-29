@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="7_yqvj6"]
 [ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/money.tres" id="8_3p4s7"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="10_igypo"]
+[ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="11_hko5v"]
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
 [ext_resource type="Script" uid="uid://csnm33ej8nc54" path="res://Scripts/Scenes/world_2d.gd" id="13_gg6rv"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/party_member.tscn" id="13_hxoxt"]
@@ -47,6 +48,13 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 script = ExtResource("7_igypo")
 item_resource = ExtResource("6_lujb4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_xvxdo"]
+resource_local_to_scene = true
+script = ExtResource("11_hko5v")
+key_item_resource = ExtResource("8_3p4s7")
+stored = 999
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -312,7 +320,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -400,6 +408,12 @@ equipslot_menu_button_label = NodePath("../CanvasLayer/All Menues/Status_TabCont
 equipslot_menu_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/Label")
 equipslot_menu_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
 equipslot_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+confirm_buy_menu = NodePath("../CanvasLayer/Confirm_Buy_Menu")
+confirm_buy_menu_item_name = NodePath("../CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/Label2")
+confirm_buy_menu_button = NodePath("../CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer2/Button")
+confirm_buy_menu_item_price = NodePath("../CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer3/Label3")
+money_menu = NodePath("../CanvasLayer/Money_Menu")
+money_menu_label = NodePath("../CanvasLayer/Money_Menu/HBoxContainer/PanelContainer/Label")
 status_menu = NodePath("../CanvasLayer/All Menues/Status_TabContainer")
 status_menu_information_image = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
 status_menu_information_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/Label")
@@ -417,7 +431,7 @@ black_panel = NodePath("../CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("Battle_Black_Panel")
 pause_menu_panel = NodePath("../CanvasLayer/Pause_Menu_Panel")
 pause_menu_money_label = NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
-money_resource = ExtResource("8_3p4s7")
+money_serializable = SubResource("Resource_xvxdo")
 pause_menu = NodePath("../CanvasLayer/Pause_Menu")
 pause_menu_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
 pause_menu_party_button_array = [NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button2"), NodePath("../CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button3")]
@@ -1020,8 +1034,47 @@ theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
 
-[node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer" unique_id=701187213]
+[node name="Money_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1309033172]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Money_Menu" unique_id=1617990693]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Money_Menu/HBoxContainer" unique_id=1863865649]
 visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "  -$500  "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Money_Menu/HBoxContainer" unique_id=42014668]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+
+[node name="Label" type="Label" parent="CanvasLayer/Money_Menu/HBoxContainer/PanelContainer" unique_id=64471363]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "  $500  "
+horizontal_alignment = 1
+
+[node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer" unique_id=701187213]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1156,6 +1209,7 @@ size_flags_vertical = 1
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 30
 text = "Money: 150 G"
+horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu" unique_id=1850409624]
 layout_mode = 2
@@ -3760,3 +3814,75 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/outline_size = 4
 text = "60.00 fps"
+
+[node name="Confirm_Buy_Menu" type="PanelContainer" parent="CanvasLayer" unique_id=1387246458]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -179.0
+offset_top = -90.0
+offset_right = 179.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Confirm_Buy_Menu" unique_id=1376536764]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer" unique_id=2005129971]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer" unique_id=1166853272]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Do you want to buy?"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer" unique_id=1595600018]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Potion"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer" unique_id=827018432]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1025770441]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "* Hold:"
+
+[node name="Button" type="Button" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=420290171]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+theme_override_font_sizes/font_size = 30
+text = "  [99]  "
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer" unique_id=1314952677]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1803946211]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "* Price:"
+
+[node name="Label3" type="Label" parent="CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=353511638]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "$999  "
+horizontal_alignment = 2

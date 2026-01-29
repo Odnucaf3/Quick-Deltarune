@@ -5,7 +5,6 @@ enum GAME_STATE{IN_WORLD, IN_MENU, IN_BATTLE}
 enum BATTLE_STATE{STILL_FIGHTING, YOU_WIN, YOU_LOSE, YOU_ESCAPE, YOU_RETRY}
 #-------------------------------------------------------------------------------
 #region VARIABLES
-var singleton: Singleton
 #-------------------------------------------------------------------------------
 @export var game_scene: Game_Scene
 @export var ui_theme: Theme
@@ -136,6 +135,14 @@ var equipslot_menu_button_array: Array[Button]
 @export var equipslot_menu_lore: RichTextLabel
 @export var equipslot_menu_description: RichTextLabel
 #-------------------------------------------------------------------------------
+@export var confirm_buy_menu: Control
+@export var confirm_buy_menu_item_name: Label
+@export var confirm_buy_menu_button: Button
+@export var confirm_buy_menu_item_price: Label
+#-------------------------------------------------------------------------------
+@export var money_menu: Control
+@export var money_menu_label: Label
+#-------------------------------------------------------------------------------
 @export var status_menu: TabContainer
 #-------------------------------------------------------------------------------
 @export var status_menu_information_image: TextureRect
@@ -160,7 +167,7 @@ var current_player_turn: int = 0
 @export var battle_black_panel: Panel
 @export var pause_menu_panel: Panel
 @export var pause_menu_money_label: Label
-@export var money_resource: Key_Item_Resource
+@export var money_serializable: Key_Item_Serializable
 @export var pause_menu: Control
 @export var pause_menu_button_array: Array[Button]
 @export var pause_menu_party_button_array: Array[Party_Button]
@@ -224,13 +231,12 @@ var viewport_center: Vector2
 #-------------------------------------------------------------------------------
 var deltaTimeScale: float = 1.0
 signal dialogue_signal
-var can_move: bool = true
-var is_in_dialogue: bool = true
+var is_in_dialogue: bool = false
+var how_many_would_you_buy: int = 0
 #endregion
 #-------------------------------------------------------------------------------
 #region MONOBEHAVIOUR
 func _ready() -> void:
-	singleton = get_node("/root/singleton")
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json = singleton.LoadCurrent_SaveData_Json()
 	Load_All_Data()
@@ -263,6 +269,8 @@ func _ready() -> void:
 	timer_label.hide()
 	battle_black_panel.hide()
 	tp_bar_root.hide()
+	confirm_buy_menu.hide()
+	money_menu.hide()
 	#-------------------------------------------------------------------------------
 	if(can_equip_midbattle):
 		battle_menu_button[4].show()
@@ -312,45 +320,51 @@ func _physics_process(_delta: float) -> void:
 		GAME_STATE.IN_WORLD:
 			#-------------------------------------------------------------------------------
 			if(!get_tree().paused):
-				Input_PauseGame()
-				Player_Movement()
-				Followers_Movement()
-				Camera_Follow()
 				#-------------------------------------------------------------------------------
-				if(Input.is_action_just_pressed("ui_accept")):
+				if(is_in_dialogue):
 					#-------------------------------------------------------------------------------
-					if(is_in_dialogue):
+					if(Input.is_action_just_pressed("ui_accept")):
+						dialogue_signal.emit()
+					#-------------------------------------------------------------------------------
+				#-------------------------------------------------------------------------------
+				else:
+					Player_Movement()
+					Followers_Movement()
+					Camera_Follow()
+					Input_PauseGame()
+					#-------------------------------------------------------------------------------
+					if(Input.is_action_just_pressed("ui_accept")):
 						var _interactable_by_action_array : Array[Area2D] = player_interactable_area2d.get_overlapping_areas()
 						#-------------------------------------------------------------------------------
 						if(_interactable_by_action_array.size() > 0):
 							var _interactable: Interactable_Script = _interactable_by_action_array[0]
 							_interactable.Interactable_Action(self)
+							return
 						#-------------------------------------------------------------------------------
 					#-------------------------------------------------------------------------------
-					else:
-						dialogue_signal.emit()
+					var _interactable_by_touch_array : Array[Area2D] = player_enemyDetector_area2d.get_overlapping_areas()
+					var _enemies: Array[Interactable_Script]
+					var _not_enemies: Array[Interactable_Script]
 					#-------------------------------------------------------------------------------
-				#-------------------------------------------------------------------------------
-				var _interactable_by_touch_array : Array[Area2D] = player_enemyDetector_area2d.get_overlapping_areas()
-				var _enemies: Array[Interactable_Script]
-				var _not_enemies: Array[Interactable_Script]
-				#-------------------------------------------------------------------------------
-				for _i in _interactable_by_touch_array.size():
-					var _interactable_by_touch: Interactable_Script = _interactable_by_touch_array[_i] as Interactable_Script
-					#-------------------------------------------------------------------------------
-					if(_interactable_by_touch.is_enemy):
-						_enemies.append(_interactable_by_touch)
-					#-------------------------------------------------------------------------------
-					else:
-						_not_enemies.append(_interactable_by_touch)
-					#-------------------------------------------------------------------------------
-					if(_not_enemies.size() > 0):
-						_not_enemies[0].Interactable_Action(self)
-					#-------------------------------------------------------------------------------
-					else:
+					for _i in _interactable_by_touch_array.size():
+						var _interactable_by_touch: Interactable_Script = _interactable_by_touch_array[_i] as Interactable_Script
 						#-------------------------------------------------------------------------------
-						if(_enemies.size() > 0 and can_enter_fight):
-							_enemies[0].Interactable_Action(self)
+						if(_interactable_by_touch.is_enemy):
+							_enemies.append(_interactable_by_touch)
+						#-------------------------------------------------------------------------------
+						else:
+							_not_enemies.append(_interactable_by_touch)
+						#-------------------------------------------------------------------------------
+						if(_not_enemies.size() > 0):
+							_not_enemies[0].Interactable_Action(self)
+							return
+						#-------------------------------------------------------------------------------
+						else:
+							#-------------------------------------------------------------------------------
+							if(_enemies.size() > 0 and can_enter_fight):
+								_enemies[0].Interactable_Action(self)
+								return
+							#-------------------------------------------------------------------------------
 						#-------------------------------------------------------------------------------
 					#-------------------------------------------------------------------------------
 				#-------------------------------------------------------------------------------
@@ -370,9 +384,6 @@ func _physics_process(_delta: float) -> void:
 #-------------------------------------------------------------------------------
 #region IN_WORLD FUNCTIONS
 func Player_Movement():
-	if(!can_move):
-		return
-	#-------------------------------------------------------------------------------
 	var _input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var _run_flag: bool = Input.is_action_pressed("Input_Run")
 	#-------------------------------------------------------------------------------
@@ -521,9 +532,11 @@ func Face_Left(_user:Party_Member, _b:bool):
 #-------------------------------------------------------------------------------
 func PickUp_Item(_item_script:Item_Script):
 	Dialogue_Open()
+	singleton.Common_Submited()
 	await PickUp_Item_2(_item_script)
 	#await Dialogue(false, "* Bla bla bla bla bla bla bla.")
 	Dialogue_Close()
+	singleton.Common_Canceled()
 	return
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -662,24 +675,34 @@ func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _eq
 	return _equip_serializable
 #-------------------------------------------------------------------------------
 func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hold:int) -> Key_Item_Serializable:
-	for _i in key_item_array.size():
-		#-------------------------------------------------------------------------------
-		if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
-			key_item_array[_i].stored += _hold
-			return key_item_array[_i]
-		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
-	_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
-	_new_keyitem.stored = _hold
-	key_item_array.append(_new_keyitem)
-	return _new_keyitem
+	if(_keyitem_serializable.key_item_resource == money_serializable.key_item_resource):
+		money_serializable.stored += _hold
+		return money_serializable
+	#-------------------------------------------------------------------------------
+	else:
+		#-------------------------------------------------------------------------------
+		for _i in key_item_array.size():
+			#-------------------------------------------------------------------------------
+			if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
+				key_item_array[_i].stored += _hold
+				return key_item_array[_i]
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
+		_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
+		_new_keyitem.stored = _hold
+		key_item_array.append(_new_keyitem)
+		return _new_keyitem
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Dialogue_Open():
-	is_in_dialogue = false
-	can_move = false
-	PlayAnimation(friend_party[0].playback, "Idle")
-	friend_party[0].is_Moving = false
+	is_in_dialogue = true
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		PlayAnimation(friend_party[_i].playback, "Idle")
+		friend_party[_i].is_Moving = false
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Dialogue(_b:bool, _s:String):
 	dialogue_menu.show()
@@ -696,8 +719,7 @@ func Dialogue(_b:bool, _s:String):
 	await dialogue_signal
 #-------------------------------------------------------------------------------
 func Dialogue_Close():
-	is_in_dialogue = true
-	can_move = true
+	is_in_dialogue = false
 	dialogue_menu.hide()
 #-------------------------------------------------------------------------------
 #endregion
@@ -709,6 +731,8 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	myBATTLE_STATE = BATTLE_STATE.STILL_FIGHTING
 	#-------------------------------------------------------------------------------
 	enemy_party.clear()
+	#-------------------------------------------------------------------------------
+	singleton.Play_SFX_Enter_Battle()
 	#-------------------------------------------------------------------------------
 	for _i in _enemy_array.size():
 		enemy_party.append(_enemy_array[_i])
@@ -3129,16 +3153,9 @@ func PauseMenu_Open():
 	PauseOn()
 #-------------------------------------------------------------------------------
 func SetMoney_Label():
-	pause_menu_money_label.text = "Money: "
-	#-------------------------------------------------------------------------------
-	for _i in key_item_array.size():
-		if(key_item_array[_i].key_item_resource == money_resource):
-			pause_menu_money_label.text += str(key_item_array[_i].stored)+" G"
-			return
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	pause_menu_money_label.text += "0 G"
-	return
+	var _s: String = "  $"+str(money_serializable.stored)+"  "
+	pause_menu_money_label.text = _s
+	money_menu_label.text = _s
 #-------------------------------------------------------------------------------
 func PauseOn():
 	#-------------------------------------------------------------------------------
@@ -3385,7 +3402,7 @@ func Create_ConsumableItem_InMarket_Button(_item_serializable: Item_Serializable
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "$30  "
+	_label2.text = "$"+str(_item_serializable.price)+"  "
 	#_label2.text += "["+str(_item_serializable.stored)+"]  "
 	#-------------------------------------------------------------------------------
 	_button.add_child(_label2)
@@ -3421,7 +3438,7 @@ func Create_EquipItem_InMarket_Button(_equip_serializable: Equip_Serializable) -
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "$200  "
+	_label2.text = "$"+str(_equip_serializable.price)+"  "
 	_label2.text += "["+str(_equip_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
@@ -3491,7 +3508,7 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "$500  "
+	_label2.text = "$"+str(_keyitem_serializable.price)+"  "
 	_label2.text += "["+str(_keyitem_serializable.stored)+"]  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
@@ -3923,6 +3940,7 @@ func OptionMenu_BackButton_Common() -> void:
 #-------------------------------------------------------------------------------
 func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	Dialogue_Open()
+	singleton.Common_Submited()
 	await Dialogue(false, _dialogue)
 	Dialogue_Close()
 	#-------------------------------------------------------------------------------
@@ -4027,14 +4045,23 @@ func SaveMenu_TeleportButton_Submit():
 	_tabbar.current_tab = 0
 	#-------------------------------------------------------------------------------
 	if(teleporty_menu_button_array.size() > 0):
-		singleton.Move_to_Button(teleporty_menu_button_array[0])
+		var _index = 0
+		#-------------------------------------------------------------------------------
+		for _i in _array.size():
+			#-------------------------------------------------------------------------------
+			if(_array[_i].get("room", "") == room_test.room_id):
+				_index = _i
+				break
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		singleton.Move_to_Button(teleporty_menu_button_array[_index])
 		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Move_to_Button(_tabbar)
 		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
-	teleporty_menu_scrollContainer.scroll_vertical = 0
+	#teleporty_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
 func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
 	var _selected: Callable
@@ -4104,6 +4131,7 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	pause_menu_panel.hide()
 	PauseOff()
 	Destroy_All_Items(teleporty_menu_button_array)
+	singleton.Play_SFX_Teleport()
 #-------------------------------------------------------------------------------
 func Save_Room_and_SaveSpot(_s:String):
 	var _dictionaty: Dictionary = {}
@@ -4131,6 +4159,7 @@ func Save_KeyItems():
 		_array.append(_dictionary)
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json.set("key_item_array", _array)
+	singleton.currentSaveData_Json.set("money", money_serializable.stored)
 #-------------------------------------------------------------------------------
 func Save_Equip():
 	var _array: Array[Dictionary] = []
@@ -4265,6 +4294,8 @@ func Load_KeyItems():
 		_keyitem_serializable.LoadData_Constructor(_keyitem_data[_i])
 		key_item_array.append(_keyitem_serializable)
 	#-------------------------------------------------------------------------------
+	money_serializable.stored = singleton.currentSaveData_Json.get("money", 0)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Load_Equip():
 	equip_array.clear()
@@ -4290,10 +4321,13 @@ func Wait_for_Player():
 		await dialogue_signal
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Open_Market(_name:String, _consumableitem_array:Array[Item_Serializable], _equipitem_array:Array[Equip_Serializable], _keyitem_array:Array[Key_Item_Serializable]):
+func Open_Market(_merchant_name:String, _consumableitem_array:Array[Item_Serializable], _equipitem_array:Array[Equip_Serializable], _keyitem_array:Array[Key_Item_Serializable]):
 	item_menu.show()
 	PauseOn()
 	pause_menu_panel.show()
+	#-------------------------------------------------------------------------------
+	money_menu.show()
+	SetMoney_Label()
 	#-------------------------------------------------------------------------------
 	for _i in _consumableitem_array.size():
 		var _hold: int = _consumableitem_array[_i].stored
@@ -4302,16 +4336,18 @@ func Open_Market(_name:String, _consumableitem_array:Array[Item_Serializable], _
 		var _consumableitem_button: Button = Create_ConsumableItem_InMarket_Button(_consumableitem_array[_i])
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():BuyMenu_ItemConsumable_Selected(_consumableitem_array[_i])
-		var _submit: Callable = func():BuyMenu_ItemConsumable_Submit(_name, _consumableitem_array[_i])
+		var _submit_consumable_item: Callable = func():BuyMenu_ItemConsumable_Submit(_consumableitem_button, _merchant_name, _consumableitem_array[_i])
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_consumableitem_button, _selected, _submit, _cancel)
+		singleton.Set_Button(_consumableitem_button, _selected, _submit_consumable_item, _cancel)
 		item_menu_consumable_content.add_child(_consumableitem_button)
 		item_menu_consumable_button_array.append(_consumableitem_button)
 		#-------------------------------------------------------------------------------
 		var _allitem_button: Button = Create_ConsumableItem_InMarket_Button(_consumableitem_array[_i])
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_allitem_button, _selected, _submit, _cancel)
+		var _submit_all_item: Callable = func():BuyMenu_ItemConsumable_Submit(_allitem_button, _merchant_name, _consumableitem_array[_i])
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(_allitem_button, _selected, _submit_all_item, _cancel)
 		item_menu_allitems_content.add_child(_allitem_button)
 		item_menu_allitems_button_array.append(_allitem_button)
 		#-------------------------------------------------------------------------------
@@ -4322,14 +4358,16 @@ func Open_Market(_name:String, _consumableitem_array:Array[Item_Serializable], _
 		var _allitem_button: Button = Create_EquipItem_InMarket_Button(_equipitem_array[_i])
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():BuyMenu_EquipItem_Selected(_equipitem_array[_i])
-		var _submit: Callable = func():BuyMenu_EquipItem_Submit(_name, _equipitem_array[_i], _equipitem_button, _allitem_button)
+		var _submit_equip_item: Callable = func():BuyMenu_EquipItem_Submit(_equipitem_button, _merchant_name, _equipitem_array[_i], _equipitem_button, _allitem_button)
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_equipitem_button, _selected, _submit, _cancel)
+		singleton.Set_Button(_equipitem_button, _selected, _submit_equip_item, _cancel)
 		item_menu_equipment_content.add_child(_equipitem_button)
 		item_menu_equipment_button_array.append(_equipitem_button)
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_allitem_button, _selected, _submit, _cancel)
+		var _submit_all_item: Callable = func():BuyMenu_EquipItem_Submit(_allitem_button, _merchant_name, _equipitem_array[_i], _equipitem_button, _allitem_button)
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(_allitem_button, _selected, _submit_all_item, _cancel)
 		item_menu_allitems_content.add_child(_allitem_button)
 		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
@@ -4339,14 +4377,16 @@ func Open_Market(_name:String, _consumableitem_array:Array[Item_Serializable], _
 		var _allitem_button: Button = Create_KeyItem_InMarket_Button(_keyitem_array[_i])
 		#-------------------------------------------------------------------------------
 		var _selected: Callable = func():BuyMenu_KeyItem_Selected(_keyitem_array[_i])
-		var _submit: Callable = func():BuyMenu_KeyItem_Submit(_name, _keyitem_array[_i], _keyitem_button, _allitem_button)
+		var _submit_keyitem: Callable = func():BuyMenu_KeyItem_Submit(_keyitem_button, _merchant_name, _keyitem_array[_i], _keyitem_button, _allitem_button)
 		var _cancel: Callable = func():Close_Market()
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_keyitem_button, _selected, _submit, _cancel)
+		singleton.Set_Button(_keyitem_button, _selected, _submit_keyitem, _cancel)
 		item_menu_keyitems_content.add_child(_keyitem_button)
 		item_menu_keyitems_button_array.append(_keyitem_button)
 		#-------------------------------------------------------------------------------
-		singleton.Set_Button(_allitem_button, _selected, _submit, _cancel)
+		var _submit_allitem: Callable = func():BuyMenu_KeyItem_Submit(_allitem_button, _merchant_name, _keyitem_array[_i], _keyitem_button, _allitem_button)
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(_allitem_button, _selected, _submit_allitem, _cancel)
 		item_menu_allitems_content.add_child(_allitem_button)
 		item_menu_allitems_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
@@ -4389,14 +4429,79 @@ func BuyMenu_ItemConsumable_Selected(_item_serializable: Item_Serializable):
 	ItemMenu_Consumable_ItemButton_Selected(_item_serializable_new)
 	return
 #-------------------------------------------------------------------------------
-func BuyMenu_ItemConsumable_Submit(_name: String, _item_serializable: Item_Serializable):
-	_item_serializable.hold -= 1
-	key_dictionary[Get_MerchantId_and_ItemId_and_Hold(_name, _item_serializable.item_resource)] = _item_serializable.stored
+func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item_serializable: Item_Serializable):
 	#-------------------------------------------------------------------------------
-	var _inventory_item_serializable: Item_Serializable = Add_ConsumableItem_to_Inventory(_item_serializable, 1)
-	Set_ConsumableItem_Information(_inventory_item_serializable)
+	var _submit: Callable= func():
+		var _price: int = _item_serializable.price * how_many_would_you_buy
+		#-------------------------------------------------------------------------------
+		if(_price <= money_serializable.stored):
+			_item_serializable.hold -= how_many_would_you_buy
+			money_serializable.stored -= _price
+			#-------------------------------------------------------------------------------
+			var _id: String = Get_MerchantId_and_ItemId_and_Hold(_merchant_name, _item_serializable.item_resource)
+			key_dictionary[_id] = _item_serializable.stored
+			#-------------------------------------------------------------------------------
+			var _inventory_item_serializable: Item_Serializable = Add_ConsumableItem_to_Inventory(_item_serializable, how_many_would_you_buy)
+			Set_ConsumableItem_Information(_inventory_item_serializable)
+			#-------------------------------------------------------------------------------
+			while(money_serializable.stored < _price):
+				how_many_would_you_buy -= 1
+				_price = _item_serializable.price * how_many_would_you_buy
+			#-------------------------------------------------------------------------------
+			if(how_many_would_you_buy < 1):
+				how_many_would_you_buy = 1
+			#-------------------------------------------------------------------------------
+			SetMoney_Label()
+			Print_How_Many_Do_You_Buy(_item_serializable.price)
+			#-------------------------------------------------------------------------------
+			singleton.Play_SFX_Shop()
+		#-------------------------------------------------------------------------------
+		else:
+			singleton.Common_Canceled()
+		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	singleton.Play_SFX_Shop()
+	var _up: Callable = func():
+		Increase_How_Many_Do_Want_to_Buy(10, _item_serializable.price, 99)
+	#-------------------------------------------------------------------------------
+	var _down: Callable = func():
+		Decrease_How_Many_Do_Want_to_Buy(10, _item_serializable.price)
+	#-------------------------------------------------------------------------------
+	var _left: Callable = func():
+		Decrease_How_Many_Do_Want_to_Buy(1, _item_serializable.price)
+	#-------------------------------------------------------------------------------
+	var _right: Callable = func():
+		Increase_How_Many_Do_Want_to_Buy(1, _item_serializable.price, 99)
+	#-------------------------------------------------------------------------------
+	confirm_buy_menu_item_name.text = get_resource_filename(_item_serializable.item_resource)
+	how_many_would_you_buy = 1
+	Print_How_Many_Do_You_Buy(_item_serializable.price)
+	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
+#-------------------------------------------------------------------------------
+func Increase_How_Many_Do_Want_to_Buy(_int:int, _original_price:int, _stored:int):
+	how_many_would_you_buy += _int
+	var _price: int = _original_price * how_many_would_you_buy
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy > _stored):
+		how_many_would_you_buy = _stored
+	#-------------------------------------------------------------------------------
+	while(money_serializable.stored < _price):
+		how_many_would_you_buy -= 1
+		_price = _original_price * how_many_would_you_buy
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy < 1):
+		how_many_would_you_buy = 1
+	#-------------------------------------------------------------------------------
+	Print_How_Many_Do_You_Buy(_original_price)
+	singleton.Common_Selected()
+#-------------------------------------------------------------------------------
+func Decrease_How_Many_Do_Want_to_Buy(_int:int, _original_price:int):
+	how_many_would_you_buy -= _int
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy < 1):
+		how_many_would_you_buy = 1
+	#-------------------------------------------------------------------------------
+	Print_How_Many_Do_You_Buy(_original_price)
+	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
 	for _i in equip_array.size():
@@ -4411,27 +4516,63 @@ func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
 	ItemMenu_Equipment_ItemButton_Selected(_equip_serializable_new)
 	return
 #-------------------------------------------------------------------------------
-func BuyMenu_EquipItem_Submit(_name: String, _equip_serializable: Equip_Serializable, _equipitem_button:Button, _allitem_button:Button):
+func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_serializable: Equip_Serializable, _equipitem_button:Button, _allitem_button:Button):
 	#-------------------------------------------------------------------------------
-	if(_equip_serializable.stored > 0):
-		_equip_serializable.stored -= 1
-		key_dictionary[Get_MerchantId_and_ItemId_and_Hold(_name, _equip_serializable.equip_resource)] = _equip_serializable.stored
+	var _submit: Callable= func():
+		var _price: int = _equip_serializable.price * how_many_would_you_buy
 		#-------------------------------------------------------------------------------
-		Change_EquipItem_Hold_Label(_equip_serializable, _equipitem_button)
-		Change_EquipItem_Hold_Label(_equip_serializable, _allitem_button)
+		if(_price <= money_serializable.stored and how_many_would_you_buy <= _equip_serializable.stored):
+			_equip_serializable.stored -= how_many_would_you_buy
+			money_serializable.stored -= _price
+			#-------------------------------------------------------------------------------
+			var _id: String = Get_MerchantId_and_ItemId_and_Hold(_merchant_name, _equip_serializable.equip_resource)
+			key_dictionary[_id] = _equip_serializable.stored
+			#-------------------------------------------------------------------------------
+			Change_EquipItem_Hold_Label(_equip_serializable, _equipitem_button)
+			Change_EquipItem_Hold_Label(_equip_serializable, _allitem_button)
+			#-------------------------------------------------------------------------------
+			var _inventory_equip_serializable: Equip_Serializable = Add_EquipItem_to_Inventory(_equip_serializable, how_many_would_you_buy)
+			Set_EquipItem_Information(_inventory_equip_serializable)
+			#-------------------------------------------------------------------------------
+			if(how_many_would_you_buy > _equip_serializable.stored):
+				how_many_would_you_buy = _equip_serializable.stored
+			#-------------------------------------------------------------------------------
+			while(money_serializable.stored < _price):
+				how_many_would_you_buy -= 1
+				_price = _equip_serializable.price * how_many_would_you_buy
+			#-------------------------------------------------------------------------------
+			if(how_many_would_you_buy < 1):
+				how_many_would_you_buy = 1
+			#-------------------------------------------------------------------------------
+			SetMoney_Label()
+			Print_How_Many_Do_You_Buy(_equip_serializable.price)
+			#-------------------------------------------------------------------------------
+			singleton.Play_SFX_Shop()
 		#-------------------------------------------------------------------------------
-		var _inventory_equip_serializable: Equip_Serializable = Add_EquipItem_to_Inventory(_equip_serializable, 1)
-		Set_EquipItem_Information(_inventory_equip_serializable)
+		else:
+			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
-		singleton.Play_SFX_Shop()
 	#-------------------------------------------------------------------------------
-	else:
-		singleton.Common_Canceled()
+	var _up: Callable = func():
+		Increase_How_Many_Do_Want_to_Buy(10, _equip_serializable.price, _equip_serializable.stored)
 	#-------------------------------------------------------------------------------
+	var _down: Callable = func():
+		Decrease_How_Many_Do_Want_to_Buy(10, _equip_serializable.price)
+	#-------------------------------------------------------------------------------
+	var _left: Callable = func():
+		Decrease_How_Many_Do_Want_to_Buy(1, _equip_serializable.price)
+	#-------------------------------------------------------------------------------
+	var _right: Callable = func():
+		Increase_How_Many_Do_Want_to_Buy(1, _equip_serializable.price, _equip_serializable.stored)
+	#-------------------------------------------------------------------------------
+	confirm_buy_menu_item_name.text = get_resource_filename(_equip_serializable.equip_resource)
+	how_many_would_you_buy = 1
+	Print_How_Many_Do_You_Buy(_equip_serializable.price)
+	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
-	_label.text = "$200  "
+	_label.text = "$"+str(_equip_serializable.price)+"  "
 	_label.text += "["+str(_equip_serializable.stored)+"]  "
 #-------------------------------------------------------------------------------
 func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
@@ -4447,33 +4588,70 @@ func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
 	ItemMenu_KeyItem_ItemButton_Selected(_keyitem_serializable_new)
 	return
 #-------------------------------------------------------------------------------
-func BuyMenu_KeyItem_Submit(_name: String, _keyitem_serializable: Key_Item_Serializable, _keyitem_button:Button, _allitem_button:Button):
+func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_serializable: Key_Item_Serializable, _keyitem_button:Button, _allitem_button:Button):
 	#-------------------------------------------------------------------------------
-	if(_keyitem_serializable.stored > 0):
-		_keyitem_serializable.stored -= 1
-		key_dictionary[Get_MerchantId_and_ItemId_and_Hold(_name, _keyitem_serializable.key_item_resource)] = _keyitem_serializable.stored
+	var _submit: Callable= func():
+		var _price: int = _keyitem_serializable.price * how_many_would_you_buy
 		#-------------------------------------------------------------------------------
-		Change_KeyItem_Hold_Label(_keyitem_serializable, _keyitem_button)
-		Change_KeyItem_Hold_Label(_keyitem_serializable, _allitem_button)
+		if(_price <= money_serializable.stored and how_many_would_you_buy <= _keyitem_serializable.stored):
+			_keyitem_serializable.stored -= how_many_would_you_buy
+			money_serializable.stored -= _price
+			#-------------------------------------------------------------------------------
+			var _id: String = Get_MerchantId_and_ItemId_and_Hold(_merchant_name, _keyitem_serializable.key_item_resource)
+			key_dictionary[_id] = _keyitem_serializable.stored
+			#-------------------------------------------------------------------------------
+			Change_KeyItem_Hold_Label(_keyitem_serializable, _keyitem_button)
+			Change_KeyItem_Hold_Label(_keyitem_serializable, _allitem_button)
+			#-------------------------------------------------------------------------------
+			var _inventory_keyitem_serializable: Key_Item_Serializable = Add_KeyItem_to_Inventory(_keyitem_serializable, how_many_would_you_buy)
+			Set_KeyItem_Information(_inventory_keyitem_serializable)
+			#-------------------------------------------------------------------------------
+			if(how_many_would_you_buy > _keyitem_serializable.stored):
+				how_many_would_you_buy = _keyitem_serializable.stored
+			#-------------------------------------------------------------------------------
+			while(money_serializable.stored < _price):
+				how_many_would_you_buy -= 1
+				_price = _keyitem_serializable.price * how_many_would_you_buy
+			#-------------------------------------------------------------------------------
+			if(how_many_would_you_buy < 1):
+				how_many_would_you_buy = 1
+			#-------------------------------------------------------------------------------
+			SetMoney_Label()
+			Print_How_Many_Do_You_Buy(_keyitem_serializable.price)
+			#-------------------------------------------------------------------------------
+			singleton.Play_SFX_Shop()
 		#-------------------------------------------------------------------------------
-		var _inventory_keyitem_serializable: Key_Item_Serializable = Add_KeyItem_to_Inventory(_keyitem_serializable, 1)
-		Set_KeyItem_Information(_inventory_keyitem_serializable)
+		else:
+			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
-		singleton.Play_SFX_Shop()
 	#-------------------------------------------------------------------------------
-	else:
-		singleton.Common_Canceled()
+	var _up: Callable = func():
+		Increase_How_Many_Do_Want_to_Buy(10, _keyitem_serializable.price, _keyitem_serializable.stored)
 	#-------------------------------------------------------------------------------
+	var _down: Callable = func():
+		Decrease_How_Many_Do_Want_to_Buy(10, _keyitem_serializable.price)
+	#-------------------------------------------------------------------------------
+	var _left: Callable = func():
+		Decrease_How_Many_Do_Want_to_Buy(1, _keyitem_serializable.price)
+	#-------------------------------------------------------------------------------
+	var _right: Callable = func():
+		Increase_How_Many_Do_Want_to_Buy(1, _keyitem_serializable.price, _keyitem_serializable.stored)
+	#-------------------------------------------------------------------------------
+	confirm_buy_menu_item_name.text = get_resource_filename(_keyitem_serializable.key_item_resource)
+	how_many_would_you_buy = 1
+	Print_How_Many_Do_You_Buy(_keyitem_serializable.price)
+	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
-	_label.text = "$500  "
+	_label.text = "$"+str(_keyitem_serializable.price)+"  "
 	_label.text += "["+str(_keyitem_serializable.stored)+"]  "
 #-------------------------------------------------------------------------------
 func Close_Market():
 	item_menu.hide()
 	dialogue_signal.emit()
 	pause_menu_panel.hide()
+	money_menu.hide()
 	#-------------------------------------------------------------------------------
 	Destroy_All_Items(item_menu_consumable_button_array)
 	Destroy_All_Items(item_menu_equipment_button_array)
@@ -4533,3 +4711,20 @@ func ReFill_All_Skills():
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+func Confirm_Buy_Menu_Submit(_submit:Callable, _button:Button, _up:Callable, _down:Callable, _left:Callable, _right:Callable):
+	confirm_buy_menu.show()
+	_button.disabled = true
+	#-------------------------------------------------------------------------------
+	var _cancel: Callable = func():
+		confirm_buy_menu.hide()
+		_button.disabled = false
+		singleton.Move_to_Button(_button)
+		singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button_Ud_Down_Left_Right(confirm_buy_menu_button, func():pass, _submit, _cancel, _up, _down, _left, _right)
+	singleton.Move_to_Button(confirm_buy_menu_button)
+	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func Print_How_Many_Do_You_Buy(_price: int):
+	confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"]  "
+	confirm_buy_menu_item_price.text = "$"+str(_price* how_many_would_you_buy)+"  "

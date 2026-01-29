@@ -142,7 +142,9 @@ func Interactable_Action(_world_2d:World_2D):
 	_world_2d.PlayAnimation(user.playback, \"Walk\")
 	#-------------------------------------------------------------------------------
 	_world_2d.Dialogue_Open()
+	singleton.Common_Submited()
 	await _world_2d.Dialogue(true, \"* I am not an enemy, but a merchant.\")
+	singleton.Common_Selected()
 	await _world_2d.Dialogue(true, \"* Do you want to buy something?\")
 	_world_2d.Dialogue_Close()
 	#-------------------------------------------------------------------------------
@@ -151,6 +153,7 @@ func Interactable_Action(_world_2d:World_2D):
 	_world_2d.Dialogue_Open()
 	await _world_2d.Dialogue(true, \"* Thank you.\")
 	_world_2d.Dialogue_Close()
+	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	_world_2d.PlayAnimation(user.playback, \"Idle\")
 #-------------------------------------------------------------------------------
@@ -166,16 +169,21 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 script = ExtResource("13_mxnnk")
 item_resource = ExtResource("14_xdoc7")
 hold = 2
+price = 45
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_8opot"]
 script = ExtResource("8_ygji3")
 equip_resource = ExtResource("9_mxnnk")
+stored = 16
+price = 20
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_wrvon"]
 script = ExtResource("10_xdoc7")
 key_item_resource = ExtResource("15_5drey")
+stored = 33
+price = 14
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rqg47"]

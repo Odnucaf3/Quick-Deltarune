@@ -12,6 +12,8 @@ class_name Singleton
 @export var audioStreamPlayer_equip: AudioStreamPlayer
 @export var audioStreamPlayer_save: AudioStreamPlayer
 @export var audioStreamPlayer_shop: AudioStreamPlayer
+@export var audioStreamPlayer_teleport: AudioStreamPlayer
+@export var audioStreamPlayer_enter_battle: AudioStreamPlayer
 #-------------------------------------------------------------------------------
 @export var bgmPlayer : AudioStreamPlayer
 #-------------------------------------------------------------------------------
@@ -127,6 +129,34 @@ func Set_Button(_b:Button, _selected:Callable, _submited:Callable, _canceled:Cal
 			#-------------------------------------------------------------------------------
 			if(_event.is_action_pressed(cancelInput)):
 				_canceled.call()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Set_Button_Ud_Down_Left_Right(_b:Button, _selected:Callable, _submited:Callable, _canceled:Callable, _up:Callable, _down:Callable, _left:Callable, _right:Callable) -> void:
+	Disconnect_Button(_b)
+	_b.focus_entered.connect(_selected)
+	_b.pressed.connect(_submited)
+	#-------------------------------------------------------------------------------
+	_b.gui_input.connect(
+		#-------------------------------------------------------------------------------
+		func(_event:InputEvent):
+			#-------------------------------------------------------------------------------
+			if(_event.is_action_pressed(cancelInput)):
+				_canceled.call()
+			#-------------------------------------------------------------------------------
+			elif(_event.is_action_pressed("ui_up")):
+				_up.call()
+			#-------------------------------------------------------------------------------
+			elif(_event.is_action_pressed("ui_down")):
+				_down.call()
+			#-------------------------------------------------------------------------------
+			elif(_event.is_action_pressed("ui_left")):
+				_left.call()
+			#-------------------------------------------------------------------------------
+			elif(_event.is_action_pressed("ui_right")):
+				_right.call()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	)
@@ -276,6 +306,12 @@ func Play_SFX_Save() -> void:
 #-------------------------------------------------------------------------------
 func Play_SFX_Shop() -> void:
 	audioStreamPlayer_shop.play()
+#-------------------------------------------------------------------------------
+func Play_SFX_Teleport() -> void:
+	audioStreamPlayer_teleport.play(0.9)
+#-------------------------------------------------------------------------------
+func Play_SFX_Enter_Battle() -> void:
+	audioStreamPlayer_enter_battle.play()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
