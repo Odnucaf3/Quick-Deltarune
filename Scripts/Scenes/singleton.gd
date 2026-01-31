@@ -17,6 +17,7 @@ class_name Singleton
 #-------------------------------------------------------------------------------
 @export var bgmPlayer : AudioStreamPlayer
 #-------------------------------------------------------------------------------
+@export var title_bgm: AudioStream
 @export var stage1: AudioStream
 @export var battle1: AudioStream
 #-------------------------------------------------------------------------------
@@ -37,7 +38,8 @@ const titleScene_Path: StringName = "res://Nodes/Scenes/title_scene.tscn"
 const mainScene_Path: StringName = "res://Nodes/Scenes/main_scene.tscn"
 const gameScene_Path: StringName = "res://Nodes/Scenes/game_scene.tscn"
 #-------------------------------------------------------------------------------
-@export var fps: Label
+@export var fps_margin_container: MarginContainer
+@export var fps_label: Label
 #-------------------------------------------------------------------------------
 var maxSave: int = 9
 var maxPlayer: int = 0
@@ -53,7 +55,7 @@ func _process(_delta:float):
 	#Set_Vsync()
 	#Set_MouseMode()
 	ResetGame()
-	fps.text = PlayerInfo()
+	fps_label.text = PlayerInfo()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -146,16 +148,16 @@ func Set_Button_Ud_Down_Left_Right(_b:Button, _selected:Callable, _submited:Call
 			if(_event.is_action_pressed(cancelInput)):
 				_canceled.call()
 			#-------------------------------------------------------------------------------
-			elif(_event.is_action_pressed("ui_up")):
+			elif(Input.is_action_pressed("ui_up")):
 				_up.call()
 			#-------------------------------------------------------------------------------
-			elif(_event.is_action_pressed("ui_down")):
+			elif(Input.is_action_pressed("ui_down")):
 				_down.call()
 			#-------------------------------------------------------------------------------
-			elif(_event.is_action_pressed("ui_left")):
+			elif(Input.is_action_pressed("ui_left")):
 				_left.call()
 			#-------------------------------------------------------------------------------
-			elif(_event.is_action_pressed("ui_right")):
+			elif(Input.is_action_pressed("ui_right")):
 				_right.call()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------

@@ -53,7 +53,7 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 resource_local_to_scene = true
 script = ExtResource("11_hko5v")
 key_item_resource = ExtResource("8_3p4s7")
-stored = 999
+stored = 4000
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
@@ -320,7 +320,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -333,10 +333,11 @@ tp_bar_progressbar_future = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/Con
 tp_bar_label = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/sp_Label")
 battlemenu_equipbutton_emptyspace = NodePath("../CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Control")
 dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu")
-dialogue_menu_speaker1 = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2")
-dialogue_menu_speaker1_image = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2/TextureRect")
-dialogue_menu_speaker1_name = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Label")
-dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel")
+dialogue_menu_button_next = NodePath("../CanvasLayer/Dialogue_Menu/Button")
+dialogue_menu_speaker1 = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2")
+dialogue_menu_speaker1_image = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2/TextureRect")
+dialogue_menu_speaker1_name = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Label")
+dialogue_menu_speaking_label = NodePath("../CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel")
 savespot_menu = NodePath("../CanvasLayer/Save_Menu")
 savespot_menu_button_array = [NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
@@ -547,29 +548,37 @@ equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), Sub
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1827743524]
 
-[node name="Dialogue_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=609991911]
-visible = false
+[node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu" unique_id=609991911]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu" unique_id=301530430]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer" unique_id=301530430]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer" unique_id=725610785]
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=725610785]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control" unique_id=164784011]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control" unique_id=164784011]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -578,7 +587,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control/Panel2" unique_id=760496580]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2" unique_id=760496580]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -589,21 +598,21 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer" unique_id=1209050402]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=1209050402]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer" unique_id=1273205585]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1273205585]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1844947033]
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1844947033]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 30
 text = "  [Name of the Speaker]  "
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer/Label" unique_id=1069740996]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label" unique_id=1069740996]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -612,14 +621,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label2" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer" unique_id=620185282]
+[node name="Label2" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=620185282]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 30
 text = "  [Name of the Speaker]  "
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/MarginContainer/Label2" unique_id=303522946]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label2" unique_id=303522946]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -628,12 +637,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer" unique_id=1750044404]
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1750044404]
 custom_minimum_size = Vector2(750, 178)
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel" unique_id=747908806]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel" unique_id=747908806]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -646,10 +655,10 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
 visible = false
 self_modulate = Color(1, 1, 1, 0)
 clip_contents = true
@@ -658,7 +667,7 @@ texture = ExtResource("21_hxoxt")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect" unique_id=1711449268]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect" unique_id=1711449268]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -669,24 +678,24 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "[Name of the Speaker]"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
-text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
+text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1089151902]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1089151902]
 visible = false
 self_modulate = Color(1, 1, 1, 0)
 clip_contents = true
@@ -696,7 +705,7 @@ expand_mode = 3
 stretch_mode = 5
 flip_h = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2" unique_id=1746880259]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2" unique_id=1746880259]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -708,11 +717,11 @@ expand_mode = 3
 stretch_mode = 5
 flip_h = true
 
-[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/HBoxContainer" unique_id=164044143]
+[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=164044143]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2" unique_id=1173881073]
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2" unique_id=1173881073]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -722,7 +731,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/HBoxContainer/Control2/Panel" unique_id=699207994]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2/Panel" unique_id=699207994]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -733,6 +742,17 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 flip_h = true
+
+[node name="Button" type="Button" parent="CanvasLayer/Dialogue_Menu" unique_id=987303234]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 400.0
+offset_right = 917.0
+offset_bottom = 450.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "  Next  "
 
 [node name="Pause_Menu_Panel" type="Panel" parent="CanvasLayer" unique_id=1524251225]
 visible = false
@@ -1035,6 +1055,7 @@ theme_override_font_sizes/font_size = 30
 text = "  Return to Save Point  "
 
 [node name="Money_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1309033172]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1075,6 +1096,7 @@ text = "  $500  "
 horizontal_alignment = 1
 
 [node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer" unique_id=701187213]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1165,7 +1187,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
-text = "  Quit  "
+text = "  Go To Title  "
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1306836712]
 visible = false
@@ -1281,6 +1303,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues" unique_id=295074117]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -3816,6 +3839,7 @@ theme_override_constants/outline_size = 4
 text = "60.00 fps"
 
 [node name="Confirm_Buy_Menu" type="PanelContainer" parent="CanvasLayer" unique_id=1387246458]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

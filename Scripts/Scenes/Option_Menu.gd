@@ -185,17 +185,17 @@ func SetIdiome(_index:int):
 	#-------------------------------------------------------------------------------
 	title.text = tr("option_menu_label_title")
 	#-------------------------------------------------------------------------------
-	idiome_label.text = tr("option_menu_label_idiome")
+	idiome_label.text = "* "+tr("option_menu_label_idiome")+":  "
 	#-------------------------------------------------------------------------------
-	resolution_label.text = tr("option_menu_label_resolution")
-	fullscreen_label.text = tr("option_menu_label_fullScreen")
-	borderless_label.text = tr("option_menu_label_borderless")
+	resolution_label.text = "* "+tr("option_menu_label_resolution")+":  "
+	fullscreen_label.text = "* "+tr("option_menu_label_fullScreen")+":  "
+	borderless_label.text = "* "+tr("option_menu_label_borderless")+":  "
 	#-------------------------------------------------------------------------------
-	vsync_label.text = tr("option_menu_label_vSync")
+	vsync_label.text = "* "+tr("option_menu_label_vSync")+":  "
 	#-------------------------------------------------------------------------------
-	master_label.text = tr("option_menu_label_master")
-	sfx_label.text = tr("option_menu_label_sfx")
-	bgm_label.text = tr("option_menu_label_bgm")
+	master_label.text = "* "+tr("option_menu_label_master")+":  "
+	sfx_label.text = "* "+tr("option_menu_label_sfx")+":  "
+	bgm_label.text = "* "+tr("option_menu_label_bgm")+":  "
 	#-------------------------------------------------------------------------------
 	back.text = "  "+tr("option_menu_button_back")+"  "
 #endregion

@@ -143,15 +143,24 @@ func Interactable_Action(_world_2d:World_2D):
 	#-------------------------------------------------------------------------------
 	_world_2d.Dialogue_Open()
 	singleton.Common_Submited()
-	await _world_2d.Dialogue(true, \"* I am not an enemy, but a merchant.\")
+	#-------------------------------------------------------------------------------
+	var _s: String = \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
+	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
+	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
+	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
+	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
+	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
+	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
+	#-------------------------------------------------------------------------------
+	await _world_2d.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
 	singleton.Common_Selected()
-	await _world_2d.Dialogue(true, \"* Do you want to buy something?\")
+	await _world_2d.Dialogue(true, \"* Do you want to buy something? \"+_s)
 	_world_2d.Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	await _world_2d.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
 	_world_2d.Dialogue_Open()
-	await _world_2d.Dialogue(true, \"* Thank you.\")
+	await _world_2d.Dialogue(true, \"* Thank you. \"+_s)
 	_world_2d.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------

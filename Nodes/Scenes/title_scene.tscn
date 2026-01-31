@@ -1,0 +1,254 @@
+[gd_scene format=3 uid="uid://ch0ojx6neph2m"]
+
+[ext_resource type="Script" uid="uid://moai8qkvj1gj" path="res://Scripts/Scenes/title_scene.gd" id="1_30ben"]
+[ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="1_fx8hn"]
+[ext_resource type="Texture2D" uid="uid://dlbtagoya51dt" path="res://Assets/ansimuz/warped city files/v1/background/skyline-a.png" id="2_vmviq"]
+[ext_resource type="Texture2D" uid="uid://bfgj4php65iyr" path="res://Assets/ansimuz/warped city files/v1/background/skyline-b.png" id="3_f2pgg"]
+[ext_resource type="Texture2D" uid="uid://dnm0sd7g8vylp" path="res://Assets/ansimuz/warped city files/v1/background/buildings-bg.png" id="4_7wq1i"]
+[ext_resource type="Texture2D" uid="uid://ctrwuju6ilag0" path="res://Assets/ansimuz/warped city files/v1/background/near-buildings-bg.png" id="5_ji8g2"]
+[ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="7_f2pgg"]
+
+[node name="title_scene" type="Node" unique_id=1463807014 node_paths=PackedStringArray("title_menu", "title_menu_button_array", "credit_menu", "credit_menu_ricktext", "credit_menu_button")]
+script = ExtResource("1_30ben")
+title_menu = NodePath("CanvasLayer/title_menu")
+title_menu_button_array = [NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button4")]
+credit_menu = NodePath("CanvasLayer_layer10/VBoxContainer")
+credit_menu_ricktext = NodePath("CanvasLayer_layer10/VBoxContainer/Panel/Credits/RichTextLabel")
+credit_menu_button = NodePath("CanvasLayer_layer10/VBoxContainer/Button")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=607743842]
+
+[node name="backgrounds" type="Control" parent="CanvasLayer" unique_id=1478091714]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+
+[node name="Control" type="Control" parent="CanvasLayer/backgrounds" unique_id=1976957237]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.7, 2.7)
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/backgrounds/Control" unique_id=1919718398]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -647.99994
+offset_right = 576.0
+offset_bottom = 6.1035156e-05
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("2_vmviq")
+
+[node name="TextureRect4" type="TextureRect" parent="CanvasLayer/backgrounds/Control" unique_id=1853443053]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -239.99998
+offset_right = 576.0
+offset_bottom = 1.5258789e-05
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+texture = ExtResource("3_f2pgg")
+stretch_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/backgrounds/Control" unique_id=2102933807]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -123.99999
+offset_right = 576.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+texture = ExtResource("4_7wq1i")
+stretch_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/backgrounds/Control" unique_id=1320749282]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -208.99998
+offset_right = 576.0
+offset_bottom = 1.5258789e-05
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+texture = ExtResource("5_ji8g2")
+stretch_mode = 1
+
+[node name="title_menu" type="Control" parent="CanvasLayer" unique_id=907597175]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/title_menu" unique_id=994302231]
+layout_mode = 0
+offset_left = 121.0
+offset_top = 155.0
+offset_right = 1030.0
+offset_bottom = 492.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_fx8hn")
+
+[node name="Label" type="Label" parent="CanvasLayer/title_menu/VBoxContainer2" unique_id=142652753]
+layout_mode = 2
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 100
+text = "Name of the Game"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/title_menu/VBoxContainer2/Label" unique_id=1660237202]
+visible = false
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = -90
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = -90
+theme_override_constants/margin_bottom = -10
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/title_menu/VBoxContainer2/Label/MarginContainer" unique_id=1095548646]
+self_modulate = Color(0, 0, 0, 0.60784316)
+layout_mode = 2
+texture = ExtResource("7_f2pgg")
+expand_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/title_menu/VBoxContainer2" unique_id=1647287652]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/title_menu/VBoxContainer2/PanelContainer" unique_id=232560433]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer" unique_id=313864271]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Button" type="Button" parent="CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer" unique_id=1470896851]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "  Start  "
+
+[node name="Button2" type="Button" parent="CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer" unique_id=12314414]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "  Options  "
+
+[node name="Button3" type="Button" parent="CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer" unique_id=643932811]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "  Credits  "
+
+[node name="Button4" type="Button" parent="CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer" unique_id=1555429482]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "  Quit  "
+
+[node name="CanvasLayer_layer10" type="CanvasLayer" parent="." unique_id=2100404723]
+layer = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer_layer10" unique_id=1686098575]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -518.75
+offset_top = -276.25
+offset_right = 518.75
+offset_bottom = 276.25
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_fx8hn")
+
+[node name="Button" type="Button" parent="CanvasLayer_layer10/VBoxContainer" unique_id=1429918214]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_font_sizes/font_size = 30
+text = "  Credits  "
+
+[node name="Panel" type="Panel" parent="CanvasLayer_layer10/VBoxContainer" unique_id=327175969]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Credits" type="MarginContainer" parent="CanvasLayer_layer10/VBoxContainer/Panel" unique_id=2063700721]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer_layer10/VBoxContainer/Panel/Credits" unique_id=1472563391]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "* Sewer Pack Files (by Ansimuz).
+([url]https://ansimuz.itch.io/sewers-action-pack[/url])
+
+* Starfighter Files (by Ansimuz).
+([url]https://ansimuz.itch.io/star-fighter[/url])
+
+* Warped City Files (by Ansimuz).
+([url]https://ansimuz.itch.io/warped-city[/url])
+
+* RPG Maker MV sfx and bgm (by Gotcha Gotcha Games,     KADOKAWA and Yoji Ojima).
+([url]https://rpgmakerofficial.com/en/support/rule/[/url])
+
+* Programming and Design (by Facundo Flores).
+([url]https://facuflores.itch.io/[/url])"

@@ -26,6 +26,7 @@ var max_tp: int
 @export var battlemenu_equipbutton_emptyspace: Control
 #-------------------------------------------------------------------------------
 @export var dialogue_menu: Control
+@export var dialogue_menu_button_next: Button
 @export var dialogue_menu_speaker1: Control
 @export var dialogue_menu_speaker1_image: TextureRect
 @export var dialogue_menu_speaker1_name: Control
@@ -312,6 +313,7 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	Set_Idiome()
 	#-------------------------------------------------------------------------------
+	Set_DialogueMenu_NextButton()
 #-------------------------------------------------------------------------------
 func _physics_process(_delta: float) -> void:
 	tween_Array = get_tree().get_processed_tweens()
@@ -322,10 +324,7 @@ func _physics_process(_delta: float) -> void:
 			if(!get_tree().paused):
 				#-------------------------------------------------------------------------------
 				if(is_in_dialogue):
-					#-------------------------------------------------------------------------------
-					if(Input.is_action_just_pressed("ui_accept")):
-						dialogue_signal.emit()
-					#-------------------------------------------------------------------------------
+					pass
 				#-------------------------------------------------------------------------------
 				else:
 					Player_Movement()
@@ -703,6 +702,7 @@ func Dialogue_Open():
 		PlayAnimation(friend_party[_i].playback, "Idle")
 		friend_party[_i].is_Moving = false
 	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(dialogue_menu_button_next)
 #-------------------------------------------------------------------------------
 func Dialogue(_b:bool, _s:String):
 	dialogue_menu.show()
@@ -716,11 +716,13 @@ func Dialogue(_b:bool, _s:String):
 		dialogue_menu_speaker1_name.hide()
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaking_label.text = _s
+	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
 	await dialogue_signal
 #-------------------------------------------------------------------------------
 func Dialogue_Close():
 	is_in_dialogue = false
 	dialogue_menu.hide()
+	dialogue_menu_button_next.release_focus()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -3169,6 +3171,7 @@ func PauseMenu_Close():
 #-------------------------------------------------------------------------------
 func PauseOff():
 	get_tree().set_deferred("paused", false)
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 func PauseMenu_Set():
@@ -3201,7 +3204,7 @@ func PauseMenu_Set():
 	singleton.Set_Button(pause_menu_button_array[2],func():singleton.Common_Selected() , func():PauseMenu_EquipButton_Submit(), func():PauseMenu_AnyButton_Cancel())
 	singleton.Set_Button(pause_menu_button_array[3],func():singleton.Common_Selected() , func():PauseMenu_StatusButton_Submit(), func():PauseMenu_AnyButton_Cancel())
 	singleton.Set_Button(pause_menu_button_array[4],func():singleton.Common_Selected() , func():PauseMenu_OptionButton_Submit(), func():PauseMenu_AnyButton_Cancel())
-	singleton.Set_Button(pause_menu_button_array[5],func():singleton.Common_Selected() , func():get_tree().quit(), func():PauseMenu_AnyButton_Cancel())
+	singleton.Set_Button(pause_menu_button_array[5],func():singleton.Common_Selected() , func():PauseMenu_QuitButton_Submit(), func():PauseMenu_AnyButton_Cancel())
 #-------------------------------------------------------------------------------
 func PauseMenu_SkillButton_Submit():
 	#-------------------------------------------------------------------------------
@@ -3922,6 +3925,11 @@ func PauseMenu_OptionButton_Submit():
 	singleton.Move_to_Button(singleton.optionMenu.back)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
+func PauseMenu_QuitButton_Submit():
+	PauseOff()
+	get_tree().change_scene_to_file("res://Nodes/Scenes/title_scene.tscn")
+	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
 func OptionMenu_BackButton_Subited() -> void:
 	OptionMenu_BackButton_Common()
 	singleton.Move_to_Button(pause_menu_button_array[4])
@@ -4444,13 +4452,7 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 			var _inventory_item_serializable: Item_Serializable = Add_ConsumableItem_to_Inventory(_item_serializable, how_many_would_you_buy)
 			Set_ConsumableItem_Information(_inventory_item_serializable)
 			#-------------------------------------------------------------------------------
-			while(money_serializable.stored < _price):
-				how_many_would_you_buy -= 1
-				_price = _item_serializable.price * how_many_would_you_buy
-			#-------------------------------------------------------------------------------
-			if(how_many_would_you_buy < 1):
-				how_many_would_you_buy = 1
-			#-------------------------------------------------------------------------------
+			Set_Max_Items_You_Can_Buy(99, _item_serializable.price, _price)
 			SetMoney_Label()
 			Print_How_Many_Do_You_Buy(_item_serializable.price)
 			#-------------------------------------------------------------------------------
@@ -4478,30 +4480,30 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func Increase_How_Many_Do_Want_to_Buy(_int:int, _original_price:int, _stored:int):
+	var _old_value: int = how_many_would_you_buy
 	how_many_would_you_buy += _int
+	#-------------------------------------------------------------------------------
 	var _price: int = _original_price * how_many_would_you_buy
 	#-------------------------------------------------------------------------------
-	if(how_many_would_you_buy > _stored):
-		how_many_would_you_buy = _stored
-	#-------------------------------------------------------------------------------
-	while(money_serializable.stored < _price):
-		how_many_would_you_buy -= 1
-		_price = _original_price * how_many_would_you_buy
-	#-------------------------------------------------------------------------------
-	if(how_many_would_you_buy < 1):
-		how_many_would_you_buy = 1
-	#-------------------------------------------------------------------------------
+	Set_Max_Items_You_Can_Buy(_stored, _original_price, _price)
 	Print_How_Many_Do_You_Buy(_original_price)
-	singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy > _old_value):
+		singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Decrease_How_Many_Do_Want_to_Buy(_int:int, _original_price:int):
+	var _old_value: int = how_many_would_you_buy
 	how_many_would_you_buy -= _int
 	#-------------------------------------------------------------------------------
 	if(how_many_would_you_buy < 1):
 		how_many_would_you_buy = 1
 	#-------------------------------------------------------------------------------
 	Print_How_Many_Do_You_Buy(_original_price)
-	singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy < _old_value):
+		singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
 	for _i in equip_array.size():
@@ -4534,16 +4536,7 @@ func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_ser
 			var _inventory_equip_serializable: Equip_Serializable = Add_EquipItem_to_Inventory(_equip_serializable, how_many_would_you_buy)
 			Set_EquipItem_Information(_inventory_equip_serializable)
 			#-------------------------------------------------------------------------------
-			if(how_many_would_you_buy > _equip_serializable.stored):
-				how_many_would_you_buy = _equip_serializable.stored
-			#-------------------------------------------------------------------------------
-			while(money_serializable.stored < _price):
-				how_many_would_you_buy -= 1
-				_price = _equip_serializable.price * how_many_would_you_buy
-			#-------------------------------------------------------------------------------
-			if(how_many_would_you_buy < 1):
-				how_many_would_you_buy = 1
-			#-------------------------------------------------------------------------------
+			Set_Max_Items_You_Can_Buy(_equip_serializable.stored, _equip_serializable.price, _price)
 			SetMoney_Label()
 			Print_How_Many_Do_You_Buy(_equip_serializable.price)
 			#-------------------------------------------------------------------------------
@@ -4606,16 +4599,7 @@ func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_ser
 			var _inventory_keyitem_serializable: Key_Item_Serializable = Add_KeyItem_to_Inventory(_keyitem_serializable, how_many_would_you_buy)
 			Set_KeyItem_Information(_inventory_keyitem_serializable)
 			#-------------------------------------------------------------------------------
-			if(how_many_would_you_buy > _keyitem_serializable.stored):
-				how_many_would_you_buy = _keyitem_serializable.stored
-			#-------------------------------------------------------------------------------
-			while(money_serializable.stored < _price):
-				how_many_would_you_buy -= 1
-				_price = _keyitem_serializable.price * how_many_would_you_buy
-			#-------------------------------------------------------------------------------
-			if(how_many_would_you_buy < 1):
-				how_many_would_you_buy = 1
-			#-------------------------------------------------------------------------------
+			Set_Max_Items_You_Can_Buy(_keyitem_serializable.stored, _keyitem_serializable.price, _price)
 			SetMoney_Label()
 			Print_How_Many_Do_You_Buy(_keyitem_serializable.price)
 			#-------------------------------------------------------------------------------
@@ -4641,6 +4625,19 @@ func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_ser
 	how_many_would_you_buy = 1
 	Print_How_Many_Do_You_Buy(_keyitem_serializable.price)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
+#-------------------------------------------------------------------------------
+func Set_Max_Items_You_Can_Buy(_stored:int, _original_price:int, _whole_cost:int):
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy > _stored):
+		how_many_would_you_buy = _stored
+	#-------------------------------------------------------------------------------
+	while(money_serializable.stored < _whole_cost):
+		how_many_would_you_buy -= 1
+		_whole_cost = _original_price * how_many_would_you_buy
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy < 1):
+		how_many_would_you_buy = 1
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
@@ -4728,3 +4725,35 @@ func Confirm_Buy_Menu_Submit(_submit:Callable, _button:Button, _up:Callable, _do
 func Print_How_Many_Do_You_Buy(_price: int):
 	confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"]  "
 	confirm_buy_menu_item_price.text = "$"+str(_price* how_many_would_you_buy)+"  "
+#-------------------------------------------------------------------------------
+func Set_DialogueMenu_NextButton():
+	#-------------------------------------------------------------------------------
+	var _selected: Callable = func(): singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+	var _submit: Callable = func():
+		dialogue_signal.emit()
+	#-------------------------------------------------------------------------------
+	var _cancel: Callable = func(): pass
+	#-------------------------------------------------------------------------------
+	var _up: Callable = func():
+		var _old_value: float = dialogue_menu_speaking_label.get_v_scroll_bar().value
+		dialogue_menu_speaking_label.get_v_scroll_bar().value -= 42
+		#-------------------------------------------------------------------------------
+		if(dialogue_menu_speaking_label.get_v_scroll_bar().value < _old_value):
+			singleton.Common_Selected()
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _down: Callable = func():
+		var _old_value: float = dialogue_menu_speaking_label.get_v_scroll_bar().value
+		dialogue_menu_speaking_label.get_v_scroll_bar().value += 42
+		#-------------------------------------------------------------------------------
+		if(dialogue_menu_speaking_label.get_v_scroll_bar().value > _old_value):
+			singleton.Common_Selected()
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _left: Callable = func(): pass
+	#-------------------------------------------------------------------------------
+	var _right: Callable = func(): pass
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button_Ud_Down_Left_Right(dialogue_menu_button_next, _selected, _submit, _cancel, _up, _down, _left, _right)
+#-------------------------------------------------------------------------------

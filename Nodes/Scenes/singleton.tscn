@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d1xgk00n12kl5" path="res://Scripts/Scenes/singleton.gd" id="1_ixejq"]
 [ext_resource type="Script" uid="uid://ugjgndtknor8" path="res://Scripts/Scenes/Option_Menu.gd" id="2_ar5in"]
+[ext_resource type="AudioStream" uid="uid://b0xuwk0awfbnl" path="res://Assets/rpg_maker_mv/audio/bgm/Theme2.ogg" id="2_lqxqx"]
 [ext_resource type="AudioStream" uid="uid://btiqylj537e1c" path="res://Assets/rpg_maker_mv/audio/bgm/Dungeon3.ogg" id="2_pfk01"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="3_ihmui"]
 [ext_resource type="AudioStream" uid="uid://ce1h3up0chofk" path="res://Assets/rpg_maker_mv/audio/bgm/Battle1.ogg" id="3_j0hcl"]
@@ -15,7 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://d4iwna203gtp3" path="res://Assets/rpg_maker_mv/audio/se/Teleport.ogg" id="13_i4uux"]
 [ext_resource type="AudioStream" uid="uid://vaobdawir6x0" path="res://Assets/rpg_maker_mv/audio/se/Battle1.ogg" id="14_26shh"]
 
-[node name="singleton" type="Node" unique_id=1729131300 node_paths=PackedStringArray("optionMenu", "audioStreamPlayer_selected", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "audioStreamPlayer_equip", "audioStreamPlayer_save", "audioStreamPlayer_shop", "audioStreamPlayer_teleport", "audioStreamPlayer_enter_battle", "bgmPlayer", "fps")]
+[node name="singleton" type="Node" unique_id=1729131300 node_paths=PackedStringArray("optionMenu", "audioStreamPlayer_selected", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "audioStreamPlayer_equip", "audioStreamPlayer_save", "audioStreamPlayer_shop", "audioStreamPlayer_teleport", "audioStreamPlayer_enter_battle", "bgmPlayer", "fps_margin_container", "fps_label")]
 process_mode = 3
 script = ExtResource("1_ixejq")
 optionMenu = NodePath("CanvasLayer/Option_Menu")
@@ -28,9 +29,11 @@ audioStreamPlayer_shop = NodePath("AudioStreamPlayer_shop")
 audioStreamPlayer_teleport = NodePath("AudioStreamPlayer_teleport")
 audioStreamPlayer_enter_battle = NodePath("AudioStreamPlayer_enter_battle")
 bgmPlayer = NodePath("AudioStreamPlayer_bgm")
+title_bgm = ExtResource("2_lqxqx")
 stage1 = ExtResource("2_pfk01")
 battle1 = ExtResource("3_j0hcl")
-fps = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
+fps_margin_container = NodePath("CanvasLayer/debug_MarginContainer")
+fps_label = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=590396412]
 layer = 5
