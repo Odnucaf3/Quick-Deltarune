@@ -8,6 +8,6 @@ myTARGET_TYPE = 1
 anim = "Crouch"
 action_string = "Item_0_0"
 lore = "* An common elixir."
-description = "* Resores 50% of an ally's health."
+description = "* Resores 50% of an ally's health. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 max_hold = 2
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

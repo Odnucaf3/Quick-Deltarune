@@ -59,6 +59,7 @@ func Title_Menu_Option_Button_Submit():
 func Title_Menu_Credit_Button_Submit() -> void:
 	credit_menu.show()
 	title_menu.hide()
+	credit_menu_ricktext.get_v_scroll_bar().value = 0
 	singleton.Move_to_Button(credit_menu_button)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------

@@ -215,7 +215,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_font_sizes/font_size = 30
 text = "  Credits  "
 
 [node name="Panel" type="Panel" parent="CanvasLayer_layer10/VBoxContainer" unique_id=327175969]
@@ -236,7 +235,7 @@ theme_override_constants/margin_bottom = 15
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer_layer10/VBoxContainer/Panel/Credits" unique_id=1472563391]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "* Sewer Pack Files (by Ansimuz).
 ([url]https://ansimuz.itch.io/sewers-action-pack[/url])
@@ -247,8 +246,52 @@ text = "* Sewer Pack Files (by Ansimuz).
 * Warped City Files (by Ansimuz).
 ([url]https://ansimuz.itch.io/warped-city[/url])
 
-* RPG Maker MV sfx and bgm (by Gotcha Gotcha Games,     KADOKAWA and Yoji Ojima).
+* RPG-Maker MV Assets (by Gotcha Gotcha Games, KADOKAWA and Yoji Ojima).
 ([url]https://rpgmakerofficial.com/en/support/rule/[/url])
 
 * Programming and Design (by Facundo Flores).
-([url]https://facuflores.itch.io/[/url])"
+([url]https://facuflores.itch.io/[/url])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"

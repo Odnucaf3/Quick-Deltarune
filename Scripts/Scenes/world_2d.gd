@@ -56,7 +56,6 @@ var enemy_party_dead: Array[Party_Member]
 @export var item_menu_allitems_content: VBoxContainer
 var item_menu_allitems_button_array: Array[Button]
 @export var item_menu_allitems_title: Label
-@export var item_menu_allitems_lore: RichTextLabel
 @export var item_menu_allitems_description: RichTextLabel
 @export var item_menu_allitems_cost_label: Label
 @export var item_menu_allitems_tp_cost_num_label: Label
@@ -69,7 +68,6 @@ var item_menu_allitems_button_array: Array[Button]
 @export var item_menu_consumable_content: VBoxContainer
 var item_menu_consumable_button_array: Array[Button]
 @export var item_menu_consumable_title: Label
-@export var item_menu_consumable_lore: RichTextLabel
 @export var item_menu_consumable_description: RichTextLabel
 @export var item_menu_consumable_cost_label: Label
 @export var item_menu_consumable_tp_cost_num_label: Label
@@ -82,7 +80,6 @@ var item_menu_consumable_button_array: Array[Button]
 @export var item_menu_equipment_content: VBoxContainer
 var item_menu_equipment_button_array: Array[Button]
 @export var item_menu_equipment_title: Label
-@export var item_menu_equipment_lore: RichTextLabel
 @export var item_menu_equipment_description: RichTextLabel
 @export var item_menu_equipment_held_label: Label
 @export var item_menu_equipment_storage_num_label: Label
@@ -91,7 +88,6 @@ var item_menu_equipment_button_array: Array[Button]
 @export var item_menu_keyitems_content: VBoxContainer
 var item_menu_keyitems_button_array: Array[Button]
 @export var item_menu_keyitems_title: Label
-@export var item_menu_keyitems_lore: RichTextLabel
 @export var item_menu_keyitems_description: RichTextLabel
 @export var item_menu_keyitems_held_label: Label
 @export var item_menu_keyitems_storage_num_label: Label
@@ -112,7 +108,6 @@ var key_item_array_in_battle: Array[Key_Item_Serializable]
 @export var skill_menu_content: VBoxContainer
 var skill_menu_button_array: Array[Button]
 @export var skill_menu_title: Label
-@export var skill_menu_lore: RichTextLabel
 @export var skill_menu_description: RichTextLabel
 @export var skill_menu_cost_label: Label
 @export var skill_menu_tp_cost_num_label: Label
@@ -129,11 +124,11 @@ var teleporty_menu_button_array: Array[Button]
 @export var teleporty_menu_rect: TextureRect
 @export var teleporty_menu_description: RichTextLabel
 #-------------------------------------------------------------------------------
+@export var equipslot_menu_scrollContainer: ScrollContainer
 @export var equipslot_menu_content: VBoxContainer
 var equipslot_menu_button_array: Array[Button]
 @export var equipslot_menu_button_label: Label
 @export var equipslot_menu_title: Label
-@export var equipslot_menu_lore: RichTextLabel
 @export var equipslot_menu_description: RichTextLabel
 #-------------------------------------------------------------------------------
 @export var confirm_buy_menu: Control
@@ -148,18 +143,18 @@ var equipslot_menu_button_array: Array[Button]
 #-------------------------------------------------------------------------------
 @export var status_menu_information_image: TextureRect
 @export var status_menu_information_title: Label
-@export var status_menu_information_lore: RichTextLabel
 @export var status_menu_information_description: RichTextLabel
 #-------------------------------------------------------------------------------
-@export var status_menu_stats_button_array: Array[Button]
+@export var status_menu_stats_scrollContainer: ScrollContainer
+@export var status_menu_stats_content: VBoxContainer
+var status_menu_stats_button_array: Array[Button]
 @export var status_menu_stats_title: Label
-@export var status_menu_stats_lore: RichTextLabel
 @export var status_menu_stats_description: RichTextLabel
 #-------------------------------------------------------------------------------
+@export var status_menu_statuseffect_scrollContainer: ScrollContainer
 @export var status_menu_statuseffect_content: VBoxContainer
 var status_menu_statuseffect_button_array: Array[Button]
 @export var status_menu_statuseffect_title: Label
-@export var status_menu_statuseffect_lore: RichTextLabel
 @export var status_menu_statuseffect_description: RichTextLabel
 #-------------------------------------------------------------------------------
 var camera_offset_y: float = 28
@@ -301,6 +296,7 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	Destroy_Childrens(skill_menu_content)
 	Destroy_Childrens(equipslot_menu_content)
+	Destroy_Childrens(status_menu_stats_content)
 	Destroy_Childrens(status_menu_statuseffect_content)
 	#-------------------------------------------------------------------------------
 	Destroy_Childrens(teleporty_menu_content)
@@ -706,6 +702,7 @@ func Dialogue_Open():
 #-------------------------------------------------------------------------------
 func Dialogue(_b:bool, _s:String):
 	dialogue_menu.show()
+	dialogue_menu_button_next.show()
 	#-------------------------------------------------------------------------------
 	if(_b):
 		dialogue_menu_speaker1.show()
@@ -801,6 +798,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		dialogue_menu_speaker1_name.hide()
 		dialogue_menu_speaking_label.text = "* The Battle began!"
 		dialogue_menu.show()
+		dialogue_menu_button_next.hide()
 		battle_menu.show()
 		tp_bar_root.show()
 		#-------------------------------------------------------------------------------
@@ -989,6 +987,7 @@ func BattleMenu_AttackButton_Submit():
 	var _cancel: Callable = func():
 		battle_menu.show()
 		dialogue_menu.show()
+		dialogue_menu_button_next.hide()
 		#-------------------------------------------------------------------------------
 		Set_TP_Label_from_the_future()
 		TargetMenu_TargetButton_Cancel()
@@ -1003,6 +1002,7 @@ func BattleMenu_DefenseButton_Submit():
 	var _cancel: Callable = func():
 		battle_menu.show()
 		dialogue_menu.show()
+		dialogue_menu_button_next.hide()
 		#-------------------------------------------------------------------------------
 		TargetMenu_TargetButton_Cancel()
 		Set_TP_Label_from_the_future()
@@ -1307,8 +1307,16 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 	for _i in enemy_party.size():
 		enemy_party[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
-	for _i in status_menu_stats_button_array.size():
-		singleton.Set_Button(status_menu_stats_button_array[_i], func():StatusMenu_StatsButton_Selected(_i), func():pass, func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user))
+	for _i in 19:
+		var _statuseffect_button: Button = Create_Stats_Button(_user, _i)
+		#-------------------------------------------------------------------------------
+		var _selected: Callable = StatusMenu_StatsButton_Selected(_i)
+		var _submit: Callable = func():pass
+		var _cancel: Callable = func():BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user)
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(_statuseffect_button, _selected, _submit, _cancel)
+		status_menu_stats_content.add_child(_statuseffect_button)
+		status_menu_stats_button_array.append(_statuseffect_button)
 	#-------------------------------------------------------------------------------
 	for _i in _user.statuseffect_array_in_battle.size():
 		var _statuseffect_button: Button = Create_StatusEffect_Button(_user.statuseffect_array_in_battle[_i])
@@ -1384,14 +1392,17 @@ func BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user:Party_Member):
 func Battle_Menu_StatusMenu_Exit_Common():
 	status_menu.hide()
 	dialogue_menu.show()
+	dialogue_menu_button_next.hide()
 	#-------------------------------------------------------------------------------
 	Destroy_All_Items(skill_menu_button_array)
 	Destroy_All_Items(equipslot_menu_button_array)
+	Destroy_All_Items(status_menu_stats_button_array)
 	Destroy_All_Items(status_menu_statuseffect_button_array)
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_Cancel():
 	battle_menu.show()
 	dialogue_menu.show()
+	dialogue_menu_button_next.hide()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.button_pivot.hide()
@@ -1469,7 +1480,6 @@ func Set_Skill_Information(_item_serializable:Item_Serializable):
 	else:
 		_hold_text = "-"
 	#----------------------------------------------------------------------------
-	skill_menu_lore.text = _item_serializable.item_resource.lore
 	skill_menu_description.text = _item_serializable.item_resource.description
 	skill_menu_cost_label.text = "* Cost:"
 	skill_menu_tp_cost_num_label.text = _tp_cost_text
@@ -1540,7 +1550,6 @@ func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
 	else:
 		_cooldown_text = "-"
 	#-------------------------------------------------------------------------------
-	item_menu_consumable_lore.text = _item_serializable.item_resource.lore
 	item_menu_consumable_description.text = _item_serializable.item_resource.description
 	#-------------------------------------------------------------------------------
 	item_menu_consumable_cost_label.text = "* Cost:"
@@ -1550,7 +1559,6 @@ func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
 	item_menu_consumable_hold_num_label.text = _hold_text
 	item_menu_consumable_storage_num_label.text = _stored_text
 	#-------------------------------------------------------------------------------
-	item_menu_allitems_lore.text = _item_serializable.item_resource.lore
 	item_menu_allitems_description.text = _item_serializable.item_resource.description
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_cost_label.text = "* Cost:"
@@ -1566,14 +1574,11 @@ func ItemMenu_Equipment_ItemButton_Selected(_equip_serializable:Equip_Serializab
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func Set_EquipItem_Information(_equip_serializable:Equip_Serializable):
-	var _lore: String = _equip_serializable.equip_resource.lore
 	var _description: String = _equip_serializable.equip_resource.description
 	var _stored: String = "["+str(_equip_serializable.stored)+"]"
 	#-------------------------------------------------------------------------------
-	item_menu_equipment_lore.text = _lore
 	item_menu_equipment_description.text = _description
 	#-------------------------------------------------------------------------------
-	item_menu_allitems_lore.text = _lore
 	item_menu_allitems_description.text = _description
 	#-------------------------------------------------------------------------------
 	item_menu_equipment_held_label.text = "* Hold:"
@@ -1591,14 +1596,11 @@ func ItemMenu_KeyItem_ItemButton_Selected(keyitem_serializable:Key_Item_Serializ
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func Set_KeyItem_Information(keyitem_serializable:Key_Item_Serializable):
-	var _lore: String = keyitem_serializable.key_item_resource.lore
 	var _description: String = keyitem_serializable.key_item_resource.description
 	var _stored: String = "["+str(keyitem_serializable.stored)+"]"
 	#-------------------------------------------------------------------------------
-	item_menu_keyitems_lore.text = _lore
 	item_menu_keyitems_description.text = _description
 	#-------------------------------------------------------------------------------
-	item_menu_allitems_lore.text = _lore
 	item_menu_allitems_description.text = _description
 	#-------------------------------------------------------------------------------
 	item_menu_keyitems_held_label.text = "* Hold:"
@@ -1617,58 +1619,91 @@ func EquipSlotMenu_EquipButton_Selected(_user:Party_Member, _equip_serializable_
 		StatusMenu_No_Description(_user)
 	#-------------------------------------------------------------------------------
 	else:
-		equipslot_menu_lore.text = _equip_serializable_array[_index].equip_resource.lore
 		equipslot_menu_description.text = _equip_serializable_array[_index].equip_resource.description
 		#-------------------------------------------------------------------------------
 		singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func StatusMenu_StatusEffectButton_Selected(_statuseffect_serializable:StatusEffect_Serializable):
-	status_menu_statuseffect_lore.text = _statuseffect_serializable.statuseffect_resource.lore
 	status_menu_statuseffect_description.text = _statuseffect_serializable.statuseffect_resource.description
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
-func StatusMenu_StatsButton_Selected(_index:int):
+func StatusMenu_StatsButton_Selected(_index:int) -> Callable:
+	var _selected: Callable
 	#-------------------------------------------------------------------------------
 	match(_index):
 		0:
-			status_menu_stats_lore.text = "* Max Hp Lore."
-			status_menu_stats_description.text = "* Max Hp Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Max Hp Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		1:
-			status_menu_stats_lore.text = "* Max Sp Lore."
-			status_menu_stats_description.text = "* Max Sp Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Max Sp Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		2:
-			status_menu_stats_lore.text = "* Physical Attack Lore."
-			status_menu_stats_description.text = "* Physical Attack Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Physical Attack Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		3:
-			status_menu_stats_lore.text = "* Physical Defense Lore."
-			status_menu_stats_description.text = "* Physical Defense Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Physical Defense Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		4:
-			status_menu_stats_lore.text = "* Magical Attack Lore."
-			status_menu_stats_description.text = "* Magical Attack Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Magical Attack Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		5:
-			status_menu_stats_lore.text = "* Magical Defense Lore."
-			status_menu_stats_description.text = "* Magical Defense Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Magical Defense Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		6:
-			status_menu_stats_lore.text = "* Agility Lore."
-			status_menu_stats_description.text = "* Agility Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Agility Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		7:
-			status_menu_stats_lore.text = "* Speed Lore."
-			status_menu_stats_description.text = "* Speed Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Speed Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		8:
-			status_menu_stats_lore.text = "* Luck Lore."
-			status_menu_stats_description.text = "* Luck Description."
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Luck Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		_:
+			#-------------------------------------------------------------------------------
+			_selected = func():
+				status_menu_stats_description.text = "* Null Description."
+				singleton.Common_Selected()
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	singleton.Common_Selected()
+	return _selected
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Submit(_item_serializable:Item_Serializable, _hold:int, _cooldown:int, _cancel:Callable):
 	#-------------------------------------------------------------------------------
@@ -1688,6 +1723,7 @@ func ItemMenu_ItemButton_Submit(_item_serializable:Item_Serializable, _hold:int,
 func ItemMenu_ItemButton_Cancel():
 	battle_menu.show()
 	dialogue_menu.show()
+	dialogue_menu_button_next.hide()
 	BattleMenu_ItemMenu_Exit_Common()
 	singleton.Move_to_Button(battle_menu_button[3])
 	singleton.Common_Canceled()
@@ -1723,6 +1759,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				if(enemy_party_alive.size() > 0):
 					_last_menu.hide()
 					dialogue_menu.show()
+					dialogue_menu_button_next.hide()
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
@@ -1743,6 +1780,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				if(friend_party_alive.size() > 0):
 					_last_menu.hide()
 					dialogue_menu.show()
+					dialogue_menu_button_next.hide()
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
@@ -1764,6 +1802,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				if(friend_party_dead.size() > 0):
 					_last_menu.hide()
 					dialogue_menu.show()
+					dialogue_menu_button_next.hide()
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
@@ -1783,6 +1822,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			Item_Resource.TARGET_TYPE.USER:
 				_last_menu.hide()
 				dialogue_menu.show()
+				dialogue_menu_button_next.hide()
 				#-------------------------------------------------------------------------------
 				_tp -= _item_serializable.item_resource.tp_cost
 				Set_TP_Label(_tp)
@@ -1815,6 +1855,7 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 	#-------------------------------------------------------------------------------
 	Destroy_All_Items(skill_menu_button_array)
 	Destroy_All_Items(equipslot_menu_button_array)
+	Destroy_All_Items(status_menu_stats_button_array)
 	Destroy_All_Items(status_menu_statuseffect_button_array)
 	#-------------------------------------------------------------------------------
 	After_Choose_Target_Logic()
@@ -1840,6 +1881,7 @@ func After_Choose_Target_Logic():
 		battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
 		battle_menu.show()
 		dialogue_menu.show()
+		dialogue_menu_button_next.hide()
 		singleton.Move_to_First_Button(battle_menu_button)
 		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
@@ -1895,6 +1937,7 @@ func Party_Actions():
 		#-------------------------------------------------------------------------------
 		if(_user.target != null):
 			dialogue_menu.show()
+			dialogue_menu_button_next.hide()
 			dialogue_menu_speaking_label.text = "* "+_user.id + " uses " + get_resource_filename(_user.item_serializable.item_resource) + " on " + _user.target.id
 			await Seconds(0.5)
 			await Do_Player_Action(_user)
@@ -2089,6 +2132,7 @@ func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
 		#-------------------------------------------------------------------------------
 		if(enemy_party_alive.size() > 0):
 			dialogue_menu.show()
+			dialogue_menu_button_next.hide()
 			dialogue_menu_speaking_label.text = "* Normal Attack Minigame"
 			await Seconds(0.5)
 			#-------------------------------------------------------------------------------
@@ -2176,6 +2220,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			#-------------------------------------------------------------------------------
 			battle_menu.show()
 			dialogue_menu.show()
+			dialogue_menu_button_next.hide()
 			battle_box.hide()
 			myGAME_STATE = GAME_STATE.IN_MENU
 			battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
@@ -2304,6 +2349,7 @@ func You_Retry(_callable: Callable):
 		#-------------------------------------------------------------------------------
 		battle_menu.show()
 		dialogue_menu.show()
+		dialogue_menu_button_next.hide()
 		#-------------------------------------------------------------------------------
 		singleton.Move_to_First_Button(battle_menu_button)
 		singleton.Common_Submited()
@@ -2330,6 +2376,7 @@ func RetryMenu_GiveUpButton_Submit():
 func RetryMenu_AnyButton_Cancel():
 	battle_menu.show()
 	dialogue_menu.show()
+	dialogue_menu_button_next.hide()
 	win_label.hide()
 	retry_menu.hide()
 	#-------------------------------------------------------------------------------
@@ -3517,6 +3564,23 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	#-------------------------------------------------------------------------------
 	return _button
 #-------------------------------------------------------------------------------
+func Create_Stats_Button(_party_member:Party_Member, _index: int) -> Button:
+	var _button: Button = Button.new()
+	#-------------------------------------------------------------------------------
+	_button.theme = ui_theme
+	_button.text = "  "+"Star Numer #"+str(_index)+":  "
+	_button.add_theme_font_size_override("font_size", 24)
+	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	#-------------------------------------------------------------------------------
+	var _label2: Label = Label.new()
+	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.text = str(30)+"  "
+	_button.add_child(_label2)
+	#-------------------------------------------------------------------------------
+	return _button
+#-------------------------------------------------------------------------------
 func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Serializable) -> Button:
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
@@ -3537,8 +3601,12 @@ func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Seriali
 func ItemMenu_No_Description():
 	singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
+	item_menu_consumable_scrollContainer.get_v_scroll_bar().value = 0
+	item_menu_equipment_scrollContainer.get_v_scroll_bar().value = 0
+	item_menu_keyitems_scrollContainer.get_v_scroll_bar().value = 0
+	item_menu_allitems_scrollContainer.get_v_scroll_bar().value = 0
+	#-------------------------------------------------------------------------------
 	item_menu_consumable_description.text = ""
-	item_menu_consumable_lore.text = ""
 	item_menu_consumable_cost_label.text = ""
 	item_menu_consumable_tp_cost_num_label.text = ""
 	item_menu_consumable_cooldown_num_label.text = ""
@@ -3547,17 +3615,14 @@ func ItemMenu_No_Description():
 	item_menu_consumable_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	item_menu_equipment_description.text = ""
-	item_menu_equipment_lore.text = ""
 	item_menu_equipment_held_label.text = ""
 	item_menu_equipment_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	item_menu_keyitems_description.text = ""
-	item_menu_keyitems_lore.text = ""
 	item_menu_keyitems_held_label.text = ""
 	item_menu_keyitems_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	item_menu_allitems_description.text = ""
-	item_menu_allitems_lore.text = ""
 	item_menu_allitems_cost_label.text = ""
 	item_menu_allitems_tp_cost_num_label.text = ""
 	item_menu_allitems_cooldown_num_label.text = ""
@@ -3568,17 +3633,18 @@ func ItemMenu_No_Description():
 func StatusMenu_No_Description(_user:Party_Member):
 	singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
+	status_menu_stats_scrollContainer.get_v_scroll_bar().value = 0
+	skill_menu_scrollContainer.get_v_scroll_bar().value = 0
+	equipslot_menu_scrollContainer.get_v_scroll_bar().value = 0
+	status_menu_statuseffect_scrollContainer.get_v_scroll_bar().value = 0
+	#-------------------------------------------------------------------------------
 	status_menu_information_description.text = _user.description
-	status_menu_information_lore.text = _user.lore
 	#-------------------------------------------------------------------------------
 	status_menu_stats_description.text = ""
-	status_menu_stats_lore.text = ""
 	#-------------------------------------------------------------------------------
-	equipslot_menu_lore.text = ""
 	equipslot_menu_description.text = ""
 	#-------------------------------------------------------------------------------
 	skill_menu_description.text = ""
-	skill_menu_lore.text = ""
 	skill_menu_cost_label.text = ""
 	skill_menu_tp_cost_num_label.text = ""
 	skill_menu_cooldown_num_label.text = ""
@@ -3587,7 +3653,6 @@ func StatusMenu_No_Description(_user:Party_Member):
 	skill_menu_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
 	status_menu_statuseffect_description.text = ""
-	status_menu_statuseffect_lore.text = ""
 #-------------------------------------------------------------------------------
 func TeleportMenu_No_Description():
 	singleton.Common_Selected()
@@ -3839,7 +3904,7 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	Show_Status_Data(_user)
 	#-------------------------------------------------------------------------------
 	for _i in status_menu_stats_button_array.size():
-		var _selected: Callable = func():StatusMenu_StatsButton_Selected(_i)
+		var _selected: Callable = StatusMenu_StatsButton_Selected(_i)
 		var _submit: Callable = func():singleton.Common_Canceled()
 		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
 		#-------------------------------------------------------------------------------
@@ -3868,6 +3933,17 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 		equipslot_menu_content.add_child(_equipslot_button)
 		#-------------------------------------------------------------------------------
 		Create_EquipSlot_Label(_user.equip_array)
+	#-------------------------------------------------------------------------------
+	for _i in 18:
+		var _statuseffect_button: Button = Create_Stats_Button(_user, _i)
+		#-------------------------------------------------------------------------------
+		var _selected: Callable = StatusMenu_StatsButton_Selected(_i)
+		var _submit: Callable = func():pass
+		var _cancel: Callable = func():PauseMenu_StatusMenu_Exit_Common(_index)
+		#-------------------------------------------------------------------------------
+		singleton.Set_Button(_statuseffect_button, _selected, _submit, _cancel)
+		status_menu_stats_content.add_child(_statuseffect_button)
+		status_menu_stats_button_array.append(_statuseffect_button)
 	#-------------------------------------------------------------------------------
 	for _i in _user.statuseffect_array.size():
 		var _statuseffect_button: Button = Create_StatusEffect_Button(friend_party[_index].statuseffect_array[_i])
@@ -3904,6 +3980,7 @@ func Show_Status_Data(_user:Party_Member):
 func PauseMenu_StatusMenu_Exit_Common(_index:int):
 	status_menu.hide()
 	#-------------------------------------------------------------------------------
+	Destroy_All_Items(status_menu_stats_button_array)
 	Destroy_All_Items(status_menu_statuseffect_button_array)
 	Destroy_All_Items(equipslot_menu_button_array)
 	Destroy_All_Items(skill_menu_button_array)

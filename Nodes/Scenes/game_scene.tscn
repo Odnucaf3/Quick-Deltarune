@@ -320,7 +320,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_lore", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_lore", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_lore", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_lore", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_lore", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_lore", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_lore", "status_menu_information_description", "status_menu_stats_button_array", "status_menu_stats_title", "status_menu_stats_lore", "status_menu_stats_description", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_lore", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_scrollContainer", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_description", "status_menu_stats_scrollContainer", "status_menu_stats_content", "status_menu_stats_title", "status_menu_stats_description", "status_menu_statuseffect_scrollContainer", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -348,50 +348,45 @@ player_interactable_area2d = NodePath("Player/interactable_by_Action_Area2D")
 player_enemyDetector_area2d = NodePath("Player/enemy_by_Touch_Area2D")
 friend_party = [NodePath("Player/Friend_01"), NodePath("Friend_02"), NodePath("Friend_03")]
 item_menu = NodePath("../CanvasLayer/All Menues/Items_TabContainer")
-item_menu_allitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-item_menu_allitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_allitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer")
+item_menu_allitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 item_menu_allitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/Label")
-item_menu_allitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-item_menu_allitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_allitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/RichTextLabel2")
 item_menu_allitems_cost_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
 item_menu_allitems_tp_cost_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
 item_menu_allitems_cooldown_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
 item_menu_allitems_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
 item_menu_allitems_hold_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
 item_menu_allitems_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
-item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-item_menu_consumable_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_consumable_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer")
+item_menu_consumable_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 item_menu_consumable_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/Label")
-item_menu_consumable_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-item_menu_consumable_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_consumable_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/RichTextLabel2")
 item_menu_consumable_cost_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
 item_menu_consumable_tp_cost_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
 item_menu_consumable_cooldown_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
 item_menu_consumable_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
 item_menu_consumable_hold_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
 item_menu_consumable_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
-item_menu_equipment_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-item_menu_equipment_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_equipment_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer")
+item_menu_equipment_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 item_menu_equipment_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/Label")
-item_menu_equipment_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-item_menu_equipment_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_equipment_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/RichTextLabel2")
 item_menu_equipment_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
 item_menu_equipment_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
-item_menu_keyitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-item_menu_keyitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+item_menu_keyitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer")
+item_menu_keyitems_content = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 item_menu_keyitems_title = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/Label")
-item_menu_keyitems_lore = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-item_menu_keyitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+item_menu_keyitems_description = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/RichTextLabel2")
 item_menu_keyitems_held_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
 item_menu_keyitems_storage_num_label = NodePath("../CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 item_array = Array[ExtResource("7_igypo")]([SubResource("Resource_ftd8i")])
 iten_resource_attack = SubResource("Resource_gg6rv")
 iten_resource_defense = SubResource("Resource_rpgth")
-skill_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-skill_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+skill_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer")
+skill_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 skill_menu_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/Label")
-skill_menu_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-skill_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+skill_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/RichTextLabel2")
 skill_menu_cost_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
 skill_menu_tp_cost_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
 skill_menu_cooldown_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
@@ -399,16 +394,16 @@ skill_menu_held_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/
 skill_menu_hold_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
 skill_menu_storage_num_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 teleporty_menu = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer")
-teleporty_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer")
-teleporty_menu_content = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+teleporty_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer")
+teleporty_menu_content = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 teleporty_menu_title = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/Label")
-teleporty_menu_rect = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/Control/TextureRect")
-teleporty_menu_description = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
-equipslot_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer")
-equipslot_menu_button_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer/Label")
-equipslot_menu_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/Label")
-equipslot_menu_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-equipslot_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+teleporty_menu_rect = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/Control/TextureRect")
+teleporty_menu_description = NodePath("../CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/RichTextLabel")
+equipslot_menu_scrollContainer = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer")
+equipslot_menu_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer")
+equipslot_menu_button_label = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/MarginContainer/Label")
+equipslot_menu_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/Label")
+equipslot_menu_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/RichTextLabel2")
 confirm_buy_menu = NodePath("../CanvasLayer/Confirm_Buy_Menu")
 confirm_buy_menu_item_name = NodePath("../CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/Label2")
 confirm_buy_menu_button = NodePath("../CanvasLayer/Confirm_Buy_Menu/MarginContainer/VBoxContainer/HBoxContainer2/Button")
@@ -416,18 +411,17 @@ confirm_buy_menu_item_price = NodePath("../CanvasLayer/Confirm_Buy_Menu/MarginCo
 money_menu = NodePath("../CanvasLayer/Money_Menu")
 money_menu_label = NodePath("../CanvasLayer/Money_Menu/HBoxContainer/PanelContainer/Label")
 status_menu = NodePath("../CanvasLayer/All Menues/Status_TabContainer")
-status_menu_information_image = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
+status_menu_information_image = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/TextureRect")
 status_menu_information_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/Label")
-status_menu_information_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/MarginContainer/RichTextLabel")
-status_menu_information_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/MarginContainer2/RichTextLabel")
-status_menu_stats_button_array = [NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button2"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button3"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button4"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button5"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button6"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button7"), NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button8")]
+status_menu_information_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/RichTextLabel2")
+status_menu_stats_scrollContainer = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer")
+status_menu_stats_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer")
 status_menu_stats_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/Label")
-status_menu_stats_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/MarginContainer/RichTextLabel")
-status_menu_stats_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/MarginContainer2/RichTextLabel")
-status_menu_statuseffect_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer")
+status_menu_stats_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/RichTextLabel2")
+status_menu_statuseffect_scrollContainer = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer")
+status_menu_statuseffect_content = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 status_menu_statuseffect_title = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/Label")
-status_menu_statuseffect_lore = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/MarginContainer/RichTextLabel")
-status_menu_statuseffect_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/MarginContainer2/RichTextLabel")
+status_menu_statuseffect_description = NodePath("../CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/RichTextLabel2")
 black_panel = NodePath("../CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("Battle_Black_Panel")
 pause_menu_panel = NodePath("../CanvasLayer/Pause_Menu_Panel")
@@ -549,6 +543,7 @@ equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), Sub
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1827743524]
 
 [node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -1298,12 +1293,11 @@ anchor_bottom = 0.5
 offset_left = -444.0
 offset_top = -264.5
 offset_right = 444.0
-offset_bottom = 264.5
+offset_bottom = 261.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues" unique_id=295074117]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1311,10 +1305,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
-current_tab = 2
+current_tab = 0
 
 [node name="All Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer" unique_id=816678709]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -1324,6 +1317,7 @@ metadata/_tab_index = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items" unique_id=2143998491]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer" unique_id=1430618459]
 layout_mode = 2
@@ -1336,125 +1330,110 @@ text = "All Items"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer" unique_id=711471654]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1006717112]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer" unique_id=1006717112]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=74942349]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=2043681035]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=2043681035]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=910884604]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=910884604]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1640148337]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1640148337]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=407848399]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=407848399]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=358242476]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=358242476]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=500725038]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=500725038]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=222264023]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=222264023]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=364303867]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=364303867]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=348537347]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=348537347]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2128815545]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2128815545]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1408864348]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1408864348]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=69954860]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=69954860]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1803757903]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1803757903]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1459570282]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1459570282]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=618872887]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=618872887]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -1472,21 +1451,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2" unique_id=1594887167]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2" unique_id=2080176601]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=1379954468]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2" unique_id=579034817]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=2080176601]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
@@ -1547,6 +1514,7 @@ metadata/_tab_index = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items" unique_id=2124324926]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer" unique_id=1205509134]
 layout_mode = 2
@@ -1559,125 +1527,110 @@ text = "Consumable Items"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer" unique_id=909195967]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1760754516]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer" unique_id=1760754516]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=421296563]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=338201110]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=338201110]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2025704147]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2025704147]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1765159301]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1765159301]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=344608582]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=344608582]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1818097115]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1818097115]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=77718039]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=77718039]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2102321124]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2102321124]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1452372492]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1452372492]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1250702291]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1250702291]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=589034730]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=589034730]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=9736621]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=9736621]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=18417445]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=18417445]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=856495195]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=856495195]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=687704208]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=687704208]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Consumable's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=568871615]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=568871615]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -1695,21 +1648,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2" unique_id=347308772]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2" unique_id=1847637999]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=1817813801]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2" unique_id=1846838147]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Consumables Items/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=1847637999]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "* Uses description of the Skill / Item."
@@ -1761,6 +1702,7 @@ text = "[3]"
 horizontal_alignment = 2
 
 [node name="Equip Items" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer" unique_id=430706237]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -1770,6 +1712,7 @@ metadata/_tab_index = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items" unique_id=1137664475]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer" unique_id=1862709671]
 layout_mode = 2
@@ -1782,125 +1725,110 @@ text = "Equip Items"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer" unique_id=1568145919]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1755192717]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer" unique_id=1755192717]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=1080858509]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=1860392935]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=1860392935]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=42764178]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=42764178]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=225385654]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=225385654]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=877517511]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=877517511]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1327095998]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1327095998]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=5118345]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=5118345]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=957979995]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=957979995]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=288459664]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=288459664]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1957900611]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1957900611]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2130400058]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2130400058]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=66706611]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=66706611]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=205582752]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=205582752]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1452028035]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1452028035]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1980784421]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1980784421]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Equipment's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=193416765]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=193416765]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -1918,21 +1846,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2" unique_id=1205432041]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2" unique_id=655044708]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=1308531526]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2" unique_id=77011985]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Equip Items/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=655044708]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
@@ -1977,6 +1893,7 @@ metadata/_tab_index = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items" unique_id=1299860997]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer" unique_id=1511014465]
 layout_mode = 2
@@ -1989,125 +1906,110 @@ text = "Key Items"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer" unique_id=45476314]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1479964775]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer" unique_id=1479964775]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=189466324]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=337268400]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=337268400]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1427331513]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1427331513]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=474937031]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=474937031]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=240265396]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=240265396]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1846352940]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1846352940]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1591708578]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1591708578]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=549086399]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=549086399]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=934017795]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=934017795]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=155437352]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=155437352]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1658756894]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1658756894]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2096658945]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2096658945]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1650288369]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1650288369]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=326384644]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=326384644]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=408568252]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=408568252]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Key Item's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1571685301]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1571685301]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -2125,21 +2027,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2" unique_id=373965776]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2" unique_id=381680093]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=967548820]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2" unique_id=1708582959]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Items_TabContainer/Key Items/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=381680093]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
@@ -2195,6 +2085,7 @@ metadata/_tab_index = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Information" unique_id=1885050257]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer" unique_id=535500831]
 layout_mode = 2
@@ -2203,26 +2094,21 @@ size_flags_horizontal = 3
 [node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer" unique_id=1667219346]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
-text = "Player 1 (Lv 5)"
+text = "Information"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer" unique_id=200284486]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_top = -50
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer/MarginContainer" unique_id=877351630]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer" unique_id=877351630]
 layout_mode = 2
 size_flags_vertical = 3
 texture = ExtResource("18_tnh07")
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Label2" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer" unique_id=450461955]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Name of The Party Member
-Title of the Party Member"
+text = "Name of this guy (Lv 5)"
 horizontal_alignment = 1
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer" unique_id=1958657665]
@@ -2236,21 +2122,16 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3" unique_id=1877811491]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3" unique_id=540559387]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/MarginContainer" unique_id=540559387]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Lore description of the Skill / Item."
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3" unique_id=1835000050]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3" unique_id=1573462390]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Information/HBoxContainer/VBoxContainer3/MarginContainer2" unique_id=1573462390]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
@@ -2265,6 +2146,7 @@ metadata/_tab_index = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats" unique_id=1598993393]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer" unique_id=2047268970]
 layout_mode = 2
@@ -2277,24 +2159,26 @@ text = "Base Stats"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2" unique_id=63825195]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2" unique_id=945206319]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 10
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=712063041]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer" unique_id=712063041]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=347630707]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=347630707]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Max HP:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button" unique_id=847308740]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button" unique_id=847308740]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2306,14 +2190,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=1160598799]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1160598799]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Max SP:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button2" unique_id=658572484]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button2" unique_id=658572484]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2325,14 +2209,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=843181732]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=843181732]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Physical Attack:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button3" unique_id=69175632]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button3" unique_id=69175632]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2344,14 +2228,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=1445853941]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1445853941]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Physical Defense:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button4" unique_id=1074378399]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button4" unique_id=1074378399]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2363,14 +2247,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=173507784]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=173507784]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Magical Attack:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button5" unique_id=98654721]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button5" unique_id=98654721]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2382,14 +2266,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=1676870726]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1676870726]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Magical Defense:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button6" unique_id=1787244248]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button6" unique_id=1787244248]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2401,14 +2285,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=999866159]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=999866159]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Agility:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button7" unique_id=1837042530]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button7" unique_id=1837042530]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2420,14 +2304,14 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer" unique_id=1596298724]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1596298724]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Luck:"
 alignment = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/MarginContainer/VBoxContainer/Button8" unique_id=2121249424]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button8" unique_id=2121249424]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2439,38 +2323,138 @@ text = "30  "
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2" unique_id=3804483]
-visible = false
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=943857368]
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1417027591]
-layout_mode = 2
-size_flags_vertical = 1
+theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
-text = "max HP
-max SP
-Physic Attack
-Physic Defense
-Magic Attack
-Magic Attack
-Agility
-Luck"
+text = "  Luck:"
+alignment = 0
 
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/HBoxContainer" unique_id=123652715]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button9" unique_id=189139133]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 24
-text = "30
-30
-20
-20
-20
-20
-20
-20"
+text = "30  "
 horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1716478760]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Luck:"
+alignment = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button10" unique_id=387519623]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "30  "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=2063777623]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Luck:"
+alignment = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button11" unique_id=1701612527]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "30  "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1533013239]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Luck:"
+alignment = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button12" unique_id=479386588]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "30  "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=152544950]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Luck:"
+alignment = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button13" unique_id=503336058]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "30  "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1264380409]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Luck:"
+alignment = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button14" unique_id=1668666945]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "30  "
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Button15" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1586937754]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  Luck:"
+alignment = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Button15" unique_id=1939679340]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "30  "
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer" unique_id=1140694569]
 layout_mode = 2
@@ -2483,21 +2467,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3" unique_id=801862061]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3" unique_id=1118940747]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/MarginContainer" unique_id=974098605]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3" unique_id=620152100]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Base Stats/HBoxContainer/VBoxContainer3/MarginContainer2" unique_id=1118940747]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
@@ -2512,31 +2484,37 @@ metadata/_tab_index = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots" unique_id=1223042955]
 layout_mode = 2
+theme_override_constants/separation = 15
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer" unique_id=89054112]
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer" unique_id=128311365]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer" unique_id=128311365]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=1268043807]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3" unique_id=1268043807]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Equip Slots"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=1112850438]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3" unique_id=999808498]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer" unique_id=1112850438]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=587158201]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer" unique_id=587158201]
 layout_mode = 2
 theme_override_constants/margin_top = 6
 
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer" unique_id=2069497138]
+[node name="Label" type="Label" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/MarginContainer" unique_id=2069497138]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/line_spacing = 12
@@ -2549,62 +2527,81 @@ Slot #5:
 Slot #6:
 Slot #7:
 Slot #8:
+Slot #9:
+Slot #9:
 Slot #9:"
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=385684132]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2" unique_id=1011383610]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer" unique_id=1011383610]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=976569098]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=976569098]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=62961717]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=62961717]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1916593182]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1916593182]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=899307368]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=899307368]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=722611624]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=722611624]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1424819308]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1424819308]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=74462414]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=74462414]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  [Empty]  "
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1048208942]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1048208942]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  [Empty]  "
+
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=545232275]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  [Empty]  "
+
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=745036244]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  [Empty]  "
+
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=1467595456]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 24
+text = "  [Empty]  "
+
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer3/ScrollContainer/HBoxContainer/VBoxContainer" unique_id=810448622]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -2621,21 +2618,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2" unique_id=141027682]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2" unique_id=142254468]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=956372156]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2" unique_id=667643156]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Equip Slots/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=142254468]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
@@ -2649,6 +2634,7 @@ metadata/_tab_index = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills" unique_id=2104280007]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer" unique_id=869377978]
 layout_mode = 2
@@ -2661,125 +2647,110 @@ text = "Skills"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer" unique_id=682535189]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1029819909]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer" unique_id=1029819909]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=1463755524]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=81633461]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=81633461]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=64744479]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=64744479]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=527325507]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=527325507]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=356075026]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=356075026]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=591260136]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=591260136]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=614881290]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=614881290]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1828011145]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1828011145]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1492449857]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1492449857]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1796095563]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1796095563]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1997357896]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1997357896]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=137801118]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=137801118]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=690423830]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=690423830]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1393186828]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1393186828]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=402902226]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=402902226]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1510013650]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1510013650]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -2797,21 +2768,9 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2" unique_id=846171703]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2" unique_id=314853209]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=1051951796]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2" unique_id=300801820]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Skills/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=314853209]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utlity description of the Skill / Item."
 
@@ -2871,6 +2830,7 @@ metadata/_tab_index = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects" unique_id=1808247883]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer" unique_id=215825989]
 layout_mode = 2
@@ -2883,125 +2843,110 @@ text = "Status Effect"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer" unique_id=41225439]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer" unique_id=295355284]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer" unique_id=295355284]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=2010019398]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=185400717]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=185400717]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=104796258]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=104796258]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1764032131]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1764032131]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1671146191]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1671146191]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=229217918]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=229217918]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1924026938]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1924026938]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1116811919]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1116811919]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2090023142]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2090023142]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=759513125]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=759513125]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1715587783]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1715587783]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=31481249]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=31481249]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1970757279]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1970757279]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1336332922]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1336332922]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=709803467]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=709803467]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Status Effect"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1602174958]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1602174958]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -3019,26 +2964,13 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2" unique_id=2073183713]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2" unique_id=160464316]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=517936930]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "* Lore description of the Skill / Item."
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2" unique_id=38988750]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=160464316]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
 [node name="Teleport_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues" unique_id=451502986]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -3058,6 +2990,7 @@ metadata/_tab_index = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport" unique_id=361642760]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer" unique_id=199180491]
 layout_mode = 2
@@ -3070,125 +3003,110 @@ text = "Teleport"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer" unique_id=1783278179]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer" unique_id=415921339]
-clip_contents = false
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer" unique_id=415921339]
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer" unique_id=1478349377]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_right = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer" unique_id=654050548]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer" unique_id=654050548]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=791781561]
+[node name="Button" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=791781561]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2089188890]
+[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2089188890]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=808059284]
+[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=808059284]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1925496812]
+[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1925496812]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2059359209]
+[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2059359209]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=721261632]
+[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=721261632]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=586718197]
+[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=586718197]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1710017021]
+[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1710017021]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=728799789]
+[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=728799789]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1572021869]
+[node name="Button10" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1572021869]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=771799681]
+[node name="Button11" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=771799681]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1295076026]
+[node name="Button12" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1295076026]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=746695359]
+[node name="Button13" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=746695359]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
 text = "  Skill's Name"
 alignment = 0
 
-[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" unique_id=775783943]
+[node name="Button14" type="Button" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=775783943]
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 24
@@ -3206,556 +3124,26 @@ text = "Description"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=1272215179]
+[node name="Control" type="Control" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=1382578090]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer" unique_id=1382578090]
-clip_contents = true
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer/Control" unique_id=1749279778]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/Control" unique_id=1749279778]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -338.88754
-offset_top = -102.5
-offset_right = 338.88754
-offset_bottom = 102.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("33_s3ops")
-expand_mode = 5
 stretch_mode = 5
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=1485198176]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=1859578551]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_TabContainer/Teleport/HBoxContainer/VBoxContainer2/MarginContainer2" unique_id=1859578551]
-layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "* Utlity description of the Skill / Item."
-
-[node name="Unused Tabs" type="Control" parent="CanvasLayer/All Menues" unique_id=735152022]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Extra Stats" type="MarginContainer" parent="CanvasLayer/All Menues/Unused Tabs" unique_id=1049140448]
-visible = false
-layout_mode = 0
-offset_right = 454.0
-offset_bottom = 486.0
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats" unique_id=1291784830]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer" unique_id=1508532025]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_right = 30
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer" unique_id=623035129]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=1377125939]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Extra Stats"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=875070543]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1759030796]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Phisical Presition:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button" unique_id=1824542444]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=909494822]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Phisical Evasion:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button2" unique_id=9530207]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=485491892]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Critical Presition:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button3" unique_id=1947271465]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=852317690]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Critical Evasion:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button4" unique_id=1812454544]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1066345410]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Magical Presition"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button5" unique_id=2094457107]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1210958276]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Magical Evasion:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button6" unique_id=1541145027]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=569228124]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  HP-Regeneration:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button7" unique_id=132666236]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=905312332]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  SP-Regeneration:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button8" unique_id=2087131243]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button9" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1996369635]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  TP-Regeneration:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button9" unique_id=1149990519]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=840805796]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1391446481]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "Phisical Presition
-Phisical Evasion
-Critical Presition
-Critical Evasion
-Magical Presition
-Magical Evasion
-HP-Regeneration
-SP-Regeneration
-TP-Regeneration"
-
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1664136774]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "30
-30
-20
-20
-20
-20
-20
-20
-20"
-horizontal_alignment = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer" unique_id=2129350092]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/VBoxContainer" unique_id=1035636746]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Description"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/VBoxContainer" unique_id=1635643921]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "* Lore"
-
-[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Extra Stats/HBoxContainer/VBoxContainer" unique_id=1098279239]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "* Description"
-
-[node name="Special Stats" type="MarginContainer" parent="CanvasLayer/All Menues/Unused Tabs" unique_id=1582409701]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 35.0
-offset_right = -4.0
-offset_bottom = -4.0
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats" unique_id=367337345]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer" unique_id=1596215890]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_right = 30
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer" unique_id=831334007]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=1704046760]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Special Stats"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=11079785]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=290448057]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Target Rate:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button" unique_id=125680921]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button2" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=407761646]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Guard Effect:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button2" unique_id=1214432760]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button3" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1964039222]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Recovery Effect:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button3" unique_id=506802700]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button4" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1444914554]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Pharmacology:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button4" unique_id=2138602780]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button5" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1779653166]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  HP-Cost Rate:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button5" unique_id=1036234279]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button6" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1820832495]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  SP-Cost Rate:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button6" unique_id=1568286803]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button7" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1299732105]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  TP-Cost Rate:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button7" unique_id=2132077063]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Button8" type="Button" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer" unique_id=1976573797]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 24
-text = "  Physical Damage:"
-alignment = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/VBoxContainer/Button8" unique_id=1650929179]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "30  "
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2" unique_id=2116258887]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=444373100]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "Target Rate
-Guard Effect
-Recovery Effect
-Pharmacology
-HP-Cost Rate
-SP-Cost Rate
-TP-Cost Rate
-Physical Damage"
-
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/MarginContainer/VBoxContainer2/HBoxContainer" unique_id=1320373595]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "30
-30
-20
-20
-20
-20
-20
-20"
-horizontal_alignment = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer" unique_id=1887181322]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/VBoxContainer" unique_id=988262107]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "Description"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/VBoxContainer" unique_id=544035514]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "* Lore"
-
-[node name="Label3" type="Label" parent="CanvasLayer/All Menues/Unused Tabs/Special Stats/HBoxContainer/VBoxContainer" unique_id=1865969719]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 24
-text = "* Description"
 
 [node name="Save_Menu" type="HBoxContainer" parent="CanvasLayer" unique_id=1829001562]
 visible = false
