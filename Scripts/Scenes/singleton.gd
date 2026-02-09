@@ -14,6 +14,12 @@ class_name Singleton
 @export var audioStreamPlayer_shop: AudioStreamPlayer
 @export var audioStreamPlayer_teleport: AudioStreamPlayer
 @export var audioStreamPlayer_enter_battle: AudioStreamPlayer
+@export var audioStreamPlayer_escape: AudioStreamPlayer
+@export var audioStreamPlayer_ally_damage: AudioStreamPlayer
+@export var audioStreamPlayer_enemy_damage: AudioStreamPlayer
+@export var audioStreamPlayer_enemy_colapse: AudioStreamPlayer
+@export var audioStreamPlayer_recovery: AudioStreamPlayer
+@export var audioStreamPlayer_graze: AudioStreamPlayer
 #-------------------------------------------------------------------------------
 @export var bgmPlayer : AudioStreamPlayer
 #-------------------------------------------------------------------------------

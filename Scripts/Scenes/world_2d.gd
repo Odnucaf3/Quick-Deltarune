@@ -284,7 +284,7 @@ func _ready() -> void:
 	camera_center = viewport_center / camera.zoom
 	#-------------------------------------------------------------------------------
 	room_test.Set_Room(self)
-	camera.position = Camera_Set_Target_Position()
+	camera.global_position = Camera_Set_Target_Position()
 	#-------------------------------------------------------------------------------
 	hitbox.global_scale = Get_CircleSprite_Scale(hitBox_radius) + Vector2(0.01, 0.01)
 	grazebox.global_scale = Get_CircleSprite_Scale(grazeBox_radius) + Vector2(0.01, 0.01)
@@ -320,7 +320,7 @@ func _physics_process(_delta: float) -> void:
 			if(!get_tree().paused):
 				#-------------------------------------------------------------------------------
 				if(is_in_dialogue):
-					pass
+					return
 				#-------------------------------------------------------------------------------
 				else:
 					Player_Movement()
@@ -505,7 +505,7 @@ func Hitbox_Movement():
 #-------------------------------------------------------------------------------
 func Camera_Follow():
 	var _new_position: Vector2 = Camera_Set_Target_Position()
-	camera.position = lerp(camera.position, _new_position, 0.2)
+	camera.global_position = lerp(camera.global_position, _new_position, 0.2)
 #-------------------------------------------------------------------------------
 func Camera_Set_Target_Position() -> Vector2:
 	var _new_position: Vector2 = friend_party[0].global_position + Vector2(0, -camera_offset_y)
@@ -743,7 +743,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		_enemy_array[_i].party_member_ui.bar_sp.hide()
 		battle_control.add_child(_party_member_ui)
 	#-------------------------------------------------------------------------------
-	var _center: Vector2 = camera.position
+	var _center: Vector2 = camera.global_position
 	#-------------------------------------------------------------------------------
 	#var _top_limit: float = 0.45
 	var _top_limit: float = 0.41
@@ -806,7 +806,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		max_tp = 100
 		Set_TP_Label(tp)
 		#-------------------------------------------------------------------------------
-		battle_box.position = camera.position - battle_box.size/2.0
+		battle_box.global_position = camera.global_position - battle_box.size/2.0
 		singleton.Set_Button(battle_menu_button[0],func():singleton.Common_Selected() , func():BattleMenu_AttackButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		singleton.Set_Button(battle_menu_button[1],func():singleton.Common_Selected() , func():BattleMenu_DefenseButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		singleton.Set_Button(battle_menu_button[2],func():singleton.Common_Selected() , func():BattleMenu_SkillButton_Submit(), func():BattleMenu_AnyButton_Cancel())
@@ -929,7 +929,7 @@ func Move_Fighters_to_Position_2(_position_type:bool):
 	await _tween.finished
 #-------------------------------------------------------------------------------
 func Move_Fighters_to_Position(_tween:Tween, _position_type:bool, _timer:float):
-	var _center: Vector2 = camera.position
+	var _center: Vector2 = camera.global_position
 	var _top_limit: float
 	var _botton_limit: float
 	#-------------------------------------------------------------------------------
@@ -1906,7 +1906,7 @@ func Party_Actions():
 	current_player_turn = friend_party_alive.size()
 	Set_TP_Label(tp)
 	#-------------------------------------------------------------------------------
-	await Seconds(0.5)
+	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
 	var _player_alive_attacking: Array[Party_Member] = []
 	var _player_alive_defending: Array[Party_Member] = []
@@ -2159,7 +2159,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	battle_box.show()
 	dialogue_menu.hide()
 	#dialogue_menu_speaking_label.text = ""
-	hitbox.position = battle_box.size/2.0
+	hitbox.global_position = battle_box.global_position + battle_box.size/2.0
 	myGAME_STATE = GAME_STATE.IN_BATTLE
 	#-------------------------------------------------------------------------------
 	var _offset: float = 3
@@ -2401,6 +2401,7 @@ func You_Escape():
 	win_label.hide()
 	tp_bar_root.hide()
 	battle_black_panel.hide()
+	singleton.audioStreamPlayer_escape.play()
 	#-------------------------------------------------------------------------------
 	var _tween2: Tween = create_tween()
 	#-------------------------------------------------------------------------------
@@ -2566,8 +2567,8 @@ func EnemyBullet_PhysicsUpdate_Limitless_A(_bullet: Bullet):
 	_bullet.vel_Y = _bullet.vel * sin(_dir2)
 	_bullet.rotation_degrees = _bullet.dir
 	#-------------------------------------------------------------------------------
-	_bullet.position.x += _bullet.vel_X * deltaTimeScale
-	_bullet.position.y += _bullet.vel_Y * deltaTimeScale
+	_bullet.global_position.x += _bullet.vel_X * deltaTimeScale
+	_bullet.global_position.y += _bullet.vel_Y * deltaTimeScale
 	return
 	#-------------------------------------------------------------------------------
 #endregion
@@ -2603,8 +2604,8 @@ func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
 	var _max1: float = 10 + 2*_difficulty
 	var _max2: float = 10 + 5*_difficulty
 	#-------------------------------------------------------------------------------
-	var _x: float = camera.position.x+camera_center.x*0.5 * _mirror
-	var _y: float = camera.position.y-camera_center.y*0.5
+	var _x: float = camera.global_position.x+camera_center.x*0.5 * _mirror
+	var _y: float = camera.global_position.y-camera_center.y*0.5
 	var _vel: float = 0.6
 	var _dir: float = 90
 	#-------------------------------------------------------------------------------
@@ -2666,8 +2667,8 @@ func Stage1_Fire1_Bullet1(_user:Party_Member, _mirror:float):
 	var _max1: float = 10 + 5*_difficulty
 	var _max2: float = 5 + 2*_difficulty
 	#-------------------------------------------------------------------------------
-	var _x: float = camera.position.x+camera_center.x*0.25 * _mirror
-	var _y: float = camera.position.y-camera_center.y*0.65
+	var _x: float = camera.global_position.x+camera_center.x*0.25 * _mirror
+	var _y: float = camera.global_position.y-camera_center.y*0.65
 	#-------------------------------------------------------------------------------
 	var _vel1: float = 0.25
 	var _vel2: float = 1.5
@@ -2757,11 +2758,13 @@ func Player_Shooted():
 				PlayAnimation(_target.playback, "Hurt")
 			#-------------------------------------------------------------------------------
 			Set_HP_Label(_target)
+			singleton.audioStreamPlayer_ally_damage.play()
 		#-------------------------------------------------------------------------------
 		else:
 			_target.hp = 0
 			Flying_Label(_label, "Down")
 			Set_HP_Label(_target)
+			singleton.audioStreamPlayer_enemy_colapse.play()
 			PlayAnimation(_target.playback, "Death")
 			#-------------------------------------------------------------------------------
 			friend_party_alive.erase(_target)
@@ -2854,6 +2857,7 @@ func Bullet_Grazed_SP_Gain():
 #-------------------------------------------------------------------------------
 func Bullet_Grazed_TP_Gain():
 	Gain_Tp(1)
+	singleton.audioStreamPlayer_graze.play()
 	Set_TP_Label(tp)
 #-------------------------------------------------------------------------------
 func Gain_Tp(_int:int):
@@ -3037,11 +3041,13 @@ func HP_Damage(_target:Party_Member, _int:int):
 		if(_target.hp > 0):
 			PlayAnimation(_target.playback, "Hurt 2")
 			Flying_Label(_label, "-"+str(_int)+" HP")
+			singleton.audioStreamPlayer_enemy_damage.play()
 		#-------------------------------------------------------------------------------
 		else:
 			_target.hp = 0
 			PlayAnimation(_target.playback, "Death")
 			Flying_Label(_label, "Down")
+			singleton.audioStreamPlayer_enemy_colapse.play()
 		#-------------------------------------------------------------------------------
 		Set_HP_Label(_target)
 	#-------------------------------------------------------------------------------
@@ -3059,6 +3065,7 @@ func HP_Heal_Porcentual(_target:Party_Member, _float:float):
 		_target.hp = _target.max_hp
 		Flying_Label(_label, "Max HP")
 	#-------------------------------------------------------------------------------
+	singleton.audioStreamPlayer_recovery.play()
 	Set_HP_Label(_target)
 #-------------------------------------------------------------------------------
 func Set_HP_Label(_user:Party_Member):
@@ -3576,6 +3583,7 @@ func Create_Stats_Button(_party_member:Party_Member, _index: int) -> Button:
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_label2.add_theme_font_size_override("font_size", 24)
 	_label2.text = str(30)+"  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
@@ -4182,14 +4190,7 @@ func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
 func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	var _room_name: String = _dictionary.get("room", "")
 	#-------------------------------------------------------------------------------
-	var _new_room: Room_Script
-	#-------------------------------------------------------------------------------
-	if(room_test.room_id == _room_name):
-		_new_room = ResourceLoader.load(Get_Room_Path(_room_name), "", ResourceLoader.CACHE_MODE_IGNORE).instantiate() as Room_Script
-	#-------------------------------------------------------------------------------
-	else:
-		_new_room = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
-	#-------------------------------------------------------------------------------
+	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
 	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
@@ -4198,10 +4199,10 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 		var _warp_array: Array[Node] = _new_room.find_children(_dictionary["savespot"], "Interactable_Script")
 		#-------------------------------------------------------------------------------
 		if(_i > 0):
-			friend_party[_i].position = _warp_array[0].position
+			friend_party[_i].global_position = _warp_array[0].global_position
 		#-------------------------------------------------------------------------------
 		else:
-			player_characterbody2d.position = _warp_array[0].position
+			player_characterbody2d.global_position = _warp_array[0].global_position
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	call_deferred("add_child", _new_room)
@@ -4209,7 +4210,7 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	room_test.queue_free()							#Importante: Cuidado con el Orden
 	room_test = _new_room							#Importante: Cuidado con el Orden
 	_new_room.Set_Room(self)						#Importante: Cuidado con el Orden
-	camera.position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
+	camera.global_position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
 	#-------------------------------------------------------------------------------
 	teleporty_menu.hide()
 	singleton.Play_BGM(singleton.stage1)
@@ -4268,7 +4269,6 @@ func Get_Item_Script_ID(_node:Node) -> String:
 	return _s
 #-------------------------------------------------------------------------------
 func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
-	#var _new_room: Room_Script = next_room_prefab.instantiate() as Room_Script
 	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
 	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
@@ -4278,10 +4278,10 @@ func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
 		var _warp_array: Array[Node] = _new_room.find_children(_warp_name, "Interactable_Script")
 		#-------------------------------------------------------------------------------
 		if(_i > 0):
-			friend_party[_i].position = _warp_array[0].position
+			friend_party[_i].global_position = _warp_array[0].global_position
 		#-------------------------------------------------------------------------------
 		else:
-			player_characterbody2d.position = _warp_array[0].position
+			player_characterbody2d.global_position = _warp_array[0].global_position
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	call_deferred("add_child", _new_room)
@@ -4289,7 +4289,7 @@ func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
 	room_test.queue_free()							#Importante: Cuidado con el Orden
 	room_test = _new_room							#Importante: Cuidado con el Orden
 	_new_room.Set_Room(self)						#Importante: Cuidado con el Orden
-	camera.position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
+	camera.global_position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
 #-------------------------------------------------------------------------------
 func Get_Room_Path(_room_name:String) -> String:
 	return "res://Nodes/Prefabs/Rooms/"+_room_name+".tscn"
@@ -4310,9 +4310,9 @@ func Load_All_Data():
 	#-------------------------------------------------------------------------------
 	else:
 		room_test.room_id = room_test.name
-		Save_All_Data("player_starting_position")
+		#Save_All_Data("player_starting_position")
 		#-------------------------------------------------------------------------------
-		singleton.SaveCurrent_SaveData_Json()
+		#singleton.SaveCurrent_SaveData_Json()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Save_All_Data(_s:String):
@@ -4333,7 +4333,7 @@ func Load_Room_and_SaveSpot():
 	var _room_name: String = _dictionaty.get("room", "")
 	var _room_savespot_name: String = _dictionaty.get("savespot", "")
 	#-------------------------------------------------------------------------------
-	var _new_room: Room_Script = ResourceLoader.load(Get_Room_Path(_room_name), "", ResourceLoader.CACHE_MODE_IGNORE).instantiate() as Room_Script
+	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
 	call_deferred("add_child", _new_room)
 	room_test.queue_free()
 	room_test = _new_room
@@ -4531,7 +4531,7 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 			#-------------------------------------------------------------------------------
 			Set_Max_Items_You_Can_Buy(99, _item_serializable.price, _price)
 			SetMoney_Label()
-			Print_How_Many_Do_You_Buy(_item_serializable.price)
+			Print_How_Many_Do_You_Buy(_item_serializable.price, false, 99)
 			#-------------------------------------------------------------------------------
 			singleton.Play_SFX_Shop()
 		#-------------------------------------------------------------------------------
@@ -4540,43 +4540,43 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _up: Callable = func():
-		Increase_How_Many_Do_Want_to_Buy(10, _item_serializable.price, 99)
+		Increase_How_Many_Do_Want_to_Buy(_item_serializable.price, 10, false, 99)
 	#-------------------------------------------------------------------------------
 	var _down: Callable = func():
-		Decrease_How_Many_Do_Want_to_Buy(10, _item_serializable.price)
+		Decrease_How_Many_Do_Want_to_Buy(_item_serializable.price, 10, false, 99)
 	#-------------------------------------------------------------------------------
 	var _left: Callable = func():
-		Decrease_How_Many_Do_Want_to_Buy(1, _item_serializable.price)
+		Decrease_How_Many_Do_Want_to_Buy(_item_serializable.price, 1, false, 99)
 	#-------------------------------------------------------------------------------
 	var _right: Callable = func():
-		Increase_How_Many_Do_Want_to_Buy(1, _item_serializable.price, 99)
+		Increase_How_Many_Do_Want_to_Buy(_item_serializable.price, 1, false, 99)
 	#-------------------------------------------------------------------------------
 	confirm_buy_menu_item_name.text = get_resource_filename(_item_serializable.item_resource)
 	how_many_would_you_buy = 1
-	Print_How_Many_Do_You_Buy(_item_serializable.price)
+	Print_How_Many_Do_You_Buy(_item_serializable.price, false, 99)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
-func Increase_How_Many_Do_Want_to_Buy(_int:int, _original_price:int, _stored:int):
+func Increase_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limited_stored:bool, _stored:int):
 	var _old_value: int = how_many_would_you_buy
 	how_many_would_you_buy += _int
 	#-------------------------------------------------------------------------------
 	var _price: int = _original_price * how_many_would_you_buy
 	#-------------------------------------------------------------------------------
 	Set_Max_Items_You_Can_Buy(_stored, _original_price, _price)
-	Print_How_Many_Do_You_Buy(_original_price)
+	Print_How_Many_Do_You_Buy(_original_price, _has_limited_stored, _stored)
 	#-------------------------------------------------------------------------------
 	if(how_many_would_you_buy > _old_value):
 		singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Decrease_How_Many_Do_Want_to_Buy(_int:int, _original_price:int):
+func Decrease_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limited_stored:bool, _stored:int):
 	var _old_value: int = how_many_would_you_buy
 	how_many_would_you_buy -= _int
 	#-------------------------------------------------------------------------------
 	if(how_many_would_you_buy < 1):
 		how_many_would_you_buy = 1
 	#-------------------------------------------------------------------------------
-	Print_How_Many_Do_You_Buy(_original_price)
+	Print_How_Many_Do_You_Buy(_original_price, _has_limited_stored, _stored)
 	#-------------------------------------------------------------------------------
 	if(how_many_would_you_buy < _old_value):
 		singleton.Common_Selected()
@@ -4615,7 +4615,7 @@ func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_ser
 			#-------------------------------------------------------------------------------
 			Set_Max_Items_You_Can_Buy(_equip_serializable.stored, _equip_serializable.price, _price)
 			SetMoney_Label()
-			Print_How_Many_Do_You_Buy(_equip_serializable.price)
+			Print_How_Many_Do_You_Buy(_equip_serializable.price, true, _equip_serializable.stored)
 			#-------------------------------------------------------------------------------
 			singleton.Play_SFX_Shop()
 		#-------------------------------------------------------------------------------
@@ -4624,20 +4624,20 @@ func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_ser
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _up: Callable = func():
-		Increase_How_Many_Do_Want_to_Buy(10, _equip_serializable.price, _equip_serializable.stored)
+		Increase_How_Many_Do_Want_to_Buy(_equip_serializable.price, 10, true, _equip_serializable.stored)
 	#-------------------------------------------------------------------------------
 	var _down: Callable = func():
-		Decrease_How_Many_Do_Want_to_Buy(10, _equip_serializable.price)
+		Decrease_How_Many_Do_Want_to_Buy(_equip_serializable.price, 10, true, _equip_serializable.stored)
 	#-------------------------------------------------------------------------------
 	var _left: Callable = func():
-		Decrease_How_Many_Do_Want_to_Buy(1, _equip_serializable.price)
+		Decrease_How_Many_Do_Want_to_Buy(_equip_serializable.price, 1, true, _equip_serializable.stored)
 	#-------------------------------------------------------------------------------
 	var _right: Callable = func():
-		Increase_How_Many_Do_Want_to_Buy(1, _equip_serializable.price, _equip_serializable.stored)
+		Increase_How_Many_Do_Want_to_Buy(_equip_serializable.price, 1, true, _equip_serializable.stored)
 	#-------------------------------------------------------------------------------
 	confirm_buy_menu_item_name.text = get_resource_filename(_equip_serializable.equip_resource)
 	how_many_would_you_buy = 1
-	Print_How_Many_Do_You_Buy(_equip_serializable.price)
+	Print_How_Many_Do_You_Buy(_equip_serializable.price, true, _equip_serializable.stored, )
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
@@ -4678,7 +4678,7 @@ func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_ser
 			#-------------------------------------------------------------------------------
 			Set_Max_Items_You_Can_Buy(_keyitem_serializable.stored, _keyitem_serializable.price, _price)
 			SetMoney_Label()
-			Print_How_Many_Do_You_Buy(_keyitem_serializable.price)
+			Print_How_Many_Do_You_Buy(_keyitem_serializable.price, true, _keyitem_serializable.stored)
 			#-------------------------------------------------------------------------------
 			singleton.Play_SFX_Shop()
 		#-------------------------------------------------------------------------------
@@ -4687,20 +4687,20 @@ func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_ser
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _up: Callable = func():
-		Increase_How_Many_Do_Want_to_Buy(10, _keyitem_serializable.price, _keyitem_serializable.stored)
+		Increase_How_Many_Do_Want_to_Buy(_keyitem_serializable.price, 10, true, _keyitem_serializable.stored)
 	#-------------------------------------------------------------------------------
 	var _down: Callable = func():
-		Decrease_How_Many_Do_Want_to_Buy(10, _keyitem_serializable.price)
+		Decrease_How_Many_Do_Want_to_Buy(_keyitem_serializable.price, 10, true, _keyitem_serializable.stored)
 	#-------------------------------------------------------------------------------
 	var _left: Callable = func():
-		Decrease_How_Many_Do_Want_to_Buy(1, _keyitem_serializable.price)
+		Decrease_How_Many_Do_Want_to_Buy(_keyitem_serializable.price, 1, true, _keyitem_serializable.stored)
 	#-------------------------------------------------------------------------------
 	var _right: Callable = func():
-		Increase_How_Many_Do_Want_to_Buy(1, _keyitem_serializable.price, _keyitem_serializable.stored)
+		Increase_How_Many_Do_Want_to_Buy(_keyitem_serializable.price, 1, true, _keyitem_serializable.stored)
 	#-------------------------------------------------------------------------------
 	confirm_buy_menu_item_name.text = get_resource_filename(_keyitem_serializable.key_item_resource)
 	how_many_would_you_buy = 1
-	Print_How_Many_Do_You_Buy(_keyitem_serializable.price)
+	Print_How_Many_Do_You_Buy(_keyitem_serializable.price, true, _keyitem_serializable.stored)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func Set_Max_Items_You_Can_Buy(_stored:int, _original_price:int, _whole_cost:int):
@@ -4799,8 +4799,14 @@ func Confirm_Buy_Menu_Submit(_submit:Callable, _button:Button, _up:Callable, _do
 	singleton.Move_to_Button(confirm_buy_menu_button)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func Print_How_Many_Do_You_Buy(_price: int):
-	confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"]  "
+func Print_How_Many_Do_You_Buy(_price:int, _has_limited_stored:bool, _stored:int):
+	#-------------------------------------------------------------------------------
+	if(_has_limited_stored):
+		confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"/"+str(_stored)+"]  "
+	#-------------------------------------------------------------------------------
+	else:
+		confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"]  "
+	#-------------------------------------------------------------------------------
 	confirm_buy_menu_item_price.text = "$"+str(_price* how_many_would_you_buy)+"  "
 #-------------------------------------------------------------------------------
 func Set_DialogueMenu_NextButton():

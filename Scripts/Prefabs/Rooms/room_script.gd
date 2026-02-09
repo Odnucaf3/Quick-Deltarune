@@ -10,6 +10,9 @@ var limit_left: float
 var limit_right: float
 #-------------------------------------------------------------------------------
 func Set_Room(_world_2d: World_2D):
+	Set_Camera_and_All_Interactables_in_the_Room(_world_2d)
+#-------------------------------------------------------------------------------
+func Set_Camera_and_All_Interactables_in_the_Room(_world_2d: World_2D):
 	Set_Camera_Limits(_world_2d)
 	#-------------------------------------------------------------------------------
 	var _interactable_array: Array[Node] = find_children("*", "Interactable_Script")
@@ -18,10 +21,6 @@ func Set_Room(_world_2d: World_2D):
 		var _interactable: Interactable_Script = _interactable_array[_i] as Interactable_Script
 		_interactable.Interactable_Ready(_world_2d)
 	#-------------------------------------------------------------------------------
-	Room_Event()
-#-------------------------------------------------------------------------------
-func Room_Event():
-	pass
 #-------------------------------------------------------------------------------
 func Set_Camera_Limits(_world_2d: World_2D):
 	limit_top = room_limits.global_position.y + _world_2d.camera_center.y
@@ -36,7 +35,6 @@ func Set_Camera_Limits(_world_2d: World_2D):
 	if(limit_botton < _center_y): limit_botton = _center_y
 	if(limit_left > _center_x): limit_left = _center_x
 	if(limit_right < _center_x): limit_right = _center_x
-	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Get_Item_Script_ID(_node:Node) -> String:
 	var _s: String = room_id+"_"+_node.name

@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
 
 [sub_resource type="Resource" id="Resource_ftd8i"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("7_yqvj6")
 hold = 9
@@ -74,217 +75,264 @@ expand_margin_bottom = 2.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ik87f"]
 size = Vector2(16, 8)
 
-[sub_resource type="Resource" id="Resource_yqvj6"]
+[sub_resource type="Resource" id="Resource_hko5v"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("5_rpgth")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_hko5v"]
+[sub_resource type="Resource" id="Resource_s3ops"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("6_lujb4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_ek5q1"]
+[sub_resource type="Resource" id="Resource_rka03"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("18_3p4s7")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_oi8hy"]
+[sub_resource type="Resource" id="Resource_ircg4"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("18_hko5v")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_1e5l7"]
+[sub_resource type="Resource" id="Resource_62d7h"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("19_s3ops")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_ugbf0"]
+[sub_resource type="Resource" id="Resource_why6j"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("20_rka03")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_05voo"]
+[sub_resource type="Resource" id="Resource_pb3t7"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("21_ircg4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_lujb4"]
+[sub_resource type="Resource" id="Resource_a7t32"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_1th3s"]
+[sub_resource type="Resource" id="Resource_p4ejy"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_3p4s7"]
+[sub_resource type="Resource" id="Resource_vap1g"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_s3ops"]
+[sub_resource type="Resource" id="Resource_ibfam"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_rka03"]
+[sub_resource type="Resource" id="Resource_s1r55"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_ircg4"]
+[sub_resource type="Resource" id="Resource_4kq1m"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_62d7h"]
+[sub_resource type="Resource" id="Resource_vqo7i"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_mitwg"]
+[sub_resource type="Resource" id="Resource_jsbcl"]
+resource_local_to_scene = true
 script = ExtResource("18_1th3s")
 statuseffect_resource = ExtResource("19_mitwg")
 metadata/_custom_type_script = "uid://mdn2h1nh8s14"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
-radius = 8.062258
+radius = 4.0
 
-[sub_resource type="Resource" id="Resource_76bql"]
+[sub_resource type="Resource" id="Resource_ltkvx"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("5_rpgth")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_l8r6y"]
+[sub_resource type="Resource" id="Resource_0f0fx"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("6_lujb4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_lea5u"]
+[sub_resource type="Resource" id="Resource_mtlrx"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("21_3p4s7")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_wuufr"]
+[sub_resource type="Resource" id="Resource_uqsek"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("22_xhx7r")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_6t0ck"]
+[sub_resource type="Resource" id="Resource_chh8w"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("18_hko5v")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_g75sp"]
+[sub_resource type="Resource" id="Resource_eggap"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("19_s3ops")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_f727r"]
+[sub_resource type="Resource" id="Resource_76bql"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("20_rka03")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_7rkat"]
+[sub_resource type="Resource" id="Resource_l8r6y"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("21_ircg4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_why6j"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_pb3t7"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_a7t32"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_p4ejy"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_vap1g"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ibfam"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_s1r55"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_4kq1m"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
 [sub_resource type="Resource" id="Resource_inygc"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_tln7l"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_oi8hy"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_1e5l7"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ugbf0"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_05voo"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_6t0ck"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_g75sp"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_f727r"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("5_rpgth")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_tln7l"]
+[sub_resource type="Resource" id="Resource_7rkat"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("6_lujb4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_rc083"]
+[sub_resource type="Resource" id="Resource_50cdf"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("24_42b3h")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_50cdf"]
+[sub_resource type="Resource" id="Resource_0bk15"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("18_hko5v")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_0bk15"]
+[sub_resource type="Resource" id="Resource_3042r"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("19_s3ops")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_3042r"]
+[sub_resource type="Resource" id="Resource_60x7l"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("20_rka03")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_60x7l"]
+[sub_resource type="Resource" id="Resource_74fp5"]
+resource_local_to_scene = true
 script = ExtResource("7_igypo")
 item_resource = ExtResource("21_ircg4")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_vqo7i"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_jsbcl"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ltkvx"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_0f0fx"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_mtlrx"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_uqsek"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_chh8w"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_eggap"]
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
 [sub_resource type="Resource" id="Resource_kqnir"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_b8d7t"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_3v8q2"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_qn1hi"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_0obo6"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_trxgk"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_dhgie"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_du4tf"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ttm84"]
+resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
@@ -328,9 +376,9 @@ game_scene = NodePath("..")
 ui_theme = ExtResource("26_1th3s")
 room_test = NodePath("room_test_01")
 tp_bar_root = NodePath("../CanvasLayer/Battle_UI/tp_root")
-tp_bar_progressbar_present = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/Control/ProgressBar")
-tp_bar_progressbar_future = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/Control/ProgressBar/ProgressBar2")
-tp_bar_label = NodePath("../CanvasLayer/Battle_UI/tp_root/pivot/sp_Label")
+tp_bar_progressbar_present = NodePath("../CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar")
+tp_bar_progressbar_future = NodePath("../CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar/ProgressBar2")
+tp_bar_label = NodePath("../CanvasLayer/Battle_UI/tp_root/VBoxContainer/sp_Label")
 battlemenu_equipbutton_emptyspace = NodePath("../CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Control")
 dialogue_menu = NodePath("../CanvasLayer/Dialogue_Menu")
 dialogue_menu_button_next = NodePath("../CanvasLayer/Dialogue_Menu/Button")
@@ -345,7 +393,7 @@ enemy_ui_prefab = ExtResource("16_mapp4")
 player_characterbody2d = NodePath("Player")
 player_collider = NodePath("Player/CollisionShape2D")
 player_interactable_area2d = NodePath("Player/interactable_by_Action_Area2D")
-player_enemyDetector_area2d = NodePath("Player/enemy_by_Touch_Area2D")
+player_enemyDetector_area2d = NodePath("Player/interactable_by_Touch_Area2D")
 friend_party = [NodePath("Player/Friend_01"), NodePath("Friend_02"), NodePath("Friend_03")]
 item_menu = NodePath("../CanvasLayer/All Menues/Items_TabContainer")
 item_menu_allitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer")
@@ -463,6 +511,7 @@ pivot_offset = Vector2(600, 350)
 theme_override_styles/panel = SubResource("StyleBoxFlat_4usn6")
 
 [node name="Battle_Box" type="Panel" parent="World2D" unique_id=1323696230]
+visible = false
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -510,9 +559,9 @@ collision_layer = 2
 shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_ek5q1"), SubResource("Resource_oi8hy"), SubResource("Resource_1e5l7"), SubResource("Resource_ugbf0"), SubResource("Resource_05voo")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_3p4s7"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h")])
-statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_mitwg")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_hko5v"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i")])
+statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_jsbcl")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player" unique_id=1124339265]
 collision_layer = 0
@@ -521,233 +570,26 @@ collision_mask = 8
 [node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Action_Area2D" unique_id=946613603]
 shape = SubResource("CircleShape2D_hxoxt")
 
-[node name="enemy_by_Touch_Area2D" type="Area2D" parent="World2D/Player" unique_id=1487620068]
+[node name="interactable_by_Touch_Area2D" type="Area2D" parent="World2D/Player" unique_id=1487620068]
 collision_layer = 0
 collision_mask = 4
 
-[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/enemy_by_Touch_Area2D" unique_id=803766210]
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Touch_Area2D" unique_id=803766210]
 shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_76bql"), SubResource("Resource_l8r6y"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr"), SubResource("Resource_6t0ck"), SubResource("Resource_g75sp"), SubResource("Resource_f727r"), SubResource("Resource_7rkat")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap"), SubResource("Resource_76bql"), SubResource("Resource_l8r6y")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_inygc"), SubResource("Resource_tln7l"), SubResource("Resource_oi8hy"), SubResource("Resource_1e5l7"), SubResource("Resource_ugbf0"), SubResource("Resource_05voo"), SubResource("Resource_6t0ck"), SubResource("Resource_g75sp")])
 
 [node name="Friend_03" parent="World2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_inygc"), SubResource("Resource_tln7l"), SubResource("Resource_rc083"), SubResource("Resource_50cdf"), SubResource("Resource_0bk15"), SubResource("Resource_3042r"), SubResource("Resource_60x7l")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap"), SubResource("Resource_kqnir")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_f727r"), SubResource("Resource_7rkat"), SubResource("Resource_50cdf"), SubResource("Resource_0bk15"), SubResource("Resource_3042r"), SubResource("Resource_60x7l"), SubResource("Resource_74fp5")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_kqnir"), SubResource("Resource_b8d7t"), SubResource("Resource_3v8q2"), SubResource("Resource_qn1hi"), SubResource("Resource_0obo6"), SubResource("Resource_trxgk"), SubResource("Resource_dhgie"), SubResource("Resource_du4tf"), SubResource("Resource_ttm84")])
 
 [node name="room_test_01" parent="World2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1827743524]
-
-[node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("26_1th3s")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu" unique_id=609991911]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer" unique_id=301530430]
-layout_mode = 2
-size_flags_vertical = 8
-alignment = 1
-
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=725610785]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control" unique_id=164784011]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2" unique_id=760496580]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("18_tnh07")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=1209050402]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1273205585]
-visible = false
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1844947033]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 30
-text = "  [Name of the Speaker]  "
-
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label" unique_id=1069740996]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label2" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=620185282]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 30
-text = "  [Name of the Speaker]  "
-
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label2" unique_id=303522946]
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1750044404]
-custom_minimum_size = Vector2(750, 178)
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel" unique_id=747908806]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
-visible = false
-self_modulate = Color(1, 1, 1, 0)
-clip_contents = true
-layout_mode = 2
-texture = ExtResource("21_hxoxt")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect" unique_id=1711449268]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("18_tnh07")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "[Name of the Speaker]"
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 30
-bbcode_enabled = true
-text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
-
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1089151902]
-visible = false
-self_modulate = Color(1, 1, 1, 0)
-clip_contents = true
-layout_mode = 2
-texture = ExtResource("21_hxoxt")
-expand_mode = 3
-stretch_mode = 5
-flip_h = true
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2" unique_id=1746880259]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("18_tnh07")
-expand_mode = 3
-stretch_mode = 5
-flip_h = true
-
-[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=164044143]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2" unique_id=1173881073]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2/Panel" unique_id=699207994]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("18_tnh07")
-expand_mode = 3
-stretch_mode = 5
-flip_h = true
-
-[node name="Button" type="Button" parent="CanvasLayer/Dialogue_Menu" unique_id=987303234]
-layout_mode = 0
-offset_left = 808.0
-offset_top = 400.0
-offset_right = 917.0
-offset_bottom = 450.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 30
-text = "  Next  "
 
 [node name="Pause_Menu_Panel" type="Panel" parent="CanvasLayer" unique_id=1524251225]
 visible = false
@@ -767,38 +609,24 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="tp_root" type="MarginContainer" parent="CanvasLayer/Battle_UI" unique_id=1901183527]
-visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="pivot" type="Control" parent="CanvasLayer/Battle_UI/tp_root" unique_id=649979733]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-
-[node name="sp_Label" type="Label" parent="CanvasLayer/Battle_UI/tp_root/pivot" unique_id=881568420]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -42.0
 offset_right = 173.0
-grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 0
+offset_bottom = 61.0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/tp_root" unique_id=2144007069]
+layout_mode = 2
+
+[node name="sp_Label" type="Label" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer" unique_id=881568420]
+layout_mode = 2
+size_flags_vertical = 1
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
-text = "100 / 100 TP"
+text = "100/100 TP"
+horizontal_alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/tp_root/pivot/sp_Label" unique_id=1405504898]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/sp_Label" unique_id=1405504898]
 visible = false
 self_modulate = Color(0, 0, 0, 0.4117647)
 show_behind_parent = true
@@ -811,29 +639,45 @@ grow_vertical = 2
 texture = ExtResource("2_hf1mx")
 expand_mode = 1
 
-[node name="Control" type="Control" parent="CanvasLayer/Battle_UI/tp_root/pivot" unique_id=1441615292]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer" unique_id=558153718]
+layout_mode = 2
+theme_override_constants/margin_left = 45
+
+[node name="Control" type="Control" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer" unique_id=649979733]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Pivot" type="Control" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control" unique_id=1441615292]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
+grow_vertical = 2
 rotation = -1.5707964
 
-[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/pivot/Control" unique_id=690933732]
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot" unique_id=690933732]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = 6
 anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
+anchor_bottom = 0.5
 offset_left = -300.0
-offset_bottom = 15.0
+offset_top = -7.5
+offset_bottom = 7.5
 grow_horizontal = 0
+grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_xrh8u")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ik87f")
 value = 30.0
 show_percentage = false
 
-[node name="ProgressBar2" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/pivot/Control/ProgressBar" unique_id=1602679601]
+[node name="ProgressBar2" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar" unique_id=1602679601]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -1283,6 +1127,213 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lleqo")
 
+[node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu" unique_id=609991911]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer" unique_id=301530430]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=725610785]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control" unique_id=164784011]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2" unique_id=760496580]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=1209050402]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1273205585]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1844947033]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 30
+text = "  [Name of the Speaker]  "
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label" unique_id=1069740996]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=620185282]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 30
+text = "  [Name of the Speaker]  "
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label2" unique_id=303522946]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1750044404]
+custom_minimum_size = Vector2(750, 178)
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel" unique_id=747908806]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("21_hxoxt")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect" unique_id=1711449268]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "[Name of the Speaker]"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1089151902]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
+layout_mode = 2
+texture = ExtResource("21_hxoxt")
+expand_mode = 3
+stretch_mode = 5
+flip_h = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2" unique_id=1746880259]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+flip_h = true
+
+[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=164044143]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2" unique_id=1173881073]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2/Panel" unique_id=699207994]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_tnh07")
+expand_mode = 3
+stretch_mode = 5
+flip_h = true
+
+[node name="Button" type="Button" parent="CanvasLayer/Dialogue_Menu" unique_id=987303234]
+layout_mode = 0
+offset_left = 808.0
+offset_top = 400.0
+offset_right = 917.0
+offset_bottom = 450.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "  Next  "
+
 [node name="All Menues" type="Control" parent="CanvasLayer" unique_id=1627734076]
 layout_mode = 3
 anchors_preset = 8
@@ -1298,6 +1349,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Items_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues" unique_id=295074117]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2971,6 +3023,7 @@ theme_override_font_sizes/normal_font_size = 24
 text = "* Utility description of the Skill / Item."
 
 [node name="Teleport_TabContainer" type="TabContainer" parent="CanvasLayer/All Menues" unique_id=451502986]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

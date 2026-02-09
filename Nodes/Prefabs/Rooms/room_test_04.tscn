@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://b0k53achv5l43"]
+[gd_scene format=4 uid="uid://b0k53achv5l43"]
 
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_yj1ku"]
 [ext_resource type="TileSet" uid="uid://cutyx4smls0s0" path="res://TileSet/lab_lamps.tres" id="3_yj1ku"]
@@ -11,10 +11,51 @@
 [sub_resource type="GDScript" id="GDScript_oclu2"]
 script/source = "extends Room_Script
 #-------------------------------------------------------------------------------
-func Room_Event():
-	print(room_id)
+func Set_Room(_world_2d: World_2D):
+	super.Set_Room(_world_2d)
 #-------------------------------------------------------------------------------
 "
+
+[sub_resource type="GDScript" id="GDScript_0ptgt"]
+script/source = "extends Interactable_Script
+#-------------------------------------------------------------------------------
+@export var area2d_collider: CollisionShape2D
+#-------------------------------------------------------------------------------
+func Interactable_Ready(_world_2d:World_2D):
+	#-------------------------------------------------------------------------------
+	if(_world_2d.key_dictionary.get(_world_2d.room_test.room_id, 0) == 1):
+		queue_free()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Interactable_Action(_world_2d:World_2D):
+	area2d_collider.set_deferred(\"disabled\", true)
+	#-------------------------------------------------------------------------------
+	_world_2d.camera.global_position = _world_2d.Camera_Set_Target_Position()
+	_world_2d.is_in_dialogue = true
+	#-------------------------------------------------------------------------------
+	for _i in _world_2d.friend_party.size():
+		_world_2d.PlayAnimation(_world_2d.friend_party[_i].playback, \"Idle\")
+	#-------------------------------------------------------------------------------
+	print(\"Cutscene Start\")
+	#-------------------------------------------------------------------------------
+	#await _world_2d.Seconds(0.3)
+	#-------------------------------------------------------------------------------
+	_world_2d.Dialogue_Open()
+	singleton.Common_Submited()
+	await _world_2d.Dialogue(true, \"Wait a second? What is that!\")
+	singleton.Common_Selected()
+	await _world_2d.Dialogue(true, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
+	_world_2d.Dialogue_Close()
+	singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
+	_world_2d.is_in_dialogue = false
+	print(\"Cutscene End\")
+	_world_2d.key_dictionary.set(_world_2d.room_test.room_id, 1)
+#-------------------------------------------------------------------------------
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fkxko"]
+size = Vector2(20, 80)
 
 [sub_resource type="Resource" id="Resource_0ptgt"]
 script = ExtResource("6_0ptgt")
@@ -22,13 +63,13 @@ item_resource = ExtResource("5_lloiv")
 hold = 9
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[node name="room_test_04" type="Node2D" node_paths=PackedStringArray("room_limits")]
+[node name="room_test_04" type="Node2D" unique_id=1910801013 node_paths=PackedStringArray("room_limits")]
 y_sort_enabled = true
 script = SubResource("GDScript_oclu2")
 room_limits = NodePath("room_limits")
 metadata/_custom_type_script = "uid://dkpbd3o7n34ul"
 
-[node name="room_limits" type="Control" parent="."]
+[node name="room_limits" type="Control" parent="." unique_id=200522062]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 592.0
@@ -36,24 +77,34 @@ offset_top = -376.0
 offset_right = 1136.0
 offset_bottom = -192.0
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="cutscene_00" type="Area2D" parent="room_limits" unique_id=647126202 node_paths=PackedStringArray("area2d_collider")]
+position = Vector2(136, 112)
+collision_layer = 4
+collision_mask = 0
+script = SubResource("GDScript_0ptgt")
+area2d_collider = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="room_limits/cutscene_00" unique_id=148742695]
+shape = SubResource("RectangleShape2D_fkxko")
+
+[node name="Warp_Left" parent="room_limits" unique_id=466845222 instance=ExtResource("4_yj1ku")]
+position = Vector2(16, 112)
+room_name = &"room_test_02"
+
+[node name="Item" parent="room_limits" unique_id=655138216 instance=ExtResource("4_o0jg7")]
+position = Vector2(80, 112)
+pickable_consumableitem = Array[ExtResource("6_0ptgt")]([SubResource("Resource_0ptgt")])
+
+[node name="Warp_Right" parent="room_limits" unique_id=1933417679 instance=ExtResource("7_0ptgt")]
+position = Vector2(528, 112)
+room_name = &"room_test_05"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1550681193]
 z_index = -1
 tile_map_data = PackedByteArray("AAAlAO7/AAAHAAcAAAAlAO//AAAHAAcAAAAlAPD/AAAHAAcAAAAmAO7/AAAHAAcAAAAmAO//AAAHAAcAAAAmAPD/AAAHAAcAAAAnAO7/AAAHAAcAAAAnAO//AAAHAAcAAAAnAPD/AAAHAAcAAAAoAO7/AAAHAAcAAAAoAO//AAAHAAcAAAAoAPD/AAAHAAcAAAApAO7/AAAHAAcAAAApAO//AAAHAAcAAAApAPD/AAAHAAcAAAAqAO7/AAAHAAcAAAAqAO//AAAHAAcAAAAqAPD/AAAHAAcAAAArAO7/AAAHAAcAAAArAO//AAAHAAcAAAArAPD/AAAHAAcAAAAsAO7/AAAHAAcAAAAsAO//AAAHAAcAAAAsAPD/AAAHAAcAAAAtAO7/AAAHAAcAAAAtAO//AAAHAAcAAAAtAPD/AAAHAAcAAAAuAO7/AAAHAAcAAAAuAO//AAAHAAcAAAAuAPD/AAAHAAcAAAAvAO7/AAAHAAcAAAAvAO//AAAHAAcAAAAvAPD/AAAHAAcAAAAwAO7/AAAHAAcAAAAwAO//AAAHAAcAAAAwAPD/AAAHAAcAAAAxAO7/AAAHAAcAAAAxAO//AAAHAAcAAAAxAPD/AAAHAAcAAAAyAO7/AAAHAAcAAAAyAO//AAAHAAcAAAAyAPD/AAAHAAcAAAAzAO7/AAAHAAcAAAAzAO//AAAHAAcAAAAzAPD/AAAHAAcAAAA0AO7/AAAHAAcAAAA0AO//AAAHAAcAAAA0APD/AAAHAAcAAAA1AO7/AAAHAAcAAAA1AO//AAAHAAcAAAA1APD/AAAHAAcAAAA2AO7/AAAHAAcAAAA2AO//AAAHAAcAAAA2APD/AAAHAAcAAAA3AO7/AAAHAAcAAAA3AO//AAAHAAcAAAA3APD/AAAHAAcAAAA4AO7/AAAHAAcAAAA4AO//AAAHAAcAAAA4APD/AAAHAAcAAAA5AO7/AAAHAAcAAAA5AO//AAAHAAcAAAA5APD/AAAHAAcAAAA6AO7/AAAHAAcAAAA6AO//AAAHAAcAAAA6APD/AAAHAAcAAAA7AO7/AAAHAAcAAAA7AO//AAAHAAcAAAA7APD/AAAHAAcAAAA8AO7/AAAHAAcAAAA8AO//AAAHAAcAAAA8APD/AAAHAAcAAAA9AO7/AAAHAAcAAAA9AO//AAAHAAcAAAA9APD/AAAHAAcAAAA+AO7/AAAHAAcAAAA+AO//AAAHAAcAAAA+APD/AAAHAAcAAAA/AO7/AAAHAAcAAAA/AO//AAAHAAcAAAA/APD/AAAHAAcAAABAAO7/AAAHAAcAAABAAO//AAAHAAcAAABAAPD/AAAHAAcAAABBAO7/AAAHAAcAAABBAO//AAAHAAcAAABBAPD/AAAHAAcAAABCAO7/AAAHAAcAAABCAO//AAAHAAcAAABCAPD/AAAHAAcAAABDAO7/AAAHAAcAAABDAO//AAAHAAcAAABDAPD/AAAHAAcAAABEAO7/AAAHAAcAAABEAO//AAAHAAcAAABEAPD/AAAHAAcAAABFAO7/AAAHAAcAAABFAO//AAAHAAcAAABFAPD/AAAHAAcAAABGAO7/AAAHAAcAAABGAO//AAAHAAcAAABGAPD/AAAHAAcAAAAnAO3/AAAHAAcAAAAnAPH/AAAHAAcAAAAoAO3/AAAHAAcAAAAoAPH/AAAHAAcAAAApAO3/AAAHAAcAAAApAPH/AAAHAAcAAAAqAO3/AAAHAAcAAAAqAPH/AAAHAAcAAAArAO3/AAAHAAcAAAArAPH/AAAHAAcAAAAsAO3/AAAHAAcAAAAsAPH/AAAHAAcAAAAtAO3/AAAHAAcAAAAtAPH/AAAHAAcAAAAuAO3/AAAHAAcAAAAuAPH/AAAHAAcAAAAvAO3/AAAHAAcAAAAvAPH/AAAHAAcAAAAwAO3/AAAHAAcAAAAwAPH/AAAHAAcAAAAxAO3/AAAHAAcAAAAxAPH/AAAHAAcAAAAyAO3/AAAHAAcAAAAyAPH/AAAHAAcAAAAzAO3/AAAHAAcAAAAzAPH/AAAHAAcAAAA0AO3/AAAHAAcAAAA0APH/AAAHAAcAAAA1AO3/AAAHAAcAAAA1APH/AAAHAAcAAAA2AO3/AAAHAAcAAAA2APH/AAAHAAcAAAA3AO3/AAAHAAcAAAA3APH/AAAHAAcAAAA4AO3/AAAHAAcAAAA4APH/AAAHAAcAAAA5AO3/AAAHAAcAAAA5APH/AAAHAAcAAAA6AO3/AAAHAAcAAAA6APH/AAAHAAcAAAA7AO3/AAAHAAcAAAA7APH/AAAHAAcAAAA8AO3/AAAHAAcAAAA8APH/AAAHAAcAAAA9AO3/AAAHAAcAAAA9APH/AAAHAAcAAAA+AO3/AAAHAAcAAAA+APH/AAAHAAcAAAA/AO3/AAAHAAcAAAA/APH/AAAHAAcAAABAAO3/AAAHAAcAAABAAPH/AAAHAAcAAABBAO3/AAAHAAcAAABBAPH/AAAHAAcAAABCAO3/AAAHAAcAAABCAPH/AAAHAAcAAAAlAPH/AQAEAAQAAAAmAPH/AQAEAAQAAAAmAPL/AQAEAAQAAAAnAPL/AQAEAAQAAAAoAPL/AQAEAAQAAAApAPL/AQAEAAQAAAAqAPL/AQAEAAQAAAArAPL/AQAEAAQAAAAsAPL/AQAEAAQAAAAtAPL/AQAEAAQAAAAuAPL/AQAEAAQAAAAvAPL/AQAEAAQAAAAwAPL/AQAEAAQAAAAxAPL/AQAEAAQAAAAyAPL/AQAEAAQAAAAzAPL/AQAEAAQAAAA0APL/AQAEAAQAAAA1APL/AQAEAAQAAAA2APL/AQAEAAQAAAA3APL/AQAEAAQAAAA4APL/AQAEAAQAAAA5APL/AQAEAAQAAAA6APL/AQAEAAQAAAA7APL/AQAEAAQAAAA8APL/AQAEAAQAAAA9APL/AQAEAAQAAAA+APL/AQAEAAQAAAA/APL/AQAEAAQAAABAAPL/AQAEAAQAAABBAPL/AQAEAAQAAABCAPL/AQAEAAQAAABDAPL/AQAEAAQAAABDAPH/AQAEAAQAAABEAPH/AQAEAAQAAABFAPH/AQAEAAQAAABGAPH/AQAEAAQAAAAlAO3/AQAEAAQAAAAmAO3/AQAEAAQAAAAmAOn/AQAEAAQAAAAmAOr/AQAEAAQAAAAmAOv/AQAEAAQAAAAmAOz/AQAEAAQAAAAnAOn/AQAEAAQAAAAnAOr/AQAEAAQAAAAnAOv/AQAEAAQAAAAnAOz/AQAEAAQAAAAoAOn/AQAEAAQAAAAoAOr/AQAEAAQAAAAoAOv/AQAEAAQAAAAoAOz/AQAEAAQAAAApAOn/AQAEAAQAAAApAOr/AQAEAAQAAAApAOv/AQAEAAQAAAApAOz/AQAEAAQAAAAqAOn/AQAEAAQAAAAqAOr/AQAEAAQAAAAqAOv/AQAEAAQAAAAqAOz/AQAEAAQAAAArAOn/AQAEAAQAAAArAOr/AQAEAAQAAAArAOv/AQAEAAQAAAArAOz/AQAEAAQAAAAsAOn/AQAEAAQAAAAsAOr/AQAEAAQAAAAsAOv/AQAEAAQAAAAsAOz/AQAEAAQAAAAtAOn/AQAEAAQAAAAtAOr/AQAEAAQAAAAtAOv/AQAEAAQAAAAtAOz/AQAEAAQAAAAuAOn/AQAEAAQAAAAuAOr/AQAEAAQAAAAuAOv/AQAEAAQAAAAuAOz/AQAEAAQAAAAvAOn/AQAEAAQAAAAvAOr/AQAEAAQAAAAvAOv/AQAEAAQAAAAvAOz/AQAEAAQAAAAwAOn/AQAEAAQAAAAwAOr/AQAEAAQAAAAwAOv/AQAEAAQAAAAwAOz/AQAEAAQAAAAxAOn/AQAEAAQAAAAxAOr/AQAEAAQAAAAxAOv/AQAEAAQAAAAxAOz/AQAEAAQAAAAyAOn/AQAEAAQAAAAyAOr/AQAEAAQAAAAyAOv/AQAEAAQAAAAyAOz/AQAEAAQAAAAzAOn/AQAEAAQAAAAzAOr/AQAEAAQAAAAzAOv/AQAEAAQAAAAzAOz/AQAEAAQAAAA0AOn/AQAEAAQAAAA0AOr/AQAEAAQAAAA0AOv/AQAEAAQAAAA0AOz/AQAEAAQAAAA1AOn/AQAEAAQAAAA1AOr/AQAEAAQAAAA1AOv/AQAEAAQAAAA1AOz/AQAEAAQAAAA2AOn/AQAEAAQAAAA2AOr/AQAEAAQAAAA2AOv/AQAEAAQAAAA2AOz/AQAEAAQAAAA3AOn/AQAEAAQAAAA3AOr/AQAEAAQAAAA3AOv/AQAEAAQAAAA3AOz/AQAEAAQAAAA4AOn/AQAEAAQAAAA4AOr/AQAEAAQAAAA4AOv/AQAEAAQAAAA4AOz/AQAEAAQAAAA5AOn/AQAEAAQAAAA5AOr/AQAEAAQAAAA5AOv/AQAEAAQAAAA5AOz/AQAEAAQAAAA6AOn/AQAEAAQAAAA6AOr/AQAEAAQAAAA6AOv/AQAEAAQAAAA6AOz/AQAEAAQAAAA7AOn/AQAEAAQAAAA7AOr/AQAEAAQAAAA7AOv/AQAEAAQAAAA7AOz/AQAEAAQAAAA8AOn/AQAEAAQAAAA8AOr/AQAEAAQAAAA8AOv/AQAEAAQAAAA8AOz/AQAEAAQAAAA9AOn/AQAEAAQAAAA9AOr/AQAEAAQAAAA9AOv/AQAEAAQAAAA9AOz/AQAEAAQAAAA+AOn/AQAEAAQAAAA+AOr/AQAEAAQAAAA+AOv/AQAEAAQAAAA+AOz/AQAEAAQAAAA/AOn/AQAEAAQAAAA/AOr/AQAEAAQAAAA/AOv/AQAEAAQAAAA/AOz/AQAEAAQAAABAAOn/AQAEAAQAAABAAOr/AQAEAAQAAABAAOv/AQAEAAQAAABAAOz/AQAEAAQAAABBAOn/AQAEAAQAAABBAOr/AQAEAAQAAABBAOv/AQAEAAQAAABBAOz/AQAEAAQAAABCAOn/AQAEAAQAAABCAOr/AQAEAAQAAABCAOv/AQAEAAQAAABCAOz/AQAEAAQAAABDAOn/AQAEAAQAAABDAOr/AQAEAAQAAABDAOv/AQAEAAQAAABDAOz/AQAEAAQAAABDAO3/AQAEAAQAAABEAO3/AQAEAAQAAABFAO3/AQAEAAQAAABGAO3/AQAEAAQAAAAlAOr/AQAEAAQAAAAlAOv/AQAEAAQAAAAlAOz/AQAEAAQAAABEAOr/AQAEAAQAAABEAOv/AQAEAAQAAABEAOz/AQAEAAQAAABFAOr/AQAEAAQAAABFAOv/AQAEAAQAAABFAOz/AQAEAAQAAABGAOr/AQAEAAQAAABGAOv/AQAEAAQAAABGAOz/AQAEAAQAAAA=")
 tile_set = ExtResource("2_yj1ku")
 
-[node name="TileMapLayer2" type="TileMapLayer" parent="."]
+[node name="TileMapLayer2" type="TileMapLayer" parent="." unique_id=1091199870]
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAA+AOz/CAAAAAAAAAArAO7/AAAAAAAAAAA4AO3/AAAAAAAAAAA6AOv/AAAAAAAAAAA+AO7/AAAAAAAAAAAwAOv/AQAAAAAAAAApAOr/AgAAAAAAAAA2AOr/BAAAAAAAAAAvAO7/BgAAAAAAAAAoAOz/BgAAAAAAAAA0AOz/CAAAAAAAAAAnAOv/BQAAAAAAABBCAOv/BQAAAAAAACA0AO//CQAAAAAAAAA5AOz/CAAAAAAAAAAtAOr/AwAAAAAAAAAsAOn/AwAAAAAAAAA=")
 tile_set = ExtResource("3_yj1ku")
-
-[node name="Warp_Left" parent="." instance=ExtResource("4_yj1ku")]
-position = Vector2(608, -264)
-room_name = &"room_test_02"
-
-[node name="Item" parent="." instance=ExtResource("4_o0jg7")]
-position = Vector2(672, -264)
-pickable_consumableitem = Array[ExtResource("6_0ptgt")]([SubResource("Resource_0ptgt")])
-
-[node name="Warp_Right" parent="." instance=ExtResource("7_0ptgt")]
-position = Vector2(1120, -264)
-room_name = &"room_test_05"

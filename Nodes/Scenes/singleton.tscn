@@ -15,8 +15,14 @@
 [ext_resource type="AudioStream" uid="uid://c6yu7yrlqi22f" path="res://Assets/rpg_maker_mv/audio/se/Shop1.ogg" id="10_i4uux"]
 [ext_resource type="AudioStream" uid="uid://d4iwna203gtp3" path="res://Assets/rpg_maker_mv/audio/se/Teleport.ogg" id="13_i4uux"]
 [ext_resource type="AudioStream" uid="uid://vaobdawir6x0" path="res://Assets/rpg_maker_mv/audio/se/Battle1.ogg" id="14_26shh"]
+[ext_resource type="AudioStream" uid="uid://dl0f0fppy7j3v" path="res://Assets/rpg_maker_mv/audio/se/Run.ogg" id="16_re85v"]
+[ext_resource type="AudioStream" uid="uid://g3kg3fp3wy6e" path="res://Assets/rpg_maker_mv/audio/se/Damage5.ogg" id="17_ul50i"]
+[ext_resource type="AudioStream" uid="uid://nkys2qxkaj4m" path="res://Assets/rpg_maker_mv/audio/se/Damage4.ogg" id="18_y6p1x"]
+[ext_resource type="AudioStream" uid="uid://cj7cg8mto5b23" path="res://Assets/rpg_maker_mv/audio/se/Collapse1.ogg" id="19_g3fee"]
+[ext_resource type="AudioStream" uid="uid://dgbi1uvws0mvx" path="res://Assets/rpg_maker_mv/audio/se/Recovery.ogg" id="20_51mai"]
+[ext_resource type="AudioStream" uid="uid://bgrlljo0utrof" path="res://Assets/rpg_maker_mv/audio/se/Ice1.ogg" id="21_ul50i"]
 
-[node name="singleton" type="Node" unique_id=1729131300 node_paths=PackedStringArray("optionMenu", "audioStreamPlayer_selected", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "audioStreamPlayer_equip", "audioStreamPlayer_save", "audioStreamPlayer_shop", "audioStreamPlayer_teleport", "audioStreamPlayer_enter_battle", "bgmPlayer", "fps_margin_container", "fps_label")]
+[node name="singleton" type="Node" unique_id=1729131300 node_paths=PackedStringArray("optionMenu", "audioStreamPlayer_selected", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "audioStreamPlayer_equip", "audioStreamPlayer_save", "audioStreamPlayer_shop", "audioStreamPlayer_teleport", "audioStreamPlayer_enter_battle", "audioStreamPlayer_escape", "audioStreamPlayer_ally_damage", "audioStreamPlayer_enemy_damage", "audioStreamPlayer_enemy_colapse", "audioStreamPlayer_recovery", "audioStreamPlayer_graze", "bgmPlayer", "fps_margin_container", "fps_label")]
 process_mode = 3
 script = ExtResource("1_ixejq")
 optionMenu = NodePath("CanvasLayer/Option_Menu")
@@ -28,6 +34,12 @@ audioStreamPlayer_save = NodePath("AudioStreamPlayer_save")
 audioStreamPlayer_shop = NodePath("AudioStreamPlayer_shop")
 audioStreamPlayer_teleport = NodePath("AudioStreamPlayer_teleport")
 audioStreamPlayer_enter_battle = NodePath("AudioStreamPlayer_enter_battle")
+audioStreamPlayer_escape = NodePath("AudioStreamPlayer_escape")
+audioStreamPlayer_ally_damage = NodePath("AudioStreamPlayer_ally_damage")
+audioStreamPlayer_enemy_damage = NodePath("AudioStreamPlayer_enemy_damage")
+audioStreamPlayer_enemy_colapse = NodePath("AudioStreamPlayer_enemy_colapse")
+audioStreamPlayer_recovery = NodePath("AudioStreamPlayer_recovery")
+audioStreamPlayer_graze = NodePath("AudioStreamPlayer_graze")
 bgmPlayer = NodePath("AudioStreamPlayer_bgm")
 title_bgm = ExtResource("2_lqxqx")
 stage1 = ExtResource("2_pfk01")
@@ -276,6 +288,9 @@ size_flags_vertical = 8
 theme_override_constants/outline_size = 4
 text = "60.00 fps"
 
+[node name="AudioStreamPlayer_bgm" type="AudioStreamPlayer" parent="." unique_id=1837783955]
+bus = &"bgm"
+
 [node name="AudioStreamPlayer_select" type="AudioStreamPlayer" parent="." unique_id=1280889140]
 stream = ExtResource("4_s3k3f")
 volume_db = 5.0
@@ -313,5 +328,26 @@ bus = &"sfx"
 stream = ExtResource("14_26shh")
 bus = &"sfx"
 
-[node name="AudioStreamPlayer_bgm" type="AudioStreamPlayer" parent="." unique_id=1837783955]
-bus = &"bgm"
+[node name="AudioStreamPlayer_escape" type="AudioStreamPlayer" parent="." unique_id=796652771]
+stream = ExtResource("16_re85v")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_ally_damage" type="AudioStreamPlayer" parent="." unique_id=1649472662]
+stream = ExtResource("17_ul50i")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_enemy_damage" type="AudioStreamPlayer" parent="." unique_id=342968845]
+stream = ExtResource("18_y6p1x")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_enemy_colapse" type="AudioStreamPlayer" parent="." unique_id=200663758]
+stream = ExtResource("19_g3fee")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_recovery" type="AudioStreamPlayer" parent="." unique_id=1011261012]
+stream = ExtResource("20_51mai")
+bus = &"sfx"
+
+[node name="AudioStreamPlayer_graze" type="AudioStreamPlayer" parent="." unique_id=272687571]
+stream = ExtResource("21_ul50i")
+bus = &"sfx"
