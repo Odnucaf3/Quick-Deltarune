@@ -52,7 +52,9 @@ autoplay = "banner-sushi"
 
 [node name="Warp_Down" parent="." unique_id=1480396011 instance=ExtResource("3_rj2mv")]
 position = Vector2(408, -208)
+collision_layer = 8
 
 [node name="Warp_Right" parent="." unique_id=1161764593 instance=ExtResource("4_he6hk")]
 position = Vector2(560, -264)
+collision_layer = 8
 room_name = &"room_test_04"

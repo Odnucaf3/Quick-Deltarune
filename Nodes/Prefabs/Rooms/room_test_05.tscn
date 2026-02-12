@@ -33,6 +33,7 @@ tile_set = ExtResource("1_1a517")
 
 [node name="Warp_Left" parent="." unique_id=264349275 instance=ExtResource("2_t5i7q")]
 position = Vector2(1168, -264)
+collision_layer = 8
 room_name = &"room_test_04"
 
 [node name="props_prefab" parent="." unique_id=1419309541 instance=ExtResource("6_7u6et")]
@@ -41,4 +42,5 @@ autoplay = "banner-big"
 
 [node name="Savespot" parent="." unique_id=940063548 instance=ExtResource("4_xj8ee")]
 position = Vector2(1424, -256)
+collision_layer = 4
 dialogue = "* Creating a second Savespot fills you with determination."

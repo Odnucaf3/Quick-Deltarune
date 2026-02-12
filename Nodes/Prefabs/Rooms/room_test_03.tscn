@@ -57,8 +57,10 @@ autoplay = "banner-neon"
 
 [node name="Item" parent="." unique_id=7493250 instance=ExtResource("5_25x5p")]
 position = Vector2(-160, -456)
+collision_layer = 4
 pickable_consumableitem = Array[ExtResource("5_37vpw")]([SubResource("Resource_5g5si")])
 
 [node name="Warp_Down" parent="." unique_id=699467842 instance=ExtResource("6_25x5p")]
 position = Vector2(-8, -208)
+collision_layer = 8
 warp_name = &"Warp_Up2"

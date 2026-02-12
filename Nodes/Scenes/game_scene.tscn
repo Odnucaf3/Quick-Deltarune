@@ -368,7 +368,7 @@ process_mode = 3
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 
-[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_area2d", "player_enemyDetector_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_scrollContainer", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_description", "status_menu_stats_scrollContainer", "status_menu_stats_content", "status_menu_stats_title", "status_menu_stats_description", "status_menu_statuseffect_scrollContainer", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="World2D" type="Node2D" parent="." unique_id=538317805 node_paths=PackedStringArray("game_scene", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_scrollContainer", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_description", "status_menu_stats_scrollContainer", "status_menu_stats_content", "status_menu_stats_title", "status_menu_stats_description", "status_menu_statuseffect_scrollContainer", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 process_mode = 1
 y_sort_enabled = true
 script = ExtResource("13_gg6rv")
@@ -392,8 +392,9 @@ ally_ui_prefab = ExtResource("20_ik87f")
 enemy_ui_prefab = ExtResource("16_mapp4")
 player_characterbody2d = NodePath("Player")
 player_collider = NodePath("Player/CollisionShape2D")
-player_interactable_area2d = NodePath("Player/interactable_by_Action_Area2D")
-player_enemyDetector_area2d = NodePath("Player/interactable_by_Touch_Area2D")
+player_interactable_by_action_area2d = NodePath("Player/interactable_by_Action_Area2D")
+player_interactable_by_touch_not_enemy_area2d = NodePath("Player/interactable_by_Touch_Not_Enemy_Area2D")
+player_interactable_by_touch_enemy_area2d = NodePath("Player/interactable_by_Touch_Enemy_Area2D")
 friend_party = [NodePath("Player/Friend_01"), NodePath("Friend_02"), NodePath("Friend_03")]
 item_menu = NodePath("../CanvasLayer/All Menues/Items_TabContainer")
 item_menu_allitems_scrollContainer = NodePath("../CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer")
@@ -565,16 +566,23 @@ statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_jsbcl
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player" unique_id=1124339265]
 collision_layer = 0
-collision_mask = 8
+collision_mask = 4
 
 [node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Action_Area2D" unique_id=946613603]
 shape = SubResource("CircleShape2D_hxoxt")
 
-[node name="interactable_by_Touch_Area2D" type="Area2D" parent="World2D/Player" unique_id=1487620068]
+[node name="interactable_by_Touch_Not_Enemy_Area2D" type="Area2D" parent="World2D/Player" unique_id=1487620068]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 8
 
-[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Touch_Area2D" unique_id=803766210]
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Touch_Not_Enemy_Area2D" unique_id=803766210]
+shape = SubResource("CircleShape2D_hxoxt")
+
+[node name="interactable_by_Touch_Enemy_Area2D" type="Area2D" parent="World2D/Player" unique_id=395588081]
+collision_layer = 0
+collision_mask = 16
+
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Touch_Enemy_Area2D" unique_id=953004056]
 shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]

@@ -96,8 +96,9 @@ locale/translations=PackedStringArray("res://Translations/Translation - Hoja 1.e
 
 2d_physics/layer_1="Static Object"
 2d_physics/layer_2="Player"
-2d_physics/layer_3="Interactable_by_Touch"
-2d_physics/layer_4="Interactable_by_Action"
+2d_physics/layer_3="Interactable_by_Action"
+2d_physics/layer_4="Interactable_by_Touch_Not_Enemy"
+2d_physics/layer_5="Interactable_by_Touch_Enemy"
 
 [rendering]
 

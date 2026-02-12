@@ -85,70 +85,172 @@ script = ExtResource("10_xdoc7")
 key_item_resource = ExtResource("15_5drey")
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
+[sub_resource type="GDScript" id="GDScript_xdoc7"]
+script/source = "extends CharacterBody2D
+#-------------------------------------------------------------------------------
+enum ENEMY_STATE{PATROLLING, CHASING, FIGHTING}
+#-------------------------------------------------------------------------------
+var _myENEMY_STATE: ENEMY_STATE = ENEMY_STATE.PATROLLING
+@export var enemy_collider: CollisionShape2D
+#-------------------------------------------------------------------------------
+@export var area2d_Interactable: Interactable_Script
+@export var area2d_collider: CollisionShape2D
+#-------------------------------------------------------------------------------
+@export var enemy: Array[Party_Member]
+@export var label: Label
+#-------------------------------------------------------------------------------
+var original_position: Vector2
+var counter: int
+#-------------------------------------------------------------------------------
+func _ready() -> void:
+	original_position = global_position
+	#-------------------------------------------------------------------------------
+	if(singleton.world_2d.key_dictionary.get(singleton.world_2d.Get_Item_Script_ID(self), 0) == 1):
+		queue_free()
+	#-------------------------------------------------------------------------------
+	else:
+		label.text = \"\"
+		#-------------------------------------------------------------------------------
+		for _i in enemy.size():
+			enemy[_i].playback = enemy[_i].animation_tree.get(\"parameters/playback\")
+			singleton.world_2d.PlayAnimation(enemy[_i].playback, \"Idle\")
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func _physics_process(_delta: float) -> void:
+	if(singleton.world_2d.is_in_dialogue):
+		return
+	#-------------------------------------------------------------------------------
+	match(_myENEMY_STATE):
+		ENEMY_STATE.PATROLLING:
+			pass
+		#-------------------------------------------------------------------------------
+		ENEMY_STATE.CHASING:
+			#-------------------------------------------------------------------------------
+			if(singleton.world_2d.player_characterbody2d.global_position.distance_to(original_position) < 500):
+				#-------------------------------------------------------------------------------
+				if(singleton.world_2d.player_characterbody2d.global_position.distance_to(global_position) > 15):
+					var _v2: Vector2 = singleton.world_2d.player_characterbody2d.global_position - global_position
+					#-------------------------------------------------------------------------------
+					if(enemy[0].is_Facing_Left):
+						#-------------------------------------------------------------------------------
+						if(_v2.x > 0):
+							singleton.world_2d.Face_Left(enemy[0], false)
+						#-------------------------------------------------------------------------------
+					#-------------------------------------------------------------------------------
+					else:
+						#-------------------------------------------------------------------------------
+						if(_v2.x < 0):
+							singleton.world_2d.Face_Left(enemy[0], true)
+						#-------------------------------------------------------------------------------
+					#-------------------------------------------------------------------------------
+					if(counter > 30):
+						var _dir = atan2(_v2.y, _v2.x)
+						var _vel = Vector2(cos(_dir), sin(_dir)) * 120.0 * singleton.world_2d.deltaTimeScale
+						velocity = _vel
+						move_and_slide()
+						return
+					else:
+						counter += 1
+						#-------------------------------------------------------------------------------
+						if(counter == 30):
+							label.text = \"\"
+							singleton.world_2d.PlayAnimation(enemy[0].playback, \"Walk\")
+						#-------------------------------------------------------------------------------
+				#-------------------------------------------------------------------------------
+				else:
+					Enter_Battle()
+					return
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			else:
+				_myENEMY_STATE = ENEMY_STATE.PATROLLING
+				global_position = original_position
+				area2d_collider.set_deferred(\"disabled\", false)
+				singleton.world_2d.PlayAnimation(enemy[0].playback, \"Idle\")
+				singleton.world_2d.Face_Left(enemy[0], false)
+				return
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		ENEMY_STATE.FIGHTING:
+			pass
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Enter_Chase():
+	#-------------------------------------------------------------------------------
+	if(_myENEMY_STATE == ENEMY_STATE.PATROLLING):
+		_myENEMY_STATE = ENEMY_STATE.CHASING
+		label.text = \"!\"
+		counter = 0
+		area2d_collider.set_deferred(\"disabled\", true)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Enter_Battle():
+	_myENEMY_STATE = ENEMY_STATE.FIGHTING
+	label.text = \"\"
+	singleton.world_2d.can_enter_fight = false
+	#-------------------------------------------------------------------------------
+	#await Dialogue_Before_Battle()
+	#-------------------------------------------------------------------------------
+	await singleton.world_2d.EnterBattle(enemy)
+	await Battle()
+#-------------------------------------------------------------------------------
+func Battle():
+	#-------------------------------------------------------------------------------
+	while(singleton.world_2d.myBATTLE_STATE == singleton.world_2d.BATTLE_STATE.STILL_FIGHTING):
+		await singleton.world_2d.Wait_for_Player()
+		await singleton.world_2d.Start_BulletHell(func():singleton.world_2d.Stage1_Fire1(), 6)
+		await singleton.world_2d.Wait_for_Player()
+		await singleton.world_2d.Start_BulletHell(func():singleton.world_2d.Stage1_Fire2(), 6)
+		#await singleton.world_2d.Wait_for_Player()
+		#await singleton.world_2d.Start_BulletHell(func():print(\"C Actio\"), 2)
+	#-------------------------------------------------------------------------------
+	singleton.world_2d.ExitBatle(func():Battle(), func():Win_Battle(), func():Escape_Battle())
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Dialogue_Before_Battle():
+	singleton.world_2d.Dialogue_Open()
+	await singleton.world_2d.Dialogue(true, \"* Prepeare yourself for a beaten.\")
+	await singleton.world_2d.Dialogue(true, \"* Because I am gonna beat you.\")
+	singleton.world_2d.Dialogue_Close()
+#-------------------------------------------------------------------------------
+func Win_Battle():
+	singleton.world_2d.key_dictionary.set(singleton.world_2d.room_test.Get_Item_Script_ID(self), 1)
+	#-------------------------------------------------------------------------------
+	enemy_collider.set_deferred(\"disabled\", true)
+	area2d_collider.set_deferred(\"disabled\", true)
+	#-------------------------------------------------------------------------------
+	singleton.world_2d.can_enter_fight = true
+#-------------------------------------------------------------------------------
+func Escape_Battle():
+	_myENEMY_STATE = ENEMY_STATE.PATROLLING
+	global_position = original_position
+	area2d_collider.set_deferred(\"disabled\", false)
+	singleton.world_2d.PlayAnimation(enemy[0].playback, \"Idle\")
+	singleton.world_2d.Face_Left(enemy[0], false)
+	#-------------------------------------------------------------------------------
+	for _i in range(1, enemy.size()):
+		enemy[_i].hide()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wkx03"]
 size = Vector2(16, 8)
 
 [sub_resource type="GDScript" id="GDScript_ygji3"]
 script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
-@export var enemy_characterbody2d: CharacterBody2D
-@export var enemy_collider: CollisionShape2D
+@export var _enemy_root: CharacterBody2D
 #-------------------------------------------------------------------------------
-@export var area2d_collider: CollisionShape2D
-#-------------------------------------------------------------------------------
-@export var enemy: Array[Party_Member]
-#-------------------------------------------------------------------------------
-func Interactable_Ready(_world_2d:World_2D):
-	#-------------------------------------------------------------------------------
-	if(_world_2d.key_dictionary.get(_world_2d.Get_Item_Script_ID(enemy_characterbody2d), 0) == 1):
-		enemy_characterbody2d.queue_free()
-	#-------------------------------------------------------------------------------
-	else:
-		#-------------------------------------------------------------------------------
-		for _i in enemy.size():
-			enemy[_i].playback = enemy[_i].animation_tree.get(\"parameters/playback\")
-			_world_2d.PlayAnimation(enemy[_i].playback, \"Idle\")
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Interactable_Action(_world_2d:World_2D):
-	_world_2d.can_enter_fight = false
-	#-------------------------------------------------------------------------------
-	#await Dialogue_Before_Battle(_world_2d)
-	#-------------------------------------------------------------------------------
-	await _world_2d.EnterBattle(enemy)
-	await Battle(_world_2d)
-#-------------------------------------------------------------------------------
-func Battle(_world_2d:World_2D):
-	#-------------------------------------------------------------------------------
-	while (_world_2d.myBATTLE_STATE == _world_2d.BATTLE_STATE.STILL_FIGHTING):
-		await _world_2d.Wait_for_Player()
-		await _world_2d.Start_BulletHell(func():_world_2d.Stage1_Fire1(), 6)
-		await _world_2d.Wait_for_Player()
-		await _world_2d.Start_BulletHell(func():_world_2d.Stage1_Fire2(), 6)
-		#await _world_2d.Wait_for_Player()
-		#await _world_2d.Start_BulletHell(func():print(\"C Actio\"), 2)
-	#-------------------------------------------------------------------------------
-	_world_2d.ExitBatle(func():Battle(_world_2d), func():Win_Battle(_world_2d))
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Dialogue_Before_Battle(_world_2d: World_2D):
-	_world_2d.Dialogue_Open()
-	await _world_2d.Dialogue(true, \"* Prepeare yourself for a beaten.\")
-	await _world_2d.Dialogue(true, \"* Because I am gonna beat you.\")
-	_world_2d.Dialogue_Close()
-#-------------------------------------------------------------------------------
-func Win_Battle(_world_2d: World_2D):
-	_world_2d.key_dictionary.set(_world_2d.room_test.Get_Item_Script_ID(enemy_characterbody2d), 1)
-	#-------------------------------------------------------------------------------
-	enemy_collider.set_deferred(\"disabled\", true)
-	area2d_collider.set_deferred(\"disabled\", true)
-	#-------------------------------------------------------------------------------
-	_world_2d.can_enter_fight = true
+func Interactable_Action():
+	_enemy_root.Enter_Chase()
 #-------------------------------------------------------------------------------
 "
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wkx03"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xdoc7"]
+size = Vector2(224, 192)
 
 [sub_resource type="GDScript" id="GDScript_rqg47"]
 script/source = "extends Interactable_Script
@@ -159,23 +261,23 @@ script/source = "extends Interactable_Script
 @export var _equipitem_array: Array[Equip_Serializable]
 @export var _keyitem_array: Array[Key_Item_Serializable]
 #-------------------------------------------------------------------------------
-func Interactable_Ready(_world_2d:World_2D) -> void:
+func _ready() -> void:
 	user.playback = user.animation_tree.get(\"parameters/playback\")
-	_world_2d.PlayAnimation(user.playback, \"Idle\")
+	singleton.world_2d.PlayAnimation(user.playback, \"Idle\")
 	#-------------------------------------------------------------------------------
 	for _i in _equipitem_array.size():
-		var _id: String = _world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _equipitem_array[_i].equip_resource)
-		_equipitem_array[_i].stored = _world_2d.key_dictionary.get(_id, _equipitem_array[_i].stored)
+		var _id: String = singleton.world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _equipitem_array[_i].equip_resource)
+		_equipitem_array[_i].stored = singleton.world_2d.key_dictionary.get(_id, _equipitem_array[_i].stored)
 	#-------------------------------------------------------------------------------
 	for _i in _keyitem_array.size():
-		var _id: String = _world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _keyitem_array[_i].key_item_resource)
-		_keyitem_array[_i].stored = _world_2d.key_dictionary.get(_id, _keyitem_array[_i].stored)
+		var _id: String = singleton.world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _keyitem_array[_i].key_item_resource)
+		_keyitem_array[_i].stored = singleton.world_2d.key_dictionary.get(_id, _keyitem_array[_i].stored)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Interactable_Action(_world_2d:World_2D):
-	_world_2d.PlayAnimation(user.playback, \"Walk\")
+func Interactable_Action():
+	singleton.world_2d.PlayAnimation(user.playback, \"Walk\")
 	#-------------------------------------------------------------------------------
-	_world_2d.Dialogue_Open()
+	singleton.world_2d.Dialogue_Open()
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _s: String = \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
@@ -186,19 +288,19 @@ func Interactable_Action(_world_2d:World_2D):
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
 	#-------------------------------------------------------------------------------
-	await _world_2d.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
+	await singleton.world_2d.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
 	singleton.Common_Selected()
-	await _world_2d.Dialogue(true, \"* Do you want to buy something? \"+_s)
-	_world_2d.Dialogue_Close()
+	await singleton.world_2d.Dialogue(true, \"* Do you want to buy something? \"+_s)
+	singleton.world_2d.Dialogue_Close()
 	#-------------------------------------------------------------------------------
-	await _world_2d.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
+	await singleton.world_2d.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
-	_world_2d.Dialogue_Open()
-	await _world_2d.Dialogue(true, \"* Thank you. \"+_s)
-	_world_2d.Dialogue_Close()
+	singleton.world_2d.Dialogue_Open()
+	await singleton.world_2d.Dialogue(true, \"* Thank you. \"+_s)
+	singleton.world_2d.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
-	_world_2d.PlayAnimation(user.playback, \"Idle\")
+	singleton.world_2d.PlayAnimation(user.playback, \"Idle\")
 #-------------------------------------------------------------------------------
 "
 
@@ -309,17 +411,33 @@ autoplay = "banner-neon"
 
 [node name="Item" parent="." unique_id=926208097 instance=ExtResource("6_7i8dt")]
 position = Vector2(-48, 112)
+collision_layer = 4
 pickable_consumableitem = Array[ExtResource("13_mxnnk")]([SubResource("Resource_4u8d0"), SubResource("Resource_w87vk")])
 pickable_equipitem = Array[ExtResource("8_ygji3")]([SubResource("Resource_8ss50")])
 pickable_keyitem = Array[ExtResource("10_xdoc7")]([SubResource("Resource_srwso"), SubResource("Resource_xdoc7")])
 
-[node name="Enemy1" type="CharacterBody2D" parent="." unique_id=825266602]
+[node name="Enemy1" type="CharacterBody2D" parent="." unique_id=825266602 node_paths=PackedStringArray("enemy_collider", "area2d_Interactable", "area2d_collider", "enemy", "label")]
 y_sort_enabled = true
-position = Vector2(432, 64)
+position = Vector2(400, 48)
 collision_layer = 4
+script = SubResource("GDScript_xdoc7")
+enemy_collider = NodePath("CollisionShape2D")
+area2d_Interactable = NodePath("Area2D_Interactable")
+area2d_collider = NodePath("Area2D_Interactable/CollisionShape2D")
+enemy = [NodePath("Foe_01"), NodePath("Foe_03"), NodePath("Foe_02")]
+label = NodePath("Marker2D/Label")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1" unique_id=1172717570]
 shape = SubResource("RectangleShape2D_wkx03")
+
+[node name="Area2D_Interactable" type="Area2D" parent="Enemy1" unique_id=733253951 node_paths=PackedStringArray("_enemy_root")]
+collision_layer = 16
+collision_mask = 0
+script = SubResource("GDScript_ygji3")
+_enemy_root = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1/Area2D_Interactable" unique_id=693989030]
+shape = SubResource("RectangleShape2D_xdoc7")
 
 [node name="Foe_01" parent="Enemy1" unique_id=463040546 instance=ExtResource("6_jyvag")]
 
@@ -331,57 +449,36 @@ position = Vector2(32, 16)
 visible = false
 position = Vector2(32, -16)
 
-[node name="Area2D" type="Area2D" parent="Enemy1" unique_id=733253951 node_paths=PackedStringArray("enemy_characterbody2d", "enemy_collider", "area2d_collider", "enemy")]
-collision_layer = 4
-collision_mask = 0
-script = SubResource("GDScript_ygji3")
-enemy_characterbody2d = NodePath("..")
-enemy_collider = NodePath("../CollisionShape2D")
-area2d_collider = NodePath("CollisionShape2D")
-enemy = [NodePath("../Foe_01"), NodePath("../Foe_03"), NodePath("../Foe_02")]
-is_enemy = true
+[node name="Marker2D" type="Marker2D" parent="Enemy1" unique_id=922697963]
+position = Vector2(0, -48)
+scale = Vector2(0.5, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy1/Area2D" unique_id=693989030]
-shape = SubResource("CircleShape2D_wkx03")
-
-[node name="Enemy2" type="CharacterBody2D" parent="." unique_id=1109360009]
-y_sort_enabled = true
-position = Vector2(376, 120)
-collision_layer = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2" unique_id=1544976883]
-shape = SubResource("RectangleShape2D_wkx03")
-
-[node name="Foe_01" parent="Enemy2" unique_id=1093312370 instance=ExtResource("6_jyvag")]
-
-[node name="Foe_03" parent="Enemy2" unique_id=843825310 instance=ExtResource("6_jyvag")]
-visible = false
-position = Vector2(32, 16)
-
-[node name="Foe_02" parent="Enemy2" unique_id=222479882 instance=ExtResource("6_jyvag")]
-visible = false
-position = Vector2(32, -16)
-
-[node name="Area2D" type="Area2D" parent="Enemy2" unique_id=46911473 node_paths=PackedStringArray("enemy_characterbody2d", "enemy_collider", "area2d_collider", "enemy")]
-collision_layer = 4
-collision_mask = 0
-script = SubResource("GDScript_ygji3")
-enemy_characterbody2d = NodePath("..")
-enemy_collider = NodePath("../CollisionShape2D")
-area2d_collider = NodePath("CollisionShape2D")
-enemy = [NodePath("../Foe_01"), NodePath("../Foe_03"), NodePath("../Foe_02")]
-is_enemy = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy2/Area2D" unique_id=175770277]
-shape = SubResource("CircleShape2D_wkx03")
+[node name="Label" type="Label" parent="Enemy1/Marker2D" unique_id=1414197413]
+z_index = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -42.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="Savespot" parent="." unique_id=555243044 instance=ExtResource("9_4u8d0")]
 position = Vector2(168, 48)
+collision_layer = 4
 dialogue = "* Creating a ripoff Deltarune videogame fills you with determination."
 
 [node name="Merchant_01" type="Area2D" parent="." unique_id=116747151 node_paths=PackedStringArray("user")]
 position = Vector2(40, -96)
-collision_layer = 8
+collision_layer = 4
 collision_mask = 0
 script = SubResource("GDScript_rqg47")
 user = NodePath("Foe_01")

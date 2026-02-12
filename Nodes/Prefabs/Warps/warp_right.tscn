@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://eio8fpyvkvua"]
+[gd_scene format=3 uid="uid://eio8fpyvkvua"]
 
 [sub_resource type="GDScript" id="GDScript_ml7fc"]
 script/source = "extends Interactable_Script
@@ -6,22 +6,19 @@ script/source = "extends Interactable_Script
 @export var room_name: StringName = \"room_test_01\"
 @export var warp_name: StringName = \"Warp_Left\"
 #-------------------------------------------------------------------------------
-func Interactable_Ready(_world_2d:World_2D):
-	pass
-#-------------------------------------------------------------------------------
-func Interactable_Action(_world_2d:World_2D):
-	_world_2d.Teleport_From_1_Room_to_Another(room_name, warp_name)
+func Interactable_Action():
+	singleton.world_2d.Teleport_From_1_Room_to_Another(room_name, warp_name)
 #-------------------------------------------------------------------------------
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_he6hk"]
 size = Vector2(8, 48)
 
-[node name="Warp_Right" type="Area2D"]
-collision_layer = 4
+[node name="Warp_Right" type="Area2D" unique_id=1337164050]
+collision_layer = 8
 collision_mask = 0
 script = SubResource("GDScript_ml7fc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1454453887]
 position = Vector2(20, 0)
 shape = SubResource("RectangleShape2D_he6hk")

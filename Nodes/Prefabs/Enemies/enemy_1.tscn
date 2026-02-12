@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c3gpm8500ebkp"]
+[gd_scene format=3 uid="uid://c3gpm8500ebkp"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_84owv"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="2_n5ixp"]
@@ -755,9 +755,9 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_ftd8i"]
 resource_name = "Walk"
-length = 1.2000201
+length = 0.7500125
 loop_mode = 1
-step = 0.2
+step = 0.125
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -801,7 +801,7 @@ tracks/3/path = NodePath("Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [36, 37, 38, 39, 40, 41]
@@ -886,7 +886,7 @@ states/Walk/position = Vector2(367, 25)
 transitions = ["Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_ircg4"), "Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_62d7h")]
 graph_offset = Vector2(-5, 20)
 
-[node name="Foe_01" type="Node2D" node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
+[node name="Foe_01" type="Node2D" unique_id=1312589892 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_84owv")
 id = &"Soldier"
 texture2d = ExtResource("2_n5ixp")
@@ -896,19 +896,17 @@ pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")
 
-[node name="Pivot" type="Marker2D" parent="."]
+[node name="Pivot" type="Marker2D" parent="." unique_id=236422188]
 
-[node name="Sprite2D" type="Sprite2D" parent="Pivot"]
+[node name="Sprite2D" type="Sprite2D" parent="Pivot" unique_id=510518609]
 texture = ExtResource("2_vs54o")
 offset = Vector2(0, -29.5)
 hframes = 6
 vframes = 7
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Pivot"]
-libraries = {
-&"": SubResource("AnimationLibrary_why6j")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Pivot" unique_id=110097617]
+libraries/ = SubResource("AnimationLibrary_why6j")
 
-[node name="AnimationTree" type="AnimationTree" parent="Pivot"]
+[node name="AnimationTree" type="AnimationTree" parent="Pivot" unique_id=1489642369]
 tree_root = SubResource("AnimationNodeStateMachine_pb3t7")
 anim_player = NodePath("../AnimationPlayer")

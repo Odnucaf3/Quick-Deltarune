@@ -40,8 +40,9 @@ var max_tp: int
 #-------------------------------------------------------------------------------
 @export var player_characterbody2d: CharacterBody2D
 @export var player_collider: CollisionShape2D
-@export var player_interactable_area2d: Area2D
-@export var player_enemyDetector_area2d: Area2D
+@export var player_interactable_by_action_area2d: Area2D
+@export var player_interactable_by_touch_not_enemy_area2d: Area2D
+@export var player_interactable_by_touch_enemy_area2d: Area2D
 @export var friend_party: Array[Party_Member]
 var friend_party_alive: Array[Party_Member]
 var friend_party_dead: Array[Party_Member]
@@ -232,6 +233,12 @@ var how_many_would_you_buy: int = 0
 #endregion
 #-------------------------------------------------------------------------------
 #region MONOBEHAVIOUR
+func _enter_tree() -> void:
+	singleton.world_2d =  self
+#-------------------------------------------------------------------------------
+func _exit_tree() -> void:
+	singleton.world_2d =  null
+#-------------------------------------------------------------------------------
 func _ready() -> void:
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json = singleton.LoadCurrent_SaveData_Json()
@@ -329,38 +336,27 @@ func _physics_process(_delta: float) -> void:
 					Input_PauseGame()
 					#-------------------------------------------------------------------------------
 					if(Input.is_action_just_pressed("ui_accept")):
-						var _interactable_by_action_array : Array[Area2D] = player_interactable_area2d.get_overlapping_areas()
+						var _interactable_by_action_array : Array[Area2D] = player_interactable_by_action_area2d.get_overlapping_areas()
 						#-------------------------------------------------------------------------------
 						if(_interactable_by_action_array.size() > 0):
-							var _interactable: Interactable_Script = _interactable_by_action_array[0]
-							_interactable.Interactable_Action(self)
+							var _interactable_by_action: Interactable_Script = _interactable_by_action_array[0] as Interactable_Script
+							_interactable_by_action.Interactable_Action()
 							return
 						#-------------------------------------------------------------------------------
 					#-------------------------------------------------------------------------------
-					var _interactable_by_touch_array : Array[Area2D] = player_enemyDetector_area2d.get_overlapping_areas()
-					var _enemies: Array[Interactable_Script]
-					var _not_enemies: Array[Interactable_Script]
+					var _interactable_by_touch_not_enemy_array : Array[Area2D] = player_interactable_by_touch_not_enemy_area2d.get_overlapping_areas()
 					#-------------------------------------------------------------------------------
-					for _i in _interactable_by_touch_array.size():
-						var _interactable_by_touch: Interactable_Script = _interactable_by_touch_array[_i] as Interactable_Script
-						#-------------------------------------------------------------------------------
-						if(_interactable_by_touch.is_enemy):
-							_enemies.append(_interactable_by_touch)
-						#-------------------------------------------------------------------------------
-						else:
-							_not_enemies.append(_interactable_by_touch)
-						#-------------------------------------------------------------------------------
-						if(_not_enemies.size() > 0):
-							_not_enemies[0].Interactable_Action(self)
-							return
-						#-------------------------------------------------------------------------------
-						else:
-							#-------------------------------------------------------------------------------
-							if(_enemies.size() > 0 and can_enter_fight):
-								_enemies[0].Interactable_Action(self)
-								return
-							#-------------------------------------------------------------------------------
-						#-------------------------------------------------------------------------------
+					if(_interactable_by_touch_not_enemy_array.size() > 0):
+						var _interactable_by_touch_not_enemy: Interactable_Script = _interactable_by_touch_not_enemy_array[0] as Interactable_Script
+						_interactable_by_touch_not_enemy.Interactable_Action()
+						return
+					#-------------------------------------------------------------------------------
+					var _interactable_by_touch_enemy_array : Array[Area2D] = player_interactable_by_touch_enemy_area2d.get_overlapping_areas()
+					#-------------------------------------------------------------------------------
+					if(_interactable_by_touch_enemy_array.size() > 0 and can_enter_fight):
+						var _interactable_by_touch_enemy: Interactable_Script = _interactable_by_touch_enemy_array[0] as Interactable_Script
+						_interactable_by_touch_enemy.Interactable_Action()
+						return
 					#-------------------------------------------------------------------------------
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
@@ -386,7 +382,7 @@ func Player_Movement():
 		_input_dir.normalized()
 		#-------------------------------------------------------------------------------
 		if(is_Running):
-			var _new_velocity: Vector2 = _input_dir * 200.0 * deltaTimeScale
+			var _new_velocity: Vector2 = _input_dir * 180.0 * deltaTimeScale
 			player_characterbody2d.velocity = _new_velocity
 			#-------------------------------------------------------------------------------
 			if(!_run_flag):
@@ -395,7 +391,7 @@ func Player_Movement():
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
-			var _new_velocity: Vector2 = _input_dir * 70.0 * deltaTimeScale
+			var _new_velocity: Vector2 = _input_dir * 90.0 * deltaTimeScale
 			player_characterbody2d.velocity = _new_velocity
 			#-------------------------------------------------------------------------------
 			if(_run_flag):
@@ -960,16 +956,16 @@ func Move_Fighters_to_Position(_tween:Tween, _position_type:bool, _timer:float):
 		_tween.parallel().tween_property(enemy_party[_i].party_member_ui, "global_position", _ui_position, _timer)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func ExitBatle(_retry_callable:Callable, _win_callable:Callable):
+func ExitBatle(_retry_callable:Callable, _win_callable:Callable, _escape_callable:Callable):
 	match(myBATTLE_STATE):
 		BATTLE_STATE.YOU_WIN:
 			You_Win(_win_callable)
 		#-------------------------------------------------------------------------------
 		BATTLE_STATE.YOU_LOSE:
-			You_Lose(_retry_callable)
+			You_Lose(_retry_callable, _escape_callable)
 		#-------------------------------------------------------------------------------
 		BATTLE_STATE.YOU_ESCAPE:
-			You_Escape()
+			You_Escape(_escape_callable)
 			singleton.Common_Submited()
 		#-------------------------------------------------------------------------------
 		BATTLE_STATE.YOU_RETRY:
@@ -2383,7 +2379,7 @@ func RetryMenu_AnyButton_Cancel():
 	singleton.Move_to_First_Button(battle_menu_button)
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
-func You_Escape():
+func You_Escape(_escape_callable:Callable):
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.hide()
@@ -2425,6 +2421,7 @@ func You_Escape():
 	_tween3.tween_callback(func():
 		myGAME_STATE = GAME_STATE.IN_WORLD
 		singleton.Play_BGM(singleton.stage1)
+		_escape_callable.call()
 	)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -2798,7 +2795,7 @@ func Spawn_Label_in_User(_user:Party_Member) -> Label:
 	add_child(_label)
 	return _label
 #-------------------------------------------------------------------------------
-func You_Lose(_callable:Callable):
+func You_Lose(_retry_callable:Callable, _escape_callable:Callable):
 	#-------------------------------------------------------------------------------
 	var _tween:Tween = create_tween()
 	#-------------------------------------------------------------------------------
@@ -2814,8 +2811,8 @@ func You_Lose(_callable:Callable):
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		retry_menu.show()
-		singleton.Set_Button(retry_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(_callable), func():pass)
-		singleton.Set_Button(retry_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(), func():pass)
+		singleton.Set_Button(retry_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(_retry_callable), func():pass)
+		singleton.Set_Button(retry_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(_escape_callable), func():pass)
 		singleton.Set_Button(retry_menu_button[2], func():singleton.Common_Selected(), func():LoseMenu_GiveUpButton_Submit(), func():pass)
 		#-------------------------------------------------------------------------------
 		singleton.Move_to_Button(retry_menu_button[0])
@@ -2827,8 +2824,8 @@ func LoseMenu_RetryButton_Submit(_callable:Callable):
 	You_Retry(_callable)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func LoseMenu_EscapeButton_Submit():
-	You_Escape()
+func LoseMenu_EscapeButton_Submit(_callable:Callable):
+	You_Escape(_callable)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func LoseMenu_GiveUpButton_Submit():

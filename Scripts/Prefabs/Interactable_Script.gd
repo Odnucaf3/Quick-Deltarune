@@ -1,11 +1,6 @@
 extends Area2D
 class_name Interactable_Script
 #-------------------------------------------------------------------------------
-@export var is_enemy: bool = false
-#-------------------------------------------------------------------------------
-func Interactable_Ready(_world_2d:World_2D):
-	pass
-#-------------------------------------------------------------------------------
-func Interactable_Action(_world_2d:World_2D):
+func Interactable_Action():
 	pass
 #-------------------------------------------------------------------------------
