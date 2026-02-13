@@ -19,41 +19,41 @@
 [sub_resource type="GDScript" id="GDScript_52n5y"]
 script/source = "extends Room_Script
 #-------------------------------------------------------------------------------
-func Set_Room(_world_2d: World_2D):
-	super.Set_Room(_world_2d)
-	var _index: int = _world_2d.key_dictionary.get(room_id, 0)
+func Set_Room() -> void:
+	super.Set_Room()
+	var _index: int = singleton.game_scene.key_dictionary.get(room_id, 0)
 	print(room_id+\"_event_\"+str(_index))
 	#-------------------------------------------------------------------------------
 	match(_index):
 		0:
-			await CutScene_00(_world_2d)
+			await CutScene_00()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func CutScene_00(_world_2d: World_2D):
-	_world_2d.camera.position = _world_2d.Camera_Set_Target_Position()
-	_world_2d.is_in_dialogue = true
-	_world_2d.black_panel.self_modulate = Color.BLACK
+func CutScene_00():
+	singleton.game_scene.camera.position = singleton.game_scene.Camera_Set_Target_Position()
+	singleton.game_scene.is_in_dialogue = true
+	singleton.game_scene.black_panel.self_modulate = Color.BLACK
 	print(\"Cutscene Start\")
 	singleton.bgmPlayer.stop()
 	#-------------------------------------------------------------------------------
-	await _world_2d.Seconds(1.5)
+	await singleton.game_scene.Seconds(1.5)
 	#-------------------------------------------------------------------------------
-	_world_2d.Dialogue_Open()
+	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	await _world_2d.Dialogue(false, \"Long Ago. In a Cyberpunck city...\")
+	await singleton.game_scene.Dialogue(false, \"Long Ago. In a Cyberpunck city...\")
 	singleton.Common_Selected()
-	await _world_2d.Dialogue(false, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
-	_world_2d.Dialogue_Close()
+	await singleton.game_scene.Dialogue(false, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
+	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
-	_tween.tween_property(_world_2d.black_panel, \"self_modulate\", Color.TRANSPARENT, 0.3)
+	_tween.tween_property(singleton.game_scene.black_panel, \"self_modulate\", Color.TRANSPARENT, 0.3)
 	await _tween.finished
 	#-------------------------------------------------------------------------------
-	_world_2d.is_in_dialogue = false
+	singleton.game_scene.is_in_dialogue = false
 	print(\"Cutscene End\")
-	_world_2d.key_dictionary.set(room_id, 1)
+	singleton.game_scene.key_dictionary.set(room_id, 1)
 	singleton.Play_BGM(singleton.stage1)
 #-------------------------------------------------------------------------------
 "
@@ -105,7 +105,7 @@ var counter: int
 func _ready() -> void:
 	original_position = global_position
 	#-------------------------------------------------------------------------------
-	if(singleton.world_2d.key_dictionary.get(singleton.world_2d.Get_Item_Script_ID(self), 0) == 1):
+	if(singleton.game_scene.key_dictionary.get(singleton.game_scene.Get_Item_Script_ID(self), 0) == 1):
 		queue_free()
 	#-------------------------------------------------------------------------------
 	else:
@@ -113,12 +113,12 @@ func _ready() -> void:
 		#-------------------------------------------------------------------------------
 		for _i in enemy.size():
 			enemy[_i].playback = enemy[_i].animation_tree.get(\"parameters/playback\")
-			singleton.world_2d.PlayAnimation(enemy[_i].playback, \"Idle\")
+			singleton.game_scene.PlayAnimation(enemy[_i].playback, \"Idle\")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func _physics_process(_delta: float) -> void:
-	if(singleton.world_2d.is_in_dialogue):
+	if(singleton.game_scene.is_in_dialogue):
 		return
 	#-------------------------------------------------------------------------------
 	match(_myENEMY_STATE):
@@ -127,26 +127,26 @@ func _physics_process(_delta: float) -> void:
 		#-------------------------------------------------------------------------------
 		ENEMY_STATE.CHASING:
 			#-------------------------------------------------------------------------------
-			if(singleton.world_2d.player_characterbody2d.global_position.distance_to(original_position) < 500):
+			if(singleton.game_scene.player_characterbody2d.global_position.distance_to(original_position) < 500):
 				#-------------------------------------------------------------------------------
-				if(singleton.world_2d.player_characterbody2d.global_position.distance_to(global_position) > 15):
-					var _v2: Vector2 = singleton.world_2d.player_characterbody2d.global_position - global_position
+				if(singleton.game_scene.player_characterbody2d.global_position.distance_to(global_position) > 15):
+					var _v2: Vector2 = singleton.game_scene.player_characterbody2d.global_position - global_position
 					#-------------------------------------------------------------------------------
 					if(enemy[0].is_Facing_Left):
 						#-------------------------------------------------------------------------------
 						if(_v2.x > 0):
-							singleton.world_2d.Face_Left(enemy[0], false)
+							singleton.game_scene.Face_Left(enemy[0], false)
 						#-------------------------------------------------------------------------------
 					#-------------------------------------------------------------------------------
 					else:
 						#-------------------------------------------------------------------------------
 						if(_v2.x < 0):
-							singleton.world_2d.Face_Left(enemy[0], true)
+							singleton.game_scene.Face_Left(enemy[0], true)
 						#-------------------------------------------------------------------------------
 					#-------------------------------------------------------------------------------
 					if(counter > 30):
 						var _dir = atan2(_v2.y, _v2.x)
-						var _vel = Vector2(cos(_dir), sin(_dir)) * 120.0 * singleton.world_2d.deltaTimeScale
+						var _vel = Vector2(cos(_dir), sin(_dir)) * 120.0 * singleton.game_scene.deltaTimeScale
 						velocity = _vel
 						move_and_slide()
 						return
@@ -155,7 +155,7 @@ func _physics_process(_delta: float) -> void:
 						#-------------------------------------------------------------------------------
 						if(counter == 30):
 							label.text = \"\"
-							singleton.world_2d.PlayAnimation(enemy[0].playback, \"Walk\")
+							singleton.game_scene.PlayAnimation(enemy[0].playback, \"Walk\")
 						#-------------------------------------------------------------------------------
 				#-------------------------------------------------------------------------------
 				else:
@@ -167,8 +167,8 @@ func _physics_process(_delta: float) -> void:
 				_myENEMY_STATE = ENEMY_STATE.PATROLLING
 				global_position = original_position
 				area2d_collider.set_deferred(\"disabled\", false)
-				singleton.world_2d.PlayAnimation(enemy[0].playback, \"Idle\")
-				singleton.world_2d.Face_Left(enemy[0], false)
+				singleton.game_scene.PlayAnimation(enemy[0].playback, \"Idle\")
+				singleton.game_scene.Face_Left(enemy[0], false)
 				return
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -189,46 +189,46 @@ func Enter_Chase():
 func Enter_Battle():
 	_myENEMY_STATE = ENEMY_STATE.FIGHTING
 	label.text = \"\"
-	singleton.world_2d.can_enter_fight = false
+	singleton.game_scene.can_enter_fight = false
 	#-------------------------------------------------------------------------------
 	#await Dialogue_Before_Battle()
 	#-------------------------------------------------------------------------------
-	await singleton.world_2d.EnterBattle(enemy)
+	await singleton.game_scene.EnterBattle(enemy)
 	await Battle()
 #-------------------------------------------------------------------------------
 func Battle():
 	#-------------------------------------------------------------------------------
-	while(singleton.world_2d.myBATTLE_STATE == singleton.world_2d.BATTLE_STATE.STILL_FIGHTING):
-		await singleton.world_2d.Wait_for_Player()
-		await singleton.world_2d.Start_BulletHell(func():singleton.world_2d.Stage1_Fire1(), 6)
-		await singleton.world_2d.Wait_for_Player()
-		await singleton.world_2d.Start_BulletHell(func():singleton.world_2d.Stage1_Fire2(), 6)
-		#await singleton.world_2d.Wait_for_Player()
-		#await singleton.world_2d.Start_BulletHell(func():print(\"C Actio\"), 2)
+	while(singleton.game_scene.myBATTLE_STATE == singleton.game_scene.BATTLE_STATE.STILL_FIGHTING):
+		await singleton.game_scene.Wait_for_Player()
+		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire1(), 6)
+		await singleton.game_scene.Wait_for_Player()
+		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire2(), 6)
+		#await singleton.game_scene.Wait_for_Player()
+		#await singleton.game_scene.Start_BulletHell(func():print(\"C Actio\"), 2)
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.ExitBatle(func():Battle(), func():Win_Battle(), func():Escape_Battle())
+	singleton.game_scene.ExitBatle(func():Battle(), func():Win_Battle(), func():Escape_Battle())
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Dialogue_Before_Battle():
-	singleton.world_2d.Dialogue_Open()
-	await singleton.world_2d.Dialogue(true, \"* Prepeare yourself for a beaten.\")
-	await singleton.world_2d.Dialogue(true, \"* Because I am gonna beat you.\")
-	singleton.world_2d.Dialogue_Close()
+	singleton.game_scene.Dialogue_Open()
+	await singleton.game_scene.Dialogue(true, \"* Prepeare yourself for a beaten.\")
+	await singleton.game_scene.Dialogue(true, \"* Because I am gonna beat you.\")
+	singleton.game_scene.Dialogue_Close()
 #-------------------------------------------------------------------------------
 func Win_Battle():
-	singleton.world_2d.key_dictionary.set(singleton.world_2d.room_test.Get_Item_Script_ID(self), 1)
+	singleton.game_scene.key_dictionary.set(singleton.game_scene.room_test.Get_Item_Script_ID(self), 1)
 	#-------------------------------------------------------------------------------
 	enemy_collider.set_deferred(\"disabled\", true)
 	area2d_collider.set_deferred(\"disabled\", true)
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.can_enter_fight = true
+	singleton.game_scene.can_enter_fight = true
 #-------------------------------------------------------------------------------
 func Escape_Battle():
 	_myENEMY_STATE = ENEMY_STATE.PATROLLING
 	global_position = original_position
 	area2d_collider.set_deferred(\"disabled\", false)
-	singleton.world_2d.PlayAnimation(enemy[0].playback, \"Idle\")
-	singleton.world_2d.Face_Left(enemy[0], false)
+	singleton.game_scene.PlayAnimation(enemy[0].playback, \"Idle\")
+	singleton.game_scene.Face_Left(enemy[0], false)
 	#-------------------------------------------------------------------------------
 	for _i in range(1, enemy.size()):
 		enemy[_i].hide()
@@ -263,21 +263,21 @@ script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
 func _ready() -> void:
 	user.playback = user.animation_tree.get(\"parameters/playback\")
-	singleton.world_2d.PlayAnimation(user.playback, \"Idle\")
+	singleton.game_scene.PlayAnimation(user.playback, \"Idle\")
 	#-------------------------------------------------------------------------------
 	for _i in _equipitem_array.size():
-		var _id: String = singleton.world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _equipitem_array[_i].equip_resource)
-		_equipitem_array[_i].stored = singleton.world_2d.key_dictionary.get(_id, _equipitem_array[_i].stored)
+		var _id: String = singleton.game_scene.Get_MerchantId_and_ItemId_and_Hold(name, _equipitem_array[_i].equip_resource)
+		_equipitem_array[_i].stored = singleton.game_scene.key_dictionary.get(_id, _equipitem_array[_i].stored)
 	#-------------------------------------------------------------------------------
 	for _i in _keyitem_array.size():
-		var _id: String = singleton.world_2d.Get_MerchantId_and_ItemId_and_Hold(name, _keyitem_array[_i].key_item_resource)
-		_keyitem_array[_i].stored = singleton.world_2d.key_dictionary.get(_id, _keyitem_array[_i].stored)
+		var _id: String = singleton.game_scene.Get_MerchantId_and_ItemId_and_Hold(name, _keyitem_array[_i].key_item_resource)
+		_keyitem_array[_i].stored = singleton.game_scene.key_dictionary.get(_id, _keyitem_array[_i].stored)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Interactable_Action():
-	singleton.world_2d.PlayAnimation(user.playback, \"Walk\")
+	singleton.game_scene.PlayAnimation(user.playback, \"Walk\")
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.Dialogue_Open()
+	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	var _s: String = \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
@@ -288,19 +288,19 @@ func Interactable_Action():
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
 	#-------------------------------------------------------------------------------
-	await singleton.world_2d.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
+	await singleton.game_scene.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
 	singleton.Common_Selected()
-	await singleton.world_2d.Dialogue(true, \"* Do you want to buy something? \"+_s)
-	singleton.world_2d.Dialogue_Close()
+	await singleton.game_scene.Dialogue(true, \"* Do you want to buy something? \"+_s)
+	singleton.game_scene.Dialogue_Close()
 	#-------------------------------------------------------------------------------
-	await singleton.world_2d.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
+	await singleton.game_scene.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.Dialogue_Open()
-	await singleton.world_2d.Dialogue(true, \"* Thank you. \"+_s)
-	singleton.world_2d.Dialogue_Close()
+	singleton.game_scene.Dialogue_Open()
+	await singleton.game_scene.Dialogue(true, \"* Thank you. \"+_s)
+	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.PlayAnimation(user.playback, \"Idle\")
+	singleton.game_scene.PlayAnimation(user.playback, \"Idle\")
 #-------------------------------------------------------------------------------
 "
 

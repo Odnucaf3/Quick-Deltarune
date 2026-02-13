@@ -10,8 +10,8 @@
 [sub_resource type="GDScript" id="GDScript_47s0u"]
 script/source = "extends Room_Script
 #-------------------------------------------------------------------------------
-func Set_Room(_world_2d: World_2D):
-	super.Set_Room(_world_2d)
+func Set_Room() -> void:
+	super.Set_Room()
 	print(room_id)
 #-------------------------------------------------------------------------------
 "
@@ -62,5 +62,4 @@ pickable_consumableitem = Array[ExtResource("5_37vpw")]([SubResource("Resource_5
 
 [node name="Warp_Down" parent="." unique_id=699467842 instance=ExtResource("6_25x5p")]
 position = Vector2(-8, -208)
-collision_layer = 8
 warp_name = &"Warp_Up2"

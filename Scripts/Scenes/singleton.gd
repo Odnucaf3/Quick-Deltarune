@@ -49,7 +49,7 @@ const gameScene_Path: StringName = "res://Nodes/Scenes/game_scene.tscn"
 #-------------------------------------------------------------------------------
 var maxSave: int = 9
 var maxPlayer: int = 0
-var world_2d: World_2D
+var game_scene: Game_Scene
 #endregion
 #-------------------------------------------------------------------------------
 #region MONOBEHAVIOUR

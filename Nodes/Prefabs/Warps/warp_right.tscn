@@ -7,7 +7,7 @@ script/source = "extends Interactable_Script
 @export var warp_name: StringName = \"Warp_Left\"
 #-------------------------------------------------------------------------------
 func Interactable_Action():
-	singleton.world_2d.Teleport_From_1_Room_to_Another(room_name, warp_name)
+	singleton.game_scene.Teleport_From_1_Room_to_Another(room_name, warp_name)
 #-------------------------------------------------------------------------------
 "
 

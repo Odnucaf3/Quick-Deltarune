@@ -11,8 +11,9 @@
 [sub_resource type="GDScript" id="GDScript_oclu2"]
 script/source = "extends Room_Script
 #-------------------------------------------------------------------------------
-func Set_Room(_world_2d: World_2D):
-	super.Set_Room(_world_2d)
+func Set_Room() -> void:
+	super.Set_Room()
+	print(room_id)
 #-------------------------------------------------------------------------------
 "
 
@@ -23,34 +24,34 @@ script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
 func _ready() -> void:
 	#-------------------------------------------------------------------------------
-	if(singleton.world_2d.key_dictionary.get(singleton.world_2d.room_test.room_id, 0) == 1):
+	if(singleton.game_scene.key_dictionary.get(singleton.game_scene.room_test.room_id, 0) == 1):
 		queue_free()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Interactable_Action():
 	area2d_collider.set_deferred(\"disabled\", true)
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.camera.global_position = singleton.world_2d.Camera_Set_Target_Position()
-	singleton.world_2d.is_in_dialogue = true
+	singleton.game_scene.camera.global_position = singleton.game_scene.Camera_Set_Target_Position()
+	singleton.game_scene.is_in_dialogue = true
 	#-------------------------------------------------------------------------------
-	for _i in singleton.world_2d.friend_party.size():
-		singleton.world_2d.PlayAnimation(singleton.world_2d.friend_party[_i].playback, \"Idle\")
+	for _i in singleton.game_scene.friend_party.size():
+		singleton.game_scene.PlayAnimation(singleton.game_scene.friend_party[_i].playback, \"Idle\")
 	#-------------------------------------------------------------------------------
 	print(\"Cutscene Start\")
 	#-------------------------------------------------------------------------------
 	#await world_2d.Seconds(0.3)
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.Dialogue_Open()
+	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	await singleton.world_2d.Dialogue(true, \"Wait a second? What is that!\")
+	await singleton.game_scene.Dialogue(true, \"Wait a second? What is that!\")
 	singleton.Common_Selected()
-	await singleton.world_2d.Dialogue(true, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
-	singleton.world_2d.Dialogue_Close()
+	await singleton.game_scene.Dialogue(true, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
+	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
-	singleton.world_2d.is_in_dialogue = false
+	singleton.game_scene.is_in_dialogue = false
 	print(\"Cutscene End\")
-	singleton.world_2d.key_dictionary.set(singleton.world_2d.room_test.room_id, 1)
+	singleton.game_scene.key_dictionary.set(singleton.game_scene.room_test.room_id, 1)
 #-------------------------------------------------------------------------------
 "
 
@@ -89,7 +90,6 @@ shape = SubResource("RectangleShape2D_fkxko")
 
 [node name="Warp_Left" parent="room_limits" unique_id=466845222 instance=ExtResource("4_yj1ku")]
 position = Vector2(16, 112)
-collision_layer = 8
 room_name = &"room_test_02"
 
 [node name="Item" parent="room_limits" unique_id=655138216 instance=ExtResource("4_o0jg7")]
@@ -99,7 +99,6 @@ pickable_consumableitem = Array[ExtResource("6_0ptgt")]([SubResource("Resource_0
 
 [node name="Warp_Right" parent="room_limits" unique_id=1933417679 instance=ExtResource("7_0ptgt")]
 position = Vector2(528, 112)
-collision_layer = 8
 room_name = &"room_test_05"
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1550681193]

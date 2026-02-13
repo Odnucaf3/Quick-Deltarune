@@ -9,14 +9,14 @@ var limit_botton: float
 var limit_left: float
 var limit_right: float
 #-------------------------------------------------------------------------------
-func Set_Room(_world_2d: World_2D):
-	Set_Camera_Limits(_world_2d)
+func Set_Room() -> void:
+	Set_Camera_Limits()
 #-------------------------------------------------------------------------------
-func Set_Camera_Limits(_world_2d: World_2D):
-	limit_top = room_limits.global_position.y + _world_2d.camera_center.y
-	limit_botton = room_limits.global_position.y + room_limits.size.y - _world_2d.camera_center.y
-	limit_left = room_limits.global_position.x + _world_2d.camera_center.x
-	limit_right = room_limits.global_position.x + room_limits.size.x - _world_2d.camera_center.x
+func Set_Camera_Limits():
+	limit_top = room_limits.global_position.y + singleton.game_scene.camera_center.y
+	limit_botton = room_limits.global_position.y + room_limits.size.y - singleton.game_scene.camera_center.y
+	limit_left = room_limits.global_position.x + singleton.game_scene.camera_center.x
+	limit_right = room_limits.global_position.x + room_limits.size.x - singleton.game_scene.camera_center.x
 	#-------------------------------------------------------------------------------
 	var _center_x: float = room_limits.global_position.x + room_limits.size.x *0.5
 	var _center_y: float = room_limits.global_position.y + room_limits.size.y *0.5

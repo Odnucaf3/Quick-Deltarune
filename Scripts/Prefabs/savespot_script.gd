@@ -18,7 +18,7 @@ func Chek_if_savespot_was_activated() -> bool:
 	#-------------------------------------------------------------------------------
 	for _i in _array.size():
 		#-------------------------------------------------------------------------------
-		if(_array[_i]["room"] == singleton.world_2d.room_test.room_id and _array[_i]["savespot"] == name):
+		if(_array[_i]["room"] == singleton.game_scene.room_test.room_id and _array[_i]["savespot"] == name):
 			return true
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ func Chek_if_savespot_was_activated() -> bool:
 #-------------------------------------------------------------------------------
 func Interactable_Action():
 	if(Chek_if_savespot_was_activated()):
-		singleton.world_2d.SaveMenu_Open(name, dialogue)
+		singleton.game_scene.SaveMenu_Open(name, dialogue)
 	else:
 		animation_player.play("Turn_On")
-		singleton.world_2d.Add_New_SaveSpot_for_Teleporting_Options(name)
-		singleton.world_2d.SaveMenu_Open(name, dialogue)
+		singleton.game_scene.Add_New_SaveSpot_for_Teleporting_Options(name)
+		singleton.game_scene.SaveMenu_Open(name, dialogue)
 #-------------------------------------------------------------------------------
