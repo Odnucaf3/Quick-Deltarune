@@ -31,11 +31,10 @@ func _ready() -> void:
 func Interactable_Action():
 	area2d_collider.set_deferred(\"disabled\", true)
 	#-------------------------------------------------------------------------------
-	singleton.game_scene.camera.global_position = singleton.game_scene.Camera_Set_Target_Position()
 	singleton.game_scene.is_in_dialogue = true
 	#-------------------------------------------------------------------------------
 	for _i in singleton.game_scene.friend_party.size():
-		singleton.game_scene.PlayAnimation(singleton.game_scene.friend_party[_i].playback, \"Idle\")
+		singleton.game_scene.Animation_StateMachine(singleton.game_scene.friend_party[_i].animation_tree, \"\", \"Idle\")
 	#-------------------------------------------------------------------------------
 	print(\"Cutscene Start\")
 	#-------------------------------------------------------------------------------
@@ -79,7 +78,7 @@ offset_right = 1136.0
 offset_bottom = -192.0
 
 [node name="cutscene_00" type="Area2D" parent="room_limits" unique_id=647126202 node_paths=PackedStringArray("area2d_collider")]
-position = Vector2(16, 112)
+position = Vector2(240, 112)
 collision_layer = 8
 collision_mask = 0
 script = SubResource("GDScript_0ptgt")

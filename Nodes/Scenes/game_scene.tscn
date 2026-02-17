@@ -11,24 +11,17 @@
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="10_igypo"]
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="11_hko5v"]
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
+[ext_resource type="Texture2D" uid="uid://c5tbmn2ticnw1" path="res://Assets/kenney_assets/pattern_pack_2/Thin/Default (256px)/pattern_0016.png" id="12_s3ops"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/party_member.tscn" id="13_hxoxt"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
 [ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="18_1th3s"]
-[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="18_3p4s7"]
-[ext_resource type="Resource" uid="uid://b6yn1vwdvrl10" path="res://Resources/Skills/ricochet.tres" id="18_hko5v"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
 [ext_resource type="Resource" uid="uid://bnrjjakhyhhuk" path="res://Resources/Status/poison.tres" id="19_mitwg"]
-[ext_resource type="Resource" uid="uid://chu4cb3eiww1t" path="res://Resources/Skills/ricochet_1cd.tres" id="19_s3ops"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 [ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
-[ext_resource type="Resource" uid="uid://bt62ujg15jkav" path="res://Resources/Skills/ricochet_2cd.tres" id="20_rka03"]
-[ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/Skills/heal.tres" id="21_3p4s7"]
 [ext_resource type="Texture2D" uid="uid://bkwxpp3bs0jvk" path="res://icon.svg" id="21_hxoxt"]
-[ext_resource type="Resource" uid="uid://blwy2xm425v5c" path="res://Resources/Skills/ricochet_3cd.tres" id="21_ircg4"]
 [ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
-[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="22_xhx7r"]
-[ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="24_42b3h"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
 [ext_resource type="Script" uid="uid://c7bqs6lok38oe" path="res://Scripts/Scenes/canvas_layer.gd" id="29_s3ops"]
 [ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
@@ -58,7 +51,23 @@ stored = 4000
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
-bg_color = Color(0, 0, 0, 0.88235295)
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Shader" id="Shader_s3ops"]
+code = "shader_type canvas_item;
+//------------------------------------------------------------------------------
+uniform float speed_x = 0.1;
+uniform float speed_y = 0.1;
+//------------------------------------------------------------------------------
+void vertex() {
+	UV.x += TIME * speed_x;
+	UV.y += TIME * speed_y;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rka03"]
+shader = SubResource("Shader_s3ops")
+shader_parameter/speed_x = 0.15
+shader_parameter/speed_y = 0.1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_muxe8"]
 bg_color = Color(0, 0, 0, 0.8039216)
@@ -72,50 +81,208 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
+[sub_resource type="Animation" id="Animation_hko5v"]
+resource_name = "Graze"
+length = 0.20000501
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GrazeBox:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.60784316), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_s3ops"]
+resource_name = "Hurt"
+length = 0.100005
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(1, 0, 0, 1), Color(1, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rka03"]
+resource_name = "Normal"
+length = 0.20000501
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ircg4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GrazeBox:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_62d7h"]
+_data = {
+&"Graze": SubResource("Animation_hko5v"),
+&"Hurt": SubResource("Animation_s3ops"),
+&"Normal": SubResource("Animation_rka03"),
+&"RESET": SubResource("Animation_ircg4")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ftd8i"]
+animation = &"Hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_why6j"]
+animation = &"Graze"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pb3t7"]
+animation = &"Normal"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_a7t32"]
+filter_enabled = true
+filters = ["", ".:self_modulate", "GrazeBox:self_modulate"]
+mix_mode = 1
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_p4ejy"]
+allow_transition_to_self = true
+input_0/name = "Normal"
+input_0/auto_advance = false
+input_0/break_loop_at_end = false
+input_0/reset = true
+input_1/name = "Hurt"
+input_1/auto_advance = false
+input_1/break_loop_at_end = false
+input_1/reset = true
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_vap1g"]
+graph_offset = Vector2(-312, 17)
+nodes/Transition/node = SubResource("AnimationNodeTransition_p4ejy")
+nodes/Transition/position = Vector2(-60, 0)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_a7t32")
+nodes/OneShot/position = Vector2(120, 160)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_pb3t7")
+nodes/Animation/position = Vector2(-260, -20)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ftd8i")
+"nodes/Animation 2/position" = Vector2(-260, 160)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_why6j")
+"nodes/Animation 3/position" = Vector2(-120, 400)
+node_connections = [&"output", 0, &"OneShot", &"Transition", 0, &"Animation", &"Transition", 1, &"Animation 2", &"OneShot", 0, &"Transition", &"OneShot", 1, &"Animation 3"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ik87f"]
 size = Vector2(16, 8)
 
+[sub_resource type="Resource" id="Resource_lujb4"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_1th3s"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_mitwg"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_3p4s7"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_xhx7r"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_42b3h"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_yqvj6"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="Resource" id="Resource_hko5v"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("5_rpgth")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("18_1th3s")
+statuseffect_resource = ExtResource("19_mitwg")
+metadata/_custom_type_script = "uid://mdn2h1nh8s14"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
+radius = 4.0
 
 [sub_resource type="Resource" id="Resource_s3ops"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("6_lujb4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_rka03"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("18_3p4s7")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_ircg4"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("18_hko5v")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_62d7h"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("19_s3ops")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_why6j"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("20_rka03")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_pb3t7"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("21_ircg4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_a7t32"]
 resource_local_to_scene = true
@@ -154,184 +321,20 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_jsbcl"]
 resource_local_to_scene = true
-script = ExtResource("18_1th3s")
-statuseffect_resource = ExtResource("19_mitwg")
-metadata/_custom_type_script = "uid://mdn2h1nh8s14"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
-radius = 4.0
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_ltkvx"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("5_rpgth")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_0f0fx"]
 resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("6_lujb4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_mtlrx"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("21_3p4s7")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_uqsek"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("22_xhx7r")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_chh8w"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("18_hko5v")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_eggap"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("19_s3ops")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_76bql"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("20_rka03")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_l8r6y"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("21_ircg4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_inygc"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_tln7l"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_oi8hy"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_1e5l7"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ugbf0"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_05voo"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_6t0ck"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_g75sp"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_f727r"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("5_rpgth")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_7rkat"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("6_lujb4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_50cdf"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("24_42b3h")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_0bk15"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("18_hko5v")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_3042r"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("19_s3ops")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_60x7l"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("20_rka03")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_74fp5"]
-resource_local_to_scene = true
-script = ExtResource("7_igypo")
-item_resource = ExtResource("21_ircg4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_kqnir"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_b8d7t"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_3v8q2"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_qn1hi"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_0obo6"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_trxgk"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_dhgie"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_du4tf"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ttm84"]
 resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
@@ -363,7 +366,7 @@ bg_color = Color(0.5568628, 1, 0.4392157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_scrollContainer", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_description", "status_menu_stats_scrollContainer", "status_menu_stats_content", "status_menu_stats_title", "status_menu_stats_description", "status_menu_statuseffect_scrollContainer", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_label", "retry_menu", "retry_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
+[node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_scrollContainer", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_description", "status_menu_stats_scrollContainer", "status_menu_stats_content", "status_menu_stats_title", "status_menu_stats_description", "status_menu_statuseffect_scrollContainer", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_lose_retry_escape_menu_label", "win_lose_retry_escape_menu_vboxcontainer", "win_lose_retry_escape_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "hitbox_animation_tree", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World2D")
 ui_theme = ExtResource("26_1th3s")
@@ -372,13 +375,13 @@ tp_bar_root = NodePath("CanvasLayer/Battle_UI/tp_root")
 tp_bar_progressbar_present = NodePath("CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar")
 tp_bar_progressbar_future = NodePath("CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar/ProgressBar2")
 tp_bar_label = NodePath("CanvasLayer/Battle_UI/tp_root/VBoxContainer/sp_Label")
-battlemenu_equipbutton_emptyspace = NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Control")
-dialogue_menu = NodePath("CanvasLayer/Dialogue_Menu")
-dialogue_menu_button_next = NodePath("CanvasLayer/Dialogue_Menu/Button")
-dialogue_menu_speaker1 = NodePath("CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2")
-dialogue_menu_speaker1_image = NodePath("CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2/TextureRect")
-dialogue_menu_speaker1_name = NodePath("CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Label")
-dialogue_menu_speaking_label = NodePath("CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel")
+battlemenu_equipbutton_emptyspace = NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2/Control")
+dialogue_menu = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu")
+dialogue_menu_button_next = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/Button")
+dialogue_menu_speaker1 = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control/Panel2")
+dialogue_menu_speaker1_image = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control/Panel2/TextureRect")
+dialogue_menu_speaker1_name = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Label")
+dialogue_menu_speaking_label = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel")
 savespot_menu = NodePath("CanvasLayer/Save_Menu")
 savespot_menu_button_array = [NodePath("CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
@@ -467,22 +470,23 @@ status_menu_statuseffect_description = NodePath("CanvasLayer/All Menues/Status_T
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World2D/Battle_Black_Panel")
 pause_menu_panel = NodePath("CanvasLayer/Pause_Menu_Panel")
-pause_menu_money_label = NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
+pause_menu_money_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
 money_serializable = SubResource("Resource_xvxdo")
 pause_menu = NodePath("CanvasLayer/Pause_Menu")
-pause_menu_button_array = [NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
-pause_menu_party_button_array = [NodePath("CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button"), NodePath("CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button2"), NodePath("CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2/Party_Button3")]
-win_label = NodePath("CanvasLayer/Battle_UI/win_Label")
-retry_menu = NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu")
-retry_menu_button = [NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer/Button3")]
+pause_menu_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
+pause_menu_party_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button3")]
+win_lose_retry_escape_menu_label = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_Label")
+win_lose_retry_escape_menu_vboxcontainer = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer")
+win_lose_retry_escape_menu_button = [NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button2"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button3")]
 debug_label = NodePath("CanvasLayer/debug_MarginContainer/debug_Label")
 fps_label = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
 camera = NodePath("World2D/Camera2D")
 hitbox = NodePath("World2D/Battle_Box/Content/Hitbox")
 grazebox = NodePath("World2D/Battle_Box/Content/Hitbox/GrazeBox")
+hitbox_animation_tree = NodePath("World2D/Battle_Box/Content/Hitbox/AnimationTree")
 battle_control = NodePath("CanvasLayer/Battle_UI")
 battle_menu = NodePath("CanvasLayer/Battle_UI/Battle_Menu")
-battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2/Button3"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2/Button4"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Button5"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3/Button6")]
+battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/Button3"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/Button4"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/Button5"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/Button6")]
 battle_box = NodePath("World2D/Battle_Box")
 timer_label = NodePath("CanvasLayer/Battle_UI/timer_Label")
 bullet_Prefab = ExtResource("2_lleqo")
@@ -491,24 +495,51 @@ bullet_Prefab = ExtResource("2_lleqo")
 y_sort_enabled = true
 
 [node name="Battle_Black_Panel" type="Panel" parent="World2D" unique_id=1976049356]
-visible = false
 z_index = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -168.0
-offset_top = -96.0
-offset_right = 168.0
-offset_bottom = 96.0
+offset_right = 2000.0
+offset_bottom = 1000.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(600, 350)
+scale = Vector2(0.2, 0.2)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_4usn6")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect2" type="TextureRect" parent="World2D/Battle_Black_Panel" unique_id=847314186]
+self_modulate = Color(0, 0.9137255, 0.23137255, 0.11764706)
+material = SubResource("ShaderMaterial_rka03")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_s3ops")
+expand_mode = 1
+stretch_mode = 1
+flip_h = true
+flip_v = true
+
+[node name="TextureRect" type="TextureRect" parent="World2D/Battle_Black_Panel" unique_id=1774836143]
+self_modulate = Color(1, 0.57254905, 1, 0.23529412)
+material = SubResource("ShaderMaterial_rka03")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_s3ops")
+expand_mode = 1
+stretch_mode = 1
 
 [node name="Battle_Box" type="Panel" parent="World2D" unique_id=1323696230]
-visible = false
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -540,10 +571,23 @@ scale = Vector2(0.025, 0.025)
 texture = ExtResource("2_hf1mx")
 
 [node name="GrazeBox" type="Sprite2D" parent="World2D/Battle_Box/Content/Hitbox" unique_id=1746584634]
-self_modulate = Color(1, 1, 1, 0.21568628)
+self_modulate = Color(1, 1, 1, 0)
 show_behind_parent = true
 scale = Vector2(4, 4)
 texture = ExtResource("2_hf1mx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World2D/Battle_Box/Content/Hitbox" unique_id=1009058640]
+libraries/ = SubResource("AnimationLibrary_62d7h")
+
+[node name="AnimationTree" type="AnimationTree" parent="World2D/Battle_Box/Content/Hitbox" unique_id=1600391799]
+tree_root = SubResource("AnimationNodeBlendTree_vap1g")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Transition/current_state = "Normal"
+parameters/Transition/transition_request = ""
+parameters/Transition/current_index = 0
+parameters/OneShot/active = false
+parameters/OneShot/internal_active = false
+parameters/OneShot/request = 0
 
 [node name="Camera2D" type="Camera2D" parent="World2D" unique_id=850296547]
 zoom = Vector2(3.5, 3.5)
@@ -556,9 +600,8 @@ collision_layer = 2
 shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_hko5v"), SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i")])
-statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_jsbcl")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_xhx7r"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6")])
+statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_hko5v")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player" unique_id=1124339265]
 collision_layer = 0
@@ -583,13 +626,11 @@ shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap"), SubResource("Resource_76bql"), SubResource("Resource_l8r6y")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_inygc"), SubResource("Resource_tln7l"), SubResource("Resource_oi8hy"), SubResource("Resource_1e5l7"), SubResource("Resource_ugbf0"), SubResource("Resource_05voo"), SubResource("Resource_6t0ck"), SubResource("Resource_g75sp")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy")])
 
 [node name="Friend_03" parent="World2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_f727r"), SubResource("Resource_7rkat"), SubResource("Resource_50cdf"), SubResource("Resource_0bk15"), SubResource("Resource_3042r"), SubResource("Resource_60x7l"), SubResource("Resource_74fp5")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_kqnir"), SubResource("Resource_b8d7t"), SubResource("Resource_3v8q2"), SubResource("Resource_qn1hi"), SubResource("Resource_0obo6"), SubResource("Resource_trxgk"), SubResource("Resource_dhgie"), SubResource("Resource_du4tf"), SubResource("Resource_ttm84")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx")])
 
 [node name="room_test_01" parent="World2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
 
@@ -712,20 +753,73 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -131.0
-offset_right = 256.0
+offset_top = -158.0
+offset_right = 131.0
 grow_vertical = 0
 
 [node name="Label" type="Label" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer" unique_id=1231553106]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/outline_size = 3
 text = "Battle Menu:"
 
+[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer" unique_id=452693545]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Skills  "
+
+[node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer" unique_id=1307298762]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Items  "
+
+[node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer" unique_id=1358637277]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Status  "
+
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer" unique_id=1822998120]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=1746975614]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Attack  "
+
+[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=1752163322]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Guard  "
+
+[node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=1532996731]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Equip  "
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=350538444]
 visible = false
@@ -733,60 +827,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1746975614]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Attack  "
-
-[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1752163322]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Guard  "
-
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=1295513573]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=452693545]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Skills  "
-
-[node name="Button4" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1307298762]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Items  "
-
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=1505459913]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Button5" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=1532996731]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Equip  "
-
-[node name="Button6" type="Button" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=1358637277]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Status  "
-
-[node name="Control" type="Control" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=2036656941]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=2036656941]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer" unique_id=1505459913]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="timer_Label" type="Label" parent="CanvasLayer/Battle_UI" unique_id=1652814457]
 visible = false
@@ -843,62 +897,6 @@ size_flags_vertical = 1
 theme_override_font_sizes/font_size = 24
 text = "*Godot waited for you"
 
-[node name="win_Label" type="Label" parent="CanvasLayer/Battle_UI" unique_id=412828923]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 100
-text = "You Win!"
-
-[node name="Retry Menu" type="Control" parent="CanvasLayer/Battle_UI/win_Label" unique_id=1262007599]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Battle_UI/win_Label/Retry Menu" unique_id=1717062175]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -168.0
-offset_right = 168.0
-offset_bottom = 158.0
-grow_horizontal = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer" unique_id=833715290]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Retry Battle  "
-
-[node name="Button2" type="Button" parent="CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer" unique_id=1196630202]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Escape Battle  "
-
-[node name="Button3" type="Button" parent="CanvasLayer/Battle_UI/win_Label/Retry Menu/VBoxContainer" unique_id=1414383208]
-layout_mode = 2
-theme = ExtResource("26_1th3s")
-theme_override_font_sizes/font_size = 30
-text = "  Return to Save Point  "
-
 [node name="Money_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1309033172]
 visible = false
 anchors_preset = 15
@@ -940,27 +938,29 @@ theme_override_font_sizes/font_size = 30
 text = "  $500  "
 horizontal_alignment = 1
 
-[node name="Pause_Menu" type="HBoxContainer" parent="CanvasLayer" unique_id=701187213]
+[node name="Pause_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1516907207]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Pause_Menu" unique_id=1516907207]
-layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Pause_Menu/MarginContainer2" unique_id=661217803]
+[node name="HBox_Container" type="HBoxContainer" parent="CanvasLayer/Pause_Menu" unique_id=701187213]
 layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Pause_Menu/HBox_Container" unique_id=661217803]
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel" unique_id=2101704770]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel" unique_id=2101704770]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -972,11 +972,11 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer" unique_id=1861801040]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer" unique_id=1861801040]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer" unique_id=152040182]
+[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer" unique_id=152040182]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
@@ -985,70 +985,70 @@ text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer" unique_id=2064458624]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer" unique_id=2064458624]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=386851202]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=386851202]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=619568749]
+[node name="Button" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=619568749]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Skills  "
 
-[node name="Button2" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1871497404]
+[node name="Button2" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1871497404]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Items  "
 
-[node name="Button3" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=777576563]
+[node name="Button3" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=777576563]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Equip  "
 
-[node name="Button4" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=278611721]
+[node name="Button4" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=278611721]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Status  "
 
-[node name="Button5" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=177262340]
+[node name="Button5" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=177262340]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Options  "
 
-[node name="Button6" type="Button" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=892996443]
+[node name="Button6" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=892996443]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Go To Title  "
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1306836712]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1306836712]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1750351541]
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1750351541]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer" unique_id=1734598366]
+[node name="Control" type="Control" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer" unique_id=1734598366]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control" unique_id=701138548]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control" unique_id=701138548]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1065,12 +1065,12 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer" unique_id=1292966464]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer" unique_id=1292966464]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer2/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer" unique_id=1167649875]
+[node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer" unique_id=1167649875]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
@@ -1078,19 +1078,12 @@ theme_override_font_sizes/font_size = 30
 text = "Money: 150 G"
 horizontal_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu" unique_id=1850409624]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Pause_Menu/HBox_Container" unique_id=1273913127]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="Panel" type="Panel" parent="CanvasLayer/Pause_Menu/MarginContainer" unique_id=1273913127]
-layout_mode = 2
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel" unique_id=261077244]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2" unique_id=261077244]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1102,11 +1095,11 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer" unique_id=797818183]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer" unique_id=797818183]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" unique_id=887823621]
+[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2" unique_id=887823621]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
@@ -1115,14 +1108,31 @@ text = "Party Members"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Party_Button" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" unique_id=1355087566 instance=ExtResource("19_xrh8u")]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2" unique_id=1783547823]
 layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+vertical_scroll_mode = 2
 
-[node name="Party_Button2" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" unique_id=1848188635 instance=ExtResource("19_xrh8u")]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer" unique_id=570298889]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="Party_Button3" parent="CanvasLayer/Pause_Menu/MarginContainer/Panel/MarginContainer/VBoxContainer2" unique_id=1011343037 instance=ExtResource("19_xrh8u")]
+[node name="Party_Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1355087566 instance=ExtResource("19_xrh8u")]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
+size_flags_vertical = 1
+
+[node name="Party_Button2" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1848188635 instance=ExtResource("19_xrh8u")]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 1
+
+[node name="Party_Button3" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer" unique_id=1011343037 instance=ExtResource("19_xrh8u")]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_vertical = 1
 
 [node name="Black_Panel" type="Panel" parent="CanvasLayer" unique_id=1099603300]
 self_modulate = Color(1, 1, 1, 0)
@@ -1133,38 +1143,80 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lleqo")
 
-[node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
-visible = false
-layout_mode = 3
+[node name="Win_Lose_Retry_Escape_Dialogue_Menues" type="MarginContainer" parent="CanvasLayer" unique_id=609991911]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("26_1th3s")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu" unique_id=609991911]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer" unique_id=301530430]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues" unique_id=1651970021]
+layout_mode = 2
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer" unique_id=1593634786]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="Win_Lose_Retry_Escape_Label" type="Label" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer" unique_id=412828923]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 100
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="Retry Menu" type="Control" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_Label" unique_id=1262007599]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Win_Lose_Retry_Escape_VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer" unique_id=1717062175]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Button" type="Button" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer" unique_id=833715290]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Retry Battle  "
+
+[node name="Button2" type="Button" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer" unique_id=1196630202]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Escape Battle  "
+
+[node name="Button3" type="Button" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer" unique_id=1414383208]
+layout_mode = 2
+theme = ExtResource("26_1th3s")
+theme_override_font_sizes/font_size = 30
+text = "  Return to Save Point  "
+
+[node name="Dialogue_Menu" type="HBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer" unique_id=301530430]
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="Control" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=725610785]
+[node name="Control" type="Control" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu" unique_id=725610785]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control" unique_id=164784011]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control" unique_id=164784011]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1173,7 +1225,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control/Panel2" unique_id=760496580]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control/Panel2" unique_id=760496580]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1184,21 +1236,21 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=1209050402]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu" unique_id=1209050402]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1273205585]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer" unique_id=1273205585]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=1844947033]
+[node name="Label" type="Label" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/MarginContainer" unique_id=1844947033]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 30
 text = "  [Name of the Speaker]  "
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label" unique_id=1069740996]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/MarginContainer/Label" unique_id=1069740996]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -1207,14 +1259,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label2" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer" unique_id=620185282]
+[node name="Label2" type="Label" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/MarginContainer" unique_id=620185282]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 30
 text = "  [Name of the Speaker]  "
 
-[node name="Panel2" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/Label2" unique_id=303522946]
+[node name="Panel2" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/MarginContainer/Label2" unique_id=303522946]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -1223,12 +1275,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1750044404]
+[node name="Panel" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer" unique_id=1750044404]
 custom_minimum_size = Vector2(750, 178)
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel" unique_id=747908806]
+[node name="Button" type="Button" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel" unique_id=987303234]
+layout_mode = 0
+offset_left = 607.0
+offset_top = -55.0
+offset_right = 716.0
+offset_bottom = -5.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 30
+text = "  Next  "
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel" unique_id=747908806]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1241,10 +1304,10 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
 visible = false
 self_modulate = Color(1, 1, 1, 0)
 clip_contents = true
@@ -1253,7 +1316,7 @@ texture = ExtResource("21_hxoxt")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect" unique_id=1711449268]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect" unique_id=1711449268]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1264,24 +1327,24 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
+[node name="Label" type="Label" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "[Name of the Speaker]"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1089151902]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=1089151902]
 visible = false
 self_modulate = Color(1, 1, 1, 0)
 clip_contents = true
@@ -1291,7 +1354,7 @@ expand_mode = 3
 stretch_mode = 5
 flip_h = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2" unique_id=1746880259]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect2" unique_id=1746880259]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1303,11 +1366,11 @@ expand_mode = 3
 stretch_mode = 5
 flip_h = true
 
-[node name="Control2" type="Control" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer" unique_id=164044143]
+[node name="Control2" type="Control" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu" unique_id=164044143]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2" unique_id=1173881073]
+[node name="Panel" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control2" unique_id=1173881073]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -1317,7 +1380,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Dialogue_Menu/MarginContainer/HBoxContainer/Control2/Panel" unique_id=699207994]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control2/Panel" unique_id=699207994]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1329,16 +1392,14 @@ expand_mode = 3
 stretch_mode = 5
 flip_h = true
 
-[node name="Button" type="Button" parent="CanvasLayer/Dialogue_Menu" unique_id=987303234]
-layout_mode = 0
-offset_left = 808.0
-offset_top = 400.0
-offset_right = 917.0
-offset_bottom = 450.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 30
-text = "  Next  "
+[node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("26_1th3s")
 
 [node name="All Menues" type="Control" parent="CanvasLayer" unique_id=1627734076]
 layout_mode = 3

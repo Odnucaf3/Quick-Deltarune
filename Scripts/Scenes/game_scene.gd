@@ -176,9 +176,9 @@ var enemy_last_position: Array[Vector2]
 #-------------------------------------------------------------------------------
 const submitInput: String = "ui_accept"
 const cancelInput: String = "ui_cancel"
-@export var win_label: Label
-@export var retry_menu: Control
-@export var retry_menu_button: Array[Button]
+@export var win_lose_retry_escape_menu_label: Label
+@export var win_lose_retry_escape_menu_vboxcontainer: VBoxContainer
+@export var win_lose_retry_escape_menu_button: Array[Button]
 #-------------------------------------------------------------------------------
 @export var debug_label: Label
 @export var fps_label: Label
@@ -187,6 +187,7 @@ var tween_Array: Array[Tween]
 @export var camera: Camera2D
 @export var hitbox: Sprite2D
 @export var grazebox: Sprite2D
+@export var hitbox_animation_tree: AnimationTree
 var can_be_hit: bool = true
 var i_frames: int = 0
 @export var battle_control: Control
@@ -218,7 +219,7 @@ var screen_limit_right: float
 var enemyBullets_Enabled_Array: Array[Bullet]
 var enemyBullets_Disabled_Array: Array[Bullet]
 #-------------------------------------------------------------------------------
-var grazeBox_radius: float = 6.0
+var grazeBox_radius: float = 10.0
 var hitBox_radius: float = 1.5
 var canBeHit: bool = true
 var camera_size: Vector2
@@ -249,8 +250,7 @@ func _ready() -> void:
 	singleton.Play_BGM(singleton.stage1)
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
-		friend_party[_i].playback = friend_party[_i].animation_tree.get("parameters/playback")
-		PlayAnimation(friend_party[_i].playback, "Idle")
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
 		var _party_member_ui: Party_Member_UI = ally_ui_prefab.instantiate() as Party_Member_UI
 		friend_party[_i].party_member_ui = _party_member_ui
@@ -260,8 +260,8 @@ func _ready() -> void:
 		friend_party[_i].party_member_ui.bar_sp.hide()
 		battle_control.add_child(_party_member_ui)
 	#-------------------------------------------------------------------------------
-	win_label.hide()
-	retry_menu.hide()
+	win_lose_retry_escape_menu_vboxcontainer.hide()
+	win_lose_retry_escape_menu_label.hide()
 	battle_menu.hide()
 	dialogue_menu.hide()
 	savespot_menu.hide()
@@ -386,7 +386,7 @@ func Player_Movement():
 			player_characterbody2d.velocity = _new_velocity
 			#-------------------------------------------------------------------------------
 			if(!_run_flag):
-				PlayAnimation(friend_party[0].playback, "Walk")
+				Animation_StateMachine(friend_party[0].animation_tree, "", "Walk")
 				is_Running = false
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -395,12 +395,12 @@ func Player_Movement():
 			player_characterbody2d.velocity = _new_velocity
 			#-------------------------------------------------------------------------------
 			if(_run_flag):
-				PlayAnimation(friend_party[0].playback, "Run")
+				Animation_StateMachine(friend_party[0].animation_tree, "", "Run")
 				is_Running = true
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		if(_input_dir == Vector2.ZERO):
-			PlayAnimation(friend_party[0].playback, "Idle")
+			Animation_StateMachine(friend_party[0].animation_tree, "", "Idle")
 			friend_party[0].is_Moving = false
 			return
 		#-------------------------------------------------------------------------------
@@ -424,11 +424,11 @@ func Player_Movement():
 		if(_input_dir != Vector2.ZERO):
 			#-------------------------------------------------------------------------------
 			if(_run_flag):
-				PlayAnimation(friend_party[0].playback, "Run")
+				Animation_StateMachine(friend_party[0].animation_tree, "", "Run")
 				is_Running = true
 			#-------------------------------------------------------------------------------
 			else:
-				PlayAnimation(friend_party[0].playback, "Walk")
+				Animation_StateMachine(friend_party[0].animation_tree, "", "Walk")
 				is_Running = false
 			#-------------------------------------------------------------------------------
 			friend_party[0].is_Moving = true
@@ -454,14 +454,14 @@ func Followers_Movement():
 				friend_party[_i].global_position = lerp(friend_party[_i].global_position, _new_position, 0.1*deltaTimeScale)
 				#-------------------------------------------------------------------------------
 				if(friend_party[_i].global_position.distance_to(_new_position) < 5):
-					PlayAnimation(friend_party[_i].playback, "Idle")
+					Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 					friend_party[_i].is_Moving = false
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 			else:
 				#-------------------------------------------------------------------------------
 				if(friend_party[_i].global_position.distance_to(_new_position) > 10):
-					PlayAnimation(friend_party[_i].playback, "Run")
+					Animation_StateMachine(friend_party[_i].animation_tree, "", "Run")
 					friend_party[_i].is_Moving = true
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
@@ -691,7 +691,7 @@ func Dialogue_Open():
 	is_in_dialogue = true
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
-		PlayAnimation(friend_party[_i].playback, "Idle")
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].is_Moving = false
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(dialogue_menu_button_next)
@@ -750,7 +750,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		player_last_position.append(friend_party[_i].global_position)
-		PlayAnimation(friend_party[_i].playback, "Idle")
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].z_index = 1
 		Face_Left(friend_party[_i], false)
 		#friend_party[_i].global_position = friend_party[0].global_position
@@ -768,7 +768,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 			enemy_party[_i].show()
 		#-------------------------------------------------------------------------------
 		enemy_last_position.append(enemy_party[_i].global_position)
-		PlayAnimation(enemy_party[_i].playback, "Idle")
+		Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 		enemy_party[_i].z_index = 1
 		Face_Left(enemy_party[_i], true)
 		#enemy_party[_i].global_position = enemy_party[0].global_position
@@ -777,7 +777,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	current_player_turn = 0
 	singleton.bgmPlayer.stop()
 	#-------------------------------------------------------------------------------
-	battle_black_panel.global_position = _center-battle_black_panel.size/2.0
+	battle_black_panel.global_position = _center - battle_black_panel.size/2.0 * battle_black_panel.scale
 	battle_black_panel.show()
 	#-------------------------------------------------------------------------------
 	Set_AllItems_When_Enter_Battle()
@@ -924,12 +924,12 @@ func Move_Fighters_to_Position_2(_position_type:bool):
 	_tween.tween_interval(0.2)
 	await _tween.finished
 #-------------------------------------------------------------------------------
-func Move_Fighters_to_Position(_tween:Tween, _position_type:bool, _timer:float):
+func Move_Fighters_to_Position(_tween:Tween, _is_menu_position:bool, _timer:float):
 	var _center: Vector2 = camera.global_position
 	var _top_limit: float
 	var _botton_limit: float
 	#-------------------------------------------------------------------------------
-	if(_position_type):
+	if(_is_menu_position):
 		_top_limit = 0.41
 		_botton_limit = 0.79
 	#-------------------------------------------------------------------------------
@@ -1416,24 +1416,24 @@ func BattleMenu_AnyButton_Cancel():
 	if(current_player_turn < 0):
 		current_player_turn = 0
 		battle_menu.hide()
-		dialogue_menu.hide()
-		win_label.text = "Escape?"
-		win_label.show()
-		retry_menu.show()
-		singleton.Set_Button(retry_menu_button[0], func():singleton.Common_Selected(), func():RetryMenu_RetryButton_Submit(), func():RetryMenu_AnyButton_Cancel())
-		singleton.Set_Button(retry_menu_button[1], func():singleton.Common_Selected(), func():RetryMenu_EscapeButton_Submit(), func():RetryMenu_AnyButton_Cancel())
-		singleton.Set_Button(retry_menu_button[2], func():singleton.Common_Selected(), func():RetryMenu_GiveUpButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+		dialogue_menu.show()
+		win_lose_retry_escape_menu_label.text = "Escape?"
+		win_lose_retry_escape_menu_label.show()
+		win_lose_retry_escape_menu_vboxcontainer.show()
+		singleton.Set_Button(win_lose_retry_escape_menu_button[0], func():singleton.Common_Selected(), func():RetryMenu_RetryButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+		singleton.Set_Button(win_lose_retry_escape_menu_button[1], func():singleton.Common_Selected(), func():RetryMenu_EscapeButton_Submit(), func():RetryMenu_AnyButton_Cancel())
+		singleton.Set_Button(win_lose_retry_escape_menu_button[2], func():singleton.Common_Selected(), func():RetryMenu_GiveUpButton_Submit(), func():RetryMenu_AnyButton_Cancel())
 		#-------------------------------------------------------------------------------
-		singleton.Move_to_Button(retry_menu_button[0])
+		singleton.Move_to_Button(win_lose_retry_escape_menu_button[0])
 		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	else:
 		#-------------------------------------------------------------------------------
 		for _i in range(current_player_turn, friend_party_alive.size()):
-			PlayAnimation(friend_party_alive[_i].playback, "Idle")
+			Animation_StateMachine(friend_party_alive[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party_alive.size():
-			PlayAnimation(enemy_party_alive[_i].playback, "Idle")
+			Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
 		#-------------------------------------------------------------------------------
 		battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
 		#-------------------------------------------------------------------------------
@@ -1842,7 +1842,7 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 	friend_party_alive[current_player_turn].target_party = _target_party
 	friend_party_alive[current_player_turn].item_serializable = _item_serializable
 	#-------------------------------------------------------------------------------
-	PlayAnimation(friend_party_alive[current_player_turn].playback, _item_serializable.item_resource.anim)
+	Animation_StateMachine(friend_party_alive[current_player_turn].animation_tree, "", _item_serializable.item_resource.anim)
 	#-------------------------------------------------------------------------------
 	Destroy_All_Items(item_menu_consumable_button_array)
 	Destroy_All_Items(item_menu_equipment_button_array)
@@ -1990,10 +1990,10 @@ func Party_Actions():
 			friend_party_alive.append(friend_party[_i])
 			#-------------------------------------------------------------------------------
 			if(friend_party[_i].is_in_guard):
-				PlayAnimation(friend_party[_i].playback, "Crouch")
+				Animation_StateMachine(friend_party[_i].animation_tree, "", "Crouch")
 			#-------------------------------------------------------------------------------
 			else:
-				PlayAnimation(friend_party[_i].playback, "Idle")
+				Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
@@ -2007,7 +2007,7 @@ func Party_Actions():
 		#-------------------------------------------------------------------------------
 		if(enemy_party[_i].hp > 0):
 			enemy_party_alive.append(enemy_party[_i])
-			PlayAnimation(enemy_party[_i].playback, "Idle")
+			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 		#-------------------------------------------------------------------------------
 		else:
 			enemy_party_dead.append(enemy_party[_i])
@@ -2152,6 +2152,9 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	if(myBATTLE_STATE != BATTLE_STATE.STILL_FIGHTING):
 		return
 	#-------------------------------------------------------------------------------
+	can_be_hit = true
+	Animation_Transition(hitbox_animation_tree, "Transition/", "Normal")
+	#-------------------------------------------------------------------------------
 	battle_box.show()
 	dialogue_menu.hide()
 	#dialogue_menu_speaking_label.text = ""
@@ -2171,7 +2174,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party_alive.size():
-		PlayAnimation(enemy_party_alive[_i].playback, "Aim")
+		Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Aim")
 	#-------------------------------------------------------------------------------
 	await Move_Fighters_to_Position_2(false)
 	_callable.call()
@@ -2189,7 +2192,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 		#-------------------------------------------------------------------------------
 		if(friend_party[_i].hp > 0):
 			friend_party_alive.append(friend_party[_i])
-			PlayAnimation(friend_party[_i].playback, "Idle")
+			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
 		else:
 			friend_party_dead.append(friend_party[_i])
@@ -2203,7 +2206,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 		#-------------------------------------------------------------------------------
 		if(enemy_party[_i].hp > 0):
 			enemy_party_alive.append(enemy_party[_i])
-			PlayAnimation(enemy_party[_i].playback, "Idle")
+			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 		#-------------------------------------------------------------------------------
 		else:
 			enemy_party_dead.append(enemy_party[_i])
@@ -2212,15 +2215,18 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	if(enemy_party_alive.size() > 0):
 		#-------------------------------------------------------------------------------
 		if(friend_party_alive.size() > 0):
-			await Move_Fighters_to_Position_2(true)
-			#-------------------------------------------------------------------------------
-			battle_menu.show()
-			dialogue_menu.show()
-			dialogue_menu_button_next.hide()
+			Animation_Transition(hitbox_animation_tree, "Transition/", "Normal")
 			battle_box.hide()
 			myGAME_STATE = GAME_STATE.IN_MENU
-			battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
 			#-------------------------------------------------------------------------------
+			await Move_Fighters_to_Position_2(true)
+			#-------------------------------------------------------------------------------
+			dialogue_menu_speaking_label.text = "* The Battle began!"
+			dialogue_menu_button_next.hide()
+			dialogue_menu.show()
+			#-------------------------------------------------------------------------------
+			battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
+			battle_menu.show()
 			singleton.Move_to_First_Button(battle_menu_button)
 			singleton.Common_Submited()
 		#-------------------------------------------------------------------------------
@@ -2249,35 +2255,41 @@ func You_Win(_callable:Callable):
 	Fill_the_ConsumableItems_Hold_from_Stored()
 	ReFill_All_Skills()
 	#-------------------------------------------------------------------------------
-	retry_menu.hide()
-	dialogue_menu.hide()
+	win_lose_retry_escape_menu_vboxcontainer.hide()
+	dialogue_menu.show()
 	tp_bar_root.hide()
-	win_label.text = "You Win"
-	win_label.show()
+	win_lose_retry_escape_menu_label.text = "You Win"
+	win_lose_retry_escape_menu_label.show()
 	#-------------------------------------------------------------------------------
-	var _tween3: Tween = create_tween()
-	_tween3.tween_interval(1.0)
-	_tween3.tween_interval(1.0)
+	var _tween: Tween = create_tween()
 	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
-		_tween3.parallel().tween_property(friend_party[_i], "global_position", player_last_position[_i], 0.5)
+	_tween.tween_interval(1.0)
 	#-------------------------------------------------------------------------------
-	for _i in enemy_party.size():
-		_tween3.parallel().tween_property(enemy_party[_i], "global_position", enemy_last_position[_i], 0.5)
-	#-------------------------------------------------------------------------------
-	_tween3.tween_callback(func():
-		win_label.hide()
-		singleton.Play_BGM(singleton.stage1)
+	_tween.tween_callback(func():
+		win_lose_retry_escape_menu_label.hide()
+		dialogue_menu.hide()
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
 			friend_party[_i].z_index = 0
-			PlayAnimation(friend_party[_i].playback, "Idle")
+			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 			friend_party[_i].is_Moving = false
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party.size():
 			enemy_party[_i].z_index = 0
 		#-------------------------------------------------------------------------------
 		battle_black_panel.hide()
+	)
+	#-------------------------------------------------------------------------------
+	_tween.tween_interval(1.0)
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		_tween.parallel().tween_property(friend_party[_i], "global_position", player_last_position[_i], 0.5)
+	#-------------------------------------------------------------------------------
+	for _i in enemy_party.size():
+		_tween.parallel().tween_property(enemy_party[_i], "global_position", enemy_last_position[_i], 0.5)
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		singleton.Play_BGM(singleton.stage1)
 		myGAME_STATE = GAME_STATE.IN_WORLD
 		_callable.call()
 	)
@@ -2292,15 +2304,17 @@ func RetryMenu_RetryButton_Submit():
 	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
 func You_Retry(_callable: Callable):
+	#-------------------------------------------------------------------------------
+	win_lose_retry_escape_menu_vboxcontainer.hide()
+	win_lose_retry_escape_menu_label.hide()
+	dialogue_menu.hide()
+	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
 	#-------------------------------------------------------------------------------
 	black_panel.self_modulate = Color.TRANSPARENT
 	_tween.tween_property(black_panel, "self_modulate", Color.BLACK, 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
-		retry_menu.hide()
-		win_label.hide()
-		#-------------------------------------------------------------------------------
 		tp = 13
 		Set_TP_Label(tp)
 		#-------------------------------------------------------------------------------
@@ -2308,6 +2322,7 @@ func You_Retry(_callable: Callable):
 		battle_menu.global_position = friend_party[0].party_member_ui.button_pivot.global_position
 		#-------------------------------------------------------------------------------
 		item_array_in_battle.clear()
+		#-------------------------------------------------------------------------------
 		for _i in item_array.size():
 			item_array_in_battle.append(item_array[_i].Constructor())
 		#-------------------------------------------------------------------------------
@@ -2318,7 +2333,7 @@ func You_Retry(_callable: Callable):
 			#-------------------------------------------------------------------------------
 			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(friend_party[_i])
 			#-------------------------------------------------------------------------------
-			PlayAnimation(friend_party[_i].playback, "Idle")
+			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 			#-------------------------------------------------------------------------------
 			friend_party[_i].hp = friend_party[_i].max_hp
 			Set_HP_Label(friend_party[_i])
@@ -2335,7 +2350,7 @@ func You_Retry(_callable: Callable):
 		enemy_party_dead.clear()
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party.size():
-			PlayAnimation(enemy_party[_i].playback, "Idle")
+			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 			#-------------------------------------------------------------------------------
 			enemy_party[_i].hp = enemy_party[_i].max_hp
 			Set_HP_Label(enemy_party[_i])
@@ -2343,12 +2358,6 @@ func You_Retry(_callable: Callable):
 			enemy_party[_i].party_member_ui.show()
 			enemy_party_alive.append(enemy_party[_i])
 		#-------------------------------------------------------------------------------
-		battle_menu.show()
-		dialogue_menu.show()
-		dialogue_menu_button_next.hide()
-		#-------------------------------------------------------------------------------
-		singleton.Move_to_First_Button(battle_menu_button)
-		singleton.Common_Submited()
 	)
 	#-------------------------------------------------------------------------------
 	#_tween.tween_interval(0.05)
@@ -2357,6 +2366,13 @@ func You_Retry(_callable: Callable):
 	_tween.tween_property(black_panel, "self_modulate", Color.TRANSPARENT, 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
+		battle_menu.show()
+		dialogue_menu.show()
+		dialogue_menu_button_next.hide()
+		#-------------------------------------------------------------------------------
+		singleton.Move_to_First_Button(battle_menu_button)
+		singleton.Common_Submited()
+		#-------------------------------------------------------------------------------
 		myBATTLE_STATE = BATTLE_STATE.STILL_FIGHTING
 		_callable.call()
 	)
@@ -2373,8 +2389,8 @@ func RetryMenu_AnyButton_Cancel():
 	battle_menu.show()
 	dialogue_menu.show()
 	dialogue_menu_button_next.hide()
-	win_label.hide()
-	retry_menu.hide()
+	win_lose_retry_escape_menu_label.hide()
+	win_lose_retry_escape_menu_vboxcontainer.hide()
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_First_Button(battle_menu_button)
 	singleton.Common_Canceled()
@@ -2383,18 +2399,20 @@ func You_Escape(_escape_callable:Callable):
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.hide()
-		PlayAnimation(friend_party[_i].playback, "Idle")
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].is_Moving = false
 		friend_party[_i].z_index = 0
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
 		enemy_party[_i].party_member_ui.hide()
-		PlayAnimation(enemy_party[_i].playback, "Idle")
+		Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 		enemy_party[_i].is_Moving = false
 		enemy_party[_i].z_index = 0
 		enemy_party[_i].party_member_ui.queue_free()
 	#-------------------------------------------------------------------------------
-	win_label.hide()
+	win_lose_retry_escape_menu_label.hide()
+	win_lose_retry_escape_menu_vboxcontainer.hide()
+	dialogue_menu.hide()
 	tp_bar_root.hide()
 	battle_black_panel.hide()
 	singleton.audioStreamPlayer_escape.play()
@@ -2586,7 +2604,7 @@ func Stage1_Fire2():
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party_alive.size():
 			_tween.tween_callback(func():
-				PlayAnimation(enemy_party_alive[_i].playback, "Shot")
+				Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Shot")
 				Stage1_Fire2_Bullet1(enemy_party_alive[_i], _mirror)
 			)
 			_tween.tween_interval(1.0+1.2*_difficulty)
@@ -2649,7 +2667,7 @@ func Stage1_Fire1():
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party_alive.size():
 			_tween.tween_callback(func():
-				PlayAnimation(enemy_party_alive[_i].playback, "Shot")
+				Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Shot")
 				Stage1_Fire1_Bullet1(enemy_party_alive[_i], _mirror)
 			)
 			_tween.tween_interval(0.8+0.6*_difficulty)
@@ -2714,22 +2732,15 @@ func Hitbox_Damage():
 		#-------------------------------------------------------------------------------
 		if(i_frames < 0):
 			can_be_hit = true
-			hitbox.visible = true
-		#-------------------------------------------------------------------------------
-		elif(i_frames % 2 == 0):
-			#-------------------------------------------------------------------------------
-			if(hitbox.visible):
-				hitbox.visible = false
-			#-------------------------------------------------------------------------------
-			else:
-				hitbox.visible = true
+			Animation_Transition(hitbox_animation_tree, "Transition/", "Normal")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Player_Shooted():
 	#-------------------------------------------------------------------------------
-	i_frames = 15
+	i_frames = 30
 	can_be_hit = false
+	Animation_Transition(hitbox_animation_tree, "Transition/", "Hurt")
 	#-------------------------------------------------------------------------------
 	if(friend_party_alive.size() > 0):
 		var _target: Party_Member = friend_party_alive.pick_random()
@@ -2749,10 +2760,10 @@ func Player_Shooted():
 			Flying_Label(_label, "-"+str(_int)+" HP")
 			#-------------------------------------------------------------------------------
 			if(_target.is_in_guard):
-				PlayAnimation(_target.playback, "Crouch_Hurt")
+				Animation_StateMachine(_target.animation_tree, "", "Crouch_Hurt")
 			#-------------------------------------------------------------------------------
 			else:
-				PlayAnimation(_target.playback, "Hurt")
+				Animation_StateMachine(_target.animation_tree, "", "Hurt")
 			#-------------------------------------------------------------------------------
 			Set_HP_Label(_target)
 			singleton.audioStreamPlayer_ally_damage.play()
@@ -2762,7 +2773,7 @@ func Player_Shooted():
 			Flying_Label(_label, "Down")
 			Set_HP_Label(_target)
 			singleton.audioStreamPlayer_enemy_colapse.play()
-			PlayAnimation(_target.playback, "Death")
+			Animation_StateMachine(_target.animation_tree, "", "Death")
 			#-------------------------------------------------------------------------------
 			friend_party_alive.erase(_target)
 			#-------------------------------------------------------------------------------
@@ -2798,24 +2809,26 @@ func Spawn_Label_in_User(_user:Party_Member) -> Label:
 func You_Lose(_retry_callable:Callable, _escape_callable:Callable):
 	#-------------------------------------------------------------------------------
 	var _tween:Tween = create_tween()
+	Move_Fighters_to_Position(_tween, true, 0.05)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		timer_tween.kill()
 		battle_box.hide()
-		retry_menu.hide()
-		win_label.text = "You Lose"
-		win_label.show()
+		win_lose_retry_escape_menu_vboxcontainer.hide()
+		win_lose_retry_escape_menu_label.text = "You Lose"
+		win_lose_retry_escape_menu_label.show()
+		dialogue_menu.show()
 	)
 	#-------------------------------------------------------------------------------
 	_tween.tween_interval(1.0)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
-		retry_menu.show()
-		singleton.Set_Button(retry_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(_retry_callable), func():pass)
-		singleton.Set_Button(retry_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(_escape_callable), func():pass)
-		singleton.Set_Button(retry_menu_button[2], func():singleton.Common_Selected(), func():LoseMenu_GiveUpButton_Submit(), func():pass)
+		win_lose_retry_escape_menu_vboxcontainer.show()
+		singleton.Set_Button(win_lose_retry_escape_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(_retry_callable), func():pass)
+		singleton.Set_Button(win_lose_retry_escape_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(_escape_callable), func():pass)
+		singleton.Set_Button(win_lose_retry_escape_menu_button[2], func():singleton.Common_Selected(), func():LoseMenu_GiveUpButton_Submit(), func():pass)
 		#-------------------------------------------------------------------------------
-		singleton.Move_to_Button(retry_menu_button[0])
+		singleton.Move_to_Button(win_lose_retry_escape_menu_button[0])
 		singleton.Common_Submited()
 	)
 	#-------------------------------------------------------------------------------
@@ -2853,9 +2866,16 @@ func Bullet_Grazed_SP_Gain():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Bullet_Grazed_TP_Gain():
-	Gain_Tp(1)
-	singleton.audioStreamPlayer_graze.play()
-	Set_TP_Label(tp)
+	tp += 1
+	#-------------------------------------------------------------------------------
+	if(tp > max_tp):
+		tp = max_tp
+	#-------------------------------------------------------------------------------
+	else:
+		singleton.audioStreamPlayer_graze.play()
+		Animation_OneShot(hitbox_animation_tree, "OneShot", AnimationNodeOneShot.OneShotRequest.ONE_SHOT_REQUEST_FIRE)
+		Set_TP_Label(tp)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Gain_Tp(_int:int):
 	tp += _int
@@ -2876,7 +2896,7 @@ func Attack(_user:Party_Member):
 	var _tween: Tween = create_tween()
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
-		PlayAnimation(_user.playback, "Shot")
+		Animation_StateMachine(_user.animation_tree, "", "Shot")
 		Gain_Tp(5)
 		Set_TP_Label(tp)
 		HP_Damage(_user.target, 5)
@@ -2909,7 +2929,7 @@ func Skill_0_0(_user:Party_Member):
 	for _i in 4:
 		#-------------------------------------------------------------------------------
 		_tween.tween_callback(func():
-			PlayAnimation(_user.playback, "Shot")
+			Animation_StateMachine(_user.animation_tree, "", "Shot")
 			HP_Damage(_user.target, 5)
 			_bullet.rotation = Get_Dir_XY(Vector2(15, _dy))
 		)
@@ -2930,7 +2950,7 @@ func Skill_0_1(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
 	#-------------------------------------------------------------------------------
-	PlayAnimation(_user.playback, "Shot")
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(150,0), 0.3)
 	_tween.tween_interval(0.3)
 	#-------------------------------------------------------------------------------
@@ -2947,12 +2967,12 @@ func Skill_0_1(_user:Party_Member):
 	await _tween.finished
 #-------------------------------------------------------------------------------
 func Skill_0_2(_user:Party_Member):
-	PlayAnimation(_user.playback, "Shot")
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	var _hp = _user.target.hp
 	HP_Heal_Porcentual(_user.target, 1.0)
 	#-------------------------------------------------------------------------------
 	if(_hp <= 0):
-		PlayAnimation(_user.target.playback, "Idle")
+		Animation_StateMachine(_user.target.animation_tree, "Base_StateMachine/", "Idle")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
@@ -2961,15 +2981,15 @@ func Skill_0_2(_user:Party_Member):
 #region PARTY_ITEMS CALLABLES
 #-------------------------------------------------------------------------------
 func Item_0_0(_user:Party_Member):
-	PlayAnimation(_user.playback, "Shot")
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	HP_Heal_Porcentual(_user.target, 0.5)
-	PlayAnimation(_user.target.playback, "Idle")
+	Animation_StateMachine(_user.target.animation_tree, "", "Idle")
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Item_0_1(_user:Party_Member):
-	PlayAnimation(_user.playback, "Shot")
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	HP_Heal_Porcentual(_user.target, 1.0)
-	PlayAnimation(_user.target.playback, "Idle")
+	Animation_StateMachine(_user.target.animation_tree, "", "Idle")
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 #endregion
@@ -3036,13 +3056,13 @@ func HP_Damage(_target:Party_Member, _int:int):
 		var _label: Label = Spawn_Label_in_User(_target)
 		#-------------------------------------------------------------------------------
 		if(_target.hp > 0):
-			PlayAnimation(_target.playback, "Hurt 2")
+			Animation_StateMachine(_target.animation_tree, "Base_StateMachine/", "Hurt 2")
 			Flying_Label(_label, "-"+str(_int)+" HP")
 			singleton.audioStreamPlayer_enemy_damage.play()
 		#-------------------------------------------------------------------------------
 		else:
 			_target.hp = 0
-			PlayAnimation(_target.playback, "Death")
+			Animation_StateMachine(_target.animation_tree, "Base_StateMachine/", "Death")
 			Flying_Label(_label, "Down")
 			singleton.audioStreamPlayer_enemy_colapse.play()
 		#-------------------------------------------------------------------------------
@@ -3088,9 +3108,15 @@ func Set_TP_Label_from_the_future():
 	#-------------------------------------------------------------------------------
 	Set_TP_Label(_tp)
 #-------------------------------------------------------------------------------
-func PlayAnimation(_playback:AnimationNodeStateMachinePlayback, _s: String):
-	#playback.travel(_s)
-	_playback.call_deferred("travel", _s)
+func Animation_StateMachine(_animation_tree:AnimationTree, _state_machine:String, _anim:String):
+	var _playback: AnimationNodeStateMachinePlayback = _animation_tree.get("parameters/"+_state_machine+"playback")
+	_playback.call_deferred("travel", _anim)
+#-------------------------------------------------------------------------------
+func Animation_Transition(_animation_tree:AnimationTree, _state_machine:String, _anim:String):
+	_animation_tree["parameters/"+_state_machine+"transition_request"] = _anim
+#-------------------------------------------------------------------------------
+func Animation_OneShot(_animation_tree:AnimationTree, _one_shot:String, _fire:AnimationNodeOneShot.OneShotRequest):
+	_animation_tree["parameters/"+_one_shot+"/request"] = _fire
 #-------------------------------------------------------------------------------
 func Get_CircleSprite_Scale(_scale: float) -> Vector2:
 	_scale *= 0.75/95.0
@@ -3117,6 +3143,20 @@ func Set_Vertical_Navigation_Button(_button:Button, _button_top:Button, _button_
 	_button.focus_neighbor_bottom = _button_botton.get_path()
 	_button.focus_neighbor_left = _button.get_path()
 	_button.focus_neighbor_right = _button.get_path()
+#-------------------------------------------------------------------------------
+func Remove_Horizontal_Navigation(_button_array:Array[Button]):
+	#-------------------------------------------------------------------------------
+	for _i in _button_array.size():
+		#-------------------------------------------------------------------------------
+		if(_i == 0):
+			_button_array[_i].focus_neighbor_top = _button_array[_i].get_path()
+		#-------------------------------------------------------------------------------
+		if(_i == _button_array.size()-1):
+			_button_array[_i].focus_neighbor_bottom = _button_array[_i].get_path()
+		#-------------------------------------------------------------------------------
+		_button_array[_i].focus_neighbor_left = _button_array[_i].get_path()
+		_button_array[_i].focus_neighbor_right = _button_array[_i].get_path()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -3247,8 +3287,10 @@ func PauseMenu_Set():
 		_button_array.append(_player_ui.button)
 	#-------------------------------------------------------------------------------
 	Set_Vertical_Navigation(_button_array)
+	#Remove_Horizontal_Navigation(_button_array)
 	#-------------------------------------------------------------------------------
 	Set_Vertical_Navigation(pause_menu_button_array)
+	#Remove_Horizontal_Navigation(pause_menu_button_array)
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button(pause_menu_button_array[0],func():singleton.Common_Selected() , func():PauseMenu_SkillButton_Submit(), func():PauseMenu_AnyButton_Cancel())
 	singleton.Set_Button(pause_menu_button_array[1],func():singleton.Common_Selected() , func():PauseMenu_ItemButton_Submit(), func():PauseMenu_AnyButton_Cancel())
@@ -4191,7 +4233,7 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
-		PlayAnimation(friend_party[_i].playback, "Idle")
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].is_Moving = false
 		var _warp_array: Array[Node] = _new_room.find_children(_dictionary["savespot"], "Interactable_Script")
 		#-------------------------------------------------------------------------------
@@ -4270,7 +4312,7 @@ func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
 	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
-		PlayAnimation(friend_party[_i].playback, "Idle")
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].is_Moving = false
 		var _warp_array: Array[Node] = _new_room.find_children(_warp_name, "Interactable_Script")
 		#-------------------------------------------------------------------------------
@@ -4808,6 +4850,8 @@ func Print_How_Many_Do_You_Buy(_price:int, _has_limited_stored:bool, _stored:int
 #-------------------------------------------------------------------------------
 func Set_DialogueMenu_NextButton():
 	#-------------------------------------------------------------------------------
+	var _scroll_value: int = 42
+	#-------------------------------------------------------------------------------
 	var _selected: Callable = func(): singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
 	var _submit: Callable = func():
@@ -4817,7 +4861,7 @@ func Set_DialogueMenu_NextButton():
 	#-------------------------------------------------------------------------------
 	var _up: Callable = func():
 		var _old_value: float = dialogue_menu_speaking_label.get_v_scroll_bar().value
-		dialogue_menu_speaking_label.get_v_scroll_bar().value -= 42
+		dialogue_menu_speaking_label.get_v_scroll_bar().value -= _scroll_value
 		#-------------------------------------------------------------------------------
 		if(dialogue_menu_speaking_label.get_v_scroll_bar().value < _old_value):
 			singleton.Common_Selected()
@@ -4825,7 +4869,7 @@ func Set_DialogueMenu_NextButton():
 	#-------------------------------------------------------------------------------
 	var _down: Callable = func():
 		var _old_value: float = dialogue_menu_speaking_label.get_v_scroll_bar().value
-		dialogue_menu_speaking_label.get_v_scroll_bar().value += 42
+		dialogue_menu_speaking_label.get_v_scroll_bar().value += _scroll_value
 		#-------------------------------------------------------------------------------
 		if(dialogue_menu_speaking_label.get_v_scroll_bar().value > _old_value):
 			singleton.Common_Selected()

@@ -1,10 +1,12 @@
-[gd_scene load_steps=52 format=3 uid="uid://vt43nxol7i3t"]
+[gd_scene format=3 uid="uid://vt43nxol7i3t"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_8v33q"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_jbqvd"]
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="4_lea5u"]
 [ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/Skills/heal.tres" id="4_ton5n"]
 [ext_resource type="Texture2D" uid="uid://ccv5xpttu6mqy" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle1.png" id="5_o041u"]
 [ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="5_ton5n"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/guard.tres" id="5_wuufr"]
 [ext_resource type="Texture2D" uid="uid://io8f7o6inlv6" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle2.png" id="6_xwnir"]
 [ext_resource type="Texture2D" uid="uid://drcr74enj3r3s" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle3.png" id="7_ykxxv"]
 [ext_resource type="Texture2D" uid="uid://csxqly0yxihgj" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle4.png" id="8_xohib"]
@@ -24,6 +26,16 @@
 [ext_resource type="Texture2D" uid="uid://cl1024abymhs3" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot1.png" id="22_m00yb"]
 [ext_resource type="Texture2D" uid="uid://bem4oqftkijho" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot2.png" id="23_i878o"]
 [ext_resource type="Texture2D" uid="uid://coahfhwulry5y" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot3.png" id="24_lqmrt"]
+
+[sub_resource type="Resource" id="Resource_rh1a3"]
+script = ExtResource("3_jbqvd")
+item_resource = ExtResource("4_lea5u")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_hbxnr"]
+script = ExtResource("3_jbqvd")
+item_resource = ExtResource("5_wuufr")
+metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_lea5u"]
 script = ExtResource("3_jbqvd")
@@ -805,29 +817,27 @@ states/Walk/position = Vector2(361, -6)
 transitions = ["Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_wacx4"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_7bgul")]
 graph_offset = Vector2(-43, 65.58026)
 
-[node name="Friend_03" type="Node2D" node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
+[node name="Friend_03" type="Node2D" unique_id=666836209 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_8v33q")
 id = &"Ralsay"
 texture2d = ExtResource("5_o041u")
 max_hp = 36
 lore = "* An generic cyber punk foot soldier."
 description = "* Strong to Ice, weak to electriciy."
-skill_array = Array[ExtResource("3_jbqvd")]([SubResource("Resource_lea5u"), SubResource("Resource_wuufr")])
+skill_array = Array[ExtResource("3_jbqvd")]([SubResource("Resource_rh1a3"), SubResource("Resource_hbxnr"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr")])
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")
 
-[node name="Pivot" type="Marker2D" parent="."]
+[node name="Pivot" type="Marker2D" parent="." unique_id=765127734]
 
-[node name="Sprite2D" type="Sprite2D" parent="Pivot"]
+[node name="Sprite2D" type="Sprite2D" parent="Pivot" unique_id=343645668]
 texture = ExtResource("5_o041u")
 offset = Vector2(0, -38.857147)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Pivot"]
-libraries = {
-&"": SubResource("AnimationLibrary_3v8q2")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Pivot" unique_id=1807171782]
+libraries/ = SubResource("AnimationLibrary_3v8q2")
 
-[node name="AnimationTree" type="AnimationTree" parent="Pivot"]
+[node name="AnimationTree" type="AnimationTree" parent="Pivot" unique_id=659265068]
 tree_root = SubResource("AnimationNodeStateMachine_mitwg")
 anim_player = NodePath("../AnimationPlayer")

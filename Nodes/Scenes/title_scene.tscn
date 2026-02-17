@@ -197,16 +197,15 @@ text = "  Quit  "
 layer = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer_layer10" unique_id=1686098575]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -518.75
-offset_top = -276.25
+offset_top = -270.53125
 offset_right = 518.75
-offset_bottom = 276.25
+offset_bottom = 270.53125
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_fx8hn")
@@ -238,7 +237,10 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
-text = "* Sewer Pack Files (by Ansimuz).
+text = "* Inspired by Deltarune (by Toby Fox).
+([url]https://store.steampowered.com/app/1671210/DELTARUNE/[/url])
+
+* Sewer Pack Files (by Ansimuz).
 ([url]https://ansimuz.itch.io/sewers-action-pack[/url])
 
 * Starfighter Files (by Ansimuz).
@@ -247,52 +249,29 @@ text = "* Sewer Pack Files (by Ansimuz).
 * Warped City Files (by Ansimuz).
 ([url]https://ansimuz.itch.io/warped-city[/url])
 
+* Pattern Pack 2 (by Kenney-Assets).
+([url]https://kenney-assets.itch.io/pattern-pack-2[/url])
+
 * RPG-Maker MV Assets (by Gotcha Gotcha Games, KADOKAWA and Yoji Ojima).
 ([url]https://rpgmakerofficial.com/en/support/rule/[/url])
 
 * Programming and Design (by Facundo Flores).
 ([url]https://facuflores.itch.io/[/url])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+[center]The End[/center]"

@@ -112,8 +112,7 @@ func _ready() -> void:
 		label.text = \"\"
 		#-------------------------------------------------------------------------------
 		for _i in enemy.size():
-			enemy[_i].playback = enemy[_i].animation_tree.get(\"parameters/playback\")
-			singleton.game_scene.PlayAnimation(enemy[_i].playback, \"Idle\")
+			singleton.game_scene.Animation_StateMachine(enemy[_i].animation_tree, \"Base_StateMachine/\", \"Idle\")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -155,7 +154,7 @@ func _physics_process(_delta: float) -> void:
 						#-------------------------------------------------------------------------------
 						if(counter == 30):
 							label.text = \"\"
-							singleton.game_scene.PlayAnimation(enemy[0].playback, \"Walk\")
+							singleton.game_scene.Animation_StateMachine(enemy[0].animation_tree, \"Base_StateMachine/\", \"Walk\")
 						#-------------------------------------------------------------------------------
 				#-------------------------------------------------------------------------------
 				else:
@@ -167,7 +166,7 @@ func _physics_process(_delta: float) -> void:
 				_myENEMY_STATE = ENEMY_STATE.PATROLLING
 				global_position = original_position
 				area2d_collider.set_deferred(\"disabled\", false)
-				singleton.game_scene.PlayAnimation(enemy[0].playback, \"Idle\")
+				singleton.game_scene.Animation_StateMachine(enemy[0].animation_tree, \"Base_StateMachine/\", \"Idle\")
 				singleton.game_scene.Face_Left(enemy[0], false)
 				return
 			#-------------------------------------------------------------------------------
@@ -200,9 +199,9 @@ func Battle():
 	#-------------------------------------------------------------------------------
 	while(singleton.game_scene.myBATTLE_STATE == singleton.game_scene.BATTLE_STATE.STILL_FIGHTING):
 		await singleton.game_scene.Wait_for_Player()
-		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire1(), 6)
+		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire1(), 7)
 		await singleton.game_scene.Wait_for_Player()
-		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire2(), 6)
+		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire2(), 7)
 		#await singleton.game_scene.Wait_for_Player()
 		#await singleton.game_scene.Start_BulletHell(func():print(\"C Actio\"), 2)
 	#-------------------------------------------------------------------------------
@@ -227,7 +226,7 @@ func Escape_Battle():
 	_myENEMY_STATE = ENEMY_STATE.PATROLLING
 	global_position = original_position
 	area2d_collider.set_deferred(\"disabled\", false)
-	singleton.game_scene.PlayAnimation(enemy[0].playback, \"Idle\")
+	singleton.game_scene.Animation_StateMachine(enemy[0].animation_tree, \"Base_StateMachine/\", \"Idle\")
 	singleton.game_scene.Face_Left(enemy[0], false)
 	#-------------------------------------------------------------------------------
 	for _i in range(1, enemy.size()):
@@ -262,8 +261,7 @@ script/source = "extends Interactable_Script
 @export var _keyitem_array: Array[Key_Item_Serializable]
 #-------------------------------------------------------------------------------
 func _ready() -> void:
-	user.playback = user.animation_tree.get(\"parameters/playback\")
-	singleton.game_scene.PlayAnimation(user.playback, \"Idle\")
+	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Idle\")
 	#-------------------------------------------------------------------------------
 	for _i in _equipitem_array.size():
 		var _id: String = singleton.game_scene.Get_MerchantId_and_ItemId_and_Hold(name, _equipitem_array[_i].equip_resource)
@@ -275,7 +273,7 @@ func _ready() -> void:
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Interactable_Action():
-	singleton.game_scene.PlayAnimation(user.playback, \"Walk\")
+	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Walk\")
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
@@ -300,7 +298,7 @@ func Interactable_Action():
 	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
-	singleton.game_scene.PlayAnimation(user.playback, \"Idle\")
+	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Idle\")
 #-------------------------------------------------------------------------------
 "
 

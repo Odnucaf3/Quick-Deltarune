@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://deigb0wpxseqj"]
+[gd_scene format=3 uid="uid://deigb0wpxseqj"]
 
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="1_0sp46"]
 [ext_resource type="Script" uid="uid://ckbwtn4v3dh8n" path="res://Scripts/Prefabs/party_member_ui_script.gd" id="1_dax5a"]
@@ -34,7 +34,7 @@ expand_margin_bottom = 2.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v1s3a"]
 bg_color = Color(0.5568628, 1, 0.4392157, 1)
 
-[node name="ally_ui" type="Control" node_paths=PackedStringArray("button_pivot", "button", "label_hp", "bar_hp", "label_sp", "bar_sp")]
+[node name="ally_ui" type="Control" unique_id=1908754346 node_paths=PackedStringArray("button_pivot", "button", "label_hp", "bar_hp", "label_sp", "bar_sp")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -51,7 +51,7 @@ bar_hp = NodePath("Control/VBoxContainer/ProgressBar")
 label_sp = NodePath("Control/VBoxContainer/sp_Label")
 bar_sp = NodePath("Control/VBoxContainer/ProgressBar2")
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="." unique_id=1003558557]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -63,7 +63,7 @@ offset_right = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1563942073]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -79,7 +79,7 @@ size_flags_vertical = 4
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="hp_Label" type="Label" parent="Control/VBoxContainer"]
+[node name="hp_Label" type="Label" parent="Control/VBoxContainer" unique_id=702044947]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 5
@@ -87,7 +87,7 @@ theme_override_font_sizes/font_size = 18
 text = "300 / 300 HP"
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/hp_Label"]
+[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/hp_Label" unique_id=1985398219]
 visible = false
 self_modulate = Color(0, 0, 0, 0.4117647)
 show_behind_parent = true
@@ -100,7 +100,7 @@ grow_vertical = 2
 texture = ExtResource("1_0sp46")
 expand_mode = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Control/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="Control/VBoxContainer" unique_id=1572435796]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_ftr10")
@@ -109,7 +109,7 @@ value = 21.0
 rounded = true
 show_percentage = false
 
-[node name="sp_Label" type="Label" parent="Control/VBoxContainer"]
+[node name="sp_Label" type="Label" parent="Control/VBoxContainer" unique_id=1257536267]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 5
@@ -117,7 +117,7 @@ theme_override_font_sizes/font_size = 18
 text = "300 / 300 SP"
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/sp_Label"]
+[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/sp_Label" unique_id=1501014056]
 visible = false
 self_modulate = Color(0, 0, 0, 0.4117647)
 show_behind_parent = true
@@ -130,7 +130,7 @@ grow_vertical = 2
 texture = ExtResource("1_0sp46")
 expand_mode = 1
 
-[node name="ProgressBar2" type="ProgressBar" parent="Control/VBoxContainer"]
+[node name="ProgressBar2" type="ProgressBar" parent="Control/VBoxContainer" unique_id=355679639]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_pgxcy")
@@ -138,7 +138,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_v1s3a")
 value = 26.57
 show_percentage = false
 
-[node name="Control2" type="Control" parent="."]
+[node name="Control2" type="Control" parent="." unique_id=1303565593]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -147,21 +147,22 @@ offset_left = 50.0
 offset_right = 50.0
 grow_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2" unique_id=1163590867]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -77.0
+offset_top = -50.0
 offset_right = 200.0
 grow_vertical = 0
 
-[node name="Label" type="Label" parent="Control2/VBoxContainer"]
+[node name="Label" type="Label" parent="Control2/VBoxContainer" unique_id=204690003]
+visible = false
 layout_mode = 2
 theme_override_constants/outline_size = 3
 text = "Target:"
 
-[node name="Button" type="Button" parent="Control2/VBoxContainer"]
+[node name="Button" type="Button" parent="Control2/VBoxContainer" unique_id=600502766]
 layout_mode = 2
 size_flags_vertical = 8
 theme = ExtResource("3_v1s3a")

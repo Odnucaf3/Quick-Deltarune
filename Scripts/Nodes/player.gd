@@ -37,13 +37,11 @@ var item_serializable: Item_Serializable
 @export var sprite: Sprite2D
 #-------------------------------------------------------------------------------
 @export var animation_tree: AnimationTree
-var playback : AnimationNodeStateMachinePlayback
 #-------------------------------------------------------------------------------
 var party_member_ui: Party_Member_UI
 #-------------------------------------------------------------------------------
 func Constructor() -> Party_Member:
 	var _party_member: Party_Member = Party_Member.new()
-	#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	return _party_member
 #-------------------------------------------------------------------------------

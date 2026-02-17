@@ -22,24 +22,32 @@ func _ready() -> void:
 	singleton.Set_Button(title_menu_button_array[2], func():singleton.Common_Selected(), func():Title_Menu_Credit_Button_Submit(), func():Title_Menu_Any_Button_Cancel())
 	singleton.Set_Button(title_menu_button_array[3], func():singleton.Common_Selected(), func():Title_Menu_Quit_Button_Submit(), func():Title_Menu_Any_Button_Cancel())
 	#-------------------------------------------------------------------------------
+	var _scroll_value: int = 34
+	#-------------------------------------------------------------------------------
 	var _selected: Callable = func(): singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
 	var _submit: Callable = func(): pass
+	#-------------------------------------------------------------------------------
 	var _cancel: Callable = func(): Credit_Menu_Back_Button_Cancel()
+	#-------------------------------------------------------------------------------
 	var _up: Callable = func():
 		var _old_value: float = credit_menu_ricktext.get_v_scroll_bar().value
-		credit_menu_ricktext.get_v_scroll_bar().value -= 42
+		credit_menu_ricktext.get_v_scroll_bar().value -= _scroll_value
 		#-------------------------------------------------------------------------------
 		if(credit_menu_ricktext.get_v_scroll_bar().value < _old_value):
 			singleton.Common_Selected()
 		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 	var _down: Callable = func():
 		var _old_value: float = credit_menu_ricktext.get_v_scroll_bar().value
-		credit_menu_ricktext.get_v_scroll_bar().value += 42
+		credit_menu_ricktext.get_v_scroll_bar().value += _scroll_value
 		#-------------------------------------------------------------------------------
 		if(credit_menu_ricktext.get_v_scroll_bar().value > _old_value):
 			singleton.Common_Selected()
 		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 	var _left: Callable = func(): pass
+	#-------------------------------------------------------------------------------
 	var _right: Callable = func(): pass
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_Ud_Down_Left_Right(credit_menu_button, _selected, _submit, _cancel, _up, _down, _left, _right)
