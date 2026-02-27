@@ -77,27 +77,27 @@ offset_top = -376.0
 offset_right = 1136.0
 offset_bottom = -192.0
 
-[node name="cutscene_00" type="Area2D" parent="room_limits" unique_id=647126202 node_paths=PackedStringArray("area2d_collider")]
-position = Vector2(240, 112)
+[node name="cutscene_00" type="Area2D" parent="." unique_id=647126202 node_paths=PackedStringArray("area2d_collider")]
+position = Vector2(832, -264)
 collision_layer = 8
 collision_mask = 0
 script = SubResource("GDScript_0ptgt")
 area2d_collider = NodePath("CollisionShape2D")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="room_limits/cutscene_00" unique_id=148742695]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cutscene_00" unique_id=148742695]
 shape = SubResource("RectangleShape2D_fkxko")
 
-[node name="Warp_Left" parent="room_limits" unique_id=466845222 instance=ExtResource("4_yj1ku")]
-position = Vector2(16, 112)
+[node name="Warp_Left" parent="." unique_id=466845222 instance=ExtResource("4_yj1ku")]
+position = Vector2(592, -264)
 room_name = &"room_test_02"
 
-[node name="Item" parent="room_limits" unique_id=655138216 instance=ExtResource("4_o0jg7")]
-position = Vector2(80, 112)
+[node name="Item" parent="." unique_id=655138216 instance=ExtResource("4_o0jg7")]
+position = Vector2(672, -264)
 collision_layer = 4
 pickable_consumableitem = Array[ExtResource("6_0ptgt")]([SubResource("Resource_0ptgt")])
 
-[node name="Warp_Right" parent="room_limits" unique_id=1933417679 instance=ExtResource("7_0ptgt")]
-position = Vector2(528, 112)
+[node name="Warp_Right" parent="." unique_id=1933417679 instance=ExtResource("7_0ptgt")]
+position = Vector2(1136, -264)
 room_name = &"room_test_05"
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1550681193]

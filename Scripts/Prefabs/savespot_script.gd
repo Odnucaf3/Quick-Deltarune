@@ -3,6 +3,7 @@ class_name  SaveSpot_Script
 #-------------------------------------------------------------------------------
 @export_multiline var dialogue: String
 @export var animation_player: AnimationPlayer
+@export var offset: Node2D
 #-------------------------------------------------------------------------------
 func _ready() -> void:
 	#-------------------------------------------------------------------------------

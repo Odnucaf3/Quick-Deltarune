@@ -61,5 +61,5 @@ collision_layer = 4
 pickable_consumableitem = Array[ExtResource("5_37vpw")]([SubResource("Resource_5g5si")])
 
 [node name="Warp_Down" parent="." unique_id=699467842 instance=ExtResource("6_25x5p")]
-position = Vector2(-8, -208)
+position = Vector2(-8, -192)
 warp_name = &"Warp_Up2"

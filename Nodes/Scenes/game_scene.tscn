@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
 [ext_resource type="Texture2D" uid="uid://c5tbmn2ticnw1" path="res://Assets/kenney_assets/pattern_pack_2/Thin/Default (256px)/pattern_0016.png" id="12_s3ops"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/party_member.tscn" id="13_hxoxt"]
+[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="15_mitwg"]
+[ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/Skills/poison_stinger.tres" id="16_3p4s7"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
 [ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="18_1th3s"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
@@ -210,15 +212,25 @@ node_connections = [&"output", 0, &"OneShot", &"Transition", 0, &"Animation", &"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ik87f"]
 size = Vector2(16, 8)
 
-[sub_resource type="Resource" id="Resource_lujb4"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+[sub_resource type="Resource" id="Resource_tq75w"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("5_rpgth")
+metadata/_custom_type_script = "uid://beengnff5twcx"
 
-[sub_resource type="Resource" id="Resource_1th3s"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+[sub_resource type="Resource" id="Resource_2x6ww"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("6_lujb4")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_ek5q1"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("15_mitwg")
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_xhx7r"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("16_3p4s7")
+metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_mitwg"]
 resource_local_to_scene = true
@@ -226,11 +238,6 @@ script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_3p4s7"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_xhx7r"]
 resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
@@ -247,12 +254,8 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_hko5v"]
 resource_local_to_scene = true
-script = ExtResource("18_1th3s")
-statuseffect_resource = ExtResource("19_mitwg")
-metadata/_custom_type_script = "uid://mdn2h1nh8s14"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
-radius = 4.0
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_s3ops"]
 resource_local_to_scene = true
@@ -266,8 +269,13 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_ircg4"]
 resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+script = ExtResource("18_1th3s")
+statuseffect_resource = ExtResource("19_mitwg")
+stored = 1
+metadata/_custom_type_script = "uid://mdn2h1nh8s14"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
+radius = 4.0
 
 [sub_resource type="Resource" id="Resource_62d7h"]
 resource_local_to_scene = true
@@ -335,6 +343,21 @@ script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_mtlrx"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_uqsek"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_chh8w"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_eggap"]
 resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
@@ -600,8 +623,9 @@ collision_layer = 2
 shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_xhx7r"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6")])
-statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_hko5v")])
+skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1"), SubResource("Resource_xhx7r")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_s3ops"), SubResource("Resource_rka03")])
+statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_ircg4")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player" unique_id=1124339265]
 collision_layer = 0
@@ -626,11 +650,11 @@ shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55")])
 
 [node name="Friend_03" parent="World2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap")])
 
 [node name="room_test_01" parent="World2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
 

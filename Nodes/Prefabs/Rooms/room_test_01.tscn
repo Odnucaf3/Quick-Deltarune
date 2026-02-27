@@ -199,11 +199,17 @@ func Battle():
 	#-------------------------------------------------------------------------------
 	while(singleton.game_scene.myBATTLE_STATE == singleton.game_scene.BATTLE_STATE.STILL_FIGHTING):
 		await singleton.game_scene.Wait_for_Player()
+		await singleton.game_scene.Party_Actions()
 		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire1(), 7)
+		#-------------------------------------------------------------------------------
 		await singleton.game_scene.Wait_for_Player()
+		await singleton.game_scene.Party_Actions()
 		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire2(), 7)
+		#-------------------------------------------------------------------------------
 		#await singleton.game_scene.Wait_for_Player()
+		#await singleton.game_scene.Party_Actions()
 		#await singleton.game_scene.Start_BulletHell(func():print(\"C Actio\"), 2)
+		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.ExitBatle(func():Battle(), func():Win_Battle(), func():Escape_Battle())
 	#-------------------------------------------------------------------------------
@@ -363,10 +369,11 @@ tile_map_data = PackedByteArray("AAD//wEAAAAHAAcAAAAAAAEAAAAHAAcAAAABAAEAAAAHAAc
 tile_set = ExtResource("2_0ji40")
 
 [node name="Warp_Up" parent="." unique_id=1860058009 instance=ExtResource("3_52n5y")]
-position = Vector2(408, -120)
+position = Vector2(408, -176)
+room_name = &"room_test_02"
 
 [node name="Warp_Up2" parent="." unique_id=2071780214 instance=ExtResource("3_52n5y")]
-position = Vector2(-8, -120)
+position = Vector2(-8, -176)
 room_name = &"room_test_03"
 
 [node name="props_prefab" parent="." unique_id=1854762651 instance=ExtResource("5_8dt50")]
@@ -470,7 +477,7 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="Savespot" parent="." unique_id=555243044 instance=ExtResource("9_4u8d0")]
-position = Vector2(168, 48)
+position = Vector2(176, 16)
 collision_layer = 4
 dialogue = "* Creating a ripoff Deltarune videogame fills you with determination."
 

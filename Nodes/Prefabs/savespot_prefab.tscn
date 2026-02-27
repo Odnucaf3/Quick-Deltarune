@@ -1,11 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://c8fmwkm58xib0"]
+[gd_scene format=3 uid="uid://c8fmwkm58xib0"]
 
 [ext_resource type="Script" uid="uid://bklobupfdh2r2" path="res://Scripts/Prefabs/savespot_script.gd" id="1_5ju2w"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_1e4m4"]
 [ext_resource type="Texture2D" uid="uid://3y2fsmkdncq0" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/hit.png" id="3_2gevi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w87vk"]
-radius = 6.0
+radius = 16.0
 
 [sub_resource type="Animation" id="Animation_52n5y"]
 length = 0.001
@@ -138,7 +138,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.33333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(0.16, 0.16), Vector2(0.11, 0.11)]
+"values": [Vector2(0.4, 0.4), Vector2(0.3, 0.3)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -150,7 +150,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.33333334),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [Vector2(0.26, 0.26), Vector2(0.21, 0.21)]
+"values": [Vector2(0.6, 0.6), Vector2(0.5, 0.5)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -184,36 +184,35 @@ _data = {
 &"Turn_On": SubResource("Animation_rqg47")
 }
 
-[node name="Savespot" type="Area2D" node_paths=PackedStringArray("animation_player")]
+[node name="Savespot" type="Area2D" unique_id=1466147047 node_paths=PackedStringArray("animation_player", "offset")]
 y_sort_enabled = true
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_5ju2w")
 animation_player = NodePath("AnimationPlayer")
+offset = NodePath("Marker2D")
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=890191519]
 self_modulate = Color(1, 1, 1, 0.09803922)
-position = Vector2(0, -30.720001)
 scale = Vector2(0.16, 0.16)
 texture = ExtResource("2_1e4m4")
 
-[node name="Sprite2D3" type="Sprite2D" parent="."]
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1108952820]
 self_modulate = Color(1, 1, 1, 0.09803922)
-position = Vector2(0, -30.720001)
 scale = Vector2(0.26, 0.26)
 texture = ExtResource("2_1e4m4")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -23.720001)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2040371611]
+position = Vector2(0, 8)
 texture = ExtResource("3_2gevi")
 offset = Vector2(0, -8)
 hframes = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -30.720001)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1642679437]
 shape = SubResource("CircleShape2D_w87vk")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_ygji3")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=940876013]
+libraries/ = SubResource("AnimationLibrary_ygji3")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=2029455827]
+position = Vector2(-16, 8)

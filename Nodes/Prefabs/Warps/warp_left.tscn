@@ -1,24 +1,20 @@
 [gd_scene format=3 uid="uid://cci5qdybf3sj"]
 
-[sub_resource type="GDScript" id="GDScript_oclu2"]
-script/source = "extends Interactable_Script
-#-------------------------------------------------------------------------------
-@export var room_name: StringName = \"room_test_01\"
-@export var warp_name: StringName = \"Warp_Right\"
-#-------------------------------------------------------------------------------
-func Interactable_Action():
-	singleton.game_scene.Teleport_From_1_Room_to_Another(room_name, warp_name)
-#-------------------------------------------------------------------------------
-"
+[ext_resource type="Script" uid="uid://c4q78l5rho2u7" path="res://Scripts/Prefabs/warp_script.gd" id="1_ka61k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lloiv"]
 size = Vector2(8, 48)
 
-[node name="Warp_Left" type="Area2D" unique_id=748982093]
+[node name="Warp_Left" type="Area2D" unique_id=748982093 node_paths=PackedStringArray("offset")]
 collision_layer = 8
 collision_mask = 0
-script = SubResource("GDScript_oclu2")
+script = ExtResource("1_ka61k")
+warp_name = &"Warp_Right"
+offset = NodePath("Marker2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2089635324]
-position = Vector2(-20, 0)
+position = Vector2(-4, 0)
 shape = SubResource("RectangleShape2D_lloiv")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=522239724]
+position = Vector2(16, 0)

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item_Resource" format=3 uid="uid://dnkacsrd1g3el"]
+
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_cm0kt"]
+
+[resource]
+script = ExtResource("1_cm0kt")
+action_string = "Skill_03_Poison_Stinger"
+description = "* Add poison to an enemy for 3 turns."
+tp_cost = 5
+metadata/_custom_type_script = "uid://cutcj8e6g23o2"

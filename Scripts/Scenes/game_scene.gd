@@ -12,6 +12,8 @@ enum BATTLE_STATE{STILL_FIGHTING, YOU_WIN, YOU_LOSE, YOU_ESCAPE, YOU_RETRY}
 #-------------------------------------------------------------------------------
 var hex_color_yellow: String = "ffe500"
 #var hex_color_yellow: String = "yellow"
+var hex_color_orange: String = "fb7927"
+#var hex_color_orange: String = "orange"
 #-------------------------------------------------------------------------------
 @export var key_dictionary: Dictionary[String, int]
 #-------------------------------------------------------------------------------
@@ -231,6 +233,9 @@ var deltaTimeScale: float = 1.0
 signal dialogue_signal
 var is_in_dialogue: bool = false
 var how_many_would_you_buy: int = 0
+var input_dir: Vector2
+var input_dir_normal: Vector2
+var dead_zone: float = 0.01
 #endregion
 #-------------------------------------------------------------------------------
 #region MONOBEHAVIOUR
@@ -375,53 +380,61 @@ func _physics_process(_delta: float) -> void:
 #-------------------------------------------------------------------------------
 #region IN_WORLD FUNCTIONS
 func Player_Movement():
-	var _input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var _run_flag: bool = Input.is_action_pressed("Input_Run")
+	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	#-------------------------------------------------------------------------------
+	if(abs(input_dir.x) < dead_zone):
+		input_dir.x = 0
+	#-------------------------------------------------------------------------------
+	if(abs(input_dir.y) < dead_zone):
+		input_dir.y = 0
 	#-------------------------------------------------------------------------------
 	if(friend_party[0].is_Moving):
-		_input_dir.normalized()
 		#-------------------------------------------------------------------------------
-		if(is_Running):
-			var _new_velocity: Vector2 = _input_dir * 180.0 * deltaTimeScale
-			player_characterbody2d.velocity = _new_velocity
-			#-------------------------------------------------------------------------------
-			if(!_run_flag):
-				Animation_StateMachine(friend_party[0].animation_tree, "", "Walk")
-				is_Running = false
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		else:
-			var _new_velocity: Vector2 = _input_dir * 90.0 * deltaTimeScale
-			player_characterbody2d.velocity = _new_velocity
-			#-------------------------------------------------------------------------------
-			if(_run_flag):
-				Animation_StateMachine(friend_party[0].animation_tree, "", "Run")
-				is_Running = true
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		if(_input_dir == Vector2.ZERO):
+		if(input_dir == Vector2.ZERO):
 			Animation_StateMachine(friend_party[0].animation_tree, "", "Idle")
 			friend_party[0].is_Moving = false
+			input_dir_normal = Vector2.ZERO
 			return
 		#-------------------------------------------------------------------------------
-		if(friend_party[0].is_Facing_Left):
-			if(_input_dir.x > 0):
-				Face_Left(friend_party[0], false)
-				return
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
 		else:
-			if(_input_dir.x < 0):
-				Face_Left(friend_party[0], true)
-				return
+			input_dir_normal = input_dir.normalized()
+			#-------------------------------------------------------------------------------
+			if(is_Running):
+				var _new_velocity: Vector2 = input_dir_normal * 180.0 * deltaTimeScale
+				player_characterbody2d.velocity = _new_velocity
+				#-------------------------------------------------------------------------------
+				if(!_run_flag):
+					Animation_StateMachine(friend_party[0].animation_tree, "", "Walk")
+					is_Running = false
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			else:
+				var _new_velocity: Vector2 = input_dir_normal * 90.0 * deltaTimeScale
+				player_characterbody2d.velocity = _new_velocity
+				#-------------------------------------------------------------------------------
+				if(_run_flag):
+					Animation_StateMachine(friend_party[0].animation_tree, "", "Run")
+					is_Running = true
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			if(friend_party[0].is_Facing_Left):
+				if(input_dir_normal.x > 0):
+					Face_Left(friend_party[0], false)
+					return
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			else:
+				if(input_dir_normal.x < 0):
+					Face_Left(friend_party[0], true)
+					return
+				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	else:
-		var _new_velocity: Vector2 = Vector2.ZERO
-		player_characterbody2d.velocity = _new_velocity
 		#-------------------------------------------------------------------------------
-		if(_input_dir != Vector2.ZERO):
+		if(input_dir != Vector2.ZERO):
 			#-------------------------------------------------------------------------------
 			if(_run_flag):
 				Animation_StateMachine(friend_party[0].animation_tree, "", "Run")
@@ -433,6 +446,10 @@ func Player_Movement():
 			#-------------------------------------------------------------------------------
 			friend_party[0].is_Moving = true
 			return
+		#-------------------------------------------------------------------------------
+		else:
+			var _new_velocity: Vector2 = Vector2.ZERO
+			player_characterbody2d.velocity = _new_velocity
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	player_characterbody2d.move_and_slide()
@@ -481,18 +498,24 @@ func Followers_Movement():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Hitbox_Movement():
-	var _input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var _run_flag: bool = Input.is_action_pressed("Input_Run")
+	input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	#-------------------------------------------------------------------------------
-	if(_input_dir != Vector2.ZERO):
-		_input_dir.normalized()
+	if(abs(input_dir.x) < dead_zone):
+		input_dir.x = 0
+	#-------------------------------------------------------------------------------
+	if(abs(input_dir.y) < dead_zone):
+		input_dir.y = 0
+	#-------------------------------------------------------------------------------
+	if(input_dir != Vector2.ZERO):
+		input_dir_normal = input_dir.normalized()
 		var myPosition: Vector2 = hitbox.position
 		#-------------------------------------------------------------------------------
 		if(_run_flag):
-			myPosition += _input_dir * 0.7 * deltaTimeScale
+			myPosition += input_dir_normal * 0.7 * deltaTimeScale
 		#-------------------------------------------------------------------------------
 		else:
-			myPosition += _input_dir * 1.8 * deltaTimeScale
+			myPosition += input_dir_normal * 1.8 * deltaTimeScale
 		#-------------------------------------------------------------------------------
 		myPosition.y = clampf(myPosition.y, box_limit_up, box_limit_down)
 		myPosition.x = clampf(myPosition.x, box_limit_left, box_limit_right)
@@ -599,123 +622,6 @@ func PickUp_Item_2(_item_script:Item_Script):
 	#-------------------------------------------------------------------------------
 	_s += "was picked."
 	await Dialogue(false, _s)
-#-------------------------------------------------------------------------------
-func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable, _hold:int) -> Item_Serializable:
-	#-------------------------------------------------------------------------------
-	for _i in item_array.size():
-		#-------------------------------------------------------------------------------
-		if(item_array[_i].item_resource == _item_serializable.item_resource):
-			if(_item_serializable.item_resource.max_hold > 0):
-				item_array[_i].hold += _hold
-				#-------------------------------------------------------------------------------
-				if(item_array[_i].hold > _item_serializable.item_resource.max_hold):
-					var _extra: int = item_array[_i].hold - _item_serializable.item_resource.max_hold
-					item_array[_i].hold = _item_serializable.item_resource.max_hold
-					item_array[_i].stored += _extra
-					return item_array[_i]
-				#-------------------------------------------------------------------------------
-				else:
-					return item_array[_i]
-				#-------------------------------------------------------------------------------
-			#-------------------------------------------------------------------------------
-			else:
-				item_array[_i].stored += _hold
-				return item_array[_i]
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	var _new_item: Item_Serializable = _item_serializable.Constructor()
-	_new_item.item_resource = _item_serializable.item_resource
-	#-------------------------------------------------------------------------------
-	if(_item_serializable.item_resource.max_hold > 0):
-		_new_item.hold = _hold
-		#-------------------------------------------------------------------------------
-		if(_new_item.hold > _item_serializable.item_resource.max_hold):
-			var _extra: int = _new_item.hold - _item_serializable.item_resource.max_hold
-			_new_item.hold = _item_serializable.item_resource.max_hold
-			_new_item.stored += _extra
-			item_array.append(_new_item)
-			return _new_item
-		#-------------------------------------------------------------------------------
-		else:
-			item_array.append(_new_item)
-			return _new_item
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	else:
-		_new_item.stored = _hold
-		item_array.append(_new_item)
-		return _new_item
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Add_EquipItem_to_Inventory(_equip_serializable: Equip_Serializable, _hold:int) -> Equip_Serializable:
-	return Add_Equip_Serializable_to_Array(equip_array, _equip_serializable.equip_resource, _hold)
-#-------------------------------------------------------------------------------
-func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_resource:Equip_Resource, _hold: int) -> Equip_Serializable:
-	#-------------------------------------------------------------------------------
-	for _i in _equip_array.size():
-		#-------------------------------------------------------------------------------
-		if(_equip_array[_i].equip_resource == _equip_resource):
-			_equip_array[_i].stored += _hold
-			return _equip_array[_i]
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
-	_equip_serializable.equip_resource = _equip_resource
-	_equip_serializable.stored = _hold
-	_equip_array.append(_equip_serializable)
-	return _equip_serializable
-#-------------------------------------------------------------------------------
-func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hold:int) -> Key_Item_Serializable:
-	#-------------------------------------------------------------------------------
-	if(_keyitem_serializable.key_item_resource == money_serializable.key_item_resource):
-		money_serializable.stored += _hold
-		return money_serializable
-	#-------------------------------------------------------------------------------
-	else:
-		#-------------------------------------------------------------------------------
-		for _i in key_item_array.size():
-			#-------------------------------------------------------------------------------
-			if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
-				key_item_array[_i].stored += _hold
-				return key_item_array[_i]
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
-		_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
-		_new_keyitem.stored = _hold
-		key_item_array.append(_new_keyitem)
-		return _new_keyitem
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Dialogue_Open():
-	is_in_dialogue = true
-	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
-		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
-		friend_party[_i].is_Moving = false
-	#-------------------------------------------------------------------------------
-	singleton.Move_to_Button(dialogue_menu_button_next)
-#-------------------------------------------------------------------------------
-func Dialogue(_b:bool, _s:String):
-	dialogue_menu.show()
-	dialogue_menu_button_next.show()
-	#-------------------------------------------------------------------------------
-	if(_b):
-		dialogue_menu_speaker1.show()
-		dialogue_menu_speaker1_name.show()
-	#-------------------------------------------------------------------------------
-	else:
-		dialogue_menu_speaker1.hide()
-		dialogue_menu_speaker1_name.hide()
-	#-------------------------------------------------------------------------------
-	dialogue_menu_speaking_label.text = _s
-	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
-	await dialogue_signal
-#-------------------------------------------------------------------------------
-func Dialogue_Close():
-	is_in_dialogue = false
-	dialogue_menu.hide()
-	dialogue_menu_button_next.release_focus()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -1883,7 +1789,7 @@ func After_Choose_Target_Logic():
 	#-------------------------------------------------------------------------------
 	else:
 		singleton.Common_Submited()
-		await Party_Actions()
+		dialogue_signal.emit()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Hide_AllTarget():
@@ -1899,6 +1805,10 @@ func Seconds(_timer:float):
 	await get_tree().create_timer(_timer, true, true).timeout
 #-------------------------------------------------------------------------------
 func Party_Actions():
+	#-------------------------------------------------------------------------------
+	if(myBATTLE_STATE != BATTLE_STATE.STILL_FIGHTING):
+		return
+	#-------------------------------------------------------------------------------
 	current_player_turn = friend_party_alive.size()
 	Set_TP_Label(tp)
 	#-------------------------------------------------------------------------------
@@ -1934,7 +1844,10 @@ func Party_Actions():
 		if(_user.target != null):
 			dialogue_menu.show()
 			dialogue_menu_button_next.hide()
-			dialogue_menu_speaking_label.text = "* "+_user.id + " uses " + get_resource_filename(_user.item_serializable.item_resource) + " on " + _user.target.id
+			var _user_name: String = "[color="+hex_color_orange+"]"+_user.id+"[/color]"
+			var _item_name: String = "[color="+hex_color_yellow+"]"+ get_resource_filename(_user.item_serializable.item_resource)+"[/color]"
+			var _target_name: String = "[color="+hex_color_orange+"]"+_user.target.id+"[/color]"
+			dialogue_menu_speaking_label.text = "* "+_user_name+ " uses " +_item_name+ " on " +_target_name + "."
 			await Seconds(0.5)
 			await Do_Player_Action(_user)
 			await Seconds(0.2)
@@ -2004,6 +1917,13 @@ func Party_Actions():
 	enemy_party_dead.clear()
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
+		#-------------------------------------------------------------------------------
+		for _j in enemy_party[_i].statuseffect_array_in_battle.size():
+			enemy_party[_i].statuseffect_array_in_battle[_j].stored -= 1
+			#-------------------------------------------------------------------------------
+			if(enemy_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
+				enemy_party[_i].statuseffect_array_in_battle.remove_at(_j)
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		if(enemy_party[_i].hp > 0):
 			enemy_party_alive.append(enemy_party[_i])
@@ -2129,7 +2049,7 @@ func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
 		if(enemy_party_alive.size() > 0):
 			dialogue_menu.show()
 			dialogue_menu_button_next.hide()
-			dialogue_menu_speaking_label.text = "* Normal Attack Minigame"
+			dialogue_menu_speaking_label.text = "* Normal Attack Minigame."
 			await Seconds(0.5)
 			#-------------------------------------------------------------------------------
 			for _i in _attacking_party.size():
@@ -2794,16 +2714,16 @@ func Spawn_Label_in_User(_user:Party_Member) -> Label:
 		#-------------------------------------------------------------------------------
 		if(_user.damage_label_array[_i] == null):
 			_user.damage_label_array[_i] = _label
+			_user.add_child(_label)
 			_global_position.y -= 8.0 * float(_i)
 			_label.global_position = _global_position
-			world_2d.add_child(_label)
 			return _label
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	_user.damage_label_array.append(_label)
+	_user.add_child(_label)
 	_global_position.y -= 8.0 * float(_user.damage_label_array.size()-1)
 	_label.global_position = _global_position
-	world_2d.add_child(_label)
 	return _label
 #-------------------------------------------------------------------------------
 func You_Lose(_retry_callable:Callable, _escape_callable:Callable):
@@ -2972,9 +2892,33 @@ func Skill_0_2(_user:Party_Member):
 	HP_Heal_Porcentual(_user.target, 1.0)
 	#-------------------------------------------------------------------------------
 	if(_hp <= 0):
-		Animation_StateMachine(_user.target.animation_tree, "Base_StateMachine/", "Idle")
+		Animation_StateMachine(_user.target.animation_tree, "", "Idle")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
+#-------------------------------------------------------------------------------
+func Skill_03_Poison_Stinger(_user:Party_Member):
+	var _status_effect: StatusEffect_Resource = load("res://Resources/Status/poison.tres") as StatusEffect_Resource
+	Add_Status_Effect(_user.target, _status_effect, 3)
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	#-------------------------------------------------------------------------------
+	var _label: Label = Spawn_Label_in_User(_user.target)
+	Flying_Label(_label, "+Poison")
+	#-------------------------------------------------------------------------------
+	await Seconds(0.3)
+#-------------------------------------------------------------------------------
+func Add_Status_Effect(_user:Party_Member, _status_effect:StatusEffect_Resource, _int:int):
+	#-------------------------------------------------------------------------------
+	for _i in _user.statuseffect_array_in_battle.size():
+		if(_user.statuseffect_array_in_battle[_i].statuseffect_resource == _status_effect):
+			_user.statuseffect_array_in_battle[_i].stored += _int + 1
+			return
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _status_effect_serializable: StatusEffect_Serializable = StatusEffect_Serializable.new()
+	_status_effect_serializable.statuseffect_resource = _status_effect
+	_status_effect_serializable.stored = _int + 1
+	_user.statuseffect_array_in_battle.append(_status_effect_serializable)
+	return
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -3176,6 +3120,8 @@ func KillTween_Array(_tween_Array: Array[Tween]):
 #region DEBUG FUNCTIONS
 func Debug_Information() -> void:
 	var _s: String = ""
+	_s += "Joystick: " + str(input_dir)+"\n"
+	_s += "Joystick Normal: " + str(input_dir_normal)+"\n"
 	_s += "Current Turn ID: " + str(current_player_turn)+"\n"
 	_s += "Grab Focus: " + str(get_viewport().gui_get_focus_owner())+"\n"
 	_s += "-------------------------------------------------------\n"
@@ -3264,6 +3210,8 @@ func PauseOff():
 	get_tree().set_deferred("paused", false)
 #-------------------------------------------------------------------------------
 #endregion
+#-------------------------------------------------------------------------------
+#region PAUSE MENU
 #-------------------------------------------------------------------------------
 func PauseMenu_Set():
 	#-------------------------------------------------------------------------------
@@ -3391,6 +3339,49 @@ func PauseMenu_ItemButton_Submit():
 		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	item_menu_consumable_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func PauseMenu_EquipButton_Submit():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		var _b: Button = pause_menu_party_button_array[_i].button
+		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_EquipButton_PartyButton_Submit(_i), func():PauseMenu_EquipButton_PartyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
+	singleton.Common_Submited()
+	pause_menu_button_array[2].disabled = true
+#-------------------------------------------------------------------------------
+func PauseMenu_StatusButton_Submit():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		var _b: Button = pause_menu_party_button_array[_i].button
+		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_StatusButton_PartyButton_Submit(_i), func():PauseMenu_StatusButton_PartyButton_Cancel())
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
+	singleton.Common_Submited()
+	pause_menu_button_array[3].disabled = true
+#-------------------------------------------------------------------------------
+func PauseMenu_OptionButton_Submit():
+	singleton.optionMenu.show()
+	singleton.Set_Button(singleton.optionMenu.back, func():singleton.Common_Selected(), func():OptionMenu_BackButton_Subited(), func():OptionMenu_BackButton_Canceled())
+	pause_menu.hide()
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(singleton.optionMenu.back)
+	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func PauseMenu_QuitButton_Submit():
+	PauseOff()
+	get_tree().change_scene_to_file("res://Nodes/Scenes/title_scene.tscn")
+	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func PauseMenu_AnyButton_Cancel():
+	singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
+	await get_tree().physics_frame
+	PauseMenu_Close()
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region CREATE BUTTON
 #-------------------------------------------------------------------------------
 func Create_Skill_Button(_item_serializable: Item_Serializable) -> Button:
 	#-------------------------------------------------------------------------------
@@ -3645,6 +3636,10 @@ func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Seriali
 	#-------------------------------------------------------------------------------
 	return _button
 #-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region NO DESCRIPTION FUNCTIONS
+#-------------------------------------------------------------------------------
 func ItemMenu_No_Description():
 	singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
@@ -3707,31 +3702,9 @@ func TeleportMenu_No_Description():
 	teleporty_menu_rect.texture = null
 	teleporty_menu_description.text = ""
 #-------------------------------------------------------------------------------
-func PauseMenu_EquipButton_Submit():
-	#-------------------------------------------------------------------------------
-	for _i in pause_menu_party_button_array.size():
-		var _b: Button = pause_menu_party_button_array[_i].button
-		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_EquipButton_PartyButton_Submit(_i), func():PauseMenu_EquipButton_PartyButton_Cancel())
-	#-------------------------------------------------------------------------------
-	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
-	singleton.Common_Submited()
-	pause_menu_button_array[2].disabled = true
+#endregion
 #-------------------------------------------------------------------------------
-func PauseMenu_StatusButton_Submit():
-	#-------------------------------------------------------------------------------
-	for _i in pause_menu_party_button_array.size():
-		var _b: Button = pause_menu_party_button_array[_i].button
-		singleton.Set_Button(_b, func():singleton.Common_Selected() , func():PauseMenu_StatusButton_PartyButton_Submit(_i), func():PauseMenu_StatusButton_PartyButton_Cancel())
-	#-------------------------------------------------------------------------------
-	singleton.Move_to_Button(pause_menu_party_button_array[0].button)
-	singleton.Common_Submited()
-	pause_menu_button_array[3].disabled = true
-#-------------------------------------------------------------------------------
-func PauseMenu_AnyButton_Cancel():
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
-	await get_tree().physics_frame
-	PauseMenu_Close()
+#region PAUSE MENU - SKILLS
 #-------------------------------------------------------------------------------
 func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
@@ -3779,6 +3752,10 @@ func PauseMenu_SkillButton_PartyButton_Cancel():
 	singleton.Move_to_Button(pause_menu_button_array[0])
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region PAUSE MENU - ITEMS
+#-------------------------------------------------------------------------------
 func PauseMenu_ItemButton_ItemMenu_Cancel():
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
@@ -3793,6 +3770,10 @@ func PauseMenu_ItemMenu_Exit_Common():
 	Destroy_All_Items(item_menu_equipment_button_array)
 	Destroy_All_Items(item_menu_keyitems_button_array)
 	Destroy_All_Items(item_menu_allitems_button_array)
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region PAUSE MENU - EQUIP
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
@@ -3911,25 +3892,6 @@ func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Pa
 	singleton.Move_to_Button(equipslot_menu_button_array[_index_slot])
 	singleton.Play_SFX_Equip()
 #-------------------------------------------------------------------------------
-func Remove_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_serializable: Equip_Serializable):
-	_equip_serializable.stored -= 1
-	#-------------------------------------------------------------------------------
-	if(_equip_serializable.stored <= 0):
-		_equip_array.erase(_equip_serializable)
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffect_Serializable) -> StatusEffect_Serializable:	#NOT USED YET
-	#-------------------------------------------------------------------------------
-	for _i in _user.statuseffect_array.size():
-		#-------------------------------------------------------------------------------
-		if(_user.statuseffect_array[_i].statuseffect_resource == _statuseffect_serializable.statuseffect_resource):
-			_user.statuseffect_array[_i].stored += _statuseffect_serializable.stored
-			return _user.statuseffect_array[_i]
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	_user.statuseffect_array.append(_statuseffect_serializable)
-	return _statuseffect_serializable
-#-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Cancel(_index_slot:int):
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
@@ -3941,6 +3903,17 @@ func PauseMenu_EquipButton_PartyButton_Cancel():
 	pause_menu_button_array[2].disabled = false
 	singleton.Move_to_Button(pause_menu_button_array[2])
 	singleton.Common_Canceled()
+#-------------------------------------------------------------------------------
+func Remove_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_serializable: Equip_Serializable):
+	_equip_serializable.stored -= 1
+	#-------------------------------------------------------------------------------
+	if(_equip_serializable.stored <= 0):
+		_equip_array.erase(_equip_serializable)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region PAUSE MENU - STATUS
 #-------------------------------------------------------------------------------
 func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
@@ -4020,10 +3993,6 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	singleton.Move_to_Button(_tabbar)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func Show_Status_Data(_user:Party_Member):
-	status_menu_information_image.texture = _user.texture2d
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
 func PauseMenu_StatusMenu_Exit_Common(_index:int):
 	status_menu.hide()
 	#-------------------------------------------------------------------------------
@@ -4041,18 +4010,24 @@ func PauseMenu_StatusButton_PartyButton_Cancel():
 	singleton.Move_to_Button(pause_menu_button_array[3])
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
-func PauseMenu_OptionButton_Submit():
-	singleton.optionMenu.show()
-	singleton.Set_Button(singleton.optionMenu.back, func():singleton.Common_Selected(), func():OptionMenu_BackButton_Subited(), func():OptionMenu_BackButton_Canceled())
-	pause_menu.hide()
+func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffect_Serializable) -> StatusEffect_Serializable:	#NOT USED YET
 	#-------------------------------------------------------------------------------
-	singleton.Move_to_Button(singleton.optionMenu.back)
-	singleton.Common_Submited()
+	for _i in _user.statuseffect_array.size():
+		#-------------------------------------------------------------------------------
+		if(_user.statuseffect_array[_i].statuseffect_resource == _statuseffect_serializable.statuseffect_resource):
+			_user.statuseffect_array[_i].stored += _statuseffect_serializable.stored
+			return _user.statuseffect_array[_i]
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	_user.statuseffect_array.append(_statuseffect_serializable)
+	return _statuseffect_serializable
 #-------------------------------------------------------------------------------
-func PauseMenu_QuitButton_Submit():
-	PauseOff()
-	get_tree().change_scene_to_file("res://Nodes/Scenes/title_scene.tscn")
-	singleton.Common_Submited()
+func Show_Status_Data(_user:Party_Member):
+	status_menu_information_image.texture = _user.texture2d
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region PAUSE MENU - OPTIONS
 #-------------------------------------------------------------------------------
 func OptionMenu_BackButton_Subited() -> void:
 	OptionMenu_BackButton_Common()
@@ -4070,6 +4045,18 @@ func OptionMenu_BackButton_Common() -> void:
 	Set_Idiome()
 	pause_menu.show()
 #-------------------------------------------------------------------------------
+func Set_Idiome():
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_button_array.size():
+		pause_menu_button_array[_i].text = tr("pause_menu_button_"+str(_i))
+	#-------------------------------------------------------------------------------
+	SetMoney_Label()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region SAVE MENU
+#-------------------------------------------------------------------------------
 func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	Dialogue_Open()
 	singleton.Common_Submited()
@@ -4086,45 +4073,6 @@ func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	PauseOn()
-#-------------------------------------------------------------------------------
-func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String) -> Dictionary:
-	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
-	#-------------------------------------------------------------------------------
-	for _i in _array.size():
-		#-------------------------------------------------------------------------------
-		if(_array[_i].get("room", "") == room_test.room_id):
-			var _dictionaty: Dictionary = _array[_i] as Dictionary
-			_dictionaty["savespot"] = _savespot
-			#-------------------------------------------------------------------------------
-			sort_by_name_ascending(_array)
-			#-------------------------------------------------------------------------------
-			singleton.currentSaveData_Json["teleport_options"] = _array
-			return _dictionaty
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	var _dictionaty_new: Dictionary = {}
-	_dictionaty_new["room"] = room_test.room_id
-	_dictionaty_new["savespot"] = _savespot
-	_array.append(_dictionaty_new)
-	#-------------------------------------------------------------------------------
-	sort_by_name_ascending(_array)
-	#-------------------------------------------------------------------------------
-	singleton.currentSaveData_Json["teleport_options"] = _array
-	return _dictionaty_new
-#-------------------------------------------------------------------------------
-func sort_by_name_ascending(_array: Array):
-	#-------------------------------------------------------------------------------
-	for _i in _array.size():
-		#-------------------------------------------------------------------------------
-		for _j in range(_i+1, _array.size()):
-			#-------------------------------------------------------------------------------
-			if(_array[_i]["room"] > _array[_j]["room"]):
-				var _a: Dictionary = _array[_i]
-				_array[_i] = _array[_j]
-				_array[_j] = _a
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func SaveMenu_Close():
 	pause_menu_panel.hide()
@@ -4195,6 +4143,35 @@ func SaveMenu_TeleportButton_Submit():
 	#-------------------------------------------------------------------------------
 	#teleporty_menu_scrollContainer.scroll_vertical = 0
 #-------------------------------------------------------------------------------
+func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String) -> Dictionary:		# Used by "SaveSpot_Script".
+	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		if(_array[_i].get("room", "") == room_test.room_id):
+			var _dictionaty: Dictionary = _array[_i] as Dictionary
+			_dictionaty["savespot"] = _savespot
+			#-------------------------------------------------------------------------------
+			sort_by_name_ascending(_array)
+			#-------------------------------------------------------------------------------
+			singleton.currentSaveData_Json["teleport_options"] = _array
+			return _dictionaty
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _dictionaty_new: Dictionary = {}
+	_dictionaty_new["room"] = room_test.room_id
+	_dictionaty_new["savespot"] = _savespot
+	_array.append(_dictionaty_new)
+	#-------------------------------------------------------------------------------
+	sort_by_name_ascending(_array)
+	#-------------------------------------------------------------------------------
+	singleton.currentSaveData_Json["teleport_options"] = _array
+	return _dictionaty_new
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region TELEPORT MENU
+#-------------------------------------------------------------------------------
 func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
 	var _selected: Callable
 	#-------------------------------------------------------------------------------
@@ -4232,16 +4209,21 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
 	_new_room.room_id = _room_name
 	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
-		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
-		friend_party[_i].is_Moving = false
-		var _warp_array: Array[Node] = _new_room.find_children(_dictionary["savespot"], "Interactable_Script")
+	var _savespot_script_array: Array[Node] = _new_room.find_children(_dictionary["savespot"], "SaveSpot_Script")
+	#-------------------------------------------------------------------------------
+	if(_savespot_script_array.size() > 0):
+		var _savespot_script: SaveSpot_Script = _savespot_script_array[0] as SaveSpot_Script
 		#-------------------------------------------------------------------------------
-		if(_i > 0):
-			friend_party[_i].global_position = _warp_array[0].global_position
+		Animation_StateMachine(friend_party[0].animation_tree, "", "Idle")
+		friend_party[0].is_Moving = false
+		Face_Left(friend_party[0], false)
+		player_characterbody2d.global_position = _savespot_script.offset.global_position
 		#-------------------------------------------------------------------------------
-		else:
-			player_characterbody2d.global_position = _warp_array[0].global_position
+		for _i in range(1, friend_party.size()):
+			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
+			friend_party[_i].is_Moving = false
+			Face_Left(friend_party[_i], false)
+			friend_party[_i].global_position = _savespot_script.offset.global_position
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	world_2d.call_deferred("add_child", _new_room)
@@ -4257,6 +4239,47 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	PauseOff()
 	Destroy_All_Items(teleporty_menu_button_array)
 	singleton.Play_SFX_Teleport()
+#-------------------------------------------------------------------------------
+func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
+	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
+	_new_room.room_id = _room_name
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
+		friend_party[_i].is_Moving = false
+		var _warp_array: Array[Node] = _new_room.find_children(_warp_name, "Warp_Script")
+		var _warp_script: Warp_Script = _warp_array[0] as Warp_Script
+		#-------------------------------------------------------------------------------
+		if(_i > 0):
+			friend_party[_i].global_position = _warp_script.offset.global_position
+		#-------------------------------------------------------------------------------
+		else:
+			player_characterbody2d.global_position = _warp_script.offset.global_position
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	world_2d.call_deferred("add_child", _new_room)
+	#-------------------------------------------------------------------------------
+	room_test.queue_free()							#Importante: Cuidado con el Orden
+	room_test = _new_room							#Importante: Cuidado con el Orden
+	_new_room.Set_Room()						#Importante: Cuidado con el Orden
+	camera.global_position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region SAVE FUNCTIONS
+#-------------------------------------------------------------------------------
+func Save_All_Data(_s:String):
+	Save_Keys_Dictionary()
+	#-------------------------------------------------------------------------------
+	Save_ConsumableItems()
+	Save_Equip()
+	Save_KeyItems()
+	#-------------------------------------------------------------------------------
+	Save_Friends()
+	#-------------------------------------------------------------------------------
+	Save_Room_and_SaveSpot(_s)
+	#-------------------------------------------------------------------------------
+	singleton.SaveCurrent_SaveData_Json()
 #-------------------------------------------------------------------------------
 func Save_Room_and_SaveSpot(_s:String):
 	var _dictionaty: Dictionary = {}
@@ -4303,35 +4326,24 @@ func Save_Friends():
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json.set("friend_party", _array)
 #-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region GET ID FUNCTIONS
+#-------------------------------------------------------------------------------
 func Get_Item_Script_ID(_node:Node) -> String:
 	var _s: String = room_test.room_id+"_"+_node.name
 	return _s
 #-------------------------------------------------------------------------------
-func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
-	var _new_room: Room_Script = load(Get_Room_Path(_room_name)).instantiate() as Room_Script
-	_new_room.room_id = _room_name
-	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
-		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
-		friend_party[_i].is_Moving = false
-		var _warp_array: Array[Node] = _new_room.find_children(_warp_name, "Interactable_Script")
-		#-------------------------------------------------------------------------------
-		if(_i > 0):
-			friend_party[_i].global_position = _warp_array[0].global_position
-		#-------------------------------------------------------------------------------
-		else:
-			player_characterbody2d.global_position = _warp_array[0].global_position
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	world_2d.call_deferred("add_child", _new_room)
-	#-------------------------------------------------------------------------------
-	room_test.queue_free()							#Importante: Cuidado con el Orden
-	room_test = _new_room							#Importante: Cuidado con el Orden
-	_new_room.Set_Room()						#Importante: Cuidado con el Orden
-	camera.global_position = Camera_Set_Target_Position()	#Importante: Cuidado con el Orden
-#-------------------------------------------------------------------------------
 func Get_Room_Path(_room_name:String) -> String:
 	return "res://Nodes/Prefabs/Rooms/"+_room_name+".tscn"
+#-------------------------------------------------------------------------------
+func Get_MerchantId_and_ItemId_and_Hold(_name:String, _resource:Resource) -> String:
+	var _id: String = room_test.room_id+"_"+_name+"_"+get_resource_filename(_resource)+"_hold"
+	return _id
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region LOAD FUNCTIONS
 #-------------------------------------------------------------------------------
 func Load_All_Data():
 	var _path: String = singleton.GetCurrent_SaveDataPath_Json()
@@ -4354,19 +4366,6 @@ func Load_All_Data():
 		#singleton.SaveCurrent_SaveData_Json()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Save_All_Data(_s:String):
-	Save_Keys_Dictionary()
-	#-------------------------------------------------------------------------------
-	Save_ConsumableItems()
-	Save_Equip()
-	Save_KeyItems()
-	#-------------------------------------------------------------------------------
-	Save_Friends()
-	#-------------------------------------------------------------------------------
-	Save_Room_and_SaveSpot(_s)
-	#-------------------------------------------------------------------------------
-	singleton.SaveCurrent_SaveData_Json()
-#-------------------------------------------------------------------------------
 func Load_Room_and_SaveSpot():
 	var _dictionaty: Dictionary = singleton.currentSaveData_Json.get("current_savespot", {})
 	var _room_name: String = _dictionaty.get("room", "")
@@ -4378,13 +4377,21 @@ func Load_Room_and_SaveSpot():
 	room_test = _new_room
 	#-------------------------------------------------------------------------------
 	room_test.room_id = _room_name
-	var _interactable_array: Array[Node] = _new_room.find_children(_room_savespot_name, "Interactable_Script")
+	var _savespot_script_array: Array[Node] = _new_room.find_children(_room_savespot_name, "SaveSpot_Script")
 	#-------------------------------------------------------------------------------
-	if(_interactable_array.size() > 0):
-		player_characterbody2d.global_position = _interactable_array[0].global_position
+	if(_savespot_script_array.size() > 0):
+		var _savespot_script: SaveSpot_Script = _savespot_script_array[0] as SaveSpot_Script
+		#-------------------------------------------------------------------------------
+		Animation_StateMachine(friend_party[0].animation_tree, "", "Idle")
+		friend_party[0].is_Moving = false
+		Face_Left(friend_party[0], false)
+		player_characterbody2d.global_position = _savespot_script.offset.global_position
 		#-------------------------------------------------------------------------------
 		for _i in range(1, friend_party.size()):
-			friend_party[_i].global_position = _interactable_array[0].global_position
+			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
+			friend_party[_i].is_Moving = false
+			Face_Left(friend_party[_i], false)
+			friend_party[_i].global_position = _savespot_script.offset.global_position
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -4439,11 +4446,9 @@ func Load_Friends():
 		friend_party[_i].LoadData_Constructor(_friend_data[_i])
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Wait_for_Player():
-	#-------------------------------------------------------------------------------
-	if(myBATTLE_STATE == BATTLE_STATE.STILL_FIGHTING):
-		await dialogue_signal
-	#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region MARKET MENU
 #-------------------------------------------------------------------------------
 func Open_Market(_merchant_name:String, _consumableitem_array:Array[Item_Serializable], _equipitem_array:Array[Equip_Serializable], _keyitem_array:Array[Key_Item_Serializable]):
 	item_menu.show()
@@ -4539,6 +4544,22 @@ func Open_Market(_merchant_name:String, _consumableitem_array:Array[Item_Seriali
 	#-------------------------------------------------------------------------------
 	await dialogue_signal
 #-------------------------------------------------------------------------------
+func Close_Market():
+	item_menu.hide()
+	dialogue_signal.emit()
+	pause_menu_panel.hide()
+	money_menu.hide()
+	#-------------------------------------------------------------------------------
+	Destroy_All_Items(item_menu_consumable_button_array)
+	Destroy_All_Items(item_menu_equipment_button_array)
+	Destroy_All_Items(item_menu_keyitems_button_array)
+	Destroy_All_Items(item_menu_allitems_button_array)
+	#-------------------------------------------------------------------------------
+	singleton.Common_Canceled()
+	#-------------------------------------------------------------------------------
+	await get_tree().physics_frame
+	PauseOff()
+#-------------------------------------------------------------------------------
 func BuyMenu_ItemConsumable_Selected(_item_serializable: Item_Serializable):
 	for _i in item_array.size():
 		#----------------------------------------------------------------
@@ -4594,32 +4615,6 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 	how_many_would_you_buy = 1
 	Print_How_Many_Do_You_Buy(_item_serializable.price, false, 99)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
-#-------------------------------------------------------------------------------
-func Increase_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limited_stored:bool, _stored:int):
-	var _old_value: int = how_many_would_you_buy
-	how_many_would_you_buy += _int
-	#-------------------------------------------------------------------------------
-	var _price: int = _original_price * how_many_would_you_buy
-	#-------------------------------------------------------------------------------
-	Set_Max_Items_You_Can_Buy(_stored, _original_price, _price)
-	Print_How_Many_Do_You_Buy(_original_price, _has_limited_stored, _stored)
-	#-------------------------------------------------------------------------------
-	if(how_many_would_you_buy > _old_value):
-		singleton.Common_Selected()
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Decrease_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limited_stored:bool, _stored:int):
-	var _old_value: int = how_many_would_you_buy
-	how_many_would_you_buy -= _int
-	#-------------------------------------------------------------------------------
-	if(how_many_would_you_buy < 1):
-		how_many_would_you_buy = 1
-	#-------------------------------------------------------------------------------
-	Print_How_Many_Do_You_Buy(_original_price, _has_limited_stored, _stored)
-	#-------------------------------------------------------------------------------
-	if(how_many_would_you_buy < _old_value):
-		singleton.Common_Selected()
-	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
 	for _i in equip_array.size():
@@ -4679,11 +4674,6 @@ func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_ser
 	Print_How_Many_Do_You_Buy(_equip_serializable.price, true, _equip_serializable.stored, )
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
-func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
-	var _label: Label = _button.get_child(0) as Label
-	_label.text = "$"+str(_equip_serializable.price)+"  "
-	_label.text += "["+str(_equip_serializable.stored)+"]  "
-#-------------------------------------------------------------------------------
 func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
 	for _i in key_item_array.size():
 		#----------------------------------------------------------------
@@ -4742,6 +4732,37 @@ func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_ser
 	Print_How_Many_Do_You_Buy(_keyitem_serializable.price, true, _keyitem_serializable.stored)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
+func Increase_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limited_stored:bool, _stored:int):
+	var _old_value: int = how_many_would_you_buy
+	how_many_would_you_buy += _int
+	#-------------------------------------------------------------------------------
+	var _price: int = _original_price * how_many_would_you_buy
+	#-------------------------------------------------------------------------------
+	Set_Max_Items_You_Can_Buy(_stored, _original_price, _price)
+	Print_How_Many_Do_You_Buy(_original_price, _has_limited_stored, _stored)
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy > _old_value):
+		singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Decrease_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limited_stored:bool, _stored:int):
+	var _old_value: int = how_many_would_you_buy
+	how_many_would_you_buy -= _int
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy < 1):
+		how_many_would_you_buy = 1
+	#-------------------------------------------------------------------------------
+	Print_How_Many_Do_You_Buy(_original_price, _has_limited_stored, _stored)
+	#-------------------------------------------------------------------------------
+	if(how_many_would_you_buy < _old_value):
+		singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
+	var _label: Label = _button.get_child(0) as Label
+	_label.text = "$"+str(_equip_serializable.price)+"  "
+	_label.text += "["+str(_equip_serializable.stored)+"]  "
+#-------------------------------------------------------------------------------
 func Set_Max_Items_You_Can_Buy(_stored:int, _original_price:int, _whole_cost:int):
 	#-------------------------------------------------------------------------------
 	if(how_many_would_you_buy > _stored):
@@ -4760,33 +4781,9 @@ func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _bu
 	_label.text = "$"+str(_keyitem_serializable.price)+"  "
 	_label.text += "["+str(_keyitem_serializable.stored)+"]  "
 #-------------------------------------------------------------------------------
-func Close_Market():
-	item_menu.hide()
-	dialogue_signal.emit()
-	pause_menu_panel.hide()
-	money_menu.hide()
-	#-------------------------------------------------------------------------------
-	Destroy_All_Items(item_menu_consumable_button_array)
-	Destroy_All_Items(item_menu_equipment_button_array)
-	Destroy_All_Items(item_menu_keyitems_button_array)
-	Destroy_All_Items(item_menu_allitems_button_array)
-	#-------------------------------------------------------------------------------
-	singleton.Common_Canceled()
-	#-------------------------------------------------------------------------------
-	await get_tree().physics_frame
-	PauseOff()
+#endregion
 #-------------------------------------------------------------------------------
-func Set_Idiome():
-	#-------------------------------------------------------------------------------
-	for _i in pause_menu_button_array.size():
-		pause_menu_button_array[_i].text = tr("pause_menu_button_"+str(_i))
-	#-------------------------------------------------------------------------------
-	SetMoney_Label()
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Get_MerchantId_and_ItemId_and_Hold(_name:String, _resource:Resource) -> String:
-	var _id: String = room_test.room_id+"_"+_name+"_"+get_resource_filename(_resource)+"_hold"
-	return _id
+#region RESTORED SKILLS & ITEMS FUNCTIONS
 #-------------------------------------------------------------------------------
 func Fill_the_ConsumableItems_Stored_from_Hold():
 	#-------------------------------------------------------------------------------
@@ -4824,6 +4821,97 @@ func ReFill_All_Skills():
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable, _hold:int) -> Item_Serializable:
+	#-------------------------------------------------------------------------------
+	for _i in item_array.size():
+		#-------------------------------------------------------------------------------
+		if(item_array[_i].item_resource == _item_serializable.item_resource):
+			if(_item_serializable.item_resource.max_hold > 0):
+				item_array[_i].hold += _hold
+				#-------------------------------------------------------------------------------
+				if(item_array[_i].hold > _item_serializable.item_resource.max_hold):
+					var _extra: int = item_array[_i].hold - _item_serializable.item_resource.max_hold
+					item_array[_i].hold = _item_serializable.item_resource.max_hold
+					item_array[_i].stored += _extra
+					return item_array[_i]
+				#-------------------------------------------------------------------------------
+				else:
+					return item_array[_i]
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			else:
+				item_array[_i].stored += _hold
+				return item_array[_i]
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _new_item: Item_Serializable = _item_serializable.Constructor()
+	_new_item.item_resource = _item_serializable.item_resource
+	#-------------------------------------------------------------------------------
+	if(_item_serializable.item_resource.max_hold > 0):
+		_new_item.hold = _hold
+		#-------------------------------------------------------------------------------
+		if(_new_item.hold > _item_serializable.item_resource.max_hold):
+			var _extra: int = _new_item.hold - _item_serializable.item_resource.max_hold
+			_new_item.hold = _item_serializable.item_resource.max_hold
+			_new_item.stored += _extra
+			item_array.append(_new_item)
+			return _new_item
+		#-------------------------------------------------------------------------------
+		else:
+			item_array.append(_new_item)
+			return _new_item
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	else:
+		_new_item.stored = _hold
+		item_array.append(_new_item)
+		return _new_item
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Add_EquipItem_to_Inventory(_equip_serializable: Equip_Serializable, _hold:int) -> Equip_Serializable:
+	return Add_Equip_Serializable_to_Array(equip_array, _equip_serializable.equip_resource, _hold)
+#-------------------------------------------------------------------------------
+func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_resource:Equip_Resource, _hold: int) -> Equip_Serializable:
+	#-------------------------------------------------------------------------------
+	for _i in _equip_array.size():
+		#-------------------------------------------------------------------------------
+		if(_equip_array[_i].equip_resource == _equip_resource):
+			_equip_array[_i].stored += _hold
+			return _equip_array[_i]
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
+	_equip_serializable.equip_resource = _equip_resource
+	_equip_serializable.stored = _hold
+	_equip_array.append(_equip_serializable)
+	return _equip_serializable
+#-------------------------------------------------------------------------------
+func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hold:int) -> Key_Item_Serializable:
+	#-------------------------------------------------------------------------------
+	if(_keyitem_serializable.key_item_resource == money_serializable.key_item_resource):
+		money_serializable.stored += _hold
+		return money_serializable
+	#-------------------------------------------------------------------------------
+	else:
+		#-------------------------------------------------------------------------------
+		for _i in key_item_array.size():
+			#-------------------------------------------------------------------------------
+			if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
+				key_item_array[_i].stored += _hold
+				return key_item_array[_i]
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
+		_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
+		_new_keyitem.stored = _hold
+		key_item_array.append(_new_keyitem)
+		return _new_keyitem
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region CONFIRM BUY MENU
+#-------------------------------------------------------------------------------
 func Confirm_Buy_Menu_Submit(_submit:Callable, _button:Button, _up:Callable, _down:Callable, _left:Callable, _right:Callable):
 	confirm_buy_menu.show()
 	_button.disabled = true
@@ -4847,6 +4935,40 @@ func Print_How_Many_Do_You_Buy(_price:int, _has_limited_stored:bool, _stored:int
 		confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"]  "
 	#-------------------------------------------------------------------------------
 	confirm_buy_menu_item_price.text = "$"+str(_price* how_many_would_you_buy)+"  "
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region DIALOGUE MENU
+#-------------------------------------------------------------------------------
+func Dialogue_Open():
+	is_in_dialogue = true
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
+		friend_party[_i].is_Moving = false
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(dialogue_menu_button_next)
+#-------------------------------------------------------------------------------
+func Dialogue(_b:bool, _s:String):
+	dialogue_menu.show()
+	dialogue_menu_button_next.show()
+	#-------------------------------------------------------------------------------
+	if(_b):
+		dialogue_menu_speaker1.show()
+		dialogue_menu_speaker1_name.show()
+	#-------------------------------------------------------------------------------
+	else:
+		dialogue_menu_speaker1.hide()
+		dialogue_menu_speaker1_name.hide()
+	#-------------------------------------------------------------------------------
+	dialogue_menu_speaking_label.text = _s
+	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
+	await dialogue_signal
+#-------------------------------------------------------------------------------
+func Dialogue_Close():
+	is_in_dialogue = false
+	dialogue_menu.hide()
+	dialogue_menu_button_next.release_focus()
 #-------------------------------------------------------------------------------
 func Set_DialogueMenu_NextButton():
 	#-------------------------------------------------------------------------------
@@ -4880,4 +5002,30 @@ func Set_DialogueMenu_NextButton():
 	var _right: Callable = func(): pass
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_Ud_Down_Left_Right(dialogue_menu_button_next, _selected, _submit, _cancel, _up, _down, _left, _right)
+#-------------------------------------------------------------------------------
+func Wait_for_Player():
+	#-------------------------------------------------------------------------------
+	if(myBATTLE_STATE == BATTLE_STATE.STILL_FIGHTING):
+		await dialogue_signal
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region MISCELANIOUS
+#-------------------------------------------------------------------------------
+func sort_by_name_ascending(_array: Array):
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		for _j in range(_i+1, _array.size()):
+			#-------------------------------------------------------------------------------
+			if(_array[_i]["room"] > _array[_j]["room"]):
+				var _a: Dictionary = _array[_i]
+				_array[_i] = _array[_j]
+				_array[_j] = _a
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#endregion
 #-------------------------------------------------------------------------------
