@@ -16,14 +16,13 @@
 [ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="15_mitwg"]
 [ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/Skills/poison_stinger.tres" id="16_3p4s7"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
-[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="18_1th3s"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
-[ext_resource type="Resource" uid="uid://bnrjjakhyhhuk" path="res://Resources/Status/poison.tres" id="19_mitwg"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
 [ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
 [ext_resource type="Texture2D" uid="uid://bkwxpp3bs0jvk" path="res://icon.svg" id="21_hxoxt"]
 [ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
+[ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="25_1th3s"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
 [ext_resource type="Script" uid="uid://c7bqs6lok38oe" path="res://Scripts/Scenes/canvas_layer.gd" id="29_s3ops"]
 [ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
@@ -267,15 +266,13 @@ resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_ircg4"]
-resource_local_to_scene = true
-script = ExtResource("18_1th3s")
-statuseffect_resource = ExtResource("19_mitwg")
-stored = 1
-metadata/_custom_type_script = "uid://mdn2h1nh8s14"
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
 radius = 4.0
+
+[sub_resource type="Resource" id="Resource_ircg4"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_62d7h"]
 resource_local_to_scene = true
@@ -357,11 +354,6 @@ resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_eggap"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnh07"]
 bg_color = Color(0, 0, 0, 0.88235295)
 
@@ -391,9 +383,9 @@ bg_color = Color(0, 0, 0, 1)
 
 [node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label", "battlemenu_equipbutton_emptyspace", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_allitems_scrollContainer", "item_menu_allitems_content", "item_menu_allitems_title", "item_menu_allitems_description", "item_menu_allitems_cost_label", "item_menu_allitems_tp_cost_num_label", "item_menu_allitems_cooldown_num_label", "item_menu_allitems_held_label", "item_menu_allitems_hold_num_label", "item_menu_allitems_storage_num_label", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_title", "item_menu_consumable_description", "item_menu_consumable_cost_label", "item_menu_consumable_tp_cost_num_label", "item_menu_consumable_cooldown_num_label", "item_menu_consumable_held_label", "item_menu_consumable_hold_num_label", "item_menu_consumable_storage_num_label", "item_menu_equipment_scrollContainer", "item_menu_equipment_content", "item_menu_equipment_title", "item_menu_equipment_description", "item_menu_equipment_held_label", "item_menu_equipment_storage_num_label", "item_menu_keyitems_scrollContainer", "item_menu_keyitems_content", "item_menu_keyitems_title", "item_menu_keyitems_description", "item_menu_keyitems_held_label", "item_menu_keyitems_storage_num_label", "skill_menu_scrollContainer", "skill_menu_content", "skill_menu_title", "skill_menu_description", "skill_menu_cost_label", "skill_menu_tp_cost_num_label", "skill_menu_cooldown_num_label", "skill_menu_held_label", "skill_menu_hold_num_label", "skill_menu_storage_num_label", "teleporty_menu", "teleporty_menu_scrollContainer", "teleporty_menu_content", "teleporty_menu_title", "teleporty_menu_rect", "teleporty_menu_description", "equipslot_menu_scrollContainer", "equipslot_menu_content", "equipslot_menu_button_label", "equipslot_menu_title", "equipslot_menu_description", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "status_menu", "status_menu_information_image", "status_menu_information_title", "status_menu_information_description", "status_menu_stats_scrollContainer", "status_menu_stats_content", "status_menu_stats_title", "status_menu_stats_description", "status_menu_statuseffect_scrollContainer", "status_menu_statuseffect_content", "status_menu_statuseffect_title", "status_menu_statuseffect_description", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_lose_retry_escape_menu_label", "win_lose_retry_escape_menu_vboxcontainer", "win_lose_retry_escape_menu_button", "debug_label", "fps_label", "camera", "hitbox", "grazebox", "hitbox_animation_tree", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "timer_label")]
 script = ExtResource("1_xqt5u")
-world_2d = NodePath("World2D")
+world_2d = NodePath("World_2D")
 ui_theme = ExtResource("26_1th3s")
-room_test = NodePath("World2D/room_test_01")
+room_test = NodePath("World_2D/room_test_01")
 tp_bar_root = NodePath("CanvasLayer/Battle_UI/tp_root")
 tp_bar_progressbar_present = NodePath("CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar")
 tp_bar_progressbar_future = NodePath("CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot/ProgressBar/ProgressBar2")
@@ -401,20 +393,20 @@ tp_bar_label = NodePath("CanvasLayer/Battle_UI/tp_root/VBoxContainer/sp_Label")
 battlemenu_equipbutton_emptyspace = NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/VBoxContainer2/Control")
 dialogue_menu = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu")
 dialogue_menu_button_next = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/Button")
-dialogue_menu_speaker1 = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control/Panel2")
-dialogue_menu_speaker1_image = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control/Panel2/TextureRect")
-dialogue_menu_speaker1_name = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Label")
+dialogue_menu_speaker1 = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect")
+dialogue_menu_speaker1_image = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/TextureRect/TextureRect")
+dialogue_menu_speaker1_name = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel2")
 dialogue_menu_speaking_label = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/RichTextLabel")
 savespot_menu = NodePath("CanvasLayer/Save_Menu")
 savespot_menu_button_array = [NodePath("CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
 enemy_ui_prefab = ExtResource("16_mapp4")
-player_characterbody2d = NodePath("World2D/Player")
-player_collider = NodePath("World2D/Player/CollisionShape2D")
-player_interactable_by_action_area2d = NodePath("World2D/Player/interactable_by_Action_Area2D")
-player_interactable_by_touch_not_enemy_area2d = NodePath("World2D/Player/interactable_by_Touch_Not_Enemy_Area2D")
-player_interactable_by_touch_enemy_area2d = NodePath("World2D/Player/interactable_by_Touch_Enemy_Area2D")
-friend_party = [NodePath("World2D/Player/Friend_01"), NodePath("World2D/Friend_02"), NodePath("World2D/Friend_03")]
+player_characterbody2d = NodePath("World_2D/Player")
+player_collider = NodePath("World_2D/Player/CollisionShape2D")
+player_interactable_by_action_area2d = NodePath("World_2D/Player/interactable_by_Action_Area2D")
+player_interactable_by_touch_not_enemy_area2d = NodePath("World_2D/Player/interactable_by_Touch_Not_Enemy_Area2D")
+player_interactable_by_touch_enemy_area2d = NodePath("World_2D/Player/interactable_by_Touch_Enemy_Area2D")
+friend_party = [NodePath("World_2D/Player/Friend_01"), NodePath("World_2D/Friend_02"), NodePath("World_2D/Friend_03")]
 item_menu = NodePath("CanvasLayer/All Menues/Items_TabContainer")
 item_menu_allitems_scrollContainer = NodePath("CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer")
 item_menu_allitems_content = NodePath("CanvasLayer/All Menues/Items_TabContainer/All Items/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer")
@@ -491,7 +483,7 @@ status_menu_statuseffect_content = NodePath("CanvasLayer/All Menues/Status_TabCo
 status_menu_statuseffect_title = NodePath("CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer/Label")
 status_menu_statuseffect_description = NodePath("CanvasLayer/All Menues/Status_TabContainer/Status Effects/HBoxContainer/VBoxContainer2/RichTextLabel2")
 black_panel = NodePath("CanvasLayer/Black_Panel")
-battle_black_panel = NodePath("World2D/Battle_Black_Panel")
+battle_black_panel = NodePath("World_2D/Battle_Black_Panel")
 pause_menu_panel = NodePath("CanvasLayer/Pause_Menu_Panel")
 pause_menu_money_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
 money_serializable = SubResource("Resource_xvxdo")
@@ -503,21 +495,22 @@ win_lose_retry_escape_menu_vboxcontainer = NodePath("CanvasLayer/Win_Lose_Retry_
 win_lose_retry_escape_menu_button = [NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button2"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button3")]
 debug_label = NodePath("CanvasLayer/debug_MarginContainer/debug_Label")
 fps_label = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
-camera = NodePath("World2D/Camera2D")
-hitbox = NodePath("World2D/Battle_Box/Content/Hitbox")
-grazebox = NodePath("World2D/Battle_Box/Content/Hitbox/GrazeBox")
-hitbox_animation_tree = NodePath("World2D/Battle_Box/Content/Hitbox/AnimationTree")
+camera = NodePath("World_2D/Camera2D")
+hitbox = NodePath("World_2D/Battle_Box/Content/Hitbox")
+grazebox = NodePath("World_2D/Battle_Box/Content/Hitbox/GrazeBox")
+hitbox_animation_tree = NodePath("World_2D/Battle_Box/Content/Hitbox/AnimationTree")
 battle_control = NodePath("CanvasLayer/Battle_UI")
 battle_menu = NodePath("CanvasLayer/Battle_UI/Battle_Menu")
 battle_menu_button = [NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/Button"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/Button2"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/Button3"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/Button4"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/HBoxContainer/Button5"), NodePath("CanvasLayer/Battle_UI/Battle_Menu/VBoxContainer/Button6")]
-battle_box = NodePath("World2D/Battle_Box")
+battle_box = NodePath("World_2D/Battle_Box")
 timer_label = NodePath("CanvasLayer/Battle_UI/timer_Label")
 bullet_Prefab = ExtResource("2_lleqo")
 
-[node name="World2D" type="Node2D" parent="." unique_id=538317805]
+[node name="World_2D" type="Node2D" parent="." unique_id=474225096]
 y_sort_enabled = true
 
-[node name="Battle_Black_Panel" type="Panel" parent="World2D" unique_id=1976049356]
+[node name="Battle_Black_Panel" type="Panel" parent="World_2D" unique_id=1976049356]
+visible = false
 z_index = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -534,7 +527,7 @@ size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_4usn6")
 metadata/_edit_use_anchors_ = true
 
-[node name="TextureRect2" type="TextureRect" parent="World2D/Battle_Black_Panel" unique_id=847314186]
+[node name="TextureRect2" type="TextureRect" parent="World_2D/Battle_Black_Panel" unique_id=847314186]
 self_modulate = Color(0, 0.9137255, 0.23137255, 0.11764706)
 material = SubResource("ShaderMaterial_rka03")
 layout_mode = 1
@@ -549,7 +542,7 @@ stretch_mode = 1
 flip_h = true
 flip_v = true
 
-[node name="TextureRect" type="TextureRect" parent="World2D/Battle_Black_Panel" unique_id=1774836143]
+[node name="TextureRect" type="TextureRect" parent="World_2D/Battle_Black_Panel" unique_id=1774836143]
 self_modulate = Color(1, 0.57254905, 1, 0.23529412)
 material = SubResource("ShaderMaterial_rka03")
 layout_mode = 1
@@ -562,7 +555,8 @@ texture = ExtResource("12_s3ops")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="Battle_Box" type="Panel" parent="World2D" unique_id=1323696230]
+[node name="Battle_Box" type="Panel" parent="World_2D" unique_id=1323696230]
+visible = false
 z_index = 2
 anchors_preset = 8
 anchor_left = 0.5
@@ -578,7 +572,7 @@ grow_vertical = 2
 pivot_offset = Vector2(150, 150)
 theme_override_styles/panel = SubResource("StyleBoxFlat_muxe8")
 
-[node name="Content" type="Control" parent="World2D/Battle_Box" unique_id=1121035145]
+[node name="Content" type="Control" parent="World_2D/Battle_Box" unique_id=1121035145]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -587,22 +581,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Hitbox" type="Sprite2D" parent="World2D/Battle_Box/Content" unique_id=1943605163]
+[node name="Hitbox" type="Sprite2D" parent="World_2D/Battle_Box/Content" unique_id=1943605163]
 self_modulate = Color(1, 0, 0, 1)
 position = Vector2(31, 31)
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("2_hf1mx")
 
-[node name="GrazeBox" type="Sprite2D" parent="World2D/Battle_Box/Content/Hitbox" unique_id=1746584634]
+[node name="GrazeBox" type="Sprite2D" parent="World_2D/Battle_Box/Content/Hitbox" unique_id=1746584634]
 self_modulate = Color(1, 1, 1, 0)
 show_behind_parent = true
 scale = Vector2(4, 4)
 texture = ExtResource("2_hf1mx")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="World2D/Battle_Box/Content/Hitbox" unique_id=1009058640]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World_2D/Battle_Box/Content/Hitbox" unique_id=1009058640]
 libraries/ = SubResource("AnimationLibrary_62d7h")
 
-[node name="AnimationTree" type="AnimationTree" parent="World2D/Battle_Box/Content/Hitbox" unique_id=1600391799]
+[node name="AnimationTree" type="AnimationTree" parent="World_2D/Battle_Box/Content/Hitbox" unique_id=1600391799]
 tree_root = SubResource("AnimationNodeBlendTree_vap1g")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Transition/current_state = "Normal"
@@ -612,51 +606,53 @@ parameters/OneShot/active = false
 parameters/OneShot/internal_active = false
 parameters/OneShot/request = 0
 
-[node name="Camera2D" type="Camera2D" parent="World2D" unique_id=850296547]
+[node name="Camera2D" type="Camera2D" parent="World_2D" unique_id=850296547]
 zoom = Vector2(3.5, 3.5)
 
-[node name="Player" type="CharacterBody2D" parent="World2D" unique_id=518979200]
+[node name="Player" type="CharacterBody2D" parent="World_2D" unique_id=518979200]
 y_sort_enabled = true
 collision_layer = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World2D/Player" unique_id=846156096]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World_2D/Player" unique_id=846156096]
 shape = SubResource("RectangleShape2D_ik87f")
 
-[node name="Friend_01" parent="World2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
+[node name="Friend_01" parent="World_2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
+max_hp = 5
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1"), SubResource("Resource_xhx7r")])
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_s3ops"), SubResource("Resource_rka03")])
-statuseffect_array = Array[ExtResource("18_1th3s")]([SubResource("Resource_ircg4")])
 
-[node name="interactable_by_Action_Area2D" type="Area2D" parent="World2D/Player" unique_id=1124339265]
+[node name="interactable_by_Action_Area2D" type="Area2D" parent="World_2D/Player" unique_id=1124339265]
 collision_layer = 0
 collision_mask = 4
 
-[node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Action_Area2D" unique_id=946613603]
+[node name="interactable_CollisionShape2D" type="CollisionShape2D" parent="World_2D/Player/interactable_by_Action_Area2D" unique_id=946613603]
 shape = SubResource("CircleShape2D_hxoxt")
 
-[node name="interactable_by_Touch_Not_Enemy_Area2D" type="Area2D" parent="World2D/Player" unique_id=1487620068]
+[node name="interactable_by_Touch_Not_Enemy_Area2D" type="Area2D" parent="World_2D/Player" unique_id=1487620068]
 collision_layer = 0
 collision_mask = 8
 
-[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Touch_Not_Enemy_Area2D" unique_id=803766210]
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World_2D/Player/interactable_by_Touch_Not_Enemy_Area2D" unique_id=803766210]
 shape = SubResource("CircleShape2D_hxoxt")
 
-[node name="interactable_by_Touch_Enemy_Area2D" type="Area2D" parent="World2D/Player" unique_id=395588081]
+[node name="interactable_by_Touch_Enemy_Area2D" type="Area2D" parent="World_2D/Player" unique_id=395588081]
 collision_layer = 0
 collision_mask = 16
 
-[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World2D/Player/interactable_by_Touch_Enemy_Area2D" unique_id=953004056]
+[node name="enemy_detector_CollisionShape2D" type="CollisionShape2D" parent="World_2D/Player/interactable_by_Touch_Enemy_Area2D" unique_id=953004056]
 shape = SubResource("CircleShape2D_hxoxt")
 
-[node name="Friend_02" parent="World2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
+[node name="Friend_02" parent="World_2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55")])
+max_hp = 5
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam")])
 
-[node name="Friend_03" parent="World2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
+[node name="Friend_03" parent="World_2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w"), SubResource("Resource_eggap")])
+max_hp = 5
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w")])
 
-[node name="room_test_01" parent="World2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
+[node name="room_test_01" parent="World_2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1827743524]
 process_mode = 3
@@ -681,7 +677,7 @@ grow_vertical = 2
 
 [node name="tp_root" type="MarginContainer" parent="CanvasLayer/Battle_UI" unique_id=1901183527]
 layout_mode = 1
-offset_right = 173.0
+offset_right = 109.0
 offset_bottom = 61.0
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
@@ -694,8 +690,7 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
-text = "100/100 TP"
-horizontal_alignment = 2
+text = "100 TP"
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/sp_Label" unique_id=1405504898]
 visible = false
@@ -712,37 +707,27 @@ expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer" unique_id=558153718]
 layout_mode = 2
-theme_override_constants/margin_left = 45
+theme_override_constants/margin_left = 20
 
 [node name="Control" type="Control" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer" unique_id=649979733]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
 
 [node name="Pivot" type="Control" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control" unique_id=1441615292]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
 rotation = -1.5707964
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/Battle_UI/tp_root/VBoxContainer/MarginContainer/Control/Pivot" unique_id=690933732]
-custom_minimum_size = Vector2(0, 7)
 layout_mode = 1
-anchors_preset = 6
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
 offset_left = -300.0
-offset_top = -7.5
-offset_bottom = 7.5
+offset_bottom = 25.0
 grow_horizontal = 0
-grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_xrh8u")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ik87f")
 value = 30.0
@@ -1241,6 +1226,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Panel2" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/Control" unique_id=164784011]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1300,16 +1286,16 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer" unique_id=1750044404]
-custom_minimum_size = Vector2(750, 178)
+custom_minimum_size = Vector2(900, 178)
 layout_mode = 2
 theme = ExtResource("26_1th3s")
 
 [node name="Button" type="Button" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel" unique_id=987303234]
 layout_mode = 0
-offset_left = 607.0
-offset_top = -55.0
-offset_right = 716.0
-offset_bottom = -5.0
+offset_left = 350.0
+offset_top = 243.0
+offset_right = 459.0
+offset_bottom = 293.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 30
@@ -1332,7 +1318,6 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
-visible = false
 self_modulate = Color(1, 1, 1, 0)
 clip_contents = true
 layout_mode = 2
@@ -1347,19 +1332,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("18_tnh07")
-expand_mode = 3
-stretch_mode = 5
+texture = ExtResource("25_1th3s")
+expand_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=2037333872]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=278341038]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=335634129]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
 text = "[Name of the Speaker]"
+fit_content = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" unique_id=977612482]
 layout_mode = 2

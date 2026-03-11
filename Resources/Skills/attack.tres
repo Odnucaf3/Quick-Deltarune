@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="Item_Resource" load_steps=2 format=3 uid="uid://bi7n7pyt0tbai"]
+[gd_resource type="Resource" script_class="Item_Resource" format=3 uid="uid://bi7n7pyt0tbai"]
 
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_4coga"]
 
 [resource]
 script = ExtResource("1_4coga")
 action_string = "Attack"
-lore = "* A normal attack where you just shoot a rechargable bullet"
 description = "* Do 5 HP of damage to an enemy, and gain 5 TP."
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

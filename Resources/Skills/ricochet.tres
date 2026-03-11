@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_cnedf")
 action_string = "Skill_0_0"
-lore = "* An bull´seye shoot."
 description = "* Do big damage."
 tp_cost = 13
 max_hold = 2

@@ -31,7 +31,7 @@ var max_tp: int
 @export var dialogue_menu_button_next: Button
 @export var dialogue_menu_speaker1: Control
 @export var dialogue_menu_speaker1_image: TextureRect
-@export var dialogue_menu_speaker1_name: Control
+@export var dialogue_menu_speaker1_name: RichTextLabel
 @export var dialogue_menu_speaking_label: RichTextLabel
 #-------------------------------------------------------------------------------
 @export var savespot_menu: Control
@@ -235,7 +235,7 @@ var is_in_dialogue: bool = false
 var how_many_would_you_buy: int = 0
 var input_dir: Vector2
 var input_dir_normal: Vector2
-var dead_zone: float = 0.01
+var dead_zone: float = 0.001
 #endregion
 #-------------------------------------------------------------------------------
 #region MONOBEHAVIOUR
@@ -643,6 +643,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		_enemy_array[_i].party_member_ui.button_pivot.hide()
 		_enemy_array[_i].party_member_ui.label_sp.hide()
 		_enemy_array[_i].party_member_ui.bar_sp.hide()
+		_enemy_array[_i].party_member_ui.dialogue_root.hide()
 		battle_control.add_child(_party_member_ui)
 	#-------------------------------------------------------------------------------
 	var _center: Vector2 = camera.global_position
@@ -704,7 +705,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		battle_menu.show()
 		tp_bar_root.show()
 		#-------------------------------------------------------------------------------
-		tp = 13
+		tp = 15
 		max_tp = 100
 		Set_TP_Label(tp)
 		#-------------------------------------------------------------------------------
@@ -860,24 +861,6 @@ func Move_Fighters_to_Position(_tween:Tween, _is_menu_position:bool, _timer:floa
 		_tween.parallel().tween_property(enemy_party[_i], "global_position", _position, _timer)
 		var _ui_position: Vector2 = (camera_center + Vector2(_x_pos, _y_pos))*camera.zoom
 		_tween.parallel().tween_property(enemy_party[_i].party_member_ui, "global_position", _ui_position, _timer)
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func ExitBatle(_retry_callable:Callable, _win_callable:Callable, _escape_callable:Callable):
-	match(myBATTLE_STATE):
-		BATTLE_STATE.YOU_WIN:
-			You_Win(_win_callable)
-		#-------------------------------------------------------------------------------
-		BATTLE_STATE.YOU_LOSE:
-			You_Lose(_retry_callable, _escape_callable)
-		#-------------------------------------------------------------------------------
-		BATTLE_STATE.YOU_ESCAPE:
-			You_Escape(_escape_callable)
-			singleton.Common_Submited()
-		#-------------------------------------------------------------------------------
-		BATTLE_STATE.YOU_RETRY:
-			You_Retry(_retry_callable)
-			singleton.Common_Submited()
-		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #endregion
@@ -1859,45 +1842,10 @@ func Party_Actions():
 	#-------------------------------------------------------------------------------
 	await Seconds(0.5)
 	#-------------------------------------------------------------------------------
-	for _i in range(item_array_in_battle.size()-1, -1, -1):
-		#-------------------------------------------------------------------------------
-		if(item_array_in_battle[_i].hold <= 0):
-			item_array_in_battle[_i].hold = 0
-			#-------------------------------------------------------------------------------
-			if(item_array_in_battle[_i].stored <= 0):
-				item_array_in_battle.remove_at(_i)
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		else:
-			item_array_in_battle[_i].cooldown -= 1
-			#-------------------------------------------------------------------------------
-			if(item_array_in_battle[_i].cooldown < 0):
-				item_array_in_battle[_i].cooldown = 0
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
 	friend_party_alive.clear()
 	friend_party_dead.clear()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
-		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].skill_array_in_battle.size():
-			#-------------------------------------------------------------------------------
-			if(friend_party[_i].skill_array_in_battle[_j].hold < 0):
-				friend_party[_i].skill_array_in_battle[_j].hold = 0
-			#-------------------------------------------------------------------------------
-			friend_party[_i].skill_array_in_battle[_j].cooldown -= 1
-			#-------------------------------------------------------------------------------
-			if(friend_party[_i].skill_array_in_battle[_j].cooldown < 0):
-				friend_party[_i].skill_array_in_battle[_j].cooldown = 0
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].statuseffect_array_in_battle.size():
-			friend_party[_i].statuseffect_array_in_battle[_j].stored -= 1
-			#-------------------------------------------------------------------------------
-			if(friend_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
-				friend_party[_i].statuseffect_array_in_battle.remove_at(_j)
-			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		if(friend_party[_i].hp > 0):
 			friend_party_alive.append(friend_party[_i])
@@ -1917,13 +1865,6 @@ func Party_Actions():
 	enemy_party_dead.clear()
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
-		#-------------------------------------------------------------------------------
-		for _j in enemy_party[_i].statuseffect_array_in_battle.size():
-			enemy_party[_i].statuseffect_array_in_battle[_j].stored -= 1
-			#-------------------------------------------------------------------------------
-			if(enemy_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
-				enemy_party[_i].statuseffect_array_in_battle.remove_at(_j)
-			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		if(enemy_party[_i].hp > 0):
 			enemy_party_alive.append(enemy_party[_i])
@@ -2075,11 +2016,8 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	can_be_hit = true
 	Animation_Transition(hitbox_animation_tree, "Transition/", "Normal")
 	#-------------------------------------------------------------------------------
-	battle_box.show()
 	dialogue_menu.hide()
 	#dialogue_menu_speaking_label.text = ""
-	hitbox.global_position = battle_box.global_position + battle_box.size/2.0
-	myGAME_STATE = GAME_STATE.IN_BATTLE
 	#-------------------------------------------------------------------------------
 	var _offset: float = 3
 	box_limit_up = _offset
@@ -2092,23 +2030,72 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	screen_limit_left = camera.global_position.x-camera_center.x
 	screen_limit_right = camera.global_position.x+camera_center.x
 	#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
 	for _i in enemy_party_alive.size():
 		Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Aim")
+		enemy_party_alive[_i].party_member_ui.dialogue_root.show()
 	#-------------------------------------------------------------------------------
 	await Move_Fighters_to_Position_2(false)
+	await Seconds(1.0)
+	#-------------------------------------------------------------------------------
+	battle_box.show()
+	hitbox.global_position = battle_box.global_position + battle_box.size/2.0
+	myGAME_STATE = GAME_STATE.IN_BATTLE
+	#-------------------------------------------------------------------------------
+	for _i in enemy_party_alive.size():
+		enemy_party_alive[_i].party_member_ui.dialogue_root.hide()
+	#-------------------------------------------------------------------------------
 	_callable.call()
 	await TimeOut_Tween(_timer)
 	#-------------------------------------------------------------------------------
 	myGAME_STATE = GAME_STATE.IN_MENU
 	current_player_turn = 0
 	#-------------------------------------------------------------------------------
+	for _i in range(item_array_in_battle.size()-1, -1, -1):
+		#-------------------------------------------------------------------------------
+		if(item_array_in_battle[_i].hold <= 0):
+			item_array_in_battle[_i].hold = 0
+			#-------------------------------------------------------------------------------
+			if(item_array_in_battle[_i].stored <= 0):
+				item_array_in_battle.remove_at(_i)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		else:
+			item_array_in_battle[_i].cooldown -= 1
+			#-------------------------------------------------------------------------------
+			if(item_array_in_battle[_i].cooldown < 0):
+				item_array_in_battle[_i].cooldown = 0
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 	friend_party_alive.clear()
 	friend_party_dead.clear()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		#-------------------------------------------------------------------------------
-		friend_party[_i].is_in_guard = false
+		for _j in friend_party[_i].skill_array_in_battle.size():
+			#-------------------------------------------------------------------------------
+			if(friend_party[_i].skill_array_in_battle[_j].hold < 0):
+				friend_party[_i].skill_array_in_battle[_j].hold = 0
+			#-------------------------------------------------------------------------------
+			friend_party[_i].skill_array_in_battle[_j].cooldown -= 1
+			#-------------------------------------------------------------------------------
+			if(friend_party[_i].skill_array_in_battle[_j].cooldown < 0):
+				friend_party[_i].skill_array_in_battle[_j].cooldown = 0
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		for _j in friend_party[_i].statuseffect_array_in_battle.size():
+			friend_party[_i].statuseffect_array_in_battle[_j].stored -= 1
+			#-------------------------------------------------------------------------------
+			if(friend_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
+				var _label: Label = Spawn_Label_in_User(friend_party[_i])
+				Flying_Label(_label, "-"+get_resource_filename(friend_party[_i].statuseffect_array_in_battle[_j].statuseffect_resource))
+				friend_party[_i].statuseffect_array_in_battle.remove_at(_j)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		if(friend_party[_i].is_in_guard):
+			var _label: Label = Spawn_Label_in_User(friend_party[_i])
+			Flying_Label(_label, "-Guard")
+			friend_party[_i].is_in_guard = false
 		#-------------------------------------------------------------------------------
 		if(friend_party[_i].hp > 0):
 			friend_party_alive.append(friend_party[_i])
@@ -2122,7 +2109,20 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	enemy_party_dead.clear()
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
-		enemy_party[_i].is_in_guard = false
+		#-------------------------------------------------------------------------------
+		for _j in enemy_party[_i].statuseffect_array_in_battle.size():
+			enemy_party[_i].statuseffect_array_in_battle[_j].stored -= 1
+			#-------------------------------------------------------------------------------
+			if(enemy_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
+				var _label: Label = Spawn_Label_in_User(enemy_party[_i])
+				Flying_Label(_label, "-"+get_resource_filename(enemy_party[_i].statuseffect_array_in_battle[_j].statuseffect_resource))
+				enemy_party[_i].statuseffect_array_in_battle.remove_at(_j)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		if(enemy_party[_i].is_in_guard):
+			var _label: Label = Spawn_Label_in_User(enemy_party[_i])
+			Flying_Label(_label, "-Guard")
+			enemy_party[_i].is_in_guard = false
 		#-------------------------------------------------------------------------------
 		if(enemy_party[_i].hp > 0):
 			enemy_party_alive.append(enemy_party[_i])
@@ -2140,6 +2140,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			myGAME_STATE = GAME_STATE.IN_MENU
 			#-------------------------------------------------------------------------------
 			await Move_Fighters_to_Position_2(true)
+			await Seconds(0.5)
 			#-------------------------------------------------------------------------------
 			dialogue_menu_speaking_label.text = "* The Battle began!"
 			dialogue_menu_button_next.hide()
@@ -2158,11 +2159,26 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 		myBATTLE_STATE = BATTLE_STATE.YOU_WIN
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func You_Win(_callable:Callable):
+func You_Win():
+	#-------------------------------------------------------------------------------
+	Set_AllItems_When_Exit_Battle()
+	Fill_the_ConsumableItems_Hold_from_Stored()
+	ReFill_All_Skills()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(friend_party[_i])
-		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	await Move_Fighters_to_Position_2(true)
+	#-------------------------------------------------------------------------------
+	dialogue_menu_speaking_label.text = "* Yay! You Won 1000 gold and an a cool weapon."
+	dialogue_menu.show()
+	win_lose_retry_escape_menu_label.text = "You Win"
+	win_lose_retry_escape_menu_vboxcontainer.hide()
+	win_lose_retry_escape_menu_label.show()
+	#-------------------------------------------------------------------------------
+	await Seconds(2.0)
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.hide()
 		friend_party[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
@@ -2171,49 +2187,37 @@ func You_Win(_callable:Callable):
 		enemy_party[_i].party_member_ui.button_pivot.hide()
 		enemy_party[_i].party_member_ui.queue_free()
 	#-------------------------------------------------------------------------------
-	Set_AllItems_When_Exit_Battle()
-	Fill_the_ConsumableItems_Hold_from_Stored()
-	ReFill_All_Skills()
-	#-------------------------------------------------------------------------------
-	win_lose_retry_escape_menu_vboxcontainer.hide()
-	dialogue_menu.show()
 	tp_bar_root.hide()
-	win_lose_retry_escape_menu_label.text = "You Win"
-	win_lose_retry_escape_menu_label.show()
+	#-------------------------------------------------------------------------------
+	win_lose_retry_escape_menu_label.hide()
+	dialogue_menu.hide()
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		friend_party[_i].z_index = 0
+		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
+		friend_party[_i].is_Moving = false
+	#-------------------------------------------------------------------------------
+	for _i in enemy_party.size():
+		enemy_party[_i].z_index = 0
+	#-------------------------------------------------------------------------------
+	battle_black_panel.hide()
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
-	#-------------------------------------------------------------------------------
-	_tween.tween_interval(1.0)
-	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		win_lose_retry_escape_menu_label.hide()
-		dialogue_menu.hide()
-		#-------------------------------------------------------------------------------
-		for _i in friend_party.size():
-			friend_party[_i].z_index = 0
-			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
-			friend_party[_i].is_Moving = false
-		#-------------------------------------------------------------------------------
-		for _i in enemy_party.size():
-			enemy_party[_i].z_index = 0
-		#-------------------------------------------------------------------------------
-		battle_black_panel.hide()
-	)
-	#-------------------------------------------------------------------------------
-	_tween.tween_interval(1.0)
+	_tween.tween_interval(0.5)
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		_tween.parallel().tween_property(friend_party[_i], "global_position", player_last_position[_i], 0.5)
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
-		_tween.parallel().tween_property(enemy_party[_i], "global_position", enemy_last_position[_i], 0.5)
+		var _new_global_position: Vector2 = Vector2(enemy_party[_i].global_position.x+150, enemy_party[_i].global_position.y)
+		_tween.parallel().tween_property(enemy_party[_i], "global_position", _new_global_position, 0.5)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		singleton.Play_BGM(singleton.stage1)
 		myGAME_STATE = GAME_STATE.IN_WORLD
-		_callable.call()
 	)
 	#-------------------------------------------------------------------------------
+	await _tween.finished
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -2223,7 +2227,7 @@ func RetryMenu_RetryButton_Submit():
 	myBATTLE_STATE = BATTLE_STATE.YOU_RETRY
 	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
-func You_Retry(_callable: Callable):
+func You_Retry():
 	#-------------------------------------------------------------------------------
 	win_lose_retry_escape_menu_vboxcontainer.hide()
 	win_lose_retry_escape_menu_label.hide()
@@ -2235,7 +2239,7 @@ func You_Retry(_callable: Callable):
 	_tween.tween_property(black_panel, "self_modulate", Color.BLACK, 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
-		tp = 13
+		tp = 15
 		Set_TP_Label(tp)
 		#-------------------------------------------------------------------------------
 		current_player_turn = 0
@@ -2294,8 +2298,9 @@ func You_Retry(_callable: Callable):
 		singleton.Common_Submited()
 		#-------------------------------------------------------------------------------
 		myBATTLE_STATE = BATTLE_STATE.STILL_FIGHTING
-		_callable.call()
 	)
+	#-------------------------------------------------------------------------------
+	await _tween.finished
 #-------------------------------------------------------------------------------
 func RetryMenu_EscapeButton_Submit():
 	myBATTLE_STATE = BATTLE_STATE.YOU_ESCAPE
@@ -2315,7 +2320,7 @@ func RetryMenu_AnyButton_Cancel():
 	singleton.Move_to_First_Button(battle_menu_button)
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
-func You_Escape(_escape_callable:Callable):
+func You_Escape():
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.hide()
@@ -2337,31 +2342,37 @@ func You_Escape(_escape_callable:Callable):
 	battle_black_panel.hide()
 	singleton.audioStreamPlayer_escape.play()
 	#-------------------------------------------------------------------------------
-	var _tween2: Tween = create_tween()
+	Invincible_after_escape()
 	#-------------------------------------------------------------------------------
-	_tween2.tween_callback(func():
+	var _tween: Tween = create_tween()
+	#_tween.tween_interval(1.0)
+	for _i in friend_party.size():
+		_tween.parallel().tween_property(friend_party[_i], "global_position", player_last_position[_i], 0.5)
+	#-------------------------------------------------------------------------------
+	for _i in enemy_party.size():
+		var _new_global_position: Vector2 = Vector2(enemy_party[_i].global_position.x+150, enemy_party[_i].global_position.y)
+		_tween.parallel().tween_property(enemy_party[_i], "global_position", _new_global_position, 0.5)
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
+		myGAME_STATE = GAME_STATE.IN_WORLD
+		singleton.Play_BGM(singleton.stage1)
+	)
+	#-------------------------------------------------------------------------------
+	await _tween.finished
+#-------------------------------------------------------------------------------
+func Invincible_after_escape():
+	var _tween: Tween = create_tween()
+	#-------------------------------------------------------------------------------
+	_tween.tween_callback(func():
 		can_enter_fight = false
 	)
 	#-------------------------------------------------------------------------------
-	_tween2.tween_interval(3.0)
-	_tween2.tween_callback(func():
+	_tween.tween_interval(3.0)
+	_tween.tween_callback(func():
 		can_enter_fight = true
 	)
 	#-------------------------------------------------------------------------------
-	var _tween3: Tween = create_tween()
-	#_tween3.tween_interval(1.0)
-	for _i in friend_party.size():
-		_tween3.parallel().tween_property(friend_party[_i], "global_position", player_last_position[_i], 0.5)
-	#-------------------------------------------------------------------------------
-	for _i in enemy_party.size():
-		_tween3.parallel().tween_property(enemy_party[_i], "global_position", enemy_last_position[_i], 0.5)
-	#-------------------------------------------------------------------------------
-	_tween3.tween_callback(func():
-		myGAME_STATE = GAME_STATE.IN_WORLD
-		singleton.Play_BGM(singleton.stage1)
-		_escape_callable.call()
-	)
-	#-------------------------------------------------------------------------------
+	await _tween.finished
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -2675,9 +2686,9 @@ func Player_Shooted():
 		_target.hp -= _int
 		#-------------------------------------------------------------------------------
 		var _label: Label = Spawn_Label_in_User(_target)
+		Flying_Label(_label, "-"+str(_int)+" HP")
 		#-------------------------------------------------------------------------------
 		if(_target.hp > 0):
-			Flying_Label(_label, "-"+str(_int)+" HP")
 			#-------------------------------------------------------------------------------
 			if(_target.is_in_guard):
 				Animation_StateMachine(_target.animation_tree, "", "Crouch_Hurt")
@@ -2689,8 +2700,9 @@ func Player_Shooted():
 			singleton.audioStreamPlayer_ally_damage.play()
 		#-------------------------------------------------------------------------------
 		else:
+			var _label_down: Label = Spawn_Label_in_User(_target)
+			Flying_Label(_label_down, "+Down")
 			_target.hp = 0
-			Flying_Label(_label, "Down")
 			Set_HP_Label(_target)
 			singleton.audioStreamPlayer_enemy_colapse.play()
 			Animation_StateMachine(_target.animation_tree, "", "Death")
@@ -2726,40 +2738,34 @@ func Spawn_Label_in_User(_user:Party_Member) -> Label:
 	_label.global_position = _global_position
 	return _label
 #-------------------------------------------------------------------------------
-func You_Lose(_retry_callable:Callable, _escape_callable:Callable):
+func You_Lose():
+	timer_tween.kill()
+	battle_box.hide()
 	#-------------------------------------------------------------------------------
-	var _tween:Tween = create_tween()
-	Move_Fighters_to_Position(_tween, true, 0.05)
+	await Seconds(1.0)
+	await Move_Fighters_to_Position_2(true)
 	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		timer_tween.kill()
-		battle_box.hide()
-		win_lose_retry_escape_menu_vboxcontainer.hide()
-		win_lose_retry_escape_menu_label.text = "You Lose"
-		win_lose_retry_escape_menu_label.show()
-		dialogue_menu.show()
-	)
+	win_lose_retry_escape_menu_label.text = "You Lose"
+	win_lose_retry_escape_menu_label.show()
+	dialogue_menu.show()
 	#-------------------------------------------------------------------------------
-	_tween.tween_interval(1.0)
+	win_lose_retry_escape_menu_vboxcontainer.show()
+	singleton.Set_Button(win_lose_retry_escape_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(), func():pass)
+	singleton.Set_Button(win_lose_retry_escape_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(), func():pass)
+	singleton.Set_Button(win_lose_retry_escape_menu_button[2], func():singleton.Common_Selected(), func():LoseMenu_GiveUpButton_Submit(), func():pass)
 	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		win_lose_retry_escape_menu_vboxcontainer.show()
-		singleton.Set_Button(win_lose_retry_escape_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(_retry_callable), func():pass)
-		singleton.Set_Button(win_lose_retry_escape_menu_button[1], func():singleton.Common_Selected(), func():LoseMenu_EscapeButton_Submit(_escape_callable), func():pass)
-		singleton.Set_Button(win_lose_retry_escape_menu_button[2], func():singleton.Common_Selected(), func():LoseMenu_GiveUpButton_Submit(), func():pass)
-		#-------------------------------------------------------------------------------
-		singleton.Move_to_Button(win_lose_retry_escape_menu_button[0])
-		singleton.Common_Submited()
-	)
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func LoseMenu_RetryButton_Submit(_callable:Callable):
-	You_Retry(_callable)
+	singleton.Move_to_Button(win_lose_retry_escape_menu_button[0])
 	singleton.Common_Submited()
+	#-------------------------------------------------------------------------------
+	await dialogue_signal
 #-------------------------------------------------------------------------------
-func LoseMenu_EscapeButton_Submit(_callable:Callable):
-	You_Escape(_callable)
-	singleton.Common_Submited()
+func LoseMenu_RetryButton_Submit():
+	myBATTLE_STATE = BATTLE_STATE.YOU_RETRY
+	dialogue_signal.emit()
+#-------------------------------------------------------------------------------
+func LoseMenu_EscapeButton_Submit():
+	myBATTLE_STATE = BATTLE_STATE.YOU_ESCAPE
+	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
 func LoseMenu_GiveUpButton_Submit():
 	get_tree().reload_current_scene()
@@ -2809,26 +2815,13 @@ func Gain_Tp(_int:int):
 #region PARTY_SKILLS CALLABLES
 #-------------------------------------------------------------------------------
 func Attack(_user:Party_Member):
-	var _global_position: Vector2 = _user.target.global_position + Vector2(-30, -60)
-	var _dir: float = Get_Dir_XY(Vector2(30,30))
-	var _sprite2d: Bullet = Create_PlayerBullet(_global_position, _dir)
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
-	var _tween: Tween = create_tween()
-	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		Animation_StateMachine(_user.animation_tree, "", "Shot")
-		Gain_Tp(5)
-		Set_TP_Label(tp)
+	var _callable:Callable = func():
 		HP_Damage(_user.target, 5)
-	)
 	#-------------------------------------------------------------------------------
-	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(60,60), 0.25)
-	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		_sprite2d.queue_free()
-	)
-	#-------------------------------------------------------------------------------
-	await _tween.finished
+	await Play_AttackAnimation_with_Callable(_user, "anim_normal_attack", _callable)
+	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Defense(_user:Party_Member):
 	_user.is_in_guard = true
@@ -2838,73 +2831,61 @@ func Defense(_user:Party_Member):
 	Flying_Label(_label, "+Guard")
 #-------------------------------------------------------------------------------
 func Skill_0_0(_user:Party_Member):
-	var _global_position: Vector2 = _user.target.global_position + Vector2(-30, -50)
-	var _dir: float = Get_Dir_XY(Vector2(15,30))
-	var _bullet: Bullet = Create_PlayerBullet(_global_position, _dir)
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
-	var _tween: Tween = create_tween()
-	var _dx: float = 15
-	var _dy: float = 15
-	#-------------------------------------------------------------------------------
-	for _i in 4:
-		#-------------------------------------------------------------------------------
-		_tween.tween_callback(func():
-			Animation_StateMachine(_user.animation_tree, "", "Shot")
-			HP_Damage(_user.target, 5)
-			_bullet.rotation = Get_Dir_XY(Vector2(15, _dy))
-		)
-		#-------------------------------------------------------------------------------
-		_tween.tween_property(_bullet, "global_position", _bullet.global_position + Vector2(_dx,15+_dy), 0.1)
-		_dx += 15
-		_dy *=-1
-	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		_bullet.queue_free()
-	)
-	#-------------------------------------------------------------------------------
-	await _tween.finished
+	var _callable:Callable = func():
+		HP_Damage(_user.target, 5)
+	#-------------------------------------------------------------------------------	
+	await Play_AttackAnimation_with_Callable(_user, "anim_skill_1", _callable)
+	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Skill_0_1(_user:Party_Member):
-	var _global_position: Vector2 = _user.target.global_position + Vector2(-150, -30)
-	var _sprite2d: Bullet = Create_PlayerBullet(_global_position, 0)
-	#-------------------------------------------------------------------------------
-	var _tween: Tween = create_tween()
-	#-------------------------------------------------------------------------------
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(150,0), 0.3)
-	_tween.tween_interval(0.3)
 	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		HP_Damage(_user.target, 15)
-	)
+	var _callable:Callable = func():
+		HP_Damage(_user.target, 5)
 	#-------------------------------------------------------------------------------
-	_tween.tween_property(_sprite2d, "global_position", _global_position + Vector2(200,0), 0.1)
-	#-------------------------------------------------------------------------------
-	_tween.tween_callback(func():
-		_sprite2d.queue_free()
-	)
-	#-------------------------------------------------------------------------------
-	await _tween.finished
+	await Play_AttackAnimation_with_Callable(_user, "anim_heavy_bullet", _callable)
+	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Skill_0_2(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	var _hp = _user.target.hp
-	HP_Heal_Porcentual(_user.target, 1.0)
 	#-------------------------------------------------------------------------------
-	if(_hp <= 0):
-		Animation_StateMachine(_user.target.animation_tree, "", "Idle")
+	var _callable:Callable = func():
+		#-------------------------------------------------------------------------------
+		if(_user.target.hp <= 0):
+			Animation_StateMachine(_user.target.animation_tree, "", "Idle")
+		#-------------------------------------------------------------------------------
+		HP_Heal_Porcentual(_user.target, 1.0)
 	#-------------------------------------------------------------------------------
+	await Play_AttackAnimation_with_Callable(_user, "anim_healing", _callable)
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Skill_03_Poison_Stinger(_user:Party_Member):
-	var _status_effect: StatusEffect_Resource = load("res://Resources/Status/poison.tres") as StatusEffect_Resource
-	Add_Status_Effect(_user.target, _status_effect, 3)
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
-	var _label: Label = Spawn_Label_in_User(_user.target)
-	Flying_Label(_label, "+Poison")
+	var _callable:Callable = func():
+		var _status_effect: StatusEffect_Resource = load("res://Resources/Status/poison.tres") as StatusEffect_Resource
+		Add_Status_Effect(_user.target, _status_effect, 1)
+		var _label: Label = Spawn_Label_in_User(_user.target)
+		Flying_Label(_label, "+Poison")
 	#-------------------------------------------------------------------------------
+	await Play_AttackAnimation_with_Callable(_user, "anim_poison", _callable)
 	await Seconds(0.3)
+#-------------------------------------------------------------------------------
+func Play_AttackAnimation_with_Callable(_user:Party_Member, _name: String,_callable:Callable):
+	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	#-------------------------------------------------------------------------------
+	var _animation_effect: Animation_Effect = load("res://Nodes/Prefabs/Skill Animation Effects/"+_name+".tscn").instantiate() as Animation_Effect
+	_animation_effect.animation_player.play("action")
+	_animation_effect.z_index = 2
+	_animation_effect.global_position = _user.target.global_position
+	#-------------------------------------------------------------------------------
+	_animation_effect.animation_effect_callable = _callable
+	#-------------------------------------------------------------------------------
+	world_2d.add_child(_animation_effect)
+	await _animation_effect.animation_player.animation_finished
+	_animation_effect.queue_free()
 #-------------------------------------------------------------------------------
 func Add_Status_Effect(_user:Party_Member, _status_effect:StatusEffect_Resource, _int:int):
 	#-------------------------------------------------------------------------------
@@ -2926,15 +2907,23 @@ func Add_Status_Effect(_user:Party_Member, _status_effect:StatusEffect_Resource,
 #-------------------------------------------------------------------------------
 func Item_0_0(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	HP_Heal_Porcentual(_user.target, 0.5)
-	Animation_StateMachine(_user.target.animation_tree, "", "Idle")
-	await Seconds(0.3)
+	#-------------------------------------------------------------------------------
+	var _callable:Callable = func():
+		HP_Heal_Porcentual(_user.target, 1.0)
+	#-------------------------------------------------------------------------------
+	await Play_AttackAnimation_with_Callable(_user, "anim_healing", _callable)
 #-------------------------------------------------------------------------------
 func Item_0_1(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	HP_Heal_Porcentual(_user.target, 1.0)
-	Animation_StateMachine(_user.target.animation_tree, "", "Idle")
-	await Seconds(0.3)
+	#-------------------------------------------------------------------------------
+	var _callable:Callable = func():
+		#-------------------------------------------------------------------------------
+		if(_user.target.hp <= 0):
+			Animation_StateMachine(_user.target.animation_tree, "", "Idle")
+		#-------------------------------------------------------------------------------
+		HP_Heal_Porcentual(_user.target, 1.0)
+	#-------------------------------------------------------------------------------
+	await Play_AttackAnimation_with_Callable(_user, "anim_revive", _callable)
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -2952,10 +2941,10 @@ func Flying_Label(_label:Label, _s:String):
 	_label.z_index = 10
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
-	_tween.tween_property(_label, "global_position", _label.global_position + Vector2(20, -10), 0.12)
-	_tween.tween_property(_label, "global_position", _label.global_position + Vector2(20, 0), 0.12)
-	_tween.tween_property(_label, "global_position", _label.global_position + Vector2(20, -5), 0.12)
-	_tween.tween_property(_label, "global_position", _label.global_position + Vector2(20, 0), 0.12)
+	_tween.tween_property(_label, "position", _label.position + Vector2(20, -10), 0.12)
+	_tween.tween_property(_label, "position", _label.position + Vector2(20, 0), 0.12)
+	_tween.tween_property(_label, "position", _label.position + Vector2(20, -5), 0.12)
+	_tween.tween_property(_label, "position", _label.position + Vector2(20, 0), 0.12)
 	_tween.tween_interval(0.7)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
@@ -2998,22 +2987,30 @@ func HP_Damage(_target:Party_Member, _int:int):
 		_target.hp -= _int
 		#-------------------------------------------------------------------------------
 		var _label: Label = Spawn_Label_in_User(_target)
+		Flying_Label(_label, "-"+str(_int)+" HP")
 		#-------------------------------------------------------------------------------
 		if(_target.hp > 0):
+			Set_HP_Label(_target)
 			Animation_StateMachine(_target.animation_tree, "Base_StateMachine/", "Hurt 2")
-			Flying_Label(_label, "-"+str(_int)+" HP")
 			singleton.audioStreamPlayer_enemy_damage.play()
 		#-------------------------------------------------------------------------------
 		else:
+			var _label_down: Label = Spawn_Label_in_User(_target)
+			Flying_Label(_label_down, "+Down")
 			_target.hp = 0
+			Set_HP_Label(_target)
 			Animation_StateMachine(_target.animation_tree, "Base_StateMachine/", "Death")
-			Flying_Label(_label, "Down")
 			singleton.audioStreamPlayer_enemy_colapse.play()
 		#-------------------------------------------------------------------------------
-		Set_HP_Label(_target)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func HP_Heal_Porcentual(_target:Party_Member, _float:float):
+	#-------------------------------------------------------------------------------
+	if(_target.hp <= 0):
+		_target.hp = 0
+		var _label_down: Label = Spawn_Label_in_User(_target)
+		Flying_Label(_label_down, "-Down")
+	#-------------------------------------------------------------------------------
 	var _int: int = int(float(_target.max_hp)*_float)
 	_target.hp += _int
 	#-------------------------------------------------------------------------------
@@ -3040,7 +3037,8 @@ func Set_SP_Label(_user:Party_Member):
 	_user.party_member_ui.bar_sp.value = _user.sp
 #-------------------------------------------------------------------------------
 func Set_TP_Label(_i: int):
-	tp_bar_label.text = str(_i)+"/"+str(max_tp)+" TP"
+	tp_bar_label.text = str(_i)+" / "+str(max_tp)+" TP"
+	#tp_bar_label.text = str(_i)+" TP"
 	tp_bar_progressbar_present.max_value = max_tp
 	tp_bar_progressbar_present.value = _i
 #-------------------------------------------------------------------------------

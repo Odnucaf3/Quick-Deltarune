@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="13_mxnnk"]
 [ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="14_xdoc7"]
 [ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/mystery_key.tres" id="15_5drey"]
+[ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="15_8ss50"]
+[ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="16_srwso"]
 
 [sub_resource type="GDScript" id="GDScript_52n5y"]
 script/source = "extends Room_Script
@@ -211,7 +213,39 @@ func Battle():
 		#await singleton.game_scene.Start_BulletHell(func():print(\"C Actio\"), 2)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	singleton.game_scene.ExitBatle(func():Battle(), func():Win_Battle(), func():Escape_Battle())
+	match(singleton.game_scene.myBATTLE_STATE):
+		#-------------------------------------------------------------------------------
+		singleton.game_scene.BATTLE_STATE.YOU_WIN:
+			await singleton.game_scene.You_Win()
+			Win_Battle()
+		#-------------------------------------------------------------------------------
+		singleton.game_scene.BATTLE_STATE.YOU_LOSE:
+			await singleton.game_scene.You_Lose()
+			#-------------------------------------------------------------------------------
+			match(singleton.game_scene.myBATTLE_STATE):
+				#-------------------------------------------------------------------------------
+				singleton.game_scene.BATTLE_STATE.YOU_RETRY:
+					singleton.Common_Submited()
+					await singleton.game_scene.You_Retry()
+					Battle()
+				#-------------------------------------------------------------------------------
+				singleton.game_scene.BATTLE_STATE.YOU_ESCAPE:
+					singleton.Common_Submited()
+					await singleton.game_scene.You_Escape()
+					Escape_Battle()
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		singleton.game_scene.BATTLE_STATE.YOU_ESCAPE:
+			singleton.Common_Submited()
+			await singleton.game_scene.You_Escape()
+			Escape_Battle()
+		#-------------------------------------------------------------------------------
+		singleton.game_scene.BATTLE_STATE.YOU_RETRY:
+			singleton.Common_Submited()
+			await singleton.game_scene.You_Retry()
+			Battle()
+		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Dialogue_Before_Battle():
@@ -227,13 +261,21 @@ func Win_Battle():
 	area2d_collider.set_deferred(\"disabled\", true)
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.can_enter_fight = true
+	#-------------------------------------------------------------------------------
+	global_position = original_position
+	#-------------------------------------------------------------------------------
+	for _i in enemy.size():
+		enemy[_i].hide()
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Escape_Battle():
 	_myENEMY_STATE = ENEMY_STATE.PATROLLING
 	global_position = original_position
 	area2d_collider.set_deferred(\"disabled\", false)
+	#-------------------------------------------------------------------------------
 	singleton.game_scene.Animation_StateMachine(enemy[0].animation_tree, \"Base_StateMachine/\", \"Idle\")
 	singleton.game_scene.Face_Left(enemy[0], false)
+	enemy[0].position = Vector2.ZERO
 	#-------------------------------------------------------------------------------
 	for _i in range(1, enemy.size()):
 		enemy[_i].hide()
@@ -261,6 +303,8 @@ size = Vector2(224, 192)
 script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
 @export var user: Party_Member
+@export var speaker1_image: Texture2D
+@export var speaker2_image: Texture2D
 #-------------------------------------------------------------------------------
 @export var _consumableitem_array: Array[Item_Serializable]
 @export var _equipitem_array: Array[Equip_Serializable]
@@ -292,19 +336,33 @@ func Interactable_Action():
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
 	#-------------------------------------------------------------------------------
+	Set_Face_Merchant()
 	await singleton.game_scene.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
-	singleton.Common_Selected()
+	singleton.Common_Submited()
+	Set_Face_Player()
 	await singleton.game_scene.Dialogue(true, \"* Do you want to buy something? \"+_s)
 	singleton.game_scene.Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	await singleton.game_scene.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
+	Set_Face_Merchant()
+	await singleton.game_scene.Dialogue(true, \"* Thank you. \"+_s)
+	singleton.Common_Submited()
+	Set_Face_Player()
 	await singleton.game_scene.Dialogue(true, \"* Thank you. \"+_s)
 	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Idle\")
+#-------------------------------------------------------------------------------
+func Set_Face_Merchant():
+	singleton.game_scene.dialogue_menu_speaker1_image.texture = speaker1_image
+	singleton.game_scene.dialogue_menu_speaker1_name.text = \"[Merchant's Name]\"
+#-------------------------------------------------------------------------------
+func Set_Face_Player():
+	singleton.game_scene.dialogue_menu_speaker1_image.texture = speaker2_image
+	singleton.game_scene.dialogue_menu_speaker1_name.text = \"[Player 1's Name]\"
 #-------------------------------------------------------------------------------
 "
 
@@ -445,14 +503,17 @@ _enemy_root = NodePath("..")
 shape = SubResource("RectangleShape2D_xdoc7")
 
 [node name="Foe_01" parent="Enemy1" unique_id=463040546 instance=ExtResource("6_jyvag")]
+max_hp = 5
 
 [node name="Foe_03" parent="Enemy1" unique_id=102607479 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, 16)
+max_hp = 5
 
 [node name="Foe_02" parent="Enemy1" unique_id=1810101425 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, -16)
+max_hp = 5
 
 [node name="Marker2D" type="Marker2D" parent="Enemy1" unique_id=922697963]
 position = Vector2(0, -48)
@@ -487,6 +548,8 @@ collision_layer = 4
 collision_mask = 0
 script = SubResource("GDScript_rqg47")
 user = NodePath("Foe_01")
+speaker1_image = ExtResource("15_8ss50")
+speaker2_image = ExtResource("16_srwso")
 _consumableitem_array = Array[ExtResource("13_mxnnk")]([SubResource("Resource_kcmek"), SubResource("Resource_ptuk6")])
 _equipitem_array = Array[ExtResource("8_ygji3")]([SubResource("Resource_8opot")])
 _keyitem_array = Array[ExtResource("10_xdoc7")]([SubResource("Resource_wrvon")])

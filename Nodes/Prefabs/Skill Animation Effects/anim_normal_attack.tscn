@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://dnoesku4x4b2q"]
+
+[ext_resource type="Texture2D" uid="uid://ccqqlcpixk70h" path="res://Assets/ansimuz/Starfighter Files/sprites/FX/bullet/bullet1.png" id="1_eb2ai"]
+[ext_resource type="Script" uid="uid://beo36kxbirrtl" path="res://Scripts/Prefabs/animation_effect.gd" id="1_px15i"]
+
+[sub_resource type="Animation" id="Animation_1e5l7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(20, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ugbf0"]
+resource_name = "action"
+length = 0.13334
+step = 0.06666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.13333334),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-20, -40), Vector2(20, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.06666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"Animation_Effect_Action"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_05voo"]
+_data = {
+&"RESET": SubResource("Animation_1e5l7"),
+&"action": SubResource("Animation_ugbf0")
+}
+
+[node name="anim_normal_attack" type="Node2D" unique_id=1781663479 node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_px15i")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=866118997]
+position = Vector2(20, 0)
+rotation = 0.7853982
+scale = Vector2(2, 2)
+texture = ExtResource("1_eb2ai")
+offset = Vector2(-4.979213, -0.20241165)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1900428650]
+libraries/ = SubResource("AnimationLibrary_05voo")
