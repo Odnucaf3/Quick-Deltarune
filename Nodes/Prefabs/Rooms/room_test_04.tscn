@@ -1,5 +1,7 @@
 [gd_scene format=4 uid="uid://b0k53achv5l43"]
 
+[ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="1_rkto1"]
+[ext_resource type="Texture2D" uid="uid://bw6vrgilaeyol" path="res://Assets/profiles/player2_idle.PNG" id="2_qv4ll"]
 [ext_resource type="TileSet" uid="uid://eynb8l6cn813" path="res://TileSet/lab.tres" id="2_yj1ku"]
 [ext_resource type="TileSet" uid="uid://cutyx4smls0s0" path="res://TileSet/lab_lamps.tres" id="3_yj1ku"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="4_o0jg7"]
@@ -21,6 +23,8 @@ func Set_Room() -> void:
 script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
 @export var area2d_collider: CollisionShape2D
+@export var player1_texture2d: Texture2D
+@export var player2_texture2d: Texture2D
 #-------------------------------------------------------------------------------
 func _ready() -> void:
 	#-------------------------------------------------------------------------------
@@ -42,9 +46,15 @@ func Interactable_Action():
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	await singleton.game_scene.Dialogue(true, \"Wait a second? What is that!\")
+	var _player_1_name: String = \"Player 1's Name\"
+	var _player_2_name: String = \"Player 2's Name\"
+	await singleton.game_scene.Dialogue_with_Speaker(player1_texture2d, _player_1_name, \"* Wait a second? What is that!\")
 	singleton.Common_Selected()
-	await singleton.game_scene.Dialogue(true, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
+	await singleton.game_scene.Dialogue_with_Speaker(player2_texture2d, _player_2_name, \"* I don't know. Lol.\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(player1_texture2d, _player_1_name, \"* Maybe we should go and check.\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(player2_texture2d, _player_2_name, \"* Good idea.\")
 	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
@@ -83,6 +93,8 @@ collision_layer = 8
 collision_mask = 0
 script = SubResource("GDScript_0ptgt")
 area2d_collider = NodePath("CollisionShape2D")
+player1_texture2d = ExtResource("1_rkto1")
+player2_texture2d = ExtResource("2_qv4ll")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="cutscene_00" unique_id=148742695]
 shape = SubResource("RectangleShape2D_fkxko")

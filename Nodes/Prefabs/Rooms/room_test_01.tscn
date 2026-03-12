@@ -43,9 +43,9 @@ func CutScene_00():
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	await singleton.game_scene.Dialogue(false, \"Long Ago. In a Cyberpunck city...\")
+	await singleton.game_scene.Dialogue(\"* Long Ago. In a Cyberpunck city...\")
 	singleton.Common_Selected()
-	await singleton.game_scene.Dialogue(false, \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
+	await singleton.game_scene.Dialogue(\"* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
 	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
@@ -250,8 +250,8 @@ func Battle():
 #-------------------------------------------------------------------------------
 func Dialogue_Before_Battle():
 	singleton.game_scene.Dialogue_Open()
-	await singleton.game_scene.Dialogue(true, \"* Prepeare yourself for a beaten.\")
-	await singleton.game_scene.Dialogue(true, \"* Because I am gonna beat you.\")
+	await singleton.game_scene.Dialogue(\"* Prepeare yourself for a beaten.\")
+	await singleton.game_scene.Dialogue(\"* Because I am gonna beat you.\")
 	singleton.game_scene.Dialogue_Close()
 #-------------------------------------------------------------------------------
 func Win_Battle():
@@ -336,34 +336,24 @@ func Interactable_Action():
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
 	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
 	#-------------------------------------------------------------------------------
-	Set_Face_Merchant()
-	await singleton.game_scene.Dialogue(true, \"* I am not an enemy, but a merchant. \"+_s)
+	var _merchant_name: String = \"Merchant's Name\"
+	var _player_name: String = \"Player 1's Name\"
+	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"* I am not an enemy, but a merchant. \"+_s)
 	singleton.Common_Submited()
-	Set_Face_Player()
-	await singleton.game_scene.Dialogue(true, \"* Do you want to buy something? \"+_s)
+	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"* Do you want to buy something? \"+_s)
 	singleton.game_scene.Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	await singleton.game_scene.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
-	Set_Face_Merchant()
-	await singleton.game_scene.Dialogue(true, \"* Thank you. \"+_s)
+	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"* Thank you. \"+_s)
 	singleton.Common_Submited()
-	Set_Face_Player()
-	await singleton.game_scene.Dialogue(true, \"* Thank you. \"+_s)
+	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"* Thank you. \"+_s)
 	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Idle\")
-#-------------------------------------------------------------------------------
-func Set_Face_Merchant():
-	singleton.game_scene.dialogue_menu_speaker1_image.texture = speaker1_image
-	singleton.game_scene.dialogue_menu_speaker1_name.text = \"[Merchant's Name]\"
-#-------------------------------------------------------------------------------
-func Set_Face_Player():
-	singleton.game_scene.dialogue_menu_speaker1_image.texture = speaker2_image
-	singleton.game_scene.dialogue_menu_speaker1_name.text = \"[Player 1's Name]\"
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------
 "
 
 [sub_resource type="Resource" id="Resource_kcmek"]

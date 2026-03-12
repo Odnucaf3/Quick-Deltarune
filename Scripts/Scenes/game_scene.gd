@@ -338,7 +338,10 @@ func _physics_process(_delta: float) -> void:
 					Player_Movement()
 					Followers_Movement()
 					Camera_Follow()
-					Input_PauseGame()
+					#-------------------------------------------------------------------------------
+					if(Input.is_action_just_pressed("Input_Pause")):
+						PauseMenu_Open()
+						return
 					#-------------------------------------------------------------------------------
 					if(Input.is_action_just_pressed("ui_accept")):
 						var _interactable_by_action_array : Array[Area2D] = player_interactable_by_action_area2d.get_overlapping_areas()
@@ -621,7 +624,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 		Add_KeyItem_to_Inventory(_item_script.pickable_keyitem[_i], _stored)
 	#-------------------------------------------------------------------------------
 	_s += "was picked."
-	await Dialogue(false, _s)
+	await Dialogue(_s)
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -3173,11 +3176,6 @@ func NormalMotion():
 	deltaTimeScale = 1.0
 	isSlowMotion = false
 #-------------------------------------------------------------------------------
-func Input_PauseGame() -> void:
-	if(Input.is_action_just_pressed("Input_Pause")):
-		PauseMenu_Open()
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
 func PauseMenu_Open():
 	pause_menu_panel.show()
 	pause_menu.show()
@@ -4046,7 +4044,7 @@ func OptionMenu_BackButton_Common() -> void:
 func Set_Idiome():
 	#-------------------------------------------------------------------------------
 	for _i in pause_menu_button_array.size():
-		pause_menu_button_array[_i].text = tr("pause_menu_button_"+str(_i))
+		pause_menu_button_array[_i].text = "  "+tr("pause_menu_button_"+str(_i))+"  "
 	#-------------------------------------------------------------------------------
 	SetMoney_Label()
 	#-------------------------------------------------------------------------------
@@ -4058,7 +4056,7 @@ func Set_Idiome():
 func SaveMenu_Open(_s:String, _dialogue:String):	# Used by "SaveSpot_Script".
 	Dialogue_Open()
 	singleton.Common_Submited()
-	await Dialogue(false, _dialogue)
+	await Dialogue(_dialogue)
 	Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	pause_menu_panel.show()
@@ -4947,20 +4945,30 @@ func Dialogue_Open():
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(dialogue_menu_button_next)
 #-------------------------------------------------------------------------------
-func Dialogue(_b:bool, _s:String):
+func Dialogue(_s:String):
 	dialogue_menu.show()
 	dialogue_menu_button_next.show()
 	#-------------------------------------------------------------------------------
-	if(_b):
-		dialogue_menu_speaker1.show()
-		dialogue_menu_speaker1_name.show()
-	#-------------------------------------------------------------------------------
-	else:
-		dialogue_menu_speaker1.hide()
-		dialogue_menu_speaker1_name.hide()
+	dialogue_menu_speaker1.hide()
+	dialogue_menu_speaker1_name.hide()
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaking_label.text = _s
 	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
+	await dialogue_signal
+#-------------------------------------------------------------------------------
+func Dialogue_with_Speaker(_texture:Texture2D, _nombre:String, _dialogue:String):
+	dialogue_menu.show()
+	dialogue_menu_button_next.show()
+	#-------------------------------------------------------------------------------
+	dialogue_menu_speaker1.show()
+	dialogue_menu_speaker1_image.texture = _texture
+	#-------------------------------------------------------------------------------
+	dialogue_menu_speaker1_name.text = "[color=" +hex_color_yellow+"]"+_nombre+"[/color]"
+	dialogue_menu_speaker1_name.show()
+	#-------------------------------------------------------------------------------
+	dialogue_menu_speaking_label.text = _dialogue
+	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
+	#-------------------------------------------------------------------------------
 	await dialogue_signal
 #-------------------------------------------------------------------------------
 func Dialogue_Close():

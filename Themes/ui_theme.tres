@@ -138,6 +138,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [resource]
+Button/colors/font_disabled_color = Color(1, 1, 1, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_p08fh")
 Button/styles/focus = SubResource("StyleBoxFlat_0kyu6")
 Button/styles/hover = SubResource("StyleBoxFlat_4x3fk")

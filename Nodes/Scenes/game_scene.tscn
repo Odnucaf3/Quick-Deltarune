@@ -231,6 +231,11 @@ script = ExtResource("7_igypo")
 item_resource = ExtResource("16_3p4s7")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
+[sub_resource type="Resource" id="Resource_1th3s"]
+resource_local_to_scene = true
+script = ExtResource("10_igypo")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="Resource" id="Resource_mitwg"]
 resource_local_to_scene = true
 script = ExtResource("10_igypo")
@@ -261,13 +266,13 @@ resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
+radius = 4.0
+
 [sub_resource type="Resource" id="Resource_rka03"]
 resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
-radius = 4.0
 
 [sub_resource type="Resource" id="Resource_ircg4"]
 resource_local_to_scene = true
@@ -345,11 +350,6 @@ script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_uqsek"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_chh8w"]
 resource_local_to_scene = true
 script = ExtResource("10_igypo")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
@@ -485,10 +485,10 @@ status_menu_statuseffect_description = NodePath("CanvasLayer/All Menues/Status_T
 black_panel = NodePath("CanvasLayer/Black_Panel")
 battle_black_panel = NodePath("World_2D/Battle_Black_Panel")
 pause_menu_panel = NodePath("CanvasLayer/Pause_Menu_Panel")
-pause_menu_money_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
+pause_menu_money_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
 money_serializable = SubResource("Resource_xvxdo")
 pause_menu = NodePath("CanvasLayer/Pause_Menu")
-pause_menu_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
+pause_menu_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
 pause_menu_party_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button3")]
 win_lose_retry_escape_menu_label = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_Label")
 win_lose_retry_escape_menu_vboxcontainer = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer")
@@ -619,7 +619,7 @@ shape = SubResource("RectangleShape2D_ik87f")
 [node name="Friend_01" parent="World_2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
 max_hp = 5
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1"), SubResource("Resource_xhx7r")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_s3ops"), SubResource("Resource_rka03")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_1th3s"), SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6"), SubResource("Resource_hko5v"), SubResource("Resource_s3ops")])
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World_2D/Player" unique_id=1124339265]
 collision_layer = 0
@@ -645,12 +645,12 @@ shape = SubResource("CircleShape2D_hxoxt")
 [node name="Friend_02" parent="World_2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
 max_hp = 5
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32"), SubResource("Resource_p4ejy"), SubResource("Resource_vap1g")])
 
 [node name="Friend_03" parent="World_2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
 max_hp = 5
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek"), SubResource("Resource_chh8w")])
+equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx"), SubResource("Resource_mtlrx"), SubResource("Resource_uqsek")])
 
 [node name="room_test_01" parent="World_2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
 
@@ -948,13 +948,13 @@ text = "  $500  "
 horizontal_alignment = 1
 
 [node name="Pause_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1516907207]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+theme = ExtResource("26_1th3s")
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
@@ -964,122 +964,114 @@ theme_override_constants/margin_bottom = 50
 layout_mode = 2
 theme_override_constants/separation = 100
 
-[node name="Panel" type="Panel" parent="CanvasLayer/Pause_Menu/HBox_Container" unique_id=661217803]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container" unique_id=308239335]
 layout_mode = 2
-size_flags_horizontal = 3
-theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel" unique_id=2101704770]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer" unique_id=1251953799]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer" unique_id=2101704770]
+layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer" unique_id=1861801040]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer" unique_id=1861801040]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer" unique_id=152040182]
+[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=152040182]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 40
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer" unique_id=2064458624]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=2064458624]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=386851202]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=386851202]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=619568749]
+[node name="Button" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=619568749]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Skills  "
 
-[node name="Button2" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1871497404]
+[node name="Button2" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1871497404]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Items  "
 
-[node name="Button3" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=777576563]
+[node name="Button3" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=777576563]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Equip  "
 
-[node name="Button4" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=278611721]
+[node name="Button4" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=278611721]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Status  "
 
-[node name="Button5" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=177262340]
+[node name="Button5" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=177262340]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Options  "
 
-[node name="Button6" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=892996443]
+[node name="Button6" type="Button" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=892996443]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("26_1th3s")
 theme_override_font_sizes/font_size = 30
 text = "  Go To Title  "
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1306836712]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1306836712]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1750351541]
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1750351541]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer" unique_id=1734598366]
+[node name="Control" type="Control" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer" unique_id=1734598366]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control" unique_id=701138548]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/Control" unique_id=701138548]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -117.0
-offset_top = -25.0
-offset_right = 117.0
-offset_bottom = 25.0
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme = ExtResource("26_1th3s")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer" unique_id=1292966464]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/Control/PanelContainer" unique_id=1292966464]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel/MarginContainer/VBoxContainer/Control/PanelContainer/MarginContainer" unique_id=1167649875]
+[node name="Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/Control/PanelContainer/MarginContainer" unique_id=1167649875]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 4
@@ -1174,6 +1166,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 
 [node name="Win_Lose_Retry_Escape_Label" type="Label" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer" unique_id=412828923]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
@@ -1194,6 +1187,7 @@ grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Win_Lose_Retry_Escape_VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer" unique_id=1717062175]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
@@ -1222,6 +1216,7 @@ size_flags_vertical = 8
 alignment = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu" unique_id=725610785]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -1316,6 +1311,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer" unique_id=1653832388]
 layout_mode = 2
+theme_override_constants/separation = 15
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu/VBoxContainer/Panel/MarginContainer/HBoxContainer" unique_id=838134441]
 self_modulate = Color(1, 1, 1, 0)
@@ -1377,6 +1373,7 @@ stretch_mode = 5
 flip_h = true
 
 [node name="Control2" type="Control" parent="CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/Dialogue_Menu" unique_id=164044143]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -1401,15 +1398,6 @@ texture = ExtResource("18_tnh07")
 expand_mode = 3
 stretch_mode = 5
 flip_h = true
-
-[node name="Dialogue_Menu" type="Control" parent="CanvasLayer" unique_id=625196485]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("26_1th3s")
 
 [node name="All Menues" type="Control" parent="CanvasLayer" unique_id=1627734076]
 layout_mode = 3
