@@ -15,3 +15,5 @@ dest_files=["res://Translations/Translation - Hoja 1.en_US.translation", "res://
 
 compress=true
 delimiter=0
+unescape_keys=false
+unescape_translations=true

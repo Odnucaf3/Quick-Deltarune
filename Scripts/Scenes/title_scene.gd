@@ -16,13 +16,14 @@ func _ready() -> void:
 	credit_menu.hide()
 	credit_menu_ricktext.meta_clicked.connect(func(_meta:Variant):_richtextlabel_on_meta_clicked(_meta))
 	singleton.Play_BGM(singleton.title_bgm)
+	#-------------------------------------------------------------------------------
+	singleton.Button_Array_Set_Vertical_Navigation(title_menu_button_array)
 	singleton.Move_to_Button(title_menu_button_array[0])
+	#-------------------------------------------------------------------------------
 	singleton.Set_Button(title_menu_button_array[0], func():singleton.Common_Selected(), func():Title_Menu_Start_Button_Submit(), func():Title_Menu_Any_Button_Cancel())
 	singleton.Set_Button(title_menu_button_array[1], func():singleton.Common_Selected(), func():Title_Menu_Option_Button_Submit(), func():Title_Menu_Any_Button_Cancel())
 	singleton.Set_Button(title_menu_button_array[2], func():singleton.Common_Selected(), func():Title_Menu_Credit_Button_Submit(), func():Title_Menu_Any_Button_Cancel())
 	singleton.Set_Button(title_menu_button_array[3], func():singleton.Common_Selected(), func():Title_Menu_Quit_Button_Submit(), func():Title_Menu_Any_Button_Cancel())
-	#-------------------------------------------------------------------------------
-	var _scroll_value: int = 34
 	#-------------------------------------------------------------------------------
 	var _selected: Callable = func(): singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
@@ -31,26 +32,17 @@ func _ready() -> void:
 	var _cancel: Callable = func(): Credit_Menu_Back_Button_Cancel()
 	#-------------------------------------------------------------------------------
 	var _up: Callable = func():
-		var _old_value: float = credit_menu_ricktext.get_v_scroll_bar().value
-		credit_menu_ricktext.get_v_scroll_bar().value -= _scroll_value
-		#-------------------------------------------------------------------------------
-		if(credit_menu_ricktext.get_v_scroll_bar().value < _old_value):
-			singleton.Common_Selected()
-		#-------------------------------------------------------------------------------
+		singleton.Scroll_Richtext_Up(credit_menu_ricktext)
 	#-------------------------------------------------------------------------------
 	var _down: Callable = func():
-		var _old_value: float = credit_menu_ricktext.get_v_scroll_bar().value
-		credit_menu_ricktext.get_v_scroll_bar().value += _scroll_value
-		#-------------------------------------------------------------------------------
-		if(credit_menu_ricktext.get_v_scroll_bar().value > _old_value):
-			singleton.Common_Selected()
-		#-------------------------------------------------------------------------------
+		singleton.Scroll_Richtext_Down(credit_menu_ricktext)
 	#-------------------------------------------------------------------------------
 	var _left: Callable = func(): pass
 	#-------------------------------------------------------------------------------
 	var _right: Callable = func(): pass
 	#-------------------------------------------------------------------------------
-	singleton.Set_Button_Ud_Down_Left_Right(credit_menu_button, _selected, _submit, _cancel, _up, _down, _left, _right)
+	singleton.Button_Remove_Navigation(credit_menu_button)
+	singleton.Set_Button_Up_Down_Left_Right(credit_menu_button, _selected, _submit, _cancel, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func Title_Menu_Start_Button_Submit():
 	singleton.Common_Submited()

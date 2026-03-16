@@ -14,4 +14,4 @@ pause_menu_button_1,Items,Items,アイテム
 pause_menu_button_2,Equip,Equipamientos,装備
 pause_menu_button_3,Status,Estatus,ステータス
 pause_menu_button_4,Options,Opciones,オプション
-pause_menu_button_5,Go to Title,Ir al Título,ゲームを終了
+pause_menu_button_5,Quit Game,Salir del Juego,ゲームを終了

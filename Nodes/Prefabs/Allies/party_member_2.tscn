@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_d1kby"]
 [ext_resource type="Texture2D" uid="uid://qw62qdjg350n" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/idle1.png" id="2_a6kb6"]
+[ext_resource type="Texture2D" uid="uid://dkboh25w2j4cj" path="res://Assets/profiles/player3_idle1.png" id="3_7258i"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_a6kb6"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="4_af2um"]
 [ext_resource type="Texture2D" uid="uid://dlm8ht7qj8se4" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/player.png" id="4_mnlw8"]
@@ -779,8 +780,8 @@ graph_offset = Vector2(22, 25)
 script = ExtResource("1_d1kby")
 id = &"Susana"
 texture2d = ExtResource("2_a6kb6")
+texture2d_face = ExtResource("3_7258i")
 max_hp = 22
-lore = "* An police lady"
 description = "* Strong to electricity, weal to fire."
 skill_array = Array[ExtResource("3_a6kb6")]([SubResource("Resource_byira"), SubResource("Resource_dpac0"), SubResource("Resource_rc083")])
 pivot = NodePath("Marker2D")

@@ -41,11 +41,21 @@ func CutScene_00():
 	#-------------------------------------------------------------------------------
 	await singleton.game_scene.Seconds(1.5)
 	#-------------------------------------------------------------------------------
+	var _s: String = \"Blabla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
+	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
+	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	await singleton.game_scene.Dialogue(\"* Long Ago. In a Cyberpunck city...\")
+	await singleton.game_scene.Dialogue(\"* Long Ago. In a Cyberpunck city... \"+_s)
 	singleton.Common_Selected()
-	await singleton.game_scene.Dialogue(\"* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\")
+	await singleton.game_scene.Dialogue(\"* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla. \"+_s)
 	singleton.game_scene.Dialogue_Close()
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------

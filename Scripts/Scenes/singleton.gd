@@ -143,7 +143,7 @@ func Set_Button(_b:Button, _selected:Callable, _submited:Callable, _canceled:Cal
 	)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Set_Button_Ud_Down_Left_Right(_b:Button, _selected:Callable, _submited:Callable, _canceled:Callable, _up:Callable, _down:Callable, _left:Callable, _right:Callable) -> void:
+func Set_Button_Up_Down_Left_Right(_b:Button, _selected:Callable, _submited:Callable, _canceled:Callable, _up:Callable, _down:Callable, _left:Callable, _right:Callable) -> void:
 	Disconnect_Button(_b)
 	_b.focus_entered.connect(_selected)
 	_b.pressed.connect(_submited)
@@ -166,6 +166,34 @@ func Set_Button_Ud_Down_Left_Right(_b:Button, _selected:Callable, _submited:Call
 			#-------------------------------------------------------------------------------
 			elif(Input.is_action_pressed("ui_right")):
 				_right.call()
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Set_Button_WSAD(_b:Button, _selected:Callable, _submited:Callable, _canceled:Callable, _w:Callable, _s:Callable, _a:Callable, _d:Callable) -> void:
+	Disconnect_Button(_b)
+	_b.focus_entered.connect(_selected)
+	_b.pressed.connect(_submited)
+	#-------------------------------------------------------------------------------
+	_b.gui_input.connect(
+		#-------------------------------------------------------------------------------
+		func(_event:InputEvent):
+			#-------------------------------------------------------------------------------
+			if(_event.is_action_pressed(cancelInput)):
+				_canceled.call()
+			#-------------------------------------------------------------------------------
+			elif(Input.is_action_pressed("Input_W")):
+				_w.call()
+			#-------------------------------------------------------------------------------
+			elif(Input.is_action_pressed("Input_S")):
+				_s.call()
+			#-------------------------------------------------------------------------------
+			elif(Input.is_action_pressed("Input_A")):
+				_a.call()
+			#-------------------------------------------------------------------------------
+			elif(Input.is_action_pressed("Input_D")):
+				_d.call()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	)
@@ -242,28 +270,6 @@ func Disconnect_Slider(_sl:Slider):
 	Disconnect_All(_sl.value_changed)
 	Disconnect_All(_sl.gui_input)
 #-------------------------------------------------------------------------------
-func Set_TabBar(_tb:TabBar, _selected:Callable, _canceled:Callable) -> void:
-	Disconnect_TabBar(_tb)
-	#-------------------------------------------------------------------------------
-	_tb.focus_entered.connect(_selected)
-	_tb.tab_changed.connect(func(_tab:int):_selected.call())
-	#-------------------------------------------------------------------------------
-	_tb.gui_input.connect(
-		#-------------------------------------------------------------------------------
-		func(_event:InputEvent):
-			#-------------------------------------------------------------------------------
-			if(_event.is_action_pressed(cancelInput)):
-				_canceled.call()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-	)
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Disconnect_TabBar(_tb:TabBar) -> void:
-	Disconnect_All(_tb.focus_entered)
-	Disconnect_All(_tb.tab_changed)
-	Disconnect_All(_tb.gui_input)
-#-------------------------------------------------------------------------------
 func Disconnect_All(_signal:Signal):
 	var _dictionaryArray : Array = _signal.get_connections()
 	#-------------------------------------------------------------------------------
@@ -289,6 +295,49 @@ func Move_to_First_Button(_array:Array[Button]) -> void:
 			Move_to_Button(_array[_i])
 			return
 		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Button_Array_Set_Vertical_Navigation(_button_array:Array[Button]):
+	#-------------------------------------------------------------------------------
+	if(_button_array.size() > 0):
+		if(_button_array.size() > 1):
+			Button_Set_Vertical_Navigation(_button_array[0], _button_array[_button_array.size()-1], _button_array[1])
+			#-------------------------------------------------------------------------------
+			for _i in range(1, _button_array.size()-1):
+				Button_Set_Vertical_Navigation(_button_array[_i], _button_array[_i-1], _button_array[_i+1])
+			#-------------------------------------------------------------------------------
+			Button_Set_Vertical_Navigation(_button_array[_button_array.size()-1], _button_array[_button_array.size()-2], _button_array[0])
+		#-------------------------------------------------------------------------------
+		else:
+			Button_Set_Vertical_Navigation(_button_array[0], _button_array[0], _button_array[0])
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Button_Set_Vertical_Navigation(_button:Button, _button_top:Button, _button_botton:Button):
+	_button.focus_neighbor_top = _button_top.get_path()
+	_button.focus_neighbor_bottom = _button_botton.get_path()
+	_button.focus_neighbor_left = _button.get_path()
+	_button.focus_neighbor_right = _button.get_path()
+#-------------------------------------------------------------------------------
+func Button_Remove_Navigation(_button:Button):
+	_button.focus_neighbor_top = _button.get_path()
+	_button.focus_neighbor_bottom = _button.get_path()
+	_button.focus_neighbor_left = _button.get_path()
+	_button.focus_neighbor_right = _button.get_path()
+#-------------------------------------------------------------------------------
+func Scroll_Richtext_Down(_richtext:RichTextLabel):
+	var _old_value: float = _richtext.get_v_scroll_bar().value
+	_richtext.get_v_scroll_bar().value += int(float(_richtext.get_theme_font_size("normal_font_size"))*17/12)	#NOTA: 17/12 es como una relacion par que quede más bonito.
+	#-------------------------------------------------------------------------------
+	if(_richtext.get_v_scroll_bar().value > _old_value):
+		singleton.Common_Selected()
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Scroll_Richtext_Up(_richtext:RichTextLabel):
+	var _old_value: float = _richtext.get_v_scroll_bar().value
+	_richtext.get_v_scroll_bar().value -= int(float(_richtext.get_theme_font_size("normal_font_size"))*17/12)
+	#-------------------------------------------------------------------------------
+	if(_richtext.get_v_scroll_bar().value < _old_value):
+		singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Play_BGM(_bgm:AudioStream) -> void:

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_8v33q"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_jbqvd"]
+[ext_resource type="Texture2D" uid="uid://bw6vrgilaeyol" path="res://Assets/profiles/player2_idle.PNG" id="3_wuufr"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="4_lea5u"]
 [ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/Skills/heal.tres" id="4_ton5n"]
 [ext_resource type="Texture2D" uid="uid://ccv5xpttu6mqy" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle1.png" id="5_o041u"]
@@ -821,8 +822,8 @@ graph_offset = Vector2(-43, 65.58026)
 script = ExtResource("1_8v33q")
 id = &"Ralsay"
 texture2d = ExtResource("5_o041u")
+texture2d_face = ExtResource("3_wuufr")
 max_hp = 36
-lore = "* An generic cyber punk foot soldier."
 description = "* Strong to Ice, weak to electriciy."
 skill_array = Array[ExtResource("3_jbqvd")]([SubResource("Resource_rh1a3"), SubResource("Resource_hbxnr"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr")])
 pivot = NodePath("Pivot")

@@ -3,12 +3,12 @@ class_name Party_Member
 #-------------------------------------------------------------------------------
 @export var id: StringName
 @export var texture2d: Texture2D
+@export var texture2d_face: Texture2D
 var hp: int
 @export var max_hp: int = 15
 var sp: int
 @export var max_sp: int = 20
 #-------------------------------------------------------------------------------
-@export_multiline  var lore: String
 @export_multiline  var description: String
 #-------------------------------------------------------------------------------
 var is_in_guard: bool
