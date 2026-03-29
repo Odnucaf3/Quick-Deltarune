@@ -3,24 +3,24 @@
 [ext_resource type="Script" uid="uid://dcihsfwvboye5" path="res://Scripts/Scenes/game_scene.gd" id="1_xqt5u"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="2_hf1mx"]
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="5_rpgth"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/guard.tres" id="6_lujb4"]
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="5_rpgth"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="6_lujb4"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="7_igypo"]
-[ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/money.tres" id="8_3p4s7"]
+[ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/key_0.tres" id="8_3p4s7"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="10_igypo"]
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="11_hko5v"]
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
 [ext_resource type="Texture2D" uid="uid://c5tbmn2ticnw1" path="res://Assets/kenney_assets/pattern_pack_2/Thin/Default (256px)/pattern_0016.png" id="12_s3ops"]
-[ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/party_member.tscn" id="13_hxoxt"]
-[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/Skills/v_slash.tres" id="15_mitwg"]
-[ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/Skills/poison_stinger.tres" id="16_3p4s7"]
+[ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/ally_0.tscn" id="13_hxoxt"]
+[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/User_Skills/skill_10.tres" id="15_mitwg"]
+[ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/User_Skills/skill_4.tres" id="16_3p4s7"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
-[ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/party_member_2.tscn" id="20_lujb4"]
+[ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/ally_1.tscn" id="20_lujb4"]
 [ext_resource type="Texture2D" uid="uid://bkwxpp3bs0jvk" path="res://icon.svg" id="21_hxoxt"]
-[ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/party_member_3.tscn" id="21_rpgth"]
+[ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/ally_2.tscn" id="21_rpgth"]
 [ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="25_1th3s"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
 [ext_resource type="Script" uid="uid://c7bqs6lok38oe" path="res://Scripts/Scenes/canvas_layer.gd" id="29_s3ops"]
@@ -373,7 +373,7 @@ bg_color = Color(0.5568628, 1, 0.4392157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_title", "item_menu_description", "item_menu_cost_label", "item_menu_tp_cost_num_label", "item_menu_cooldown_num_label", "item_menu_held_label", "item_menu_hold_num_label", "item_menu_storage_num_label", "item_menu_all_scrollContainer", "item_menu_all_content", "item_menu_all_button", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_button", "item_menu_equip_scrollContainer", "item_menu_equip_content", "item_menu_equip_button", "item_menu_key_scrollContainer", "item_menu_key_content", "item_menu_key_button", "user_menu", "user_menu_title", "user_menu_description", "user_menu_cost_label", "user_menu_tp_cost_num_label", "user_menu_cooldown_num_label", "user_menu_held_label", "user_menu_hold_num_label", "user_menu_storage_num_label", "user_menu_skill_scrollContainer", "user_menu_skill_content", "user_menu_skill_button", "user_menu_equip_scrollContainer", "user_menu_equip_content", "user_menu_equip_button", "user_menu_equip_button_label", "user_menu_info_container", "user_menu_info_button", "user_menu_info_image", "user_menu_stats_scrollContainer", "user_menu_stats_content", "user_menu_stats_button", "user_menu_statuseffect_scrollContainer", "user_menu_statuseffect_content", "user_menu_statuseffect_button", "teleport_menu", "teleport_menu_title", "teleport_menu_rect", "teleport_menu_description", "teleport_menu_zone_scrollContainer", "teleport_menu_zone_content", "teleport_menu_zone_button_array", "teleport_menu_bonfire_scrollContainer", "teleport_menu_bonfire_content", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_button_array", "pause_menu_party_button_array", "win_lose_retry_escape_menu_label", "win_lose_retry_escape_menu_vboxcontainer", "win_lose_retry_escape_menu_button", "debug_label", "fps_label", "camera", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "hitbox", "grazebox", "hitbox_animation_tree", "battlemenu_equipbutton_emptyspace", "timer_label", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label")]
+[node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_title", "item_menu_description_title", "item_menu_description", "item_menu_cost_label", "item_menu_tp_cost_num_label", "item_menu_cooldown_num_label", "item_menu_hold_label", "item_menu_hold_num_label", "item_menu_storage_num_label", "item_menu_all_scrollContainer", "item_menu_all_content", "item_menu_all_button", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_button", "item_menu_equip_scrollContainer", "item_menu_equip_content", "item_menu_equip_button", "item_menu_key_scrollContainer", "item_menu_key_content", "item_menu_key_button", "user_menu", "user_menu_title", "user_menu_description_title", "user_menu_description", "user_menu_cost_label", "user_menu_tp_cost_num_label", "user_menu_cooldown_num_label", "user_menu_held_label", "user_menu_hold_num_label", "user_menu_storage_num_label", "user_menu_skill_scrollContainer", "user_menu_skill_content", "user_menu_skill_button", "user_menu_equip_scrollContainer", "user_menu_equip_content", "user_menu_equip_button", "user_menu_equip_button_label", "user_menu_info_container", "user_menu_info_button", "user_menu_info_image", "user_menu_stats_scrollContainer", "user_menu_stats_content", "user_menu_stats_button", "user_menu_statuseffect_scrollContainer", "user_menu_statuseffect_content", "user_menu_statuseffect_button", "teleport_menu", "teleport_menu_title", "teleport_menu_rect", "teleport_menu_description", "teleport_menu_zone_scrollContainer", "teleport_menu_zone_content", "teleport_menu_zone_button_array", "teleport_menu_bonfire_scrollContainer", "teleport_menu_bonfire_content", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "black_panel", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_title_label", "pause_menu_button_array", "pause_menu_party_label", "pause_menu_party_button_content", "win_lose_retry_escape_menu_label", "win_lose_retry_escape_menu_vboxcontainer", "win_lose_retry_escape_menu_button", "debug_label", "fps_label", "camera", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "hitbox", "grazebox", "hitbox_animation_tree", "battlemenu_equipbutton_emptyspace", "timer_label", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_bar_label")]
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World_2D")
 room_test = NodePath("World_2D/room_test_01")
@@ -388,6 +388,7 @@ savespot_menu = NodePath("CanvasLayer/Save_Menu")
 savespot_menu_button_array = [NodePath("CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Save_Menu/Panel/MarginContainer/VBoxContainer/Button2")]
 ally_ui_prefab = ExtResource("20_ik87f")
 enemy_ui_prefab = ExtResource("16_mapp4")
+part_button_prefab = ExtResource("19_xrh8u")
 player_characterbody2d = NodePath("World_2D/Player")
 player_collider = NodePath("World_2D/Player/CollisionShape2D")
 player_interactable_by_action_area2d = NodePath("World_2D/Player/interactable_by_Action_Area2D")
@@ -396,11 +397,12 @@ player_interactable_by_touch_enemy_area2d = NodePath("World_2D/Player/interactab
 friend_party = [NodePath("World_2D/Player/Friend_01"), NodePath("World_2D/Friend_02"), NodePath("World_2D/Friend_03")]
 item_menu = NodePath("CanvasLayer/All Menues/Item_Menues")
 item_menu_title = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer/Label")
+item_menu_description_title = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer3/Label")
 item_menu_description = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/RichTextLabel2")
 item_menu_cost_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label5")
 item_menu_tp_cost_num_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label3")
 item_menu_cooldown_num_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer/Label4")
-item_menu_held_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
+item_menu_hold_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label3")
 item_menu_hold_num_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label2")
 item_menu_storage_num_label = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2/HBoxContainer2/Label4")
 item_menu_all_scrollContainer = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer/All_Items_ScrollContainer")
@@ -419,6 +421,7 @@ iten_resource_attack = SubResource("Resource_gg6rv")
 iten_resource_defense = SubResource("Resource_rpgth")
 user_menu = NodePath("CanvasLayer/All Menues/Status_Menues")
 user_menu_title = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer2/Label")
+user_menu_description_title = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer3/Label")
 user_menu_description = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3/RichTextLabel2")
 user_menu_cost_label = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer/Label5")
 user_menu_tp_cost_num_label = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer/Label3")
@@ -463,8 +466,10 @@ pause_menu_panel = NodePath("CanvasLayer/Pause_Menu_Panel")
 pause_menu_money_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/Control/PanelContainer/MarginContainer/Label")
 money_serializable = SubResource("Resource_xvxdo")
 pause_menu = NodePath("CanvasLayer/Pause_Menu")
+pause_menu_title_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/pause_title_Label")
 pause_menu_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
-pause_menu_party_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer/Party_Button3")]
+pause_menu_party_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/party_members_title_Label")
+pause_menu_party_button_content = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer")
 win_lose_retry_escape_menu_label = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_Label")
 win_lose_retry_escape_menu_vboxcontainer = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer")
 win_lose_retry_escape_menu_button = [NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button2"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button3")]
@@ -598,7 +603,6 @@ shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World_2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
 max_hp = 5
-description = "* Strong to fire, weak to ice. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1"), SubResource("Resource_xhx7r")])
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6"), SubResource("Resource_hko5v")])
 
@@ -626,13 +630,11 @@ shape = SubResource("CircleShape2D_hxoxt")
 [node name="Friend_02" parent="World_2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
 max_hp = 5
-description = "* Strong to Ice, weak to electriciy. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32")])
 
 [node name="Friend_03" parent="World_2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
 max_hp = 5
-description = "* Strong to electricity, weal to fire. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
 equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx")])
 
 [node name="room_test_01" parent="World_2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
@@ -929,7 +931,6 @@ text = "  $500  "
 horizontal_alignment = 1
 
 [node name="Pause_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1516907207]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -963,7 +964,7 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=152040182]
+[node name="pause_title_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=152040182]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
@@ -1082,7 +1083,7 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="pause_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2" unique_id=887823621]
+[node name="party_members_title_Label" type="Label" parent="CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2" unique_id=887823621]
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 10
@@ -1345,7 +1346,6 @@ grow_vertical = 2
 theme = ExtResource("26_1th3s")
 
 [node name="Item_Menues" type="VBoxContainer" parent="CanvasLayer/All Menues" unique_id=1865643799]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

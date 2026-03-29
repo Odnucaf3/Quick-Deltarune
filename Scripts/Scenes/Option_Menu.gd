@@ -157,7 +157,7 @@ func GetResolution() -> Vector2i:
 #-------------------------------------------------------------------------------
 #region IDIOME SETTINGS
 func SetIdiome_Start():
-	SetIdiome(optionSaveData_Json["idiomeIndex"])
+	Set_Idiome(optionSaveData_Json["idiomeIndex"])
 	AddIdiomeButtons(idiome_optionbutton)
 	idiome_optionbutton.select(optionSaveData_Json["idiomeIndex"])
 	#-------------------------------------------------------------------------------
@@ -176,28 +176,28 @@ func AddIdiomeButtons(_ob:OptionButton) -> void:
 #-------------------------------------------------------------------------------
 func IdiomeButton_Submited(_index:int):
 	optionSaveData_Json["idiomeIndex"] = _index
-	SetIdiome(_index)
+	Set_Idiome(_index)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func SetIdiome(_index:int):
+func Set_Idiome(_index:int):
 	var _idiomes:PackedStringArray = TranslationServer.get_loaded_locales()
 	TranslationServer.set_locale(_idiomes[_index])
 	#-------------------------------------------------------------------------------
-	title.text = tr("option_menu_label_title")
+	title.text = tr("option_menu_title_label")
 	#-------------------------------------------------------------------------------
-	idiome_label.text = "* "+tr("option_menu_label_idiome")+":  "
+	idiome_label.text = "* "+tr("option_menu_idiome_label")+":  "
 	#-------------------------------------------------------------------------------
-	resolution_label.text = "* "+tr("option_menu_label_resolution")+":  "
-	fullscreen_label.text = "* "+tr("option_menu_label_fullScreen")+":  "
-	borderless_label.text = "* "+tr("option_menu_label_borderless")+":  "
+	resolution_label.text = "* "+tr("option_menu_resolution_label")+":  "
+	fullscreen_label.text = "* "+tr("option_menu_fullscreen_label")+":  "
+	borderless_label.text = "* "+tr("option_menu_borderless_label")+":  "
 	#-------------------------------------------------------------------------------
-	vsync_label.text = "* "+tr("option_menu_label_vSync")+":  "
+	vsync_label.text = "* "+tr("option_menu_vsync_label")+":  "
 	#-------------------------------------------------------------------------------
-	master_label.text = "* "+tr("option_menu_label_master")+":  "
-	sfx_label.text = "* "+tr("option_menu_label_sfx")+":  "
-	bgm_label.text = "* "+tr("option_menu_label_bgm")+":  "
+	master_label.text = "* "+tr("option_menu_master_label")+":  "
+	sfx_label.text = "* "+tr("option_menu_sfx_label")+":  "
+	bgm_label.text = "* "+tr("option_menu_bgm_label")+":  "
 	#-------------------------------------------------------------------------------
-	back.text = "  "+tr("option_menu_button_back")+"  "
+	back.text = "  "+tr("option_menu_back_button")+"  "
 #endregion
 #-------------------------------------------------------------------------------
 #region FULLSCREEN SETTINGS

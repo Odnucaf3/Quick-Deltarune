@@ -8,13 +8,14 @@
 [ext_resource type="Texture2D" uid="uid://ctrwuju6ilag0" path="res://Assets/ansimuz/warped city files/v1/background/near-buildings-bg.png" id="5_ji8g2"]
 [ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="7_f2pgg"]
 
-[node name="title_scene" type="Node" unique_id=1463807014 node_paths=PackedStringArray("title_menu", "title_menu_button_array", "credit_menu", "credit_menu_ricktext", "credit_menu_button")]
+[node name="title_scene" type="Node" unique_id=1463807014 node_paths=PackedStringArray("title_menu", "title_menu_label", "title_menu_button_array", "credits_menu", "credits_menu_richtext", "credits_menu_button")]
 script = ExtResource("1_30ben")
 title_menu = NodePath("CanvasLayer/title_menu")
+title_menu_label = NodePath("CanvasLayer/title_menu/VBoxContainer2/Label")
 title_menu_button_array = [NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button"), NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/title_menu/VBoxContainer2/PanelContainer/MarginContainer/VBoxContainer/Button4")]
-credit_menu = NodePath("CanvasLayer_layer10/VBoxContainer")
-credit_menu_ricktext = NodePath("CanvasLayer_layer10/VBoxContainer/Panel/Credits/RichTextLabel")
-credit_menu_button = NodePath("CanvasLayer_layer10/VBoxContainer/Button")
+credits_menu = NodePath("CanvasLayer_layer10/VBoxContainer")
+credits_menu_richtext = NodePath("CanvasLayer_layer10/VBoxContainer/Panel/Credits/RichTextLabel")
+credits_menu_button = NodePath("CanvasLayer_layer10/VBoxContainer/Button")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=607743842]
 
@@ -197,6 +198,7 @@ text = "  Quit  "
 layer = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer_layer10" unique_id=1686098575]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

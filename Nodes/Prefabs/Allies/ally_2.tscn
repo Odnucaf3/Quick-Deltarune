@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://vt43nxol7i3t"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_8v33q"]
+[ext_resource type="Resource" uid="uid://buxlsnd05sofl" path="res://Resources/Users/ally_2.tres" id="2_ikwd1"]
+[ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="3_gftki"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_jbqvd"]
-[ext_resource type="Texture2D" uid="uid://bw6vrgilaeyol" path="res://Assets/profiles/player2_idle.PNG" id="3_wuufr"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="4_lea5u"]
-[ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/Skills/heal.tres" id="4_ton5n"]
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="4_lea5u"]
+[ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/User_Skills/skill_2.tres" id="4_ton5n"]
 [ext_resource type="Texture2D" uid="uid://ccv5xpttu6mqy" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle1.png" id="5_o041u"]
-[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/Skills/morning_star.tres" id="5_ton5n"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/guard.tres" id="5_wuufr"]
+[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/User_Skills/skill_3.tres" id="5_ton5n"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="5_wuufr"]
 [ext_resource type="Texture2D" uid="uid://io8f7o6inlv6" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle2.png" id="6_xwnir"]
 [ext_resource type="Texture2D" uid="uid://drcr74enj3r3s" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle3.png" id="7_ykxxv"]
 [ext_resource type="Texture2D" uid="uid://csxqly0yxihgj" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle4.png" id="8_xohib"]
@@ -27,6 +28,11 @@
 [ext_resource type="Texture2D" uid="uid://cl1024abymhs3" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot1.png" id="22_m00yb"]
 [ext_resource type="Texture2D" uid="uid://bem4oqftkijho" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot2.png" id="23_i878o"]
 [ext_resource type="Texture2D" uid="uid://coahfhwulry5y" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Shoot3.png" id="24_lqmrt"]
+
+[sub_resource type="Resource" id="Resource_ah610"]
+script = ExtResource("3_gftki")
+party_member_resource = ExtResource("2_ikwd1")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="Resource" id="Resource_rh1a3"]
 script = ExtResource("3_jbqvd")
@@ -820,11 +826,8 @@ graph_offset = Vector2(-43, 65.58026)
 
 [node name="Friend_03" type="Node2D" unique_id=666836209 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_8v33q")
-id = &"Ralsay"
-texture2d = ExtResource("5_o041u")
-texture2d_face = ExtResource("3_wuufr")
+party_member_serializable = SubResource("Resource_ah610")
 max_hp = 36
-description = "* Strong to Ice, weak to electriciy."
 skill_array = Array[ExtResource("3_jbqvd")]([SubResource("Resource_rh1a3"), SubResource("Resource_hbxnr"), SubResource("Resource_lea5u"), SubResource("Resource_wuufr")])
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")

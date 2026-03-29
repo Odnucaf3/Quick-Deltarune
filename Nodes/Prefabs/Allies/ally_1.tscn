@@ -1,13 +1,18 @@
 [gd_scene format=3 uid="uid://dottqr7xoeeuf"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_d1kby"]
-[ext_resource type="Texture2D" uid="uid://qw62qdjg350n" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/idle1.png" id="2_a6kb6"]
-[ext_resource type="Texture2D" uid="uid://dkboh25w2j4cj" path="res://Assets/profiles/player3_idle1.png" id="3_7258i"]
+[ext_resource type="Resource" uid="uid://coer5hfqg2dth" path="res://Resources/Users/ally_1.tres" id="2_vu2oh"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_a6kb6"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/Skills/attack.tres" id="4_af2um"]
+[ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="3_wckdc"]
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="4_af2um"]
 [ext_resource type="Texture2D" uid="uid://dlm8ht7qj8se4" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/player.png" id="4_mnlw8"]
-[ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/Skills/rude_buster.tres" id="4_rc083"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/Skills/guard.tres" id="5_7258i"]
+[ext_resource type="Resource" uid="uid://1piy8o8exhtk" path="res://Resources/User_Skills/skill_9.tres" id="4_rc083"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="5_7258i"]
+
+[sub_resource type="Resource" id="Resource_j6447"]
+script = ExtResource("3_wckdc")
+party_member_resource = ExtResource("2_vu2oh")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="Resource" id="Resource_byira"]
 script = ExtResource("3_a6kb6")
@@ -778,11 +783,8 @@ graph_offset = Vector2(22, 25)
 
 [node name="Friend_03" type="Node2D" unique_id=661447745 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_d1kby")
-id = &"Susana"
-texture2d = ExtResource("2_a6kb6")
-texture2d_face = ExtResource("3_7258i")
+party_member_serializable = SubResource("Resource_j6447")
 max_hp = 22
-description = "* Strong to electricity, weal to fire."
 skill_array = Array[ExtResource("3_a6kb6")]([SubResource("Resource_byira"), SubResource("Resource_dpac0"), SubResource("Resource_rc083")])
 pivot = NodePath("Marker2D")
 sprite = NodePath("Marker2D/Sprite2D")

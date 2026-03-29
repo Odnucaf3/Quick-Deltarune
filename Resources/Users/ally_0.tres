@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Party_Member_Resource" format=3 uid="uid://c0hgqpee0skjt"]
+
+[ext_resource type="Texture2D" uid="uid://ci6773anv87c4" path="res://Assets/ansimuz/warped city files/v1/sprites/player/idle-1.png" id="1_bcdi5"]
+[ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="2_ubtia"]
+[ext_resource type="Script" uid="uid://msji6sjd708t" path="res://Scripts/Resources/party_member_resource.gd" id="3_rfo30"]
+
+[resource]
+script = ExtResource("3_rfo30")
+body_sprite = ExtResource("1_bcdi5")
+face_sprite = ExtResource("2_ubtia")
+metadata/_custom_type_script = "uid://msji6sjd708t"

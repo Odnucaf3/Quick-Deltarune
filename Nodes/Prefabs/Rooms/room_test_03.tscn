@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="4_6mw6j"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="5_25x5p"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="5_37vpw"]
-[ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/potion_3cd.tres" id="5_fw0vv"]
+[ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/consumable_3.tres" id="5_fw0vv"]
 [ext_resource type="PackedScene" uid="uid://dace4b2raluo2" path="res://Nodes/Prefabs/Warps/warp_down.tscn" id="6_25x5p"]
 
 [sub_resource type="GDScript" id="GDScript_47s0u"]

@@ -4,17 +4,17 @@
 [ext_resource type="PackedScene" uid="uid://kty6sii5hhfk" path="res://Nodes/Prefabs/Warps/warp_up.tscn" id="3_52n5y"]
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="5_8dt50"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
-[ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_1.tscn" id="6_jyvag"]
-[ext_resource type="Resource" uid="uid://c03am3sxypfu3" path="res://Resources/Consumable_Items/potion_10tp.tres" id="8_52n5y"]
+[ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_0.tscn" id="6_jyvag"]
+[ext_resource type="Resource" uid="uid://c03am3sxypfu3" path="res://Resources/Consumable_Items/consumable_4.tres" id="8_52n5y"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="8_ygji3"]
 [ext_resource type="PackedScene" uid="uid://c8fmwkm58xib0" path="res://Nodes/Prefabs/savespot_prefab.tscn" id="9_4u8d0"]
-[ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip/coil_sword.tres" id="9_mxnnk"]
+[ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip_Items/equip_0.tres" id="9_mxnnk"]
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="10_xdoc7"]
-[ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/money.tres" id="11_5drey"]
-[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/potion.tres" id="12_ygji3"]
+[ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/key_0.tres" id="11_5drey"]
+[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/consumable_0.tres" id="12_ygji3"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="13_mxnnk"]
-[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/revive_mint.tres" id="14_xdoc7"]
-[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/mystery_key.tres" id="15_5drey"]
+[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/consumable_5.tres" id="14_xdoc7"]
+[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/key_1.tres" id="15_5drey"]
 [ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="15_8ss50"]
 [ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="16_srwso"]
 
@@ -41,23 +41,15 @@ func CutScene_00():
 	#-------------------------------------------------------------------------------
 	await singleton.game_scene.Seconds(1.5)
 	#-------------------------------------------------------------------------------
-	var _s: String = \"Blabla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla\"
-	_s += \" bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
-	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	await singleton.game_scene.Dialogue(\"* Long Ago. In a Cyberpunck city... \"+_s)
+	await singleton.game_scene.Dialogue(\"scene_0_dialogue_0\")
 	singleton.Common_Selected()
-	await singleton.game_scene.Dialogue(\"* Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla. \"+_s)
-	singleton.game_scene.Dialogue_Close()
+	await singleton.game_scene.Dialogue(\"scene_0_dialogue_1\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue(\"scene_0_dialogue_2\")
 	singleton.Common_Canceled()
+	singleton.game_scene.Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
 	_tween.tween_property(singleton.game_scene.black_panel, \"self_modulate\", Color.TRANSPARENT, 0.3)
@@ -335,32 +327,32 @@ func _ready() -> void:
 func Interactable_Action():
 	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Walk\")
 	#-------------------------------------------------------------------------------
+	var _merchant_name: String = tr(\"merchant_0_name\")
+	var _player_name: String = tr(\"name_party_member_0\")
+	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
 	singleton.Common_Submited()
-	#-------------------------------------------------------------------------------
-	var _s: String = \"Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
-	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
-	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
-	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
-	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
-	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla \"
-	_s += \"bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla.\"
-	#-------------------------------------------------------------------------------
-	var _merchant_name: String = \"Merchant's Name\"
-	var _player_name: String = \"Player 1's Name\"
-	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"* I am not an enemy, but a merchant. \"+_s)
-	singleton.Common_Submited()
-	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"* Do you want to buy something? \"+_s)
+	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"merchant_0_dialogue_0\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"merchant_0_dialogue_1\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"merchant_0_dialogue_2\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"merchant_0_dialogue_3\")
 	singleton.game_scene.Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	await singleton.game_scene.Open_Market(name, _consumableitem_array, _equipitem_array, _keyitem_array)
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Dialogue_Open()
-	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"* Thank you. \"+_s)
-	singleton.Common_Submited()
-	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"* Thank you. \"+_s)
-	singleton.game_scene.Dialogue_Close()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"merchant_0_dialogue_4\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"merchant_0_dialogue_5\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker1_image, _merchant_name, \"merchant_0_dialogue_6\")
+	singleton.Common_Selected()
+	await singleton.game_scene.Dialogue_with_Speaker(speaker2_image, _player_name, \"merchant_0_dialogue_7\")
 	singleton.Common_Canceled()
+	singleton.game_scene.Dialogue_Close()
 	#-------------------------------------------------------------------------------
 	singleton.game_scene.Animation_StateMachine(user.animation_tree, \"Base_StateMachine/\", \"Idle\")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------

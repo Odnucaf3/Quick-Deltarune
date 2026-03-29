@@ -4,6 +4,14 @@ class_name Game_Scene
 enum GAME_STATE{IN_WORLD, IN_MENU, IN_BATTLE}
 enum BATTLE_STATE{STILL_FIGHTING, YOU_WIN, YOU_LOSE, YOU_ESCAPE, YOU_RETRY}
 #-------------------------------------------------------------------------------
+const consumable_item_resource_path: String = "res://Resources/Consumable_Items/"
+const equip_item_resource_path: String = "res://Resources/Equip_Items/"
+const key_item_resource_path: String = "res://Resources/Key_Items/"
+const user_resource_path: String = "res://Resources/Users/"
+const user_skill_resource_path: String = "res://Resources/User_Skills/"
+const user_status_effect_resource_path: String = "res://Resources/User_Status_Effects/"
+const skill_animation_effect_path: String = "res://Nodes/Prefabs/Skill Animation Effects/"
+#-------------------------------------------------------------------------------
 #region VARIABLES
 #-------------------------------------------------------------------------------
 @export var world_2d: Node2D
@@ -32,6 +40,7 @@ var key_dictionary: Dictionary[String, int]
 @export_group("Prefabs")
 @export var ally_ui_prefab: PackedScene
 @export var enemy_ui_prefab: PackedScene
+@export var part_button_prefab: PackedScene
 #-------------------------------------------------------------------------------
 @export_group("Player Nodes")
 @export var player_characterbody2d: CharacterBody2D
@@ -50,11 +59,12 @@ var enemy_party_dead: Array[Party_Member]
 @export_group("Item Menues")
 @export var item_menu: Control
 @export var item_menu_title: Label
+@export var item_menu_description_title: Label
 @export var item_menu_description: RichTextLabel
 @export var item_menu_cost_label: Label
 @export var item_menu_tp_cost_num_label: Label
 @export var item_menu_cooldown_num_label: Label
-@export var item_menu_held_label: Label
+@export var item_menu_hold_label: Label
 @export var item_menu_hold_num_label: Label
 @export var item_menu_storage_num_label: Label
 #-------------------------------------------------------------------------------
@@ -95,9 +105,10 @@ var key_item_array_in_battle: Array[Key_Item_Serializable]
 @export var iten_resource_attack: Item_Serializable
 @export var iten_resource_defense: Item_Serializable
 #-------------------------------------------------------------------------------
-@export_group("Status Menues")
+@export_group("User Menues")
 @export var user_menu: Control
 @export var user_menu_title: Label
+@export var user_menu_description_title: Label
 @export var user_menu_description: RichTextLabel
 @export var user_menu_cost_label: Label
 @export var user_menu_tp_cost_num_label: Label
@@ -106,31 +117,31 @@ var key_item_array_in_battle: Array[Key_Item_Serializable]
 @export var user_menu_hold_num_label: Label
 @export var user_menu_storage_num_label: Label
 #-------------------------------------------------------------------------------
-@export_group("User Skill Menu")
+@export_group("User Menu Skill")
 @export var user_menu_skill_scrollContainer: ScrollContainer
 @export var user_menu_skill_content: VBoxContainer
 @export var user_menu_skill_button: Button
 var user_menu_skill_button_array: Array[Button]
 #-------------------------------------------------------------------------------
-@export_group("User Equip Menu")
+@export_group("User Menu Equip")
 @export var user_menu_equip_scrollContainer: ScrollContainer
 @export var user_menu_equip_content: VBoxContainer
 @export var user_menu_equip_button: Button
 var user_menu_equip_button_array: Array[Button]
 @export var user_menu_equip_button_label: Label
 #-------------------------------------------------------------------------------
-@export_group("User Info Menu")
+@export_group("User Menu Info")
 @export var user_menu_info_container: Control
 @export var user_menu_info_button: Button
 @export var user_menu_info_image: TextureRect
 #-------------------------------------------------------------------------------
-@export_group("User Stats Menu")
+@export_group("User Menu Stats")
 @export var user_menu_stats_scrollContainer: ScrollContainer
 @export var user_menu_stats_content: VBoxContainer
 @export var user_menu_stats_button: Button
 var user_menu_stats_button_array: Array[Button]
 #-------------------------------------------------------------------------------
-@export_group("User Status-Effect Menu")
+@export_group("User Menu Status-Effect")
 @export var user_menu_statuseffect_scrollContainer: ScrollContainer
 @export var user_menu_statuseffect_content: VBoxContainer
 @export var user_menu_statuseffect_button: Button
@@ -169,8 +180,11 @@ var current_player_turn: int = 0
 @export var pause_menu_money_label: Label
 @export var money_serializable: Key_Item_Serializable
 @export var pause_menu: Control
+@export var pause_menu_title_label: Label
 @export var pause_menu_button_array: Array[Button]
-@export var pause_menu_party_button_array: Array[Party_Button]
+@export var pause_menu_party_label: Label
+@export var pause_menu_party_button_content: Control
+var pause_menu_party_button_array: Array[Party_Button]
 var isSlowMotion: bool = false
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool = true
@@ -345,6 +359,8 @@ func _ready() -> void:
 	Destroy_Childrens(user_menu_equip_content)
 	Destroy_Childrens(user_menu_stats_content)
 	Destroy_Childrens(user_menu_statuseffect_content)
+	#-------------------------------------------------------------------------------
+	Destroy_Childrens(pause_menu_party_button_content)
 	#-------------------------------------------------------------------------------
 	Destroy_Childrens(teleport_menu_bonfire_content)
 	#Destroy_Childrens(teleport_menu_zone_content)
@@ -602,7 +618,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 	for _i in _item_script.pickable_consumableitem.size():
 		var _hold: int = _item_script.pickable_consumableitem[_i].hold
 		#-------------------------------------------------------------------------------
-		var _item_name: String = get_resource_filename(_item_script.pickable_consumableitem[_i].item_resource)
+		var _item_name: String = tr("name_"+get_resource_filename(_item_script.pickable_consumableitem[_i].item_resource))
 		var _hold_text: String = " ["+str(_hold)+"]"
 		#-------------------------------------------------------------------------------
 		var _item: String = "[color="+hex_color_yellow+"]"+_item_name+"[/color]"+_hold_text
@@ -623,7 +639,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 	for _i in _item_script.pickable_equipitem.size():
 		var _stored: int = _item_script.pickable_equipitem[_i].stored
 		#-------------------------------------------------------------------------------
-		var _equip_name: String = get_resource_filename(_item_script.pickable_equipitem[_i].equip_resource)
+		var _equip_name: String = tr("name_"+get_resource_filename(_item_script.pickable_equipitem[_i].equip_resource))
 		var _hold_text: String = " ["+str(_stored)+"]"
 		#-------------------------------------------------------------------------------
 		var _equip: String = "[color="+hex_color_yellow+"]"+_equip_name+"[/color]"+_hold_text
@@ -644,7 +660,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 	for _i in _item_script.pickable_keyitem.size():
 		var _stored: int = _item_script.pickable_keyitem[_i].stored
 		#-------------------------------------------------------------------------------
-		var _keyitem_name: String = get_resource_filename(_item_script.pickable_keyitem[_i].key_item_resource)
+		var _keyitem_name: String = tr("name_"+get_resource_filename(_item_script.pickable_keyitem[_i].key_item_resource))
 		var _hold_text: String = " ["+str(_stored)+"]"
 		#-------------------------------------------------------------------------------
 		var _keyitem: String = "[color="+hex_color_yellow+"]"+_keyitem_name+"[/color]"+_hold_text
@@ -700,7 +716,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		friend_party[_i].z_index = 1
 		Face_Left(friend_party[_i], false)
 		#friend_party[_i].global_position = friend_party[0].global_position
-		friend_party[_i].party_member_ui.button.text = "  " + friend_party[_i].id + "  "
+		friend_party[_i].party_member_ui.button.text = "  " + tr("name_"+get_instance_filename(friend_party[_i])) + "  "
 	#-------------------------------------------------------------------------------
 	enemy_last_position.clear()
 	#-------------------------------------------------------------------------------
@@ -718,7 +734,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		enemy_party[_i].z_index = 1
 		Face_Left(enemy_party[_i], true)
 		#enemy_party[_i].global_position = enemy_party[0].global_position
-		enemy_party[_i].party_member_ui.button.text = "  " + enemy_party[_i].id + "  "
+		enemy_party[_i].party_member_ui.button.text = "  " + tr("name_"+get_instance_filename(enemy_party[_i])) + "  "
 	#-------------------------------------------------------------------------------
 	current_player_turn = 0
 	singleton.bgmPlayer.stop()
@@ -984,7 +1000,7 @@ func BattleMenu_SkillButton_Submit():
 	User_Menu_Hide_All_Button()
 	User_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(user_menu_skill_scrollContainer, user_menu_skill_button_array, user_menu_skill_button)
-	user_menu_title.text = "Skills"
+	user_menu_title.text = tr("user_menu_skill_label")
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
@@ -1003,42 +1019,42 @@ func BattleMenu_ItemButton_Submit():
 	var _all_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_all_scrollContainer, item_menu_all_button)
 		Enable_Menu_And_Move_to_Button(item_menu_key_scrollContainer, item_menu_key_button_array, item_menu_key_button)
-		item_menu_title.text = "Key Items"
+		item_menu_title.text = tr("item_menu_key_items_label")
 	#-------------------------------------------------------------------------------
 	var _all_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_all_scrollContainer, item_menu_all_button)
 		Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-		item_menu_title.text = "Consumable Items"
+		item_menu_title.text = tr("item_menu_consumable_items_label")
 	#-------------------------------------------------------------------------------
 	var _consumable_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button)
 		Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-		item_menu_title.text = "All Items"
+		item_menu_title.text = tr("item_menu_all_items_label")
 	#-------------------------------------------------------------------------------
 	var _consumable_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button)
 		Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-		item_menu_title.text = "Equip Items"
+		item_menu_title.text = tr("item_menu_equip_items_label")
 	#-------------------------------------------------------------------------------
 	var _equip_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_equip_scrollContainer, item_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-		item_menu_title.text = "Consumable Items"
+		item_menu_title.text = tr("item_menu_consumable_items_label")
 	#-------------------------------------------------------------------------------
 	var _equip_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_equip_scrollContainer, item_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(item_menu_key_scrollContainer, item_menu_key_button_array, item_menu_key_button)
-		item_menu_title.text = "Key Items"
+		item_menu_title.text = tr("item_menu_key_items_label")
 	#-------------------------------------------------------------------------------
 	var _key_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_key_scrollContainer, item_menu_key_button)
 		Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-		item_menu_title.text = "Equip Items"
+		item_menu_title.text = tr("item_menu_equip_items_label")
 	#-------------------------------------------------------------------------------
 	var _key_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_key_scrollContainer, item_menu_key_button)
 		Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-		item_menu_title.text = "All Items"
+		item_menu_title.text = tr("item_menu_all_items_label")
 	#-------------------------------------------------------------------------------
 	var _selected_0: Callable = func():Item_Menu_No_Description()
 	var _submit_0: Callable = func():pass
@@ -1144,7 +1160,7 @@ func BattleMenu_ItemButton_Submit():
 	Item_Menu_Show_and_Enable_All_Button()
 	Item_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-	item_menu_title.text = "Consumable Items"
+	item_menu_title.text = tr("item_menu_consumable_items_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func Item_Menu_Button_Selected():
@@ -1192,7 +1208,7 @@ func BattleMenu_EquipButton_Submit():
 	User_Menu_Hide_All_Button()
 	User_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(user_menu_equip_scrollContainer, user_menu_equip_button_array, user_menu_equip_button)
-	user_menu_title.text = "Equip Slots"
+	user_menu_title.text = tr("user_menu_equip_label")
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
@@ -1291,64 +1307,64 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 		#-------------------------------------------------------------------------------
 		if(_is_enemy):
 			Enable_Menu_And_Move_to_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button_array, user_menu_statuseffect_button)
-			user_menu_title.text = "Status Effect"
+			user_menu_title.text = tr("user_menu_status_effect_label")
 		#-------------------------------------------------------------------------------
 		else:
 			Enable_Menu_And_Move_to_Button(user_menu_skill_scrollContainer, user_menu_skill_button_array, user_menu_skill_button)
-			user_menu_title.text = "Skills"
+			user_menu_title.text = tr("user_menu_skill_label")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _info_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_info_container, user_menu_info_button)
 		Enable_Menu_And_Move_to_Button(user_menu_stats_scrollContainer, user_menu_stats_button_array, user_menu_stats_button)
-		user_menu_title.text = "Statistics"
+		user_menu_title.text = tr("user_menu_stats_label")
 	#-------------------------------------------------------------------------------
 	var _stats_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_stats_scrollContainer, user_menu_stats_button)
 		Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-		user_menu_title.text = "Information"
+		user_menu_title.text = tr("user_menu_info_label")
 	#-------------------------------------------------------------------------------
 	var _stats_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_stats_scrollContainer, user_menu_stats_button)
 		Enable_Menu_And_Move_to_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button_array, user_menu_statuseffect_button)
-		user_menu_title.text = "Status Effect"
+		user_menu_title.text = tr("user_menu_status_effect_label")
 	#-------------------------------------------------------------------------------
 	var _statuseffect_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button)
 		Enable_Menu_And_Move_to_Button(user_menu_stats_scrollContainer, user_menu_stats_button_array, user_menu_stats_button)
-		user_menu_title.text = "Statistics"
+		user_menu_title.text = tr("user_menu_stats_label")
 	#-------------------------------------------------------------------------------
 	var _statuseffect_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button)
 		#-------------------------------------------------------------------------------
 		if(_is_enemy):
 			Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-			user_menu_title.text = "Information"
+			user_menu_title.text = tr("user_menu_info_label")
 		#-------------------------------------------------------------------------------
 		else:
 			Enable_Menu_And_Move_to_Button(user_menu_equip_scrollContainer, user_menu_equip_button_array, user_menu_equip_button)
-			user_menu_title.text = "Equip Slots"
+			user_menu_title.text = tr("user_menu_equip_label")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _equip_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_equip_scrollContainer, user_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button_array, user_menu_statuseffect_button)
-		user_menu_title.text = "Status Effect"
+		user_menu_title.text = tr("user_menu_status_effect_label")
 	#-------------------------------------------------------------------------------
 	var _equip_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_equip_scrollContainer, user_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(user_menu_skill_scrollContainer, user_menu_skill_button_array, user_menu_skill_button)
-		user_menu_title.text = "Skills"
+		user_menu_title.text = tr("user_menu_skill_label")
 	#-------------------------------------------------------------------------------
 	var _skill_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_skill_scrollContainer, user_menu_skill_button)
 		Enable_Menu_And_Move_to_Button(user_menu_equip_scrollContainer, user_menu_equip_button_array, user_menu_equip_button)
-		user_menu_title.text = "Equip Slots"
+		user_menu_title.text = tr("user_menu_equip_label")
 	#-------------------------------------------------------------------------------
 	var _skill_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_skill_scrollContainer, user_menu_skill_button)
 		Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-		user_menu_title.text = "Information"
+		user_menu_title.text = tr("user_menu_info_label")
 	#-------------------------------------------------------------------------------
 	var _selected_0: Callable = func():User_Menu_No_Description()
 	var _submit_0: Callable = func():pass
@@ -1363,7 +1379,7 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 	for _i in 19:
 		var _stats_button: Button = Create_Stats_Button(_user, _i)
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = StatusMenu_StatsButton_Selected(_i)
+		var _selected_1: Callable = func():StatusMenu_StatsButton_Selected(_i)
 		var _submit_1: Callable = func():pass
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_stats_button, _selected_1, _submit_1, _cancel_0, _w, _s, _stats_a, _stats_d)
@@ -1415,7 +1431,7 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 		user_menu_skill_button.hide()
 	#-------------------------------------------------------------------------------
 	Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-	user_menu_title.text = "Information"
+	user_menu_title.text = tr("user_menu_info_label")
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
@@ -1436,10 +1452,10 @@ func Battle_Menu_StatusMenu_Exit_Common():
 	dialogue_menu.show()
 	dialogue_menu_button_next.hide()
 	#-------------------------------------------------------------------------------
-	Destroy_All_Items(user_menu_stats_button_array)
-	Destroy_All_Items(user_menu_statuseffect_button_array)
-	Destroy_All_Items(user_menu_equip_button_array)
-	Destroy_All_Items(user_menu_skill_button_array)
+	Destroy_Button_Array(user_menu_stats_button_array)
+	Destroy_Button_Array(user_menu_statuseffect_button_array)
+	Destroy_Button_Array(user_menu_equip_button_array)
+	Destroy_Button_Array(user_menu_skill_button_array)
 #-------------------------------------------------------------------------------
 func BattleMenu_StatusButton_TargetButton_Cancel():
 	battle_menu.show()
@@ -1463,7 +1479,11 @@ func BattleMenu_AnyButton_Cancel():
 		current_player_turn = 0
 		battle_menu.hide()
 		dialogue_menu.show()
-		win_lose_retry_escape_menu_label.text = "Escape?"
+		win_lose_retry_escape_menu_label.text = tr("escape_menu_title")
+		#-------------------------------------------------------------------------------
+		for _i in win_lose_retry_escape_menu_button.size():
+			win_lose_retry_escape_menu_button[_i].text = "  "+tr("escape_menu_button_"+str(_i))+"  "
+		#-------------------------------------------------------------------------------
 		win_lose_retry_escape_menu_label.show()
 		win_lose_retry_escape_menu_vboxcontainer.show()
 		singleton.Set_Button(win_lose_retry_escape_menu_button[0], func():singleton.Common_Selected(), func():RetryMenu_RetryButton_Submit(), func():RetryMenu_AnyButton_Cancel())
@@ -1537,112 +1557,21 @@ func EquipSlotMenu_EquipButton_Selected(_user:Party_Member, _equip_serializable_
 		User_Menu_No_Description()
 	#-------------------------------------------------------------------------------
 	else:
-		user_menu_description.text = _equip_serializable_array[_index].equip_resource.description
+		user_menu_description.text = tr("description_"+get_resource_filename(_equip_serializable_array[_index].equip_resource))
 		user_menu_description.get_v_scroll_bar().value = 0
 		#-------------------------------------------------------------------------------
 		singleton.Common_Selected()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func StatusMenu_StatusEffectButton_Selected(_statuseffect_serializable:StatusEffect_Serializable):
-	user_menu_description.text = _statuseffect_serializable.statuseffect_resource.description
+	user_menu_description.text = tr("description_"+get_resource_filename(_statuseffect_serializable.statuseffect_resource))
 	user_menu_description.get_v_scroll_bar().value = 0
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
-func StatusMenu_StatsButton_Selected(_index:int) -> Callable:
-	var _selected: Callable
-	var _s: String = "Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
-	#-------------------------------------------------------------------------------
-	match(_index):
-		0:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Max Hp Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		1:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Max Sp Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		2:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Physical Attack Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		3:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Physical Defense Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		4:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Magical Attack Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		5:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Magical Defense Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		6:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Agility Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		7:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Speed Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		8:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Luck Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		_:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				user_menu_description.text = "* Null Description. "+_s
-				user_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	return _selected
+func StatusMenu_StatsButton_Selected(_index:int):
+	user_menu_description.text = tr("description_"+"stat_"+str(_index))
+	user_menu_description.get_v_scroll_bar().value = 0
+	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func ItemMenu_ItemButton_Submit(_item_serializable:Item_Serializable, _hold:int, _cooldown:int, _cancel:Callable):
 	#-------------------------------------------------------------------------------
@@ -1670,16 +1599,22 @@ func ItemMenu_ItemButton_Cancel():
 func BattleMenu_ItemMenu_Exit_Common():
 	item_menu.hide()
 	#----------------------------------------------------------------
-	Destroy_All_Items(item_menu_all_button_array)
-	Destroy_All_Items(item_menu_consumable_button_array)
-	Destroy_All_Items(item_menu_equip_button_array)
-	Destroy_All_Items(item_menu_key_button_array)
+	Destroy_Button_Array(item_menu_all_button_array)
+	Destroy_Button_Array(item_menu_consumable_button_array)
+	Destroy_Button_Array(item_menu_equip_button_array)
+	Destroy_Button_Array(item_menu_key_button_array)
 #-------------------------------------------------------------------------------
-func Destroy_All_Items(_button_array:Array[Button]):
+func Destroy_Button_Array(_button_array:Array[Button]):
 	for _i in _button_array.size():
 		_button_array[_i].queue_free()
 	#-------------------------------------------------------------------------------
 	_button_array.clear()
+#-------------------------------------------------------------------------------
+func Destroy_Party_Button_Array(_party_button_array:Array[Party_Button]):
+	for _i in _party_button_array.size():
+		_party_button_array[_i].queue_free()
+	#-------------------------------------------------------------------------------
+	_party_button_array.clear()
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -1787,15 +1722,15 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 	#-------------------------------------------------------------------------------
 	Animation_StateMachine(friend_party_alive[current_player_turn].animation_tree, "", _item_serializable.item_resource.anim)
 	#-------------------------------------------------------------------------------
-	Destroy_All_Items(item_menu_all_button_array)
-	Destroy_All_Items(item_menu_consumable_button_array)
-	Destroy_All_Items(item_menu_equip_button_array)
-	Destroy_All_Items(item_menu_key_button_array)
+	Destroy_Button_Array(item_menu_all_button_array)
+	Destroy_Button_Array(item_menu_consumable_button_array)
+	Destroy_Button_Array(item_menu_equip_button_array)
+	Destroy_Button_Array(item_menu_key_button_array)
 	#-------------------------------------------------------------------------------
-	Destroy_All_Items(user_menu_stats_button_array)
-	Destroy_All_Items(user_menu_statuseffect_button_array)
-	Destroy_All_Items(user_menu_equip_button_array)
-	Destroy_All_Items(user_menu_skill_button_array)
+	Destroy_Button_Array(user_menu_stats_button_array)
+	Destroy_Button_Array(user_menu_statuseffect_button_array)
+	Destroy_Button_Array(user_menu_equip_button_array)
+	Destroy_Button_Array(user_menu_skill_button_array)
 	#-------------------------------------------------------------------------------
 	After_Choose_Target_Logic()
 #-------------------------------------------------------------------------------
@@ -1881,9 +1816,9 @@ func Party_Actions():
 		if(_user.target != null):
 			dialogue_menu.show()
 			dialogue_menu_button_next.hide()
-			var _user_name: String = "[color="+hex_color_orange+"]"+_user.id+"[/color]"
-			var _item_name: String = "[color="+hex_color_yellow+"]"+ get_resource_filename(_user.item_serializable.item_resource)+"[/color]"
-			var _target_name: String = "[color="+hex_color_orange+"]"+_user.target.id+"[/color]"
+			var _user_name: String = "[color="+hex_color_orange+"]"+tr("name_"+get_instance_filename(_user))+"[/color]"
+			var _item_name: String = "[color="+hex_color_yellow+"]"+ tr("name_"+get_resource_filename(_user.item_serializable.item_resource))+"[/color]"
+			var _target_name: String = "[color="+hex_color_orange+"]"+tr("name_"+get_instance_filename(_user.target))+"[/color]"
 			dialogue_menu_speaking_label.text = "* "+_user_name+ " uses " +_item_name+ " on " +_target_name + "."
 			await Seconds(0.5)
 			await Do_Player_Action(_user)
@@ -2142,7 +2077,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			#-------------------------------------------------------------------------------
 			if(friend_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
 				var _label: Label = Spawn_Label_in_User(friend_party[_i])
-				Flying_Label(_label, "-"+get_resource_filename(friend_party[_i].statuseffect_array_in_battle[_j].statuseffect_resource))
+				Flying_Label(_label, "-"+tr("name_"+get_resource_filename(friend_party[_i].statuseffect_array_in_battle[_j].statuseffect_resource)))
 				friend_party[_i].statuseffect_array_in_battle.remove_at(_j)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -2169,7 +2104,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			#-------------------------------------------------------------------------------
 			if(enemy_party[_i].statuseffect_array_in_battle[_j].stored <= 0):
 				var _label: Label = Spawn_Label_in_User(enemy_party[_i])
-				Flying_Label(_label, "-"+get_resource_filename(enemy_party[_i].statuseffect_array_in_battle[_j].statuseffect_resource))
+				Flying_Label(_label, "-"+tr("name_"+get_resource_filename(enemy_party[_i].statuseffect_array_in_battle[_j].statuseffect_resource)))
 				enemy_party[_i].statuseffect_array_in_battle.remove_at(_j)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -2226,7 +2161,7 @@ func You_Win():
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaking_label.text = "* Yay! You Won 1000 gold and an a cool weapon."
 	dialogue_menu.show()
-	win_lose_retry_escape_menu_label.text = "You Win"
+	win_lose_retry_escape_menu_label.text = tr("win_manu_title")
 	win_lose_retry_escape_menu_vboxcontainer.hide()
 	win_lose_retry_escape_menu_label.show()
 	#-------------------------------------------------------------------------------
@@ -2380,20 +2315,17 @@ func You_Escape():
 		friend_party[_i].party_member_ui.hide()
 		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].is_Moving = false
-		friend_party[_i].z_index = 0
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
 		enemy_party[_i].party_member_ui.hide()
 		Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 		enemy_party[_i].is_Moving = false
-		enemy_party[_i].z_index = 0
 		enemy_party[_i].party_member_ui.queue_free()
 	#-------------------------------------------------------------------------------
 	win_lose_retry_escape_menu_label.hide()
 	win_lose_retry_escape_menu_vboxcontainer.hide()
 	dialogue_menu.hide()
 	tp_bar_root.hide()
-	battle_black_panel.hide()
 	singleton.audioStreamPlayer_escape.play()
 	#-------------------------------------------------------------------------------
 	Invincible_after_escape()
@@ -2404,10 +2336,19 @@ func You_Escape():
 		_tween.parallel().tween_property(friend_party[_i], "global_position", player_last_position[_i], 0.5)
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
-		var _new_global_position: Vector2 = Vector2(enemy_party[_i].global_position.x+150, enemy_party[_i].global_position.y)
+		var _new_global_position: Vector2 = Vector2(enemy_party[_i].global_position.x+100, enemy_party[_i].global_position.y)
 		_tween.parallel().tween_property(enemy_party[_i], "global_position", _new_global_position, 0.5)
 	#-------------------------------------------------------------------------------
+	_tween.tween_interval(0.3)
 	_tween.tween_callback(func():
+		#-------------------------------------------------------------------------------
+		for _i in friend_party.size():
+			friend_party[_i].z_index = 0
+		#-------------------------------------------------------------------------------
+		for _i in enemy_party.size():
+			enemy_party[_i].z_index = 0
+		#-------------------------------------------------------------------------------
+		battle_black_panel.hide()
 		myGAME_STATE = GAME_STATE.IN_WORLD
 		singleton.Play_BGM(singleton.stage1)
 	)
@@ -2799,9 +2740,12 @@ func You_Lose():
 	await Seconds(1.0)
 	await Move_Fighters_to_Position_2(true)
 	#-------------------------------------------------------------------------------
-	win_lose_retry_escape_menu_label.text = "You Lose"
+	win_lose_retry_escape_menu_label.text = tr("lose_manu_title")
 	win_lose_retry_escape_menu_label.show()
 	dialogue_menu.show()
+	#-------------------------------------------------------------------------------
+	for _i in win_lose_retry_escape_menu_button.size():
+		win_lose_retry_escape_menu_button[_i].text = "  "+tr("escape_menu_button_"+str(_i))+"  "
 	#-------------------------------------------------------------------------------
 	win_lose_retry_escape_menu_vboxcontainer.show()
 	singleton.Set_Button(win_lose_retry_escape_menu_button[0], func():singleton.Common_Selected(), func():LoseMenu_RetryButton_Submit(), func():pass)
@@ -2870,11 +2814,10 @@ func Gain_Tp(_int:int):
 #-------------------------------------------------------------------------------
 func Attack(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	Play_AttackAnimation(_user, "anim_normal_attack")
 	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		HP_Damage(_user.target, 5)
+	HP_Damage(_user.target, 5)
 	#-------------------------------------------------------------------------------
-	await Play_AttackAnimation_with_Callable(_user, "anim_normal_attack", _callable)
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Defense(_user:Party_Member):
@@ -2886,56 +2829,56 @@ func Defense(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func Skill_0_0(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		HP_Damage(_user.target, 5)
+	Play_AttackAnimation(_user, "anim_skill_1")
 	#-------------------------------------------------------------------------------	
-	await Play_AttackAnimation_with_Callable(_user, "anim_skill_1", _callable)
+	await Seconds(0.3)
+	#-------------------------------------------------------------------------------
+	HP_Damage(_user.target, 5)
+	#-------------------------------------------------------------------------------	
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Skill_0_1(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	Play_AttackAnimation(_user, "anim_heavy_bullet")
 	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		HP_Damage(_user.target, 5)
+	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
-	await Play_AttackAnimation_with_Callable(_user, "anim_heavy_bullet", _callable)
+	HP_Damage(_user.target, 5)
+	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Skill_0_2(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	Play_AttackAnimation(_user, "anim_healing")
 	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		#-------------------------------------------------------------------------------
-		if(_user.target.hp <= 0):
-			Animation_StateMachine(_user.target.animation_tree, "", "Idle")
-		#-------------------------------------------------------------------------------
-		HP_Heal_Porcentual(_user.target, 1.0)
+	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
-	await Play_AttackAnimation_with_Callable(_user, "anim_healing", _callable)
+	if(_user.target.hp <= 0):
+		Animation_StateMachine(_user.target.animation_tree, "", "Idle")
+	#-------------------------------------------------------------------------------
+	HP_Heal_Porcentual(_user.target, 1.0)
+	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Skill_03_Poison_Stinger(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		var _status_effect: StatusEffect_Resource = load("res://Resources/Status/poison.tres") as StatusEffect_Resource
-		Add_Status_Effect(_user.target, _status_effect, 1)
-		var _label: Label = Spawn_Label_in_User(_user.target)
-		Flying_Label(_label, "+Poison")
+	Play_AttackAnimation(_user, "anim_poison")
 	#-------------------------------------------------------------------------------
-	await Play_AttackAnimation_with_Callable(_user, "anim_poison", _callable)
+	var _status_effect: StatusEffect_Resource = load(user_status_effect_resource_path+"status_0.tres") as StatusEffect_Resource
+	Add_Status_Effect(_user.target, _status_effect, 1)
+	var _label: Label = Spawn_Label_in_User(_user.target)
+	Flying_Label(_label, "+Poison")
+	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func Play_AttackAnimation_with_Callable(_user:Party_Member, _name: String,_callable:Callable):
+func Play_AttackAnimation(_user:Party_Member, _name: String):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
-	var _animation_effect: Animation_Effect = load("res://Nodes/Prefabs/Skill Animation Effects/"+_name+".tscn").instantiate() as Animation_Effect
+	var _animation_effect: Animation_Effect = load(skill_animation_effect_path+_name+".tscn").instantiate() as Animation_Effect
 	_animation_effect.animation_player.play("action")
 	_animation_effect.z_index = 2
 	_animation_effect.global_position = _user.target.global_position
-	#-------------------------------------------------------------------------------
-	_animation_effect.animation_effect_callable = _callable
 	#-------------------------------------------------------------------------------
 	world_2d.add_child(_animation_effect)
 	await _animation_effect.animation_player.animation_finished
@@ -2961,23 +2904,26 @@ func Add_Status_Effect(_user:Party_Member, _status_effect:StatusEffect_Resource,
 #-------------------------------------------------------------------------------
 func Item_0_0(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	Play_AttackAnimation(_user, "anim_healing")
 	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		HP_Heal_Porcentual(_user.target, 1.0)
+	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
-	await Play_AttackAnimation_with_Callable(_user, "anim_healing", _callable)
+	HP_Heal_Porcentual(_user.target, 1.0)
+	#-------------------------------------------------------------------------------
+	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func Item_0_1(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
+	Play_AttackAnimation(_user, "anim_revive")
 	#-------------------------------------------------------------------------------
-	var _callable:Callable = func():
-		#-------------------------------------------------------------------------------
-		if(_user.target.hp <= 0):
-			Animation_StateMachine(_user.target.animation_tree, "", "Idle")
-		#-------------------------------------------------------------------------------
-		HP_Heal_Porcentual(_user.target, 1.0)
+	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
-	await Play_AttackAnimation_with_Callable(_user, "anim_revive", _callable)
+	if(_user.target.hp <= 0):
+		Animation_StateMachine(_user.target.animation_tree, "", "Idle")
+	#-------------------------------------------------------------------------------
+	HP_Heal_Porcentual(_user.target, 1.0)
+	#-------------------------------------------------------------------------------
+	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -3028,6 +2974,9 @@ func SP_Gain_VisualEffect(_pos:Vector2):
 #-------------------------------------------------------------------------------
 func get_resource_filename(_resource: Resource) -> String:
 	return _resource.resource_path.get_file().trim_suffix('.tres')
+#-------------------------------------------------------------------------------
+func get_instance_filename(_node: Node) -> String:
+	return _node.scene_file_path.get_file().trim_suffix('.tscn')
 #-------------------------------------------------------------------------------
 func Destroy_Childrens(_node:Node):
 	var children = _node.get_children()
@@ -3198,13 +3147,24 @@ func PauseMenu_Open():
 	#-------------------------------------------------------------------------------
 	SetMoney_Label()
 	#-------------------------------------------------------------------------------
+	var _button_array: Array[Button]
+	#-------------------------------------------------------------------------------
+	for _i in friend_party.size():
+		var _party_button: Party_Button = Create_PartyMember_Button(friend_party[_i], _i)
+		#_party_button.custom_minimum_size.y = 180.0
+		pause_menu_party_button_array.append(_party_button)
+		pause_menu_party_button_content.add_child(_party_button)
+		_button_array.append(_party_button.button)
+	#-------------------------------------------------------------------------------
+	singleton.Button_Array_Set_Vertical_Navigation(_button_array)
+	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(pause_menu_button_array[0])
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	PauseOn()
 #-------------------------------------------------------------------------------
 func SetMoney_Label():
-	var _s: String = "  $"+str(money_serializable.stored)+"  "
+	var _s: String = "  $ "+str(money_serializable.stored)+"  "
 	pause_menu_money_label.text = _s
 	money_menu_label.text = _s
 #-------------------------------------------------------------------------------
@@ -3215,6 +3175,8 @@ func PauseOn():
 func PauseMenu_Close():
 	pause_menu_panel.hide()
 	pause_menu.hide()
+	#-------------------------------------------------------------------------------
+	Destroy_Party_Button_Array(pause_menu_party_button_array)
 	#-------------------------------------------------------------------------------
 	PauseOff()
 #-------------------------------------------------------------------------------
@@ -3227,26 +3189,6 @@ func PauseOff():
 #-------------------------------------------------------------------------------
 func PauseMenu_Set():
 	#-------------------------------------------------------------------------------
-	var _button_array: Array[Button]
-	#-------------------------------------------------------------------------------
-	for _i in pause_menu_party_button_array.size():
-		var _player_ui: Party_Button =pause_menu_party_button_array[_i]
-		#-------------------------------------------------------------------------------
-		_player_ui.label_hp.text = "  "+str(friend_party[_i].max_hp)+"/"+str(friend_party[_i].max_hp)+" HP  "
-		_player_ui.bar_hp.max_value = friend_party[_i].max_hp
-		_player_ui.bar_hp.value = friend_party[_i].max_hp
-		#-------------------------------------------------------------------------------
-		_player_ui.label_sp.text = "  "+str(friend_party[_i].max_sp)+"/"+str(friend_party[_i].max_sp)+" SP  "
-		_player_ui.bar_sp.max_value = friend_party[_i].max_sp
-		_player_ui.bar_sp.value = friend_party[_i].max_sp
-		#-------------------------------------------------------------------------------
-		pause_menu_party_button_array[_i].title.text = friend_party[_i].id + "\n"
-		pause_menu_party_button_array[_i].title.text += "The Hero Number "+str(_i)
-		pause_menu_party_button_array[_i].texture.texture = friend_party[_i].texture2d_face
-		#-------------------------------------------------------------------------------
-		_button_array.append(_player_ui.button)
-	#-------------------------------------------------------------------------------
-	singleton.Button_Array_Set_Vertical_Navigation(_button_array)
 	singleton.Button_Array_Set_Vertical_Navigation(pause_menu_button_array)
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button(pause_menu_button_array[0],func():singleton.Common_Selected() , func():PauseMenu_SkillButton_Submit(), func():PauseMenu_AnyButton_Cancel())
@@ -3279,42 +3221,42 @@ func PauseMenu_ItemButton_Submit():
 	var _all_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_all_scrollContainer, item_menu_all_button)
 		Enable_Menu_And_Move_to_Button(item_menu_key_scrollContainer, item_menu_key_button_array, item_menu_key_button)
-		item_menu_title.text = "Key Items"
+		item_menu_title.text = tr("item_menu_key_items_label")
 	#-------------------------------------------------------------------------------
 	var _all_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_all_scrollContainer, item_menu_all_button)
 		Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-		item_menu_title.text = "Consumable Items"
+		item_menu_title.text = tr("item_menu_consumable_items_label")
 	#-------------------------------------------------------------------------------
 	var _consumable_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button)
 		Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-		item_menu_title.text = "All Items"
+		item_menu_title.text = tr("item_menu_all_items_label")
 	#-------------------------------------------------------------------------------
 	var _consumable_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button)
 		Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-		item_menu_title.text = "Equip Items"
+		item_menu_title.text = tr("item_menu_equip_items_label")
 	#-------------------------------------------------------------------------------
 	var _equip_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_equip_scrollContainer, item_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-		item_menu_title.text = "Consumable Items"
+		item_menu_title.text = tr("item_menu_consumable_items_label")
 	#-------------------------------------------------------------------------------
 	var _equip_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_equip_scrollContainer, item_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(item_menu_key_scrollContainer, item_menu_key_button_array, item_menu_key_button)
-		item_menu_title.text = "Key Items"
+		item_menu_title.text = tr("item_menu_key_items_label")
 	#-------------------------------------------------------------------------------
 	var _key_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_key_scrollContainer, item_menu_key_button)
 		Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-		item_menu_title.text = "Equip Items"
+		item_menu_title.text = tr("item_menu_equip_items_label")
 	#-------------------------------------------------------------------------------
 	var _key_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_key_scrollContainer, item_menu_key_button)
 		Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-		item_menu_title.text = "All Items"
+		item_menu_title.text = tr("item_menu_all_items_label")
 	#-------------------------------------------------------------------------------
 	var _selected_0: Callable = func():Item_Menu_No_Description()
 	var _submit_0: Callable = func():pass
@@ -3385,7 +3327,7 @@ func PauseMenu_ItemButton_Submit():
 	Item_Menu_Hide_All_ScrollContainer()
 	Item_Menu_Show_and_Enable_All_Button()
 	Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-	item_menu_title.text = "Consumable Items"
+	item_menu_title.text = tr("item_menu_consumable_items_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_Submit():
@@ -3431,12 +3373,39 @@ func PauseMenu_AnyButton_Cancel():
 #-------------------------------------------------------------------------------
 #region CREATE BUTTON
 #-------------------------------------------------------------------------------
+func Create_PartyMember_Button(_party_member:Party_Member, _i:int) -> Party_Button:
+	var _party_button: Party_Button = part_button_prefab.instantiate() as Party_Button
+	#-------------------------------------------------------------------------------
+	_party_button.label_hp.text = "  "+str(_party_member.max_hp)+"/"+str(_party_member.max_hp)+" HP  "
+	_party_button.bar_hp.max_value = _party_member.max_hp
+	_party_button.bar_hp.value = _party_member.max_hp
+	#-------------------------------------------------------------------------------
+	_party_button.label_sp.text = "  "+str(_party_member.max_sp)+"/"+str(_party_member.max_sp)+" SP  "
+	_party_button.bar_sp.max_value = _party_member.max_sp
+	_party_button.bar_sp.value = _party_member.max_sp
+	#-------------------------------------------------------------------------------
+	_party_button.texture.texture = _party_member.party_member_serializable.party_member_resource.face_sprite
+	#-------------------------------------------------------------------------------
+	PartyMember_Button_Set_Idiome(_party_button, _party_member)
+	#-------------------------------------------------------------------------------
+	return _party_button
+#-------------------------------------------------------------------------------
+func PartyMember_Button_Set_Idiome(_party_button:Party_Button, _party_member:Party_Member):
+	var _id: String = get_instance_filename(_party_member)
+	#-------------------------------------------------------------------------------
+	var _s: String = ""
+	_s += tr("name_"+_id)
+	_s += "\n"
+	_s += tr("title_"+_id)
+	#-------------------------------------------------------------------------------
+	_party_button.title.text = _s
+#-------------------------------------------------------------------------------
 func Create_Skill_Button(_item_serializable: Item_Serializable) -> Button:
 	#-------------------------------------------------------------------------------
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_item_serializable.item_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3475,7 +3444,7 @@ func Create_ConsumableItem_Button(_item_serializable: Item_Serializable, _hold:i
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_item_serializable.item_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3528,7 +3497,7 @@ func Create_ConsumableItem_InMarket_Button(_item_serializable: Item_Serializable
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_item_serializable.item_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_item_serializable.item_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3537,7 +3506,8 @@ func Create_ConsumableItem_InMarket_Button(_item_serializable: Item_Serializable
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "$"+str(_item_serializable.price)+"  "
+	_label2.text = ""
+	_label2.text += "$"+str(_item_serializable.price)+"  "
 	#_label2.text += "["+str(_item_serializable.stored)+"]  "
 	#-------------------------------------------------------------------------------
 	_button.add_child(_label2)
@@ -3548,7 +3518,7 @@ func Create_EquipItem_Button(_equip_serializable: Equip_Serializable) -> Button:
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_equip_serializable.equip_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_equip_serializable.equip_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3565,7 +3535,7 @@ func Create_EquipItem_InMarket_Button(_equip_serializable: Equip_Serializable) -
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_equip_serializable.equip_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_equip_serializable.equip_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3573,8 +3543,9 @@ func Create_EquipItem_InMarket_Button(_equip_serializable: Equip_Serializable) -
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "$"+str(_equip_serializable.price)+"  "
+	_label2.text = ""
 	_label2.text += "["+str(_equip_serializable.stored)+"]  "
+	_label2.text += "$"+str(_equip_serializable.price)+"  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3582,7 +3553,7 @@ func Create_EquipItem_InMarket_Button(_equip_serializable: Equip_Serializable) -
 func Create_EquipEmpty_Button() -> Button:
 	var _empty_button: Button = Button.new()
 	_empty_button.theme = ui_theme
-	_empty_button.text = "  [Empty]  "
+	_empty_button.text = "  ["+tr("user_menu_equip_slot_empty_button")+"]  "
 	_empty_button.add_theme_font_size_override("font_size", 24)
 	_empty_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	#-------------------------------------------------------------------------------
@@ -3596,10 +3567,10 @@ func Create_EquipSlot_Button(_equip_serializable: Equip_Serializable) -> Button:
 	_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	#-------------------------------------------------------------------------------
 	if(_equip_serializable.equip_resource == null):
-		_button.text = "  [Empty]  "
+		_button.text = "  ["+tr("user_menu_equip_slot_empty_button")+"]  "
 	#-------------------------------------------------------------------------------
 	else:
-		_button.text = get_resource_filename(_equip_serializable.equip_resource)
+		_button.text = tr("name_"+get_resource_filename(_equip_serializable.equip_resource))
 	#-------------------------------------------------------------------------------
 	return _button
 #-------------------------------------------------------------------------------
@@ -3607,7 +3578,7 @@ func Create_EquipSlot_Label(_equip_array: Array[Equip_Serializable]):
 	user_menu_equip_button_label.text = ""
 	#-------------------------------------------------------------------------------
 	for _i in _equip_array.size():
-		user_menu_equip_button_label.text += "Slot #"+str(_i)+":"
+		user_menu_equip_button_label.text += tr("user_menu_equip_slot_label")+" #"+str(_i)+":"
 		#-------------------------------------------------------------------------------
 		if(_i < _equip_array.size()-1):
 			user_menu_equip_button_label.text += "\n"
@@ -3618,7 +3589,7 @@ func Create_KeyItem_Button(_keyitem_serializable: Key_Item_Serializable) -> Butt
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_keyitem_serializable.key_item_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_keyitem_serializable.key_item_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3635,7 +3606,7 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_keyitem_serializable.key_item_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_keyitem_serializable.key_item_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3643,8 +3614,9 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	_label2.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label2.text = "$"+str(_keyitem_serializable.price)+"  "
+	_label2.text = ""
 	_label2.text += "["+str(_keyitem_serializable.stored)+"]  "
+	_label2.text += "$"+str(_keyitem_serializable.price)+"  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3653,7 +3625,7 @@ func Create_Stats_Button(_party_member:Party_Member, _index: int) -> Button:
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+"Star Numer #"+str(_index)+":  "
+	_button.text = "  "+tr("name_"+"stat_"+str(_index))+":  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3671,7 +3643,7 @@ func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Seriali
 	var _button: Button = Button.new()
 	#-------------------------------------------------------------------------------
 	_button.theme = ui_theme
-	_button.text = "  "+get_resource_filename(_statuseffect_serializable.statuseffect_resource)+"  "
+	_button.text = "  "+tr("name_"+get_resource_filename(_statuseffect_serializable.statuseffect_resource))+"  "
 	_button.add_theme_font_size_override("font_size", 24)
 	_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	#-------------------------------------------------------------------------------
@@ -3716,14 +3688,14 @@ func Set_Skill_Information(_item_serializable:Item_Serializable):
 	else:
 		_hold_text = "-"
 	#----------------------------------------------------------------------------
-	user_menu_description.text = _item_serializable.item_resource.description
+	user_menu_description.text = tr("description_"+get_resource_filename(_item_serializable.item_resource))
 	user_menu_description.get_v_scroll_bar().value = 0
 	#----------------------------------------------------------------------------
-	user_menu_cost_label.text = "* Cost:"
+	user_menu_cost_label.text = "* "+tr("item_menu_cost_label")+":"
 	user_menu_tp_cost_num_label.text = _tp_cost_text
 	user_menu_cooldown_num_label.text = _cooldown_text
 	#----------------------------------------------------------------------------
-	user_menu_held_label.text = "* Hold:"
+	user_menu_held_label.text = "* "+tr("item_menu_hold_label")+":"
 	user_menu_hold_num_label.text = _hold_text
 	user_menu_storage_num_label.text = ""
 #-------------------------------------------------------------------------------
@@ -3760,46 +3732,40 @@ func Set_ConsumableItem_Information(_item_serializable:Item_Serializable):
 	else:
 		_cooldown_text = "-"
 	#-------------------------------------------------------------------------------
-	item_menu_description.text = _item_serializable.item_resource.description
+	item_menu_description.text = tr("description_"+get_resource_filename(_item_serializable.item_resource))
 	item_menu_description.get_v_scroll_bar().value = 0
 	#-------------------------------------------------------------------------------
-	item_menu_cost_label.text = "* Cost:"
+	item_menu_cost_label.text = "* "+tr("item_menu_cost_label")+":"
 	item_menu_tp_cost_num_label.text = _tp_cost_text
 	item_menu_cooldown_num_label.text = _cooldown_text
 	#-------------------------------------------------------------------------------
-	item_menu_held_label.text = "* Hold:"
+	item_menu_hold_label.text = "* "+tr("item_menu_hold_label")+":"
 	item_menu_hold_num_label.text = _hold_text
 	item_menu_storage_num_label.text = _stored_text
 #-------------------------------------------------------------------------------
 func Set_EquipItem_Information(_equip_serializable:Equip_Serializable):
-	var _description: String = _equip_serializable.equip_resource.description
-	var _stored: String = "["+str(_equip_serializable.stored)+"]"
-	#-------------------------------------------------------------------------------
-	item_menu_description.text = _description
+	item_menu_description.text = tr("description_"+get_resource_filename(_equip_serializable.equip_resource))
 	item_menu_description.get_v_scroll_bar().value = 0
 	#-------------------------------------------------------------------------------
 	item_menu_cost_label.text = ""
 	item_menu_tp_cost_num_label.text = ""
 	item_menu_cooldown_num_label.text = ""
 	#-------------------------------------------------------------------------------
-	item_menu_held_label.text = "* Hold:"
+	item_menu_hold_label.text = "* "+tr("item_menu_hold_label")+":"
 	item_menu_hold_num_label.text = ""
-	item_menu_storage_num_label.text = _stored
+	item_menu_storage_num_label.text = "["+str(_equip_serializable.stored)+"]"
 #-------------------------------------------------------------------------------
 func Set_KeyItem_Information(keyitem_serializable:Key_Item_Serializable):
-	var _description: String = keyitem_serializable.key_item_resource.description
-	var _stored: String = "["+str(keyitem_serializable.stored)+"]"
-	#-------------------------------------------------------------------------------
-	item_menu_description.text = _description
+	item_menu_description.text = tr("description_"+get_resource_filename(keyitem_serializable.key_item_resource))
 	item_menu_description.get_v_scroll_bar().value = 0
 	#-------------------------------------------------------------------------------
 	item_menu_cost_label.text = ""
 	item_menu_tp_cost_num_label.text = ""
 	item_menu_cooldown_num_label.text = ""
 	#-------------------------------------------------------------------------------
-	item_menu_held_label.text = "* Hold:"
+	item_menu_hold_label.text = "* "+tr("item_menu_hold_label")+":"
 	item_menu_hold_num_label.text = ""
-	item_menu_storage_num_label.text = _stored
+	item_menu_storage_num_label.text = "["+str(keyitem_serializable.stored)+"]"
 #-------------------------------------------------------------------------------
 func User_Menu_No_Description():
 	user_menu_description.text = ""
@@ -3823,7 +3789,7 @@ func Item_Menu_No_Description():
 	item_menu_tp_cost_num_label.text = ""
 	item_menu_cooldown_num_label.text = ""
 	#-------------------------------------------------------------------------------
-	item_menu_held_label.text = ""
+	item_menu_hold_label.text = ""
 	item_menu_hold_num_label.text = ""
 	item_menu_storage_num_label.text = ""
 	#-------------------------------------------------------------------------------
@@ -3877,7 +3843,7 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	User_Menu_Hide_All_Button()
 	User_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(user_menu_skill_scrollContainer, user_menu_skill_button_array, user_menu_skill_button)
-	user_menu_title.text = "Skills"
+	user_menu_title.text = tr("user_menu_skill_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_SkillButton_PartyButton_Cancel():
@@ -3899,10 +3865,10 @@ func PauseMenu_ItemButton_ItemMenu_Cancel():
 func PauseMenu_ItemMenu_Exit_Common():
 	item_menu.hide()
 	#-------------------------------------------------------------------------------
-	Destroy_All_Items(item_menu_all_button_array)
-	Destroy_All_Items(item_menu_consumable_button_array)
-	Destroy_All_Items(item_menu_equip_button_array)
-	Destroy_All_Items(item_menu_key_button_array)
+	Destroy_Button_Array(item_menu_all_button_array)
+	Destroy_Button_Array(item_menu_consumable_button_array)
+	Destroy_Button_Array(item_menu_equip_button_array)
+	Destroy_Button_Array(item_menu_key_button_array)
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -3947,7 +3913,7 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	User_Menu_Hide_All_Button()
 	User_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(user_menu_equip_scrollContainer, user_menu_equip_button_array, user_menu_equip_button)
-	user_menu_title.text = "Equip Slots"
+	user_menu_title.text = tr("user_menu_equip_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _index_slot:int):
@@ -3994,7 +3960,7 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _ind
 	Item_Menu_Hide_All_Buttons()
 	Item_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-	item_menu_title.text = "Equip Items"
+	item_menu_title.text = tr("item_menu_equip_items_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member, _equip_serializable:Equip_Serializable, _index_slot:int):
@@ -4005,7 +3971,7 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_M
 		_user.equip_array[_index_slot].equip_resource = _equip_serializable.equip_resource
 		_user.equip_array[_index_slot].stored = 1
 		#-------------------------------------------------------------------------------
-		user_menu_equip_button_array[_index_slot].text = get_resource_filename(_equip_serializable.equip_resource)
+		user_menu_equip_button_array[_index_slot].text = tr("name_"+get_resource_filename(_equip_serializable.equip_resource))
 	#-------------------------------------------------------------------------------
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
@@ -4021,7 +3987,7 @@ func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Pa
 		_user.equip_array[_index_slot].equip_resource = null
 		_user.equip_array[_index_slot].stored = 0
 		#-------------------------------------------------------------------------------
-		user_menu_equip_button_array[_index_slot].text = "  [Empty]  "
+		user_menu_equip_button_array[_index_slot].text = "  ["+tr("user_menu_equip_slot_empty_button")+"]  "
 	#-------------------------------------------------------------------------------
 	PauseMenu_ItemMenu_Exit_Common()
 	#-------------------------------------------------------------------------------
@@ -4067,52 +4033,52 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	var _info_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_info_container, user_menu_info_button)
 		Enable_Menu_And_Move_to_Button(user_menu_skill_scrollContainer, user_menu_skill_button_array, user_menu_skill_button)
-		user_menu_title.text = "Skills"
+		user_menu_title.text = tr("user_menu_skill_label")
 	#-------------------------------------------------------------------------------
 	var _info_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_info_container, user_menu_info_button)
 		Enable_Menu_And_Move_to_Button(user_menu_stats_scrollContainer, user_menu_stats_button_array, user_menu_stats_button)
-		user_menu_title.text = "Statistics"
+		user_menu_title.text = tr("user_menu_stats_label")
 	#-------------------------------------------------------------------------------
 	var _stats_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_stats_scrollContainer, user_menu_stats_button)
 		Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-		user_menu_title.text = "Information"
+		user_menu_title.text = tr("user_menu_info_label")
 	#-------------------------------------------------------------------------------
 	var _stats_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_stats_scrollContainer, user_menu_stats_button)
 		Enable_Menu_And_Move_to_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button_array, user_menu_statuseffect_button)
-		user_menu_title.text = "Status Effect"
+		user_menu_title.text = tr("user_menu_status_effect_label")
 	#-------------------------------------------------------------------------------
 	var _statuseffect_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button)
 		Enable_Menu_And_Move_to_Button(user_menu_stats_scrollContainer, user_menu_stats_button_array, user_menu_stats_button)
-		user_menu_title.text = "Statistics"
+		user_menu_title.text = tr("user_menu_stats_label")
 	#-------------------------------------------------------------------------------
 	var _statuseffect_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button)
 		Enable_Menu_And_Move_to_Button(user_menu_equip_scrollContainer, user_menu_equip_button_array, user_menu_equip_button)
-		user_menu_title.text = "Equip Slots"
+		user_menu_title.text = tr("user_menu_equip_label")
 	#-------------------------------------------------------------------------------
 	var _equip_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_equip_scrollContainer, user_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(user_menu_statuseffect_scrollContainer, user_menu_statuseffect_button_array, user_menu_statuseffect_button)
-		user_menu_title.text = "Status Effect"
+		user_menu_title.text = tr("user_menu_status_effect_label")
 	#-------------------------------------------------------------------------------
 	var _equip_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_equip_scrollContainer, user_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(user_menu_skill_scrollContainer, user_menu_skill_button_array, user_menu_skill_button)
-		user_menu_title.text = "Skills"
+		user_menu_title.text = tr("user_menu_skill_label")
 	#-------------------------------------------------------------------------------
 	var _skill_a: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_skill_scrollContainer, user_menu_skill_button)
 		Enable_Menu_And_Move_to_Button(user_menu_equip_scrollContainer, user_menu_equip_button_array, user_menu_equip_button)
-		user_menu_title.text = "Equip Slots"
+		user_menu_title.text = tr("user_menu_equip_label")
 	#-------------------------------------------------------------------------------
 	var _skill_d: Callable = func():
 		Hide_Control_and_Enable_Button(user_menu_skill_scrollContainer, user_menu_skill_button)
 		Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-		user_menu_title.text = "Information"
+		user_menu_title.text = tr("user_menu_info_label")
 	#-------------------------------------------------------------------------------
 	var _selected_0: Callable = func():User_Menu_No_Description()
 	var _submit_0: Callable = func():pass
@@ -4125,7 +4091,7 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _skill_a, _skill_d)
 	#-------------------------------------------------------------------------------
 	for _i in user_menu_stats_button_array.size():
-		var _selected_1: Callable = StatusMenu_StatsButton_Selected(_i)
+		var _selected_1: Callable = func():StatusMenu_StatsButton_Selected(_i)
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(user_menu_stats_button_array[_i], _selected_1, _submit_1, _cancel_0, _w, _s, _stats_a, _stats_d)
@@ -4133,7 +4099,7 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	for _i in 18:
 		var _stats_button: Button = Create_Stats_Button(_user, _i)
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = StatusMenu_StatsButton_Selected(_i)
+		var _selected_1: Callable = func():StatusMenu_StatsButton_Selected(_i)
 		var _submit_1: Callable = func():pass
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_stats_button, _selected_1, _submit_1, _cancel_0, _w, _s, _stats_a, _stats_d)
@@ -4180,16 +4146,16 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	User_Menu_Show_and_Enable_All_Button()
 	User_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button_0(user_menu_info_container, user_menu_info_button)
-	user_menu_title.text = "Information"
+	user_menu_title.text = tr("user_menu_info_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_StatusMenu_Exit_Common(_index:int):
 	user_menu.hide()
 	#-------------------------------------------------------------------------------
-	Destroy_All_Items(user_menu_stats_button_array)
-	Destroy_All_Items(user_menu_statuseffect_button_array)
-	Destroy_All_Items(user_menu_equip_button_array)
-	Destroy_All_Items(user_menu_skill_button_array)
+	Destroy_Button_Array(user_menu_stats_button_array)
+	Destroy_Button_Array(user_menu_statuseffect_button_array)
+	Destroy_Button_Array(user_menu_equip_button_array)
+	Destroy_Button_Array(user_menu_skill_button_array)
 	#-------------------------------------------------------------------------------
 	pause_menu.show()
 	singleton.Move_to_Button(pause_menu_party_button_array[_index].button)
@@ -4213,9 +4179,9 @@ func Add_StatusEffect(_user:Party_Member, _statuseffect_serializable: StatusEffe
 	return _statuseffect_serializable
 #-------------------------------------------------------------------------------
 func Show_Status_Data(_user:Party_Member):
-	user_menu_info_image.texture = _user.texture2d
+	user_menu_info_image.texture = _user.party_member_serializable.party_member_resource.body_sprite
 	#-------------------------------------------------------------------------------
-	user_menu_description.text = _user.description
+	user_menu_description.text = tr("description_"+get_instance_filename(_user))
 	user_menu_description.get_v_scroll_bar().value = 0
 	#-------------------------------------------------------------------------------
 	user_menu_cost_label.text = ""
@@ -4250,10 +4216,34 @@ func OptionMenu_BackButton_Common() -> void:
 #-------------------------------------------------------------------------------
 func Set_Idiome():
 	#-------------------------------------------------------------------------------
+	pause_menu_title_label.text = tr("pause_menu_title_label")
+	pause_menu_party_label.text = tr("pause_menu_party_members_label")
+	#-------------------------------------------------------------------------------
 	for _i in pause_menu_button_array.size():
 		pause_menu_button_array[_i].text = "  "+tr("pause_menu_button_"+str(_i))+"  "
 	#-------------------------------------------------------------------------------
 	SetMoney_Label()
+	#-------------------------------------------------------------------------------
+	item_menu_all_button.text = "  "+tr("item_menu_all_items_label")+"  "
+	item_menu_consumable_button.text = "  "+tr("item_menu_consumable_items_label")+"  "
+	item_menu_equip_button.text = "  "+tr("item_menu_equip_items_label")+"  "
+	item_menu_key_button.text = "  "+tr("item_menu_key_items_label")+"  "
+	#-------------------------------------------------------------------------------
+	item_menu_description_title.text = tr("item_menu_description_label")
+	#-------------------------------------------------------------------------------
+	user_menu_info_button.text = "  "+tr("user_menu_info_label")+"  "
+	user_menu_stats_button.text = "  "+tr("user_menu_stats_label")+"  "
+	user_menu_statuseffect_button.text = "  "+tr("user_menu_status_effect_label")+"  "
+	user_menu_equip_button.text = "  "+tr("user_menu_equip_label")+"  "
+	user_menu_skill_button.text = "  "+tr("user_menu_skill_label")+"  "
+	#-------------------------------------------------------------------------------
+	user_menu_description_title.text = tr("item_menu_description_label")
+	#-------------------------------------------------------------------------------
+	for _i in pause_menu_party_button_array.size():
+		PartyMember_Button_Set_Idiome(pause_menu_party_button_array[_i], friend_party[_i])
+	#-------------------------------------------------------------------------------
+	for _i in battle_menu_button.size():
+		battle_menu_button[_i].text = "  "+tr("battle_menu_button_"+str(_i))+"  "
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #endregion
@@ -4308,7 +4298,7 @@ func SaveMenu_TeleportButton_Submit():
 	var _submit_0: Callable = func():pass
 	#-------------------------------------------------------------------------------
 	var _cancel_0: Callable = func():
-		Destroy_All_Items(teleport_menu_bonfire_button_array)
+		Destroy_Button_Array(teleport_menu_bonfire_button_array)
 		savespot_menu.show()
 		teleport_menu.hide()
 		singleton.Move_to_Button(savespot_menu_button_array[1])
@@ -4322,13 +4312,13 @@ func SaveMenu_TeleportButton_Submit():
 		#-------------------------------------------------------------------------------
 		var _button: Button = Button.new()
 		_button.theme = ui_theme
-		_button.text = "  "+_array[_i].get("room", "")+"  "
+		_button.text = "  "+tr("name_"+_array[_i].get("room", ""))+"  "
 		_button.add_theme_font_size_override("font_size", 24)
 		_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		teleport_menu_bonfire_content.add_child(_button)
 		teleport_menu_bonfire_button_array.append(_button)
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = TeleportMenu_TeleportButton_Select(_array[_i])
+		var _selected_1: Callable = func():TeleportMenu_TeleportButton_Select(_array[_i])
 		var _submit_1: Callable = func():TeleportMenu_TeleportButton_Submit(_array[_i])
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_button, _selected_1, _submit_1, _cancel_0, _w, _s, _a, _d)
@@ -4336,23 +4326,29 @@ func SaveMenu_TeleportButton_Submit():
 	singleton.Button_Array_Set_Vertical_Navigation(teleport_menu_bonfire_button_array)
 	#-------------------------------------------------------------------------------
 	if(teleport_menu_bonfire_button_array.size() > 0):
-		var _index = 0
+		var _index = Find_Bonfire_Id_by_String(_array)
 		#-------------------------------------------------------------------------------
-		for _i in _array.size():
-			#-------------------------------------------------------------------------------
-			if(_array[_i].get("room", "") == room_test.room_id):
-				_index = _i
-				break
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
+		teleport_menu_zone_button_array[0].disabled = true
 		singleton.Move_to_Button(teleport_menu_bonfire_button_array[_index])
 		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	else:
+		teleport_menu_zone_button_array[0].disabled = false
 		singleton.Move_to_Button(teleport_menu_zone_button_array[0])
 		singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	#teleport_menu_bonfire_scrollContainer.scroll_vertical = 0
+#-------------------------------------------------------------------------------
+func Find_Bonfire_Id_by_String(_array: Array) -> int:
+	var _index = 0
+	#-------------------------------------------------------------------------------
+	for _i in _array.size():
+		#-------------------------------------------------------------------------------
+		if(_array[_i].get("room", "") == room_test.room_id):
+			_index = _i
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	return _index
 #-------------------------------------------------------------------------------
 func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String) -> Dictionary:		# Used by "SaveSpot_Script".
 	var _array: Array = singleton.currentSaveData_Json.get("teleport_options", [])
@@ -4383,47 +4379,15 @@ func Add_New_SaveSpot_for_Teleporting_Options(_savespot: String) -> Dictionary:	
 #-------------------------------------------------------------------------------
 #region TELEPORT MENU
 #-------------------------------------------------------------------------------
-func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary) -> Callable:
-	var _selected: Callable
+func TeleportMenu_TeleportButton_Select(_dictionary:Dictionary):
+	var _room_name: String = _dictionary.get("room", "")
 	#-------------------------------------------------------------------------------
-	var _s: String = "Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla "
-	_s += "bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla."
+	teleport_menu_rect.show()
+	teleport_menu_rect.texture = load("res://Assets/room_previews/"+_room_name+".jpg")
+	teleport_menu_description.text = tr("description_"+_room_name)
+	teleport_menu_description.get_v_scroll_bar().value = 0
 	#-------------------------------------------------------------------------------
-	match(_dictionary.get("room", "")):
-		"room_test_01":
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				teleport_menu_rect.show()
-				teleport_menu_rect.texture = load("res://Assets/room_previews/room_test_01.jpg")
-				teleport_menu_description.text = "* Its a little buggi zone, some enemies com back to life when i leave the rooms. "+_s
-				teleport_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		"room_test_05":
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				teleport_menu_rect.show()
-				teleport_menu_rect.texture = load("res://Assets/room_previews/room_test_05.jpg")
-				teleport_menu_description.text = "* This plase is where some windows stars to appear, mayby it's a residential zone. "+_s
-				teleport_menu_description.get_v_scroll_bar().value = 0
-				singleton.Common_Selected()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		_:
-			#-------------------------------------------------------------------------------
-			_selected = func():
-				TeleportMenu_No_Description()
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	return _selected
+	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
 func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	var _room_name: String = _dictionary.get("room", "")
@@ -4459,7 +4423,7 @@ func TeleportMenu_TeleportButton_Submit(_dictionary:Dictionary):
 	singleton.Play_BGM(singleton.stage1)
 	pause_menu_panel.hide()
 	PauseOff()
-	Destroy_All_Items(teleport_menu_bonfire_button_array)
+	Destroy_Button_Array(teleport_menu_bonfire_button_array)
 	singleton.Play_SFX_Teleport()
 #-------------------------------------------------------------------------------
 func Teleport_From_1_Room_to_Another(_room_name:String, _warp_name:String):
@@ -4689,42 +4653,42 @@ func Open_Market(_merchant_name:String, _consumableitem_array:Array[Item_Seriali
 	var _all_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_all_scrollContainer, item_menu_all_button)
 		Enable_Menu_And_Move_to_Button(item_menu_key_scrollContainer, item_menu_key_button_array, item_menu_key_button)
-		item_menu_title.text = "Key Items"
+		item_menu_title.text = tr("item_menu_key_items_label")
 	#-------------------------------------------------------------------------------
 	var _all_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_all_scrollContainer, item_menu_all_button)
 		Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-		item_menu_title.text = "Consumable Items"
+		item_menu_title.text = tr("item_menu_consumable_items_label")
 	#-------------------------------------------------------------------------------
 	var _consumable_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button)
 		Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-		item_menu_title.text = "All Items"
+		item_menu_title.text = tr("item_menu_all_items_label")
 	#-------------------------------------------------------------------------------
 	var _consumable_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button)
 		Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-		item_menu_title.text = "Equip Items"
+		item_menu_title.text = tr("item_menu_equip_items_label")
 	#-------------------------------------------------------------------------------
 	var _equip_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_equip_scrollContainer, item_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(item_menu_consumable_scrollContainer, item_menu_consumable_button_array, item_menu_consumable_button)
-		item_menu_title.text = "Consumable Items"
+		item_menu_title.text = tr("item_menu_consumable_items_label")
 	#-------------------------------------------------------------------------------
 	var _equip_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_equip_scrollContainer, item_menu_equip_button)
 		Enable_Menu_And_Move_to_Button(item_menu_key_scrollContainer, item_menu_key_button_array, item_menu_key_button)
-		item_menu_title.text = "Key Items"
+		item_menu_title.text = tr("item_menu_key_items_label")
 	#-------------------------------------------------------------------------------
 	var _key_a: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_key_scrollContainer, item_menu_key_button)
 		Enable_Menu_And_Move_to_Button(item_menu_equip_scrollContainer, item_menu_equip_button_array, item_menu_equip_button)
-		item_menu_title.text = "Equip Items"
+		item_menu_title.text = tr("item_menu_equip_items_label")
 	#-------------------------------------------------------------------------------
 	var _key_d: Callable = func():
 		Hide_Control_and_Enable_Button(item_menu_key_scrollContainer, item_menu_key_button)
 		Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-		item_menu_title.text = "All Items"
+		item_menu_title.text = tr("item_menu_all_items_label")
 	#-------------------------------------------------------------------------------
 	var _selected_0: Callable = func():Item_Menu_No_Description()
 	var _submit_0: Callable = func():pass
@@ -4801,7 +4765,7 @@ func Open_Market(_merchant_name:String, _consumableitem_array:Array[Item_Seriali
 	Item_Menu_Show_and_Enable_All_Button()
 	Item_Menu_Hide_All_ScrollContainer()
 	Enable_Menu_And_Move_to_Button(item_menu_all_scrollContainer, item_menu_all_button_array, item_menu_all_button)
-	item_menu_title.text = "All Items"
+	item_menu_title.text = tr("item_menu_all_items_label")
 	singleton.Common_Submited()
 	#-------------------------------------------------------------------------------
 	await dialogue_signal
@@ -4812,10 +4776,10 @@ func Close_Market():
 	pause_menu_panel.hide()
 	money_menu.hide()
 	#-------------------------------------------------------------------------------
-	Destroy_All_Items(item_menu_all_button_array)
-	Destroy_All_Items(item_menu_consumable_button_array)
-	Destroy_All_Items(item_menu_equip_button_array)
-	Destroy_All_Items(item_menu_key_button_array)
+	Destroy_Button_Array(item_menu_all_button_array)
+	Destroy_Button_Array(item_menu_consumable_button_array)
+	Destroy_Button_Array(item_menu_equip_button_array)
+	Destroy_Button_Array(item_menu_key_button_array)
 	#-------------------------------------------------------------------------------
 	singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
@@ -4873,7 +4837,7 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 	var _right: Callable = func():
 		Increase_How_Many_Do_Want_to_Buy(_item_serializable.price, 1, false, 99)
 	#-------------------------------------------------------------------------------
-	confirm_buy_menu_item_name.text = get_resource_filename(_item_serializable.item_resource)
+	confirm_buy_menu_item_name.text = tr("name_"+get_resource_filename(_item_serializable.item_resource))
 	how_many_would_you_buy = 1
 	Print_How_Many_Do_You_Buy(_item_serializable.price, false, 99)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
@@ -4931,7 +4895,7 @@ func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_ser
 	var _right: Callable = func():
 		Increase_How_Many_Do_Want_to_Buy(_equip_serializable.price, 1, true, _equip_serializable.stored)
 	#-------------------------------------------------------------------------------
-	confirm_buy_menu_item_name.text = get_resource_filename(_equip_serializable.equip_resource)
+	confirm_buy_menu_item_name.text = tr("name_"+get_resource_filename(_equip_serializable.equip_resource))
 	how_many_would_you_buy = 1
 	Print_How_Many_Do_You_Buy(_equip_serializable.price, true, _equip_serializable.stored, )
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
@@ -4989,7 +4953,7 @@ func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_ser
 	var _right: Callable = func():
 		Increase_How_Many_Do_Want_to_Buy(_keyitem_serializable.price, 1, true, _keyitem_serializable.stored)
 	#-------------------------------------------------------------------------------
-	confirm_buy_menu_item_name.text = get_resource_filename(_keyitem_serializable.key_item_resource)
+	confirm_buy_menu_item_name.text = tr("name_"+get_resource_filename(_keyitem_serializable.key_item_resource))
 	how_many_would_you_buy = 1
 	Print_How_Many_Do_You_Buy(_keyitem_serializable.price, true, _keyitem_serializable.stored)
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
@@ -5022,8 +4986,9 @@ func Decrease_How_Many_Do_Want_to_Buy(_original_price:int, _int:int, _has_limite
 #-------------------------------------------------------------------------------
 func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
-	_label.text = "$"+str(_equip_serializable.price)+"  "
+	_label.text = ""
 	_label.text += "["+str(_equip_serializable.stored)+"]  "
+	_label.text += "$"+str(_equip_serializable.price)+"  "
 #-------------------------------------------------------------------------------
 func Set_Max_Items_You_Can_Buy(_stored:int, _original_price:int, _whole_cost:int):
 	#-------------------------------------------------------------------------------
@@ -5040,8 +5005,9 @@ func Set_Max_Items_You_Can_Buy(_stored:int, _original_price:int, _whole_cost:int
 #-------------------------------------------------------------------------------
 func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _button:Button):
 	var _label: Label = _button.get_child(0) as Label
-	_label.text = "$"+str(_keyitem_serializable.price)+"  "
+	_label.text = ""
 	_label.text += "["+str(_keyitem_serializable.stored)+"]  "
+	_label.text += "$"+str(_keyitem_serializable.price)+"  "
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -5211,14 +5177,14 @@ func Dialogue_Open():
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(dialogue_menu_button_next)
 #-------------------------------------------------------------------------------
-func Dialogue(_s:String):
+func Dialogue(_dialogue:String):
 	dialogue_menu.show()
 	dialogue_menu_button_next.show()
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaker1.hide()
 	dialogue_menu_speaker1_name.hide()
 	#-------------------------------------------------------------------------------
-	dialogue_menu_speaking_label.text = _s
+	dialogue_menu_speaking_label.text = tr(_dialogue)
 	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
 	await dialogue_signal
 #-------------------------------------------------------------------------------
@@ -5229,10 +5195,10 @@ func Dialogue_with_Speaker(_texture:Texture2D, _nombre:String, _dialogue:String)
 	dialogue_menu_speaker1.show()
 	dialogue_menu_speaker1_image.texture = _texture
 	#-------------------------------------------------------------------------------
-	dialogue_menu_speaker1_name.text = "[color=" +hex_color_yellow+"]"+_nombre+"[/color]"
+	dialogue_menu_speaker1_name.text = "[color=" +hex_color_yellow+"]"+"[lb]"+tr(_nombre)+"[rb]"+"[/color]"
 	dialogue_menu_speaker1_name.show()
 	#-------------------------------------------------------------------------------
-	dialogue_menu_speaking_label.text = _dialogue
+	dialogue_menu_speaking_label.text = tr(_dialogue)
 	dialogue_menu_speaking_label.get_v_scroll_bar().value = 0
 	#-------------------------------------------------------------------------------
 	await dialogue_signal
@@ -5288,6 +5254,8 @@ func sort_by_name_ascending(_array: Array):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 #endregion
+#-------------------------------------------------------------------------------
+#region FUNCTIONS THAT SIMULATE TAB MENUES
 #-------------------------------------------------------------------------------
 func Item_Menu_Show_and_Enable_All_Button():
 	item_menu_all_button.show()
@@ -5362,4 +5330,6 @@ func Enable_Menu_And_Move_to_Button_0(_container:Control, _button:Button):
 	_button.disabled = false
 	_button.show()
 	singleton.Move_to_Button(_button)
+#-------------------------------------------------------------------------------
+#endregion
 #-------------------------------------------------------------------------------

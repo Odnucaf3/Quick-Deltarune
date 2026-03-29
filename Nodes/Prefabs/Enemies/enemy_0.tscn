@@ -1,8 +1,14 @@
 [gd_scene format=3 uid="uid://c3gpm8500ebkp"]
 
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_84owv"]
-[ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="2_n5ixp"]
+[ext_resource type="Resource" uid="uid://cfwc05cwwcm4g" path="res://Resources/Users/enemy_0.tres" id="2_iisv6"]
 [ext_resource type="Texture2D" uid="uid://dyegdx81d1rxj" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/soldier.png" id="2_vs54o"]
+[ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="3_xtm4a"]
+
+[sub_resource type="Resource" id="Resource_llolj"]
+script = ExtResource("3_xtm4a")
+party_member_resource = ExtResource("2_iisv6")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="Animation" id="Animation_42b3h"]
 resource_name = "Aim"
@@ -994,12 +1000,10 @@ nodes/OneShot/node = SubResource("AnimationNodeOneShot_vs54o")
 nodes/OneShot/position = Vector2(60, 380)
 node_connections = [&"output", 0, &"OneShot", &"OneShot", 0, &"Base_StateMachine", &"OneShot", 1, &"Override_StateMachine"]
 
-[node name="Foe_01" type="Node2D" unique_id=1312589892 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
+[node name="enemy_0" type="Node2D" unique_id=1312589892 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_84owv")
-id = &"Soldier"
-texture2d = ExtResource("2_n5ixp")
-lore = "* An enemy with towering efence."
-description = "* Weak to hacking."
+party_member_serializable = SubResource("Resource_llolj")
+max_hp = 55
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")

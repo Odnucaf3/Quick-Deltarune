@@ -1,15 +1,11 @@
 extends Node2D
 class_name Party_Member
 #-------------------------------------------------------------------------------
-@export var id: StringName
-@export var texture2d: Texture2D
-@export var texture2d_face: Texture2D
+@export var party_member_serializable: Party_Member_Serializable
 var hp: int
 @export var max_hp: int = 15
 var sp: int
 @export var max_sp: int = 20
-#-------------------------------------------------------------------------------
-@export_multiline  var description: String
 #-------------------------------------------------------------------------------
 var is_in_guard: bool
 var damage_label_array: Array[Label]

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Party_Member_Resource" format=3 uid="uid://buxlsnd05sofl"]
+
+[ext_resource type="Script" uid="uid://msji6sjd708t" path="res://Scripts/Resources/party_member_resource.gd" id="1_7kk1c"]
+[ext_resource type="Texture2D" uid="uid://qw62qdjg350n" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/idle1.png" id="1_nr8h7"]
+[ext_resource type="Texture2D" uid="uid://dkboh25w2j4cj" path="res://Assets/profiles/player3_idle1.png" id="2_jl507"]
+
+[resource]
+script = ExtResource("1_7kk1c")
+body_sprite = ExtResource("1_nr8h7")
+face_sprite = ExtResource("2_jl507")
+metadata/_custom_type_script = "uid://msji6sjd708t"

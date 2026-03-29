@@ -10,8 +10,6 @@ enum TARGET_TYPE{ENEMY_1, ALLY_1, ALLY_DEATH, USER}
 @export var anim: String = "Aim"
 @export var action_string: String = "Do_Nothing"
 #-------------------------------------------------------------------------------
-@export_multiline  var description: String
-#-------------------------------------------------------------------------------
 @export_category("Skill Paramenters")
 @export var hp_cost: int
 @export var sp_cost: int
