@@ -2,10 +2,14 @@ extends Resource
 class_name Item_Serializable
 #-------------------------------------------------------------------------------
 @export var item_resource: Item_Resource
+#-------------------------------------------------------------------------------
 @export var cooldown: int = 0
 @export var hold: int = 1
 var stored: int = 0
 @export var price: int = 0
+#-------------------------------------------------------------------------------
+func _init():
+	resource_local_to_scene = true
 #-------------------------------------------------------------------------------
 func Constructor() -> Item_Serializable:
 	var _item_serializable_new: Item_Serializable = Item_Serializable.new()

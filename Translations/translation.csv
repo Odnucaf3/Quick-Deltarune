@@ -161,21 +161,21 @@ description_skill_1,"* The user receives half physical damage for 1 turn
 You gain 5 TP","* El Usuario recive la mitad de daño Físico por 1 turno.
 Ganas 5 TP.","* 使用者は1ターンの間、受ける物理ダメージが半減する。
 TPを5獲得する。"
-name_party_member_0,Hanabi,Hanabi,ハナビ
-title_party_member_0,The mischivious hacher,La hacker traviesa.,いたずら好きなハッカー
-description_party_member_0,"* A former member of the Eastern Sisters, a master of hacking.
+name_ally_0,Hanabi,Hanabi,ハナビ
+title_ally_0,The mischivious hacher,La hacker traviesa.,いたずら好きなハッカー
+description_ally_0,"* A former member of the Eastern Sisters, a master of hacking.
 Her lack of physical strength is compensated by her exceptional skill at dodging","* Una ex-miembro de las hermanas del Este, maestra en el arte del hackeo.
 Su falta de fuerza física la compensa con su grán destreza a la hora de esquivar.","* 元イースタン・シスターズのメンバーで、ハッキングの達人
 身体能力は劣るものの、卓越した回避能力でそれを補っている。"
-name_party_member_1,Bob,Bob,チェリン
-title_party_member_1,The crazy monk,El monje loco.,狂った僧侶
-description_party_member_1,"* A former member of the Jehovah's Witnesses.
+name_ally_1,Bob,Bob,チェリン
+title_ally_1,The crazy monk,El monje loco.,狂った僧侶
+description_ally_1,"* A former member of the Jehovah's Witnesses.
 A religion of suicides that they claim grants them superhuman endurance","* Un ex-miembros de los Testigos.
 Una religion de suicidas que según ellos les dan resistencia sobrehumana.","* 元エホバの証人。
 自殺を信奉する宗教で、自殺によって超人的な耐久力を得るとされている。"
-name_party_member_2,Chaser,Chaser,ハンター
-title_party_member_2,The cool gunslinger,La pistolera copada,クールなガンマン
-description_party_member_2,"* A former member of the special forces.
+name_ally_2,Chaser,Chaser,ハンター
+title_ally_2,The cool gunslinger,La pistolera copada,クールなガンマン
+description_ally_2,"* A former member of the special forces.
 His exceptional skill with firearms cannot be matched by any cybernetic implant","* Una ex-miembro de las fuerzas especiales.
 Su alta destreza con las armas de fuego no se puede alcanzar con ningún implante cibernético.","* 元特殊部隊員。
 彼の卓越した銃器の腕前は、いかなるサイバネティック・インプラントをもってしても凌駕できない。"
@@ -205,3 +205,23 @@ escape_menu_title,Escape?,¿Escapar?,疲労？
 escape_menu_button_0,Retry Battle,Reintentar batalla,バトルをやり直す
 escape_menu_button_1,Escape Battle,Escapar de batalla,バトルから脱出
 escape_menu_button_2,Go to Save Spot,Ir al punto de guardado,セーブポイントへ
+name_stat_max_hp,Max HP,PS máximos,最大HP
+description_stat_max_hp,,,
+name_stat_max_sp,Max SP,SP máximos,最大SP
+description_stat_max_sp,,,
+name_stat_physical_attack,Physical Attack,Ataque físico,物理攻撃力
+description_stat_physical_attack,,,
+name_stat_physical_defense,Physical Defense,Defensa física,物理防御力
+description_stat_physical_defense,,,
+name_stat_magical_attack,Magical Attack,Ataque mágico,魔法攻撃力
+description_stat_magical_attack,,,
+name_stat_magical_defense,Magical Defense,Defensa mágica,魔法防御力
+description_stat_magical_defense,,,
+name_stat_agility,Agility,Agilidad,敏捷性
+description_stat_agility,,,
+name_stat_luck,Luck,Suerte,運
+description_stat_luck,,,
+weapon_label,Weapon,Arma,武器
+head_label,Head,Cabeza,頭部
+body_label,Body,Cuerpo,胴体
+ring_label,Ring,Anillo,指輪

@@ -20,3 +20,6 @@ enum TARGET_TYPE{ENEMY_1, ALLY_1, ALLY_DEATH, USER}
 @export var max_hold: int
 #endregion
 #-------------------------------------------------------------------------------
+func _init():
+	resource_local_to_scene = false
+#-------------------------------------------------------------------------------

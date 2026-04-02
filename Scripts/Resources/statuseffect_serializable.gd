@@ -4,6 +4,9 @@ class_name StatusEffect_Serializable
 @export var statuseffect_resource: StatusEffect_Resource
 @export var stored: int = 0
 #-------------------------------------------------------------------------------
+func _init():
+	resource_local_to_scene = true
+#-------------------------------------------------------------------------------
 func Constructor() -> StatusEffect_Serializable:
 	var _statuseffect_serializable_new: StatusEffect_Serializable = StatusEffect_Serializable.new()
 	#-------------------------------------------------------------------------------

@@ -7,65 +7,26 @@
 [ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="3_ebavv"]
 [ext_resource type="Texture2D" uid="uid://bveu3hvcd82oy" path="res://Assets/ansimuz/warped city files/v1/sprites/player/crouch.png" id="3_tojc2"]
 [ext_resource type="Texture2D" uid="uid://crrtdbmmayw3a" path="res://Assets/ansimuz/warped city files/v1/sprites/player/hurt.png" id="4_agwf3"]
-[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/User_Skills/skill_10.tres" id="4_ek5q1"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="4_lh16t"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="5_8r6oj"]
 [ext_resource type="Texture2D" uid="uid://doav3l76si2wh" path="res://Assets/ansimuz/warped city files/v1/sprites/player/run.png" id="5_vkmoi"]
+[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="6_5mq3t"]
 [ext_resource type="Texture2D" uid="uid://b8wieo7nga7xe" path="res://Assets/ansimuz/warped city files/v1/sprites/player/shoot.png" id="6_oac30"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="7_8r6oj"]
 [ext_resource type="Texture2D" uid="uid://xfmiejntkjq" path="res://Assets/ansimuz/warped city files/v1/sprites/player/walk.png" id="7_ys8se"]
 
+[sub_resource type="Resource" id="Resource_5mq3t"]
+script = ExtResource("7_8r6oj")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_27kkl"]
+script = ExtResource("7_8r6oj")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
 [sub_resource type="Resource" id="Resource_ur4vk"]
+resource_local_to_scene = true
 script = ExtResource("3_ebavv")
 party_member_resource = ExtResource("2_ej1w1")
+equip_array = Array[ExtResource("7_8r6oj")]([SubResource("Resource_5mq3t"), SubResource("Resource_27kkl")])
 metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
-
-[sub_resource type="Resource" id="Resource_tq75w"]
-script = ExtResource("3_3pxk4")
-item_resource = ExtResource("4_lh16t")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_2x6ww"]
-script = ExtResource("3_3pxk4")
-item_resource = ExtResource("5_8r6oj")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_ek5q1"]
-script = ExtResource("3_3pxk4")
-item_resource = ExtResource("4_ek5q1")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_hyqkh"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_x6xa3"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_p8mwb"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_txphx"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_tt6h3"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_7fdcv"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_dhbps"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_x7brw"]
-script = ExtResource("7_8r6oj")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Animation" id="Animation_hjtjb"]
 resource_name = "Aim"
@@ -821,12 +782,9 @@ states/Walk/position = Vector2(566, 3)
 transitions = ["Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_lleqo"), "Crouch_Hurt", "Crouch", SubResource("AnimationNodeStateMachineTransition_fbyh6")]
 graph_offset = Vector2(-29, 78)
 
-[node name="Friend_01" type="Node2D" unique_id=777995150 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
+[node name="ally_0" type="Node2D" unique_id=777995150 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_hjtjb")
 party_member_serializable = SubResource("Resource_ur4vk")
-max_hp = 30
-skill_array = Array[ExtResource("3_3pxk4")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1")])
-equip_array = Array[ExtResource("7_8r6oj")]([SubResource("Resource_hyqkh"), SubResource("Resource_x6xa3"), SubResource("Resource_p8mwb"), SubResource("Resource_txphx"), SubResource("Resource_tt6h3"), SubResource("Resource_7fdcv"), SubResource("Resource_dhbps"), SubResource("Resource_x7brw")])
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")

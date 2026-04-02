@@ -5,26 +5,43 @@
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="5_rpgth"]
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="6_lujb4"]
+[ext_resource type="Resource" uid="uid://c03am3sxypfu3" path="res://Resources/Consumable_Items/consumable_4.tres" id="7_42b3h"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="7_igypo"]
+[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/key_1.tres" id="7_xhx7r"]
 [ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/key_0.tres" id="8_3p4s7"]
-[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="10_igypo"]
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="11_hko5v"]
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
 [ext_resource type="Texture2D" uid="uid://c5tbmn2ticnw1" path="res://Assets/kenney_assets/pattern_pack_2/Thin/Default (256px)/pattern_0016.png" id="12_s3ops"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/ally_0.tscn" id="13_hxoxt"]
-[ext_resource type="Resource" uid="uid://bneparg02mgw7" path="res://Resources/User_Skills/skill_10.tres" id="15_mitwg"]
-[ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/User_Skills/skill_4.tres" id="16_3p4s7"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="15_3p4s7"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
+[ext_resource type="Resource" uid="uid://c0hgqpee0skjt" path="res://Resources/Users/ally_0.tres" id="16_xhx7r"]
+[ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="17_42b3h"]
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="18_tnh07"]
+[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="18_yqvj6"]
 [ext_resource type="PackedScene" uid="uid://dviap1ecrwytj" path="res://Nodes/Prefabs/party_button.tscn" id="19_xrh8u"]
+[ext_resource type="Resource" uid="uid://buxlsnd05sofl" path="res://Resources/Users/ally_2.tres" id="20_hko5v"]
 [ext_resource type="PackedScene" uid="uid://deigb0wpxseqj" path="res://Nodes/Prefabs/ally_ui.tscn" id="20_ik87f"]
-[ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/ally_1.tscn" id="20_lujb4"]
+[ext_resource type="PackedScene" uid="uid://dottqr7xoeeuf" path="res://Nodes/Prefabs/Allies/ally_2.tscn" id="20_lujb4"]
 [ext_resource type="Texture2D" uid="uid://bkwxpp3bs0jvk" path="res://icon.svg" id="21_hxoxt"]
-[ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/ally_2.tscn" id="21_rpgth"]
+[ext_resource type="PackedScene" uid="uid://vt43nxol7i3t" path="res://Nodes/Prefabs/Allies/ally_1.tscn" id="21_rpgth"]
+[ext_resource type="Resource" uid="uid://coer5hfqg2dth" path="res://Resources/Users/ally_1.tres" id="22_s3ops"]
 [ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="25_1th3s"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="26_1th3s"]
 [ext_resource type="Script" uid="uid://c7bqs6lok38oe" path="res://Scripts/Scenes/canvas_layer.gd" id="29_s3ops"]
 [ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
+
+[sub_resource type="Resource" id="Resource_yqvj6"]
+script = ExtResource("7_igypo")
+item_resource = ExtResource("7_42b3h")
+hold = 9
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_hko5v"]
+script = ExtResource("11_hko5v")
+key_item_resource = ExtResource("7_xhx7r")
+stored = 2
+metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="Resource" id="Resource_gg6rv"]
 script = ExtResource("7_igypo")
@@ -203,148 +220,35 @@ node_connections = [&"output", 0, &"OneShot", &"Transition", 0, &"Animation", &"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ik87f"]
 size = Vector2(16, 8)
 
-[sub_resource type="Resource" id="Resource_tq75w"]
-script = ExtResource("7_igypo")
-item_resource = ExtResource("5_rpgth")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_2x6ww"]
-script = ExtResource("7_igypo")
-item_resource = ExtResource("6_lujb4")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_ek5q1"]
-script = ExtResource("7_igypo")
-item_resource = ExtResource("15_mitwg")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_xhx7r"]
-script = ExtResource("7_igypo")
-item_resource = ExtResource("16_3p4s7")
-metadata/_custom_type_script = "uid://beengnff5twcx"
-
-[sub_resource type="Resource" id="Resource_lujb4"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
+[sub_resource type="Resource" id="Resource_5mq3t"]
+script = ExtResource("15_3p4s7")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
-[sub_resource type="Resource" id="Resource_1th3s"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_mitwg"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_3p4s7"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
+[sub_resource type="Resource" id="Resource_27kkl"]
+script = ExtResource("15_3p4s7")
 metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [sub_resource type="Resource" id="Resource_42b3h"]
 resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_yqvj6"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_hko5v"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+script = ExtResource("17_42b3h")
+party_member_resource = ExtResource("16_xhx7r")
+equip_array = Array[ExtResource("15_3p4s7")]([SubResource("Resource_5mq3t"), SubResource("Resource_27kkl")])
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hxoxt"]
 radius = 4.0
 
 [sub_resource type="Resource" id="Resource_s3ops"]
 resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+script = ExtResource("17_42b3h")
+party_member_resource = ExtResource("22_s3ops")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="Resource" id="Resource_rka03"]
 resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ircg4"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_62d7h"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ftd8i"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_why6j"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_pb3t7"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_a7t32"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_p4ejy"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_vap1g"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ibfam"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_s1r55"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_4kq1m"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_vqo7i"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_jsbcl"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_ltkvx"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_0f0fx"]
-resource_local_to_scene = true
-script = ExtResource("10_igypo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+script = ExtResource("17_42b3h")
+party_member_resource = ExtResource("20_hko5v")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnh07"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -417,6 +321,8 @@ item_menu_equip_button = NodePath("CanvasLayer/All Menues/Item_Menues/HBoxContai
 item_menu_key_scrollContainer = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer/Key_Items_ScrollContainer")
 item_menu_key_content = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer/Key_Items_ScrollContainer/VBoxContainer")
 item_menu_key_button = NodePath("CanvasLayer/All Menues/Item_Menues/HBoxContainer/Button4")
+consumable_item_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6")])
+key_item_array = Array[ExtResource("11_hko5v")]([SubResource("Resource_hko5v")])
 iten_resource_attack = SubResource("Resource_gg6rv")
 iten_resource_defense = SubResource("Resource_rpgth")
 user_menu = NodePath("CanvasLayer/All Menues/Status_Menues")
@@ -602,9 +508,7 @@ collision_layer = 2
 shape = SubResource("RectangleShape2D_ik87f")
 
 [node name="Friend_01" parent="World_2D/Player" unique_id=1190316243 instance=ExtResource("13_hxoxt")]
-max_hp = 5
-skill_array = Array[ExtResource("7_igypo")]([SubResource("Resource_tq75w"), SubResource("Resource_2x6ww"), SubResource("Resource_ek5q1"), SubResource("Resource_xhx7r")])
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_lujb4"), SubResource("Resource_1th3s"), SubResource("Resource_mitwg"), SubResource("Resource_3p4s7"), SubResource("Resource_42b3h"), SubResource("Resource_yqvj6"), SubResource("Resource_hko5v")])
+party_member_serializable = SubResource("Resource_42b3h")
 
 [node name="interactable_by_Action_Area2D" type="Area2D" parent="World_2D/Player" unique_id=1124339265]
 collision_layer = 0
@@ -629,13 +533,11 @@ shape = SubResource("CircleShape2D_hxoxt")
 
 [node name="Friend_02" parent="World_2D" unique_id=1561510886 instance=ExtResource("21_rpgth")]
 position = Vector2(-24, -8)
-max_hp = 5
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_s3ops"), SubResource("Resource_rka03"), SubResource("Resource_ircg4"), SubResource("Resource_62d7h"), SubResource("Resource_ftd8i"), SubResource("Resource_why6j"), SubResource("Resource_pb3t7"), SubResource("Resource_a7t32")])
+party_member_serializable = SubResource("Resource_s3ops")
 
 [node name="Friend_03" parent="World_2D" unique_id=1517872783 instance=ExtResource("20_lujb4")]
 position = Vector2(-48, 8)
-max_hp = 5
-equip_array = Array[ExtResource("10_igypo")]([SubResource("Resource_p4ejy"), SubResource("Resource_vap1g"), SubResource("Resource_ibfam"), SubResource("Resource_s1r55"), SubResource("Resource_4kq1m"), SubResource("Resource_vqo7i"), SubResource("Resource_jsbcl"), SubResource("Resource_ltkvx"), SubResource("Resource_0f0fx")])
+party_member_serializable = SubResource("Resource_rka03")
 
 [node name="room_test_01" parent="World_2D" unique_id=1983680886 instance=ExtResource("11_tnh07")]
 
@@ -1346,6 +1248,7 @@ grow_vertical = 2
 theme = ExtResource("26_1th3s")
 
 [node name="Item_Menues" type="VBoxContainer" parent="CanvasLayer/All Menues" unique_id=1865643799]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2095,7 +1998,6 @@ text = "[3]"
 horizontal_alignment = 2
 
 [node name="Status_Menues" type="VBoxContainer" parent="CanvasLayer/All Menues" unique_id=174187539]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2838,7 +2740,8 @@ text = "↑W"
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/normal_font_size = 24
-text = "* Utility description of the Skill / Item."
+text = "* Utility description of the Skill / Item.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3" unique_id=1960641778]
 layout_mode = 2
@@ -2887,6 +2790,7 @@ text = "[99]"
 horizontal_alignment = 2
 
 [node name="Teleport_Menu" type="VBoxContainer" parent="CanvasLayer/All Menues" unique_id=1416940092]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

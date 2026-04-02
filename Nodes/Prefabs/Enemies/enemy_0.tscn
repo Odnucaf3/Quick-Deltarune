@@ -3,11 +3,23 @@
 [ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_84owv"]
 [ext_resource type="Resource" uid="uid://cfwc05cwwcm4g" path="res://Resources/Users/enemy_0.tres" id="2_iisv6"]
 [ext_resource type="Texture2D" uid="uid://dyegdx81d1rxj" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/soldier.png" id="2_vs54o"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_x021x"]
 [ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="3_xtm4a"]
+[ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="5_ony2s"]
+[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="6_55a83"]
 
 [sub_resource type="Resource" id="Resource_llolj"]
+resource_local_to_scene = true
 script = ExtResource("3_xtm4a")
 party_member_resource = ExtResource("2_iisv6")
+base_stats_dictionarty = Dictionary[StringName, int]({
+&"luck": 10,
+&"magical_attack": 10,
+&"magical_defense": 10,
+&"max_hp": 5,
+&"physical_attack": 10,
+&"physical_defense": 10
+})
 metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [sub_resource type="Animation" id="Animation_42b3h"]
@@ -1003,7 +1015,6 @@ node_connections = [&"output", 0, &"OneShot", &"OneShot", 0, &"Base_StateMachine
 [node name="enemy_0" type="Node2D" unique_id=1312589892 node_paths=PackedStringArray("pivot", "sprite", "animation_tree")]
 script = ExtResource("1_84owv")
 party_member_serializable = SubResource("Resource_llolj")
-max_hp = 55
 pivot = NodePath("Pivot")
 sprite = NodePath("Pivot/Sprite2D")
 animation_tree = NodePath("Pivot/AnimationTree")

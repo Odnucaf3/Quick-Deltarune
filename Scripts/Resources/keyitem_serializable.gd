@@ -5,6 +5,9 @@ class_name Key_Item_Serializable
 @export var stored: int = 1
 @export var price: int = 0
 #-------------------------------------------------------------------------------
+func _init():
+	resource_local_to_scene = true
+#-------------------------------------------------------------------------------
 func Constructor() -> Key_Item_Serializable:
 	var _key_item_serializable_new: Key_Item_Serializable = Key_Item_Serializable.new()
 	#-------------------------------------------------------------------------------

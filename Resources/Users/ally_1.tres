@@ -2,10 +2,47 @@
 
 [ext_resource type="Texture2D" uid="uid://ccv5xpttu6mqy" path="res://Assets/ansimuz/warped city files/v2/sprites/player/Idle1.png" id="1_alf3h"]
 [ext_resource type="Script" uid="uid://msji6sjd708t" path="res://Scripts/Resources/party_member_resource.gd" id="1_gddkq"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_ushg1"]
 [ext_resource type="Texture2D" uid="uid://bw6vrgilaeyol" path="res://Assets/profiles/player2_idle.PNG" id="2_vbnbi"]
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="4_vbnbi"]
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="5_3sejw"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="6_ushg1"]
+[ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/User_Skills/skill_4.tres" id="8_ip243"]
+[ext_resource type="Resource" uid="uid://b6yn1vwdvrl10" path="res://Resources/User_Skills/skill_5.tres" id="9_cccyk"]
+
+[sub_resource type="Resource" id="Resource_bxsuk"]
+script = ExtResource("2_ushg1")
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ip243"]
+script = ExtResource("2_ushg1")
+myEQUIP_TYPE = 1
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_cccyk"]
+script = ExtResource("2_ushg1")
+myEQUIP_TYPE = 2
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+
+[sub_resource type="Resource" id="Resource_ds1lj"]
+script = ExtResource("2_ushg1")
+myEQUIP_TYPE = 3
+metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 
 [resource]
 script = ExtResource("1_gddkq")
 body_sprite = ExtResource("1_alf3h")
 face_sprite = ExtResource("2_vbnbi")
+base_stats_dictionarty = Dictionary[StringName, int]({
+&"agility": 10,
+&"luck": 10,
+&"magical_attack": 10,
+&"magical_defense": 10,
+&"max_hp": 5,
+&"max_sp": 20,
+&"physical_attack": 10,
+&"physical_defense": 10
+})
+skill_resource_array = Array[ExtResource("4_vbnbi")]([ExtResource("5_3sejw"), ExtResource("6_ushg1"), ExtResource("8_ip243"), ExtResource("9_cccyk")])
+equip_serializable_array = Array[ExtResource("2_ushg1")]([SubResource("Resource_bxsuk"), SubResource("Resource_ip243"), SubResource("Resource_cccyk"), SubResource("Resource_ds1lj")])
 metadata/_custom_type_script = "uid://msji6sjd708t"

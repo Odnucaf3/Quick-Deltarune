@@ -17,6 +17,9 @@
 [ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/key_1.tres" id="15_5drey"]
 [ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="15_8ss50"]
 [ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="16_srwso"]
+[ext_resource type="Resource" uid="uid://cfwc05cwwcm4g" path="res://Resources/Users/enemy_0.tres" id="18_ptuk6"]
+[ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="19_8opot"]
+[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="20_wrvon"]
 
 [sub_resource type="GDScript" id="GDScript_52n5y"]
 script/source = "extends Room_Script
@@ -301,6 +304,21 @@ func Interactable_Action():
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xdoc7"]
 size = Vector2(224, 192)
 
+[sub_resource type="Resource" id="Resource_dcamq"]
+script = ExtResource("19_8opot")
+party_member_resource = ExtResource("18_ptuk6")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
+
+[sub_resource type="Resource" id="Resource_oweur"]
+script = ExtResource("19_8opot")
+party_member_resource = ExtResource("18_ptuk6")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
+
+[sub_resource type="Resource" id="Resource_s6jk7"]
+script = ExtResource("19_8opot")
+party_member_resource = ExtResource("18_ptuk6")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
+
 [sub_resource type="GDScript" id="GDScript_rqg47"]
 script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
@@ -391,6 +409,12 @@ metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rqg47"]
 radius = 16.0
+
+[sub_resource type="Resource" id="Resource_dvu1e"]
+resource_local_to_scene = true
+script = ExtResource("19_8opot")
+party_member_resource = ExtResource("18_ptuk6")
+metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 
 [node name="room_test_01" type="Node2D" unique_id=1720227224 node_paths=PackedStringArray("room_limits")]
 y_sort_enabled = true
@@ -495,17 +519,17 @@ _enemy_root = NodePath("..")
 shape = SubResource("RectangleShape2D_xdoc7")
 
 [node name="Foe_01" parent="Enemy1" unique_id=463040546 instance=ExtResource("6_jyvag")]
-max_hp = 5
+party_member_serializable = SubResource("Resource_dcamq")
 
 [node name="Foe_03" parent="Enemy1" unique_id=102607479 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, 16)
-max_hp = 5
+party_member_serializable = SubResource("Resource_oweur")
 
 [node name="Foe_02" parent="Enemy1" unique_id=1810101425 instance=ExtResource("6_jyvag")]
 visible = false
 position = Vector2(32, -16)
-max_hp = 5
+party_member_serializable = SubResource("Resource_s6jk7")
 
 [node name="Marker2D" type="Marker2D" parent="Enemy1" unique_id=922697963]
 position = Vector2(0, -48)
@@ -550,3 +574,4 @@ _keyitem_array = Array[ExtResource("10_xdoc7")]([SubResource("Resource_wrvon")])
 shape = SubResource("CircleShape2D_rqg47")
 
 [node name="Foe_01" parent="Merchant_01" unique_id=2119111307 instance=ExtResource("6_jyvag")]
+party_member_serializable = SubResource("Resource_dvu1e")

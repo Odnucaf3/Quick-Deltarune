@@ -72,7 +72,7 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -34.0
+offset_top = -66.0
 offset_right = 108.0
 grow_vertical = 0
 theme_override_constants/separation = 0
@@ -84,7 +84,7 @@ size_flags_vertical = 1
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 18
 text = "300 / 300 HP"
-horizontal_alignment = 1
+horizontal_alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="hp_root/VBoxContainer/hp_Label" unique_id=1185093590]
 visible = false
@@ -113,7 +113,8 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 18
-text = "  300 / 300 SP  "
+text = "300 / 300 SP"
+horizontal_alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="hp_root/VBoxContainer/sp_Label" unique_id=2085388736]
 visible = false
