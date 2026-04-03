@@ -231,7 +231,7 @@ func Battle():
 				#-------------------------------------------------------------------------------
 				singleton.game_scene.BATTLE_STATE.YOU_RETRY:
 					singleton.Common_Submited()
-					await singleton.game_scene.You_Retry()
+					await singleton.game_scene.You_Retry(enemy)
 					Battle()
 				#-------------------------------------------------------------------------------
 				singleton.game_scene.BATTLE_STATE.YOU_ESCAPE:
@@ -248,7 +248,7 @@ func Battle():
 		#-------------------------------------------------------------------------------
 		singleton.game_scene.BATTLE_STATE.YOU_RETRY:
 			singleton.Common_Submited()
-			await singleton.game_scene.You_Retry()
+			await singleton.game_scene.You_Retry(enemy)
 			Battle()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -281,6 +281,7 @@ func Escape_Battle():
 	singleton.game_scene.Animation_StateMachine(enemy[0].animation_tree, \"Base_StateMachine/\", \"Idle\")
 	singleton.game_scene.Face_Left(enemy[0], false)
 	enemy[0].position = Vector2.ZERO
+	enemy[0].show()
 	#-------------------------------------------------------------------------------
 	for _i in range(1, enemy.size()):
 		enemy[_i].hide()

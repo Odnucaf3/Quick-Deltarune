@@ -33,16 +33,6 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 script = ExtResource("1_7kk1c")
 body_sprite = ExtResource("1_nr8h7")
 face_sprite = ExtResource("2_jl507")
-base_stats_dictionarty = Dictionary[StringName, int]({
-&"agility": 10,
-&"luck": 10,
-&"magical_attack": 10,
-&"magical_defense": 10,
-&"max_hp": 5,
-&"max_sp": 20,
-&"physical_attack": 10,
-&"physical_defense": 10
-})
 skill_resource_array = Array[ExtResource("4_jl507")]([ExtResource("5_2q07f"), ExtResource("6_xxn38"), ExtResource("8_kcueg"), ExtResource("9_klfjm")])
 equip_serializable_array = Array[ExtResource("2_xxn38")]([SubResource("Resource_85vcy"), SubResource("Resource_kcueg"), SubResource("Resource_klfjm"), SubResource("Resource_uj0yi")])
 metadata/_custom_type_script = "uid://msji6sjd708t"

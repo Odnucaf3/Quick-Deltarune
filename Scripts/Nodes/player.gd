@@ -21,3 +21,4 @@ var item_serializable: Item_Serializable
 #-------------------------------------------------------------------------------
 var party_member_ui: Party_Member_UI
 #-------------------------------------------------------------------------------
+var disappears_when_dies: bool = true

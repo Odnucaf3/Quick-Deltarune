@@ -4,8 +4,8 @@ class_name Party_Member_Resource
 @export var body_sprite: Texture2D
 @export var face_sprite: Texture2D
 #-------------------------------------------------------------------------------
-var base_stats_dictionarty: Dictionary[StringName, int] = {
-	"max_hp": 100,
+@export var base_stats_dictionarty: Dictionary[StringName, int] = {
+	"max_hp": 10,
 	"max_sp": 20,
 	"physical_attack": 10,
 	"physical_defense": 10,
@@ -15,7 +15,7 @@ var base_stats_dictionarty: Dictionary[StringName, int] = {
 	"luck": 10
 }
 #-------------------------------------------------------------------------------
-var extra_stats_dictionarty: Dictionary[StringName, int] = {
+@export var extra_stats_dictionarty: Dictionary[StringName, int] = {
 	"physical_presition": 100,
 	"physical_evasion": 0,
 	"magical_presition": 100,
@@ -25,7 +25,7 @@ var extra_stats_dictionarty: Dictionary[StringName, int] = {
 	"tp_regeneration": 0
 }
 #-------------------------------------------------------------------------------
-var special_stats_dictionarty: Dictionary[StringName, int] = {
+@export var special_stats_dictionarty: Dictionary[StringName, int] = {
 	"target_rate": 100,
 	"guard_effect_rate": 50,
 	"recovery_effect_rate": 100,

@@ -9,7 +9,7 @@ class_name Party_Member_Serializable
 var hp: int
 var sp: int
 #-------------------------------------------------------------------------------
-@export var base_stats_dictionarty: Dictionary[StringName, int] = {
+var base_stats_dictionarty: Dictionary[StringName, int] = {
 	"max_hp": 100,
 	#"max_sp": 20,
 	"physical_attack": 10,

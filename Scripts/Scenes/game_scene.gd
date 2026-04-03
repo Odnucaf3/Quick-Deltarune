@@ -49,12 +49,8 @@ var key_dictionary: Dictionary[String, int]
 @export var player_interactable_by_touch_not_enemy_area2d: Area2D
 @export var player_interactable_by_touch_enemy_area2d: Area2D
 @export var friend_party: Array[Party_Member]
-var friend_party_alive: Array[Party_Member]
-var friend_party_dead: Array[Party_Member]
 #-------------------------------------------------------------------------------
-@export var enemy_party: Array[Party_Member]
-var enemy_party_alive: Array[Party_Member]
-var enemy_party_dead: Array[Party_Member]
+var enemy_party: Array[Party_Member]
 #-------------------------------------------------------------------------------
 @export_group("Item Menues")
 @export var item_menu: Control
@@ -693,9 +689,9 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	myGAME_STATE = GAME_STATE.IN_MENU
 	myBATTLE_STATE = BATTLE_STATE.STILL_FIGHTING
 	#-------------------------------------------------------------------------------
-	enemy_party.clear()
-	#-------------------------------------------------------------------------------
 	singleton.Play_SFX_Enter_Battle()
+	#-------------------------------------------------------------------------------
+	enemy_party.clear()
 	#-------------------------------------------------------------------------------
 	for _i in _enemy_array.size():
 		enemy_party.append(_enemy_array[_i])
@@ -787,9 +783,6 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		#-------------------------------------------------------------------------------
 		singleton.Play_BGM(singleton.battle1)
 		#-------------------------------------------------------------------------------
-		friend_party_alive.clear()
-		friend_party_dead.clear()
-		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
 			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(friend_party[_i])
 			#-------------------------------------------------------------------------------
@@ -801,11 +794,6 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 			#-------------------------------------------------------------------------------
 			friend_party[_i].party_member_ui.show()
 			friend_party[_i].party_member_ui.button_pivot.hide()
-			#-------------------------------------------------------------------------------
-			friend_party_alive.append(friend_party[_i])
-		#-------------------------------------------------------------------------------
-		enemy_party_alive.clear()
-		enemy_party_dead.clear()
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party.size():
 			enemy_party[_i].party_member_serializable.hp = enemy_party[_i].party_member_serializable.base_stats_dictionarty.get("max_hp", 0)
@@ -814,7 +802,6 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 			Set_SP_Label(enemy_party[_i])
 			enemy_party[_i].party_member_ui.show()
 			enemy_party[_i].party_member_ui.button_pivot.hide()
-			enemy_party_alive.append(enemy_party[_i])
 		#-------------------------------------------------------------------------------
 	)
 	#-------------------------------------------------------------------------------
@@ -890,9 +877,9 @@ func Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(_user:Party_Member)
 		_user.party_member_serializable.statuseffect_array.append(_user.party_member_serializable.statuseffect_array_in_battle[_j].Constructor())
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Move_Fighters_to_Position_2(_position_type:bool):
+func Move_Fighters_to_Position_2(_is_menu_position:bool):
 	var _tween: Tween = create_tween()
-	Move_Fighters_to_Position(_tween, _position_type, 0.3)
+	Move_Fighters_to_Position(_tween, _is_menu_position, 0.3)
 	_tween.tween_interval(0.2)
 	await _tween.finished
 #-------------------------------------------------------------------------------
@@ -967,7 +954,9 @@ func BattleMenu_SkillButton_Submit():
 	dialogue_menu.hide()
 	user_menu.show()
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party_alive[current_player_turn]
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	var _user: Party_Member = _friend_party_alive[current_player_turn]
 	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
@@ -1076,18 +1065,20 @@ func BattleMenu_ItemButton_Submit():
 	singleton.Set_Button_WSAD(item_menu_key_button, _selected_0, _submit_0, _cancel_0, _w, _s, _key_a, _key_d)
 	#-------------------------------------------------------------------------------
 	for _i in consumable_item_array_in_battle.size():
+		var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+		#-------------------------------------------------------------------------------
 		var _hold: int = consumable_item_array_in_battle[_i].hold
 		var _cooldown: int = consumable_item_array_in_battle[_i].cooldown
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array_in_battle[_i].item_resource == (friend_party_alive[_j].item_serializable.item_resource)):
+			if(consumable_item_array_in_battle[_i].item_resource == (_friend_party_alive[_j].item_serializable.item_resource)):
 				_hold -= 1
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array_in_battle[_i].item_resource == (friend_party_alive[_j].item_serializable.item_resource)):
+			if(consumable_item_array_in_battle[_i].item_resource == (_friend_party_alive[_j].item_serializable.item_resource)):
 				_cooldown += consumable_item_array_in_battle[_i].item_resource.max_cooldown
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -1183,7 +1174,9 @@ func BattleMenu_EquipButton_Submit():
 	battle_menu.hide()
 	dialogue_menu.hide()
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party_alive[current_player_turn]
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	var _user: Party_Member = _friend_party_alive[current_player_turn]
 	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
@@ -1497,13 +1490,17 @@ func BattleMenu_AnyButton_Cancel():
 	#-------------------------------------------------------------------------------
 	else:
 		#-------------------------------------------------------------------------------
-		for _i in range(current_player_turn, friend_party_alive.size()):
-			Animation_StateMachine(friend_party_alive[_i].animation_tree, "", "Idle")
+		var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
 		#-------------------------------------------------------------------------------
-		for _i in enemy_party_alive.size():
-			Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
+		for _i in range(current_player_turn, _friend_party_alive.size()):
+			Animation_StateMachine(_friend_party_alive[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
-		battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
+		var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+		#-------------------------------------------------------------------------------
+		for _i in _enemy_party_alive.size():
+			Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
+		#-------------------------------------------------------------------------------
+		battle_menu.global_position = _friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
 		#-------------------------------------------------------------------------------
 		singleton.Move_to_First_Button(battle_menu_button)
 		singleton.Common_Canceled()
@@ -1622,7 +1619,7 @@ func Destroy_Party_Button_Array(_party_button_array:Array[Party_Button]):
 #-------------------------------------------------------------------------------
 #region TARGET MENU FUNCTIONS
 #-------------------------------------------------------------------------------
-func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, _cancel:Callable):	
+func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, _cancel:Callable):
 	var _tp: int = tp
 	#-------------------------------------------------------------------------------
 	for _i in current_player_turn:
@@ -1632,7 +1629,11 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 		match(_item_serializable.item_resource.myTARGET_TYPE):
 			Item_Resource.TARGET_TYPE.ENEMY_1:
 				#-------------------------------------------------------------------------------
-				if(enemy_party_alive.size() > 0):
+				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				#-------------------------------------------------------------------------------
+				var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+				#-------------------------------------------------------------------------------
+				if(_enemy_party_alive.size() > 0):
 					_last_menu.hide()
 					dialogue_menu.show()
 					dialogue_menu_button_next.hide()
@@ -1640,11 +1641,11 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
 					#-------------------------------------------------------------------------------
-					for _i in enemy_party_alive.size():
-						enemy_party_alive[_i].party_member_ui.button_pivot.show()
-						singleton.Set_Button(enemy_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, enemy_party_alive[_i], enemy_party_alive, _item_serializable), _cancel)
+					for _i in _enemy_party_alive.size():
+						_enemy_party_alive[_i].party_member_ui.button_pivot.show()
+						singleton.Set_Button(_enemy_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _enemy_party_alive[_i], _enemy_party_alive, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
-					singleton.Move_to_Button(enemy_party_alive[0].party_member_ui.button)
+					singleton.Move_to_Button(_enemy_party_alive[0].party_member_ui.button)
 					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
@@ -1653,7 +1654,9 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ALLY_1:
 				#-------------------------------------------------------------------------------
-				if(friend_party_alive.size() > 0):
+				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				#-------------------------------------------------------------------------------
+				if(_friend_party_alive.size() > 0):
 					_last_menu.hide()
 					dialogue_menu.show()
 					dialogue_menu_button_next.hide()
@@ -1662,11 +1665,11 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					Set_TP_Label(_tp)
 					
 					#-------------------------------------------------------------------------------
-					for _i in friend_party_alive.size():
-						friend_party_alive[_i].party_member_ui.button_pivot.show()
-						singleton.Set_Button(friend_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[_i], friend_party_alive, _item_serializable), _cancel)
+					for _i in _friend_party_alive.size():
+						_friend_party_alive[_i].party_member_ui.button_pivot.show()
+						singleton.Set_Button(_friend_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _friend_party_alive[_i], _friend_party_alive, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
-					singleton.Move_to_Button(friend_party_alive[0].party_member_ui.button)
+					singleton.Move_to_Button(_friend_party_alive[0].party_member_ui.button)
 					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
@@ -1675,20 +1678,21 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ALLY_DEATH:
 				#-------------------------------------------------------------------------------
-				if(friend_party_dead.size() > 0):
+				var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
+				#-------------------------------------------------------------------------------
+				if(_friend_party_dead.size() > 0):
 					_last_menu.hide()
 					dialogue_menu.show()
 					dialogue_menu_button_next.hide()
 					#-------------------------------------------------------------------------------
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
-					
 					#-------------------------------------------------------------------------------
-					for _i in friend_party_dead.size():
-						friend_party_dead[_i].party_member_ui.button_pivot.show()
-						singleton.Set_Button(friend_party_dead[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_dead, friend_party_dead[_i], friend_party_dead, _item_serializable), _cancel)
+					for _i in _friend_party_dead.size():
+						_friend_party_dead[_i].party_member_ui.button_pivot.show()
+						singleton.Set_Button(_friend_party_dead[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_dead, _friend_party_dead[_i], _friend_party_dead, _item_serializable), _cancel)
 					#-------------------------------------------------------------------------------
-					singleton.Move_to_Button(friend_party_dead[0].party_member_ui.button)
+					singleton.Move_to_Button(_friend_party_dead[0].party_member_ui.button)
 					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
@@ -1696,6 +1700,9 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.USER:
+				#-------------------------------------------------------------------------------
+				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				#-------------------------------------------------------------------------------
 				_last_menu.hide()
 				dialogue_menu.show()
 				dialogue_menu_button_next.hide()
@@ -1703,10 +1710,10 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				_tp -= _item_serializable.item_resource.tp_cost
 				Set_TP_Label(_tp)
 				#-------------------------------------------------------------------------------
-				friend_party_alive[current_player_turn].party_member_ui.button_pivot.show()
-				singleton.Set_Button(friend_party_alive[current_player_turn].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(friend_party_alive, friend_party_alive[current_player_turn], friend_party_alive, _item_serializable), _cancel)
+				_friend_party_alive[current_player_turn].party_member_ui.button_pivot.show()
+				singleton.Set_Button(_friend_party_alive[current_player_turn].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _friend_party_alive[current_player_turn], _friend_party_alive, _item_serializable), _cancel)
 				#-------------------------------------------------------------------------------
-				singleton.Move_to_Button(friend_party_alive[current_player_turn].party_member_ui.button)
+				singleton.Move_to_Button(_friend_party_alive[current_player_turn].party_member_ui.button)
 				singleton.Common_Submited()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -1717,12 +1724,14 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 #-------------------------------------------------------------------------------
 func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Party_Member, _target_party:Array[Party_Member], _item_serializable:Item_Serializable):	
 	#-------------------------------------------------------------------------------
-	friend_party_alive[current_player_turn].user_party = _user_party
-	friend_party_alive[current_player_turn].target = _target
-	friend_party_alive[current_player_turn].target_party = _target_party
-	friend_party_alive[current_player_turn].item_serializable = _item_serializable
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
-	Animation_StateMachine(friend_party_alive[current_player_turn].animation_tree, "", _item_serializable.item_resource.anim)
+	_friend_party_alive[current_player_turn].user_party = _user_party
+	_friend_party_alive[current_player_turn].target = _target
+	_friend_party_alive[current_player_turn].target_party = _target_party
+	_friend_party_alive[current_player_turn].item_serializable = _item_serializable
+	#-------------------------------------------------------------------------------
+	Animation_StateMachine(_friend_party_alive[current_player_turn].animation_tree, "", _item_serializable.item_resource.anim)
 	#-------------------------------------------------------------------------------
 	Destroy_Button_Array(item_menu_all_button_array)
 	Destroy_Button_Array(item_menu_consumable_button_array)
@@ -1737,10 +1746,13 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 	After_Choose_Target_Logic()
 #-------------------------------------------------------------------------------
 func TargetMenu_TargetButton_Cancel():
-	friend_party_alive[current_player_turn].user_party = []
-	friend_party_alive[current_player_turn].target = null
-	friend_party_alive[current_player_turn].target_party = []
-	friend_party_alive[current_player_turn].item_serializable = null
+	#-------------------------------------------------------------------------------
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	_friend_party_alive[current_player_turn].user_party = []
+	_friend_party_alive[current_player_turn].target = null
+	_friend_party_alive[current_player_turn].target_party = []
+	_friend_party_alive[current_player_turn].item_serializable = null
 	#-------------------------------------------------------------------------------
 	Hide_AllTarget()
 #-------------------------------------------------------------------------------
@@ -1752,9 +1764,11 @@ func After_Choose_Target_Logic():
 	Hide_AllTarget()
 	current_player_turn += 1
 	#-------------------------------------------------------------------------------
-	if(current_player_turn < friend_party_alive.size()):
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	if(current_player_turn < _friend_party_alive.size()):
 		#-------------------------------------------------------------------------------
-		battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
+		battle_menu.global_position = _friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
 		battle_menu.show()
 		dialogue_menu.show()
 		dialogue_menu_button_next.hide()
@@ -1783,7 +1797,9 @@ func Party_Actions():
 	if(myBATTLE_STATE != BATTLE_STATE.STILL_FIGHTING):
 		return
 	#-------------------------------------------------------------------------------
-	current_player_turn = friend_party_alive.size()
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	current_player_turn = _friend_party_alive.size()
 	Set_TP_Label(tp)
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
@@ -1792,17 +1808,17 @@ func Party_Actions():
 	var _player_alive_defending: Array[Party_Member] = []
 	var _player_alive_using_skill_or_item: Array[Party_Member] = []
 	#-------------------------------------------------------------------------------
-	for _i in friend_party_alive.size():
+	for _i in _friend_party_alive.size():
 		#-------------------------------------------------------------------------------
-		match(friend_party_alive[_i].item_serializable.item_resource):
+		match(_friend_party_alive[_i].item_serializable.item_resource):
 			iten_resource_attack.item_resource:
-				_player_alive_attacking.append(friend_party_alive[_i])
+				_player_alive_attacking.append(_friend_party_alive[_i])
 			#-------------------------------------------------------------------------------
 			iten_resource_defense.item_resource:
-				_player_alive_defending.append(friend_party_alive[_i])
+				_player_alive_defending.append(_friend_party_alive[_i])
 			#-------------------------------------------------------------------------------
 			_:
-				_player_alive_using_skill_or_item.append(friend_party_alive[_i])
+				_player_alive_using_skill_or_item.append(_friend_party_alive[_i])
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -1833,41 +1849,32 @@ func Party_Actions():
 	#-------------------------------------------------------------------------------
 	await Seconds(0.5)
 	#-------------------------------------------------------------------------------
-	friend_party_alive.clear()
-	friend_party_dead.clear()
-	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
+	for _i in _friend_party_alive.size():
 		#-------------------------------------------------------------------------------
-		if(friend_party[_i].party_member_serializable.hp > 0):
-			friend_party_alive.append(friend_party[_i])
-			#-------------------------------------------------------------------------------
-			if(friend_party[_i].party_member_serializable.is_in_guard):
-				Animation_StateMachine(friend_party[_i].animation_tree, "", "Crouch")
-			#-------------------------------------------------------------------------------
-			else:
-				Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
-			#-------------------------------------------------------------------------------
+		if(_friend_party_alive[_i].party_member_serializable.is_in_guard):
+			Animation_StateMachine(_friend_party_alive[_i].animation_tree, "", "Crouch")
 		#-------------------------------------------------------------------------------
 		else:
-			friend_party_dead.append(friend_party[_i])
+			Animation_StateMachine(_friend_party_alive[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	enemy_party_alive.clear()
-	enemy_party_dead.clear()
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
-	for _i in enemy_party.size():
+	for _i in range(enemy_party.size()-1,-1,-1):
+		var _enemy: Party_Member = enemy_party[_i]
 		#-------------------------------------------------------------------------------
-		if(enemy_party[_i].party_member_serializable.hp > 0):
-			enemy_party_alive.append(enemy_party[_i])
-			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
-		#-------------------------------------------------------------------------------
-		else:
-			enemy_party_dead.append(enemy_party[_i])
+		if(_enemy.party_member_serializable.hp <= 0 and _enemy.disappears_when_dies):
+			enemy_party.erase(_enemy)
+			_enemy.party_member_ui.hide()
+			_enemy.hide()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	if(enemy_party_alive.size() > 0):
+	for _i in _enemy_party_alive.size():
+		Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
+	#-------------------------------------------------------------------------------
+	if(_enemy_party_alive.size() > 0):
 		#-------------------------------------------------------------------------------
-		if(friend_party_alive.size() > 0):
+		if(_friend_party_alive.size() > 0):
 			Set_Players_and_Enemies_before_action()
 			myBATTLE_STATE = BATTLE_STATE.STILL_FIGHTING
 		#-------------------------------------------------------------------------------
@@ -1966,19 +1973,9 @@ func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
 	if(_attacking_party.size() > 0):
 		Set_Players_and_Enemies_before_action()
 		#-------------------------------------------------------------------------------
-		enemy_party_alive.clear()
-		enemy_party_dead.clear()
+		var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
 		#-------------------------------------------------------------------------------
-		for _i in enemy_party.size():
-			#-------------------------------------------------------------------------------
-			if(enemy_party[_i].party_member_serializable.hp > 0):
-				enemy_party_alive.append(enemy_party[_i])
-			#-------------------------------------------------------------------------------
-			else:
-				enemy_party_dead.append(enemy_party[_i])
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		if(enemy_party_alive.size() > 0):
+		if(_enemy_party_alive.size() > 0):
 			dialogue_menu.show()
 			dialogue_menu_button_next.hide()
 			dialogue_menu_speaking_label.text = "* Normal Attack Minigame."
@@ -2021,9 +2018,11 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	screen_limit_left = camera.global_position.x-camera_center.x
 	screen_limit_right = camera.global_position.x+camera_center.x
 	#-------------------------------------------------------------------------------
-	for _i in enemy_party_alive.size():
-		Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Aim")
-		enemy_party_alive[_i].party_member_ui.dialogue_root.show()
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	#-------------------------------------------------------------------------------
+	for _i in _enemy_party_alive.size():
+		Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Aim")
+		_enemy_party_alive[_i].party_member_ui.dialogue_root.show()
 	#-------------------------------------------------------------------------------
 	await Move_Fighters_to_Position_2(false)
 	await Seconds(1.0)
@@ -2032,8 +2031,8 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	hitbox.global_position = battle_box.global_position + battle_box.size/2.0
 	myGAME_STATE = GAME_STATE.IN_BATTLE
 	#-------------------------------------------------------------------------------
-	for _i in enemy_party_alive.size():
-		enemy_party_alive[_i].party_member_ui.dialogue_root.hide()
+	for _i in _enemy_party_alive.size():
+		_enemy_party_alive[_i].party_member_ui.dialogue_root.hide()
 	#-------------------------------------------------------------------------------
 	_callable.call()
 	await TimeOut_Tween(_timer)
@@ -2058,8 +2057,8 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	friend_party_alive.clear()
-	friend_party_dead.clear()
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		#-------------------------------------------------------------------------------
@@ -2089,44 +2088,39 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			friend_party[_i].party_member_serializable.is_in_guard = false
 		#-------------------------------------------------------------------------------
 		if(friend_party[_i].party_member_serializable.hp > 0):
-			friend_party_alive.append(friend_party[_i])
+			_friend_party_alive.append(friend_party[_i])
 			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
 		else:
-			friend_party_dead.append(friend_party[_i])
+			_friend_party_dead.append(friend_party[_i])
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	enemy_party_alive.clear()
-	enemy_party_dead.clear()
+	_enemy_party_alive = Get_Alive_Party_Array(enemy_party)
+	var _enemy_party_dead:Array[Party_Member] = Get_Dead_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
-	for _i in enemy_party.size():
+	for _i in _enemy_party_alive.size():
 		#-------------------------------------------------------------------------------
-		for _j in enemy_party[_i].party_member_serializable.statuseffect_array_in_battle.size():
-			print(str(enemy_party[_i].party_member_serializable) +":  "+str(enemy_party[_i].party_member_serializable.statuseffect_array_in_battle[_j].stored))
-			enemy_party[_i].party_member_serializable.statuseffect_array_in_battle[_j].stored -= 1
+		for _j in _enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle.size():
+			print(str(_enemy_party_alive[_i].party_member_serializable) +":  "+str(_enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle[_j].stored))
+			_enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle[_j].stored -= 1
 			#-------------------------------------------------------------------------------
-			if(enemy_party[_i].party_member_serializable.statuseffect_array_in_battle[_j].stored <= 0):
-				var _label: Label = Spawn_Label_in_User(enemy_party[_i])
-				Flying_Label(_label, "-"+tr("name_"+get_resource_filename(enemy_party[_i].party_member_serializable.statuseffect_array_in_battle[_j].statuseffect_resource)))
-				enemy_party[_i].party_member_serializable.statuseffect_array_in_battle.remove_at(_j)
+			if(_enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle[_j].stored <= 0):
+				var _label: Label = Spawn_Label_in_User(_enemy_party_alive[_i])
+				Flying_Label(_label, "-"+tr("name_"+get_resource_filename(_enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle[_j].statuseffect_resource)))
+				_enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle.remove_at(_j)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		if(enemy_party[_i].party_member_serializable.is_in_guard):
-			var _label: Label = Spawn_Label_in_User(enemy_party[_i])
+		if(_enemy_party_alive[_i].party_member_serializable.is_in_guard):
+			var _label: Label = Spawn_Label_in_User(_enemy_party_alive[_i])
 			Flying_Label(_label, "-Guard")
-			enemy_party[_i].party_member_serializable.is_in_guard = false
+			_enemy_party_alive[_i].party_member_serializable.is_in_guard = false
 		#-------------------------------------------------------------------------------
-		if(enemy_party[_i].party_member_serializable.hp > 0):
-			enemy_party_alive.append(enemy_party[_i])
-			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
-		#-------------------------------------------------------------------------------
-		else:
-			enemy_party_dead.append(enemy_party[_i])
+		Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	if(enemy_party_alive.size() > 0):
+	if(_enemy_party_alive.size() > 0):
 		#-------------------------------------------------------------------------------
-		if(friend_party_alive.size() > 0):
+		if(_friend_party_alive.size() > 0):
 			Animation_Transition(hitbox_animation_tree, "Transition/", "Normal")
 			battle_box.hide()
 			myGAME_STATE = GAME_STATE.IN_MENU
@@ -2138,7 +2132,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			dialogue_menu_button_next.hide()
 			dialogue_menu.show()
 			#-------------------------------------------------------------------------------
-			battle_menu.global_position = friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
+			battle_menu.global_position = _friend_party_alive[current_player_turn].party_member_ui.button_pivot.global_position
 			battle_menu.show()
 			singleton.Move_to_First_Button(battle_menu_button)
 			singleton.Common_Submited()
@@ -2219,7 +2213,12 @@ func RetryMenu_RetryButton_Submit():
 	myBATTLE_STATE = BATTLE_STATE.YOU_RETRY
 	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
-func You_Retry():
+func You_Retry(_enemy_array:Array[Party_Member]):
+	#-------------------------------------------------------------------------------
+	enemy_party.clear()
+	#-------------------------------------------------------------------------------
+	for _i in _enemy_array.size():
+		enemy_party.append(_enemy_array[_i])
 	#-------------------------------------------------------------------------------
 	win_lose_retry_escape_menu_vboxcontainer.hide()
 	win_lose_retry_escape_menu_label.hide()
@@ -2231,6 +2230,12 @@ func You_Retry():
 	_tween.tween_property(black_panel, "self_modulate", Color.BLACK, 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
+		#-------------------------------------------------------------------------------
+		for _i in _enemy_array.size():
+			_enemy_array[_i].show()
+			_enemy_array[_i].party_member_ui.show()
+			_enemy_array[_i].party_member_ui.button_pivot.hide()
+		#-------------------------------------------------------------------------------
 		tp = 15
 		Set_TP_Label(tp)
 		#-------------------------------------------------------------------------------
@@ -2241,9 +2246,6 @@ func You_Retry():
 		#-------------------------------------------------------------------------------
 		for _i in consumable_item_array.size():
 			consumable_item_array_in_battle.append(consumable_item_array[_i].Constructor())
-		#-------------------------------------------------------------------------------
-		friend_party_alive.clear()
-		friend_party_dead.clear()
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
 			#-------------------------------------------------------------------------------
@@ -2260,10 +2262,6 @@ func You_Retry():
 			friend_party[_i].item_serializable = null
 			#-------------------------------------------------------------------------------
 			friend_party[_i].party_member_ui.show()
-			friend_party_alive.append(friend_party[_i])
-		#-------------------------------------------------------------------------------
-		enemy_party_alive.clear()
-		enemy_party_dead.clear()
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party.size():
 			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
@@ -2272,7 +2270,6 @@ func You_Retry():
 			Set_HP_Label(enemy_party[_i])
 			#-------------------------------------------------------------------------------
 			enemy_party[_i].party_member_ui.show()
-			enemy_party_alive.append(enemy_party[_i])
 		#-------------------------------------------------------------------------------
 	)
 	#-------------------------------------------------------------------------------
@@ -2321,7 +2318,7 @@ func You_Escape():
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
 		enemy_party[_i].party_member_ui.hide()
-		Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
+		#Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 		enemy_party[_i].is_Moving = false
 		enemy_party[_i].party_member_ui.queue_free()
 	#-------------------------------------------------------------------------------
@@ -2422,19 +2419,6 @@ func StopEverithing():
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
-#region PLAYER BULLET FUNCTIONS
-#-------------------------------------------------------------------------------
-func Create_PlayerBullet(_global_position:Vector2, _dir:float) -> Bullet:
-	var _bullet: Bullet = bullet_Prefab.instantiate() as Bullet
-	_bullet.global_position = _global_position
-	_bullet.z_index = 2
-	_bullet.scale = Vector2(2, 2)
-	_bullet.rotation = _dir
-	world_2d.add_child(_bullet)
-	return _bullet
-#-------------------------------------------------------------------------------
-#endregion
-#-------------------------------------------------------------------------------
 #region ENEMY BULLET FUNCTIONS
 func Destroy_EnemyBullet(_bullet: Bullet):
 	KillTween_Array(_bullet.tween_Array)
@@ -2520,21 +2504,24 @@ func EnemyBullet_PhysicsUpdate_Limitless_A(_bullet: Bullet):
 #region SPELLCARD FUNCTIONS
 func Set_Difficulty() -> float:
 	#return enemy_party.size() - enemy_party_alive.size()
-	return 3.0 - enemy_party_alive.size()
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	return 3.0 - _enemy_party_alive.size()
 #-------------------------------------------------------------------------------
 func Stage1_Fire2():
-	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
-	_tween.set_loops()
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	var _mirror = 1
 	#-------------------------------------------------------------------------------
+	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
+	_tween.set_loops()
+	#-------------------------------------------------------------------------------
 	for _j in 2:
 		#-------------------------------------------------------------------------------
-		for _i in enemy_party_alive.size():
+		for _i in _enemy_party_alive.size():
 			_tween.tween_callback(func():
-				Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Shot")
-				Stage1_Fire2_Bullet1(enemy_party_alive[_i], _mirror)
+				Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Shot")
+				Stage1_Fire2_Bullet1(_enemy_party_alive[_i], _mirror)
 			)
 			_tween.tween_interval(1.0+1.2*_difficulty)
 			_mirror *= -1
@@ -2561,7 +2548,7 @@ func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
 	var _ang: float = 0
 	#-------------------------------------------------------------------------------
 	var _bullet: Bullet = Create_EnemyBullet_A(_x, _y, _vel, _dir, "bullet2", false)
-	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
+	var _tween: Tween = CreateTween_ArrayAppend(_bullet.tween_Array)
 	#-------------------------------------------------------------------------------
 	for _j in _max2:
 		#-------------------------------------------------------------------------------
@@ -2586,18 +2573,20 @@ func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Stage1_Fire1():
-	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
-	_tween.set_loops()
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	var _mirror = 1
 	#-------------------------------------------------------------------------------
+	var _tween: Tween = CreateTween_ArrayAppend(main_tween_Array)
+	_tween.set_loops()
+	#-------------------------------------------------------------------------------
 	for _j in 2:
 		#-------------------------------------------------------------------------------
-		for _i in enemy_party_alive.size():
+		for _i in _enemy_party_alive.size():
 			_tween.tween_callback(func():
-				Animation_StateMachine(enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Shot")
-				Stage1_Fire1_Bullet1(enemy_party_alive[_i], _mirror)
+				Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Shot")
+				Stage1_Fire1_Bullet1(_enemy_party_alive[_i], _mirror)
 			)
 			_tween.tween_interval(0.8+0.6*_difficulty)
 			_mirror *= -1
@@ -2671,8 +2660,10 @@ func Player_Shooted():
 	can_be_hit = false
 	Animation_Transition(hitbox_animation_tree, "Transition/", "Hurt")
 	#-------------------------------------------------------------------------------
-	if(friend_party_alive.size() > 0):
-		var _target: Party_Member = friend_party_alive.pick_random()
+	var _friend_party_alive:Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	if(_friend_party_alive.size() > 0):
+		var _target: Party_Member = _friend_party_alive.pick_random()
 		var _int: int
 		#-------------------------------------------------------------------------------
 		if(_target.party_member_serializable.is_in_guard):
@@ -2705,9 +2696,9 @@ func Player_Shooted():
 			singleton.audioStreamPlayer_enemy_colapse.play()
 			Animation_StateMachine(_target.animation_tree, "", "Death")
 			#-------------------------------------------------------------------------------
-			friend_party_alive.erase(_target)
+			_friend_party_alive.erase(_target)
 			#-------------------------------------------------------------------------------
-			if(friend_party_alive.size() <= 0):
+			if(_friend_party_alive.size() <= 0):
 				StopEverithing_and_Timer()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
@@ -2775,10 +2766,12 @@ func LoseMenu_GiveUpButton_Submit():
 func Bullet_Grazed_SP_Gain():
 	var _target_party: Array[Party_Member] = []
 	#-------------------------------------------------------------------------------
-	for _i in friend_party_alive.size():
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	#-------------------------------------------------------------------------------
+	for _i in _friend_party_alive.size():
 		#-------------------------------------------------------------------------------
-		if(friend_party_alive[_i].party_member_serializable.sp < friend_party_alive[_i].base_stats_dictionarty.get("max_sp", 0)):
-			_target_party.append(friend_party_alive[_i])
+		if(_friend_party_alive[_i].party_member_serializable.sp < _friend_party_alive[_i].base_stats_dictionarty.get("max_sp", 0)):
+			_target_party.append(_friend_party_alive[_i])
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	if(_target_party.size() > 0):
@@ -3107,12 +3100,8 @@ func Debug_Information() -> void:
 	_s += "Tweens: "+str(tween_Array.size())+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += "Player: " + str(friend_party.size())+"\n"
-	_s += "Player Alive: " + str(friend_party_alive.size())+"\n"
-	_s += "Player Death: " + str(friend_party_dead.size())+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += "Enemy: " + str(enemy_party.size())+"\n"
-	_s += "Enemy Alive: " + str(enemy_party_alive.size())+"\n"
-	_s += "Enemy Death: " + str(enemy_party_dead.size())+"\n"
 	_s += "-------------------------------------------------------\n"
 	_s += "Enemy Bullets Enabled: " + str(enemyBullets_Enabled_Array.size())+"\n"
 	_s += "Enemy Bullets Disabled: " + str(enemyBullets_Disabled_Array.size())+"\n"
@@ -5388,6 +5377,32 @@ func Enable_Menu_And_Move_to_Button_0(_container:Control, _button:Button):
 	_button.disabled = false
 	_button.show()
 	singleton.Move_to_Button(_button)
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region PARTY FUNCTIONS
+#-------------------------------------------------------------------------------
+func Get_Alive_Party_Array(_party_array:Array[Party_Member]) -> Array[Party_Member]:
+	var _alive_party_array: Array[Party_Member]
+	#-------------------------------------------------------------------------------
+	for _i in _party_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_array[_i].party_member_serializable.hp > 0):
+			_alive_party_array.append(_party_array[_i])
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	return _alive_party_array
+#-------------------------------------------------------------------------------
+func Get_Dead_Party_Array(_party_array:Array[Party_Member]) -> Array[Party_Member]:
+	var _dead_party_array: Array[Party_Member]
+	#-------------------------------------------------------------------------------
+	for _i in _party_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_array[_i].party_member_serializable.hp <= 0):
+			_dead_party_array.append(_party_array[_i])
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	return _dead_party_array
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
