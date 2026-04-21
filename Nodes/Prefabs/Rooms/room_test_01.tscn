@@ -5,21 +5,20 @@
 [ext_resource type="PackedScene" uid="uid://bq6ms1y0228x8" path="res://Nodes/Prefabs/props_prefab.tscn" id="5_8dt50"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_0.tscn" id="6_jyvag"]
-[ext_resource type="Resource" uid="uid://c03am3sxypfu3" path="res://Resources/Consumable_Items/consumable_4.tres" id="8_52n5y"]
+[ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/item_damage_0.tres" id="6_ptuk6"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="8_ygji3"]
 [ext_resource type="PackedScene" uid="uid://c8fmwkm58xib0" path="res://Nodes/Prefabs/savespot_prefab.tscn" id="9_4u8d0"]
-[ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip_Items/equip_0.tres" id="9_mxnnk"]
+[ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip_Items/equip_weapon_0.tres" id="9_mxnnk"]
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="10_xdoc7"]
 [ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/key_0.tres" id="11_5drey"]
-[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/consumable_0.tres" id="12_ygji3"]
+[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/item_heal_0.tres" id="12_ygji3"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="13_mxnnk"]
-[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/consumable_5.tres" id="14_xdoc7"]
+[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/item_damage_2.tres" id="14_xdoc7"]
 [ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/key_1.tres" id="15_5drey"]
 [ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="15_8ss50"]
 [ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="16_srwso"]
 [ext_resource type="Resource" uid="uid://cfwc05cwwcm4g" path="res://Resources/Users/enemy_0.tres" id="18_ptuk6"]
 [ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="19_8opot"]
-[ext_resource type="Script" uid="uid://mdn2h1nh8s14" path="res://Scripts/Resources/statuseffect_serializable.gd" id="20_wrvon"]
 
 [sub_resource type="GDScript" id="GDScript_52n5y"]
 script/source = "extends Room_Script
@@ -67,7 +66,7 @@ func CutScene_00():
 
 [sub_resource type="Resource" id="Resource_4u8d0"]
 script = ExtResource("13_mxnnk")
-item_resource = ExtResource("8_52n5y")
+item_resource = ExtResource("6_ptuk6")
 hold = 4
 metadata/_custom_type_script = "uid://beengnff5twcx"
 

@@ -3,36 +3,25 @@
 [ext_resource type="Script" uid="uid://msji6sjd708t" path="res://Scripts/Resources/party_member_resource.gd" id="1_7kk1c"]
 [ext_resource type="Texture2D" uid="uid://qw62qdjg350n" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/idle1.png" id="1_nr8h7"]
 [ext_resource type="Texture2D" uid="uid://dkboh25w2j4cj" path="res://Assets/profiles/player3_idle1.png" id="2_jl507"]
-[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_xxn38"]
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="4_jl507"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="5_2q07f"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="6_xxn38"]
-[ext_resource type="Resource" uid="uid://chu4cb3eiww1t" path="res://Resources/User_Skills/skill_6.tres" id="8_kcueg"]
-[ext_resource type="Resource" uid="uid://bt62ujg15jkav" path="res://Resources/User_Skills/skill_7.tres" id="9_klfjm"]
-
-[sub_resource type="Resource" id="Resource_85vcy"]
-script = ExtResource("2_xxn38")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_kcueg"]
-script = ExtResource("2_xxn38")
-myEQUIP_TYPE = 1
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_klfjm"]
-script = ExtResource("2_xxn38")
-myEQUIP_TYPE = 2
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_uj0yi"]
-script = ExtResource("2_xxn38")
-myEQUIP_TYPE = 3
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_damage_0.tres" id="5_2q07f"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_heal_0.tres" id="6_xxn38"]
+[ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/User_Skills/skill_damage_1.tres" id="7_85vcy"]
+[ext_resource type="Resource" uid="uid://dnkacsrd1g3el" path="res://Resources/User_Skills/skill_damage_2.tres" id="8_kcueg"]
 
 [resource]
 script = ExtResource("1_7kk1c")
 body_sprite = ExtResource("1_nr8h7")
 face_sprite = ExtResource("2_jl507")
-skill_resource_array = Array[ExtResource("4_jl507")]([ExtResource("5_2q07f"), ExtResource("6_xxn38"), ExtResource("8_kcueg"), ExtResource("9_klfjm")])
-equip_serializable_array = Array[ExtResource("2_xxn38")]([SubResource("Resource_85vcy"), SubResource("Resource_kcueg"), SubResource("Resource_klfjm"), SubResource("Resource_uj0yi")])
+base_stats_dictionarty = Dictionary[StringName, int]({
+&"agility": 10,
+&"luck": 10,
+&"magical_attack": 10,
+&"magical_defense": 10,
+&"max_hp": 45,
+&"max_sp": 20,
+&"physical_attack": 10,
+&"physical_defense": 10
+})
+skill_resource_array = Array[ExtResource("4_jl507")]([ExtResource("5_2q07f"), ExtResource("6_xxn38"), ExtResource("7_85vcy"), ExtResource("8_kcueg")])
 metadata/_custom_type_script = "uid://msji6sjd708t"

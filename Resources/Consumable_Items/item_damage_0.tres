@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item_Resource" format=3 uid="uid://dygr7kxjhpg73"]
+
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_g7nrp"]
+
+[resource]
+script = ExtResource("1_g7nrp")
+anim = "Crouch"
+max_cooldown = 3
+max_hold = 4
+metadata/_custom_type_script = "uid://cutcj8e6g23o2"

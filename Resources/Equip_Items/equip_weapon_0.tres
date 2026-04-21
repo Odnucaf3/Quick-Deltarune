@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Equip_Resource" format=3 uid="uid://cmtocen6a17v3"]
+
+[ext_resource type="Script" uid="uid://kyu7ufkbhotc" path="res://Scripts/Resources/equip_resource.gd" id="1_bgsjk"]
+
+[resource]
+script = ExtResource("1_bgsjk")
+base_stats_dictionarty = Dictionary[StringName, int]({
+&"agility": 7,
+&"luck": -8,
+&"magical_attack": 5,
+&"magical_defense": -6,
+&"max_hp": 1,
+&"max_sp": -2,
+&"physical_attack": 3,
+&"physical_defense": -4
+})
+metadata/_custom_type_script = "uid://kyu7ufkbhotc"

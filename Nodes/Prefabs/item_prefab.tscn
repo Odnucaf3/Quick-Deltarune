@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cgtnu7kmoncu6"]
 
 [ext_resource type="Script" uid="uid://d041tl00vwj7q" path="res://Scripts/Prefabs/item_script.gd" id="1_osx0n"]
-[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/consumable_0.tres" id="2_jndvo"]
+[ext_resource type="Resource" uid="uid://b36k10uy3fikw" path="res://Resources/Consumable_Items/item_heal_0.tres" id="2_jndvo"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_8uf5p"]
 [ext_resource type="Texture2D" uid="uid://bjdhbu401x5h7" path="res://Assets/ansimuz/Starfighter Files/sprites/FX/Bullet-c/bullet-c1.png" id="4_jndvo"]
 [ext_resource type="Texture2D" uid="uid://dfujl2xglygk1" path="res://Assets/ansimuz/Starfighter Files/sprites/FX/Bullet-c/bullet-c2.png" id="5_8uf5p"]

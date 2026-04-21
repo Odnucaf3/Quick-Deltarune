@@ -3,7 +3,7 @@ class_name Party_Member
 #-------------------------------------------------------------------------------
 @export var party_member_serializable: Party_Member_Serializable
 #-------------------------------------------------------------------------------
-var damage_label_array: Array[Label]
+var damage_label_array: Array[PopUp_UI]
 #-------------------------------------------------------------------------------
 var is_Facing_Left: bool = false
 var is_Moving: bool = false

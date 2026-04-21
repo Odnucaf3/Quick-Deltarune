@@ -6,7 +6,7 @@
 [ext_resource type="TileSet" uid="uid://cutyx4smls0s0" path="res://TileSet/lab_lamps.tres" id="3_yj1ku"]
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="4_o0jg7"]
 [ext_resource type="PackedScene" uid="uid://cci5qdybf3sj" path="res://Nodes/Prefabs/Warps/warp_left.tscn" id="4_yj1ku"]
-[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/consumable_5.tres" id="5_lloiv"]
+[ext_resource type="Resource" uid="uid://ctfpc74ha1avq" path="res://Resources/Consumable_Items/item_damage_2.tres" id="5_lloiv"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="6_0ptgt"]
 [ext_resource type="PackedScene" uid="uid://eio8fpyvkvua" path="res://Nodes/Prefabs/Warps/warp_right.tscn" id="7_0ptgt"]
 

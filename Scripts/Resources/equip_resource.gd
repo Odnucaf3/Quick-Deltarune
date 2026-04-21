@@ -13,7 +13,7 @@ enum EQUIP_TYPE{WEAPON, HEAD, BODY, RING}
 	"magical_attack": 0,
 	"magical_defense": 0,
 	"agility": 0,
-	"luck": 0
+	"luck": 0,
 }
 #-------------------------------------------------------------------------------
 func _init():

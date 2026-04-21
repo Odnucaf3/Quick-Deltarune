@@ -116,7 +116,7 @@ Input_D={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://Translations/translation.en_US.translation", "res://Translations/translation.es_AR.translation", "res://Translations/translation.ja_JP.translation")
+locale/translations=PackedStringArray("res://Translations/translation - 1.es_AR.translation", "res://Translations/translation - 1.en_US.translation")
 
 [layer_names]
 

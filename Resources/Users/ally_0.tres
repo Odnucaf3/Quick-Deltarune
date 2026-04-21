@@ -1,40 +1,28 @@
 [gd_resource type="Resource" script_class="Party_Member_Resource" format=3 uid="uid://c0hgqpee0skjt"]
 
 [ext_resource type="Texture2D" uid="uid://ci6773anv87c4" path="res://Assets/ansimuz/warped city files/v1/sprites/player/idle-1.png" id="1_bcdi5"]
-[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_ljdc7"]
 [ext_resource type="Texture2D" uid="uid://bhonbgj7ygkx3" path="res://Assets/profiles/player1_idle.PNG" id="2_ubtia"]
-[ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip_Items/equip_0.tres" id="3_64mk8"]
 [ext_resource type="Script" uid="uid://msji6sjd708t" path="res://Scripts/Resources/party_member_resource.gd" id="3_rfo30"]
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="4_ubtia"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="5_q0y1p"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="6_ljdc7"]
-[ext_resource type="Resource" uid="uid://b0bytsmqs0hur" path="res://Resources/User_Skills/skill_2.tres" id="8_3ouut"]
-[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/User_Skills/skill_3.tres" id="9_64mk8"]
-
-[sub_resource type="Resource" id="Resource_8csmc"]
-script = ExtResource("2_ljdc7")
-equip_resource = ExtResource("3_64mk8")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_3ouut"]
-script = ExtResource("2_ljdc7")
-myEQUIP_TYPE = 1
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_64mk8"]
-script = ExtResource("2_ljdc7")
-myEQUIP_TYPE = 2
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_230i0"]
-script = ExtResource("2_ljdc7")
-myEQUIP_TYPE = 3
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_damage_0.tres" id="5_q0y1p"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_heal_0.tres" id="6_ljdc7"]
+[ext_resource type="Resource" uid="uid://chu4cb3eiww1t" path="res://Resources/User_Skills/skill_damage_3.tres" id="7_3ouut"]
+[ext_resource type="Resource" uid="uid://blwy2xm425v5c" path="res://Resources/User_Skills/skill_damage_4.tres" id="8_64mk8"]
+[ext_resource type="Resource" uid="uid://bssw408uuvmlk" path="res://Resources/User_Skills/skill_damage_5.tres" id="9_230i0"]
 
 [resource]
 script = ExtResource("3_rfo30")
 body_sprite = ExtResource("1_bcdi5")
 face_sprite = ExtResource("2_ubtia")
-skill_resource_array = Array[ExtResource("4_ubtia")]([ExtResource("5_q0y1p"), ExtResource("6_ljdc7"), ExtResource("8_3ouut"), ExtResource("9_64mk8")])
-equip_serializable_array = Array[ExtResource("2_ljdc7")]([SubResource("Resource_8csmc"), SubResource("Resource_3ouut"), SubResource("Resource_64mk8"), SubResource("Resource_230i0")])
+base_stats_dictionarty = Dictionary[StringName, int]({
+&"agility": 10,
+&"luck": 10,
+&"magical_attack": 10,
+&"magical_defense": 10,
+&"max_hp": 45,
+&"max_sp": 20,
+&"physical_attack": 10,
+&"physical_defense": 10
+})
+skill_resource_array = Array[ExtResource("4_ubtia")]([ExtResource("5_q0y1p"), ExtResource("6_ljdc7"), ExtResource("7_3ouut"), ExtResource("8_64mk8"), ExtResource("9_230i0")])
 metadata/_custom_type_script = "uid://msji6sjd708t"

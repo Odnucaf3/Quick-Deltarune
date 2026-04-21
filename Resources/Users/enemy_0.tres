@@ -3,34 +3,23 @@
 [ext_resource type="Texture2D" uid="uid://cacsuduickaq3" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/idle.png" id="1_jueod"]
 [ext_resource type="Script" uid="uid://msji6sjd708t" path="res://Scripts/Resources/party_member_resource.gd" id="1_s2l11"]
 [ext_resource type="Texture2D" uid="uid://bav5ljkf3goei" path="res://Assets/profiles/soldier_idle.PNG" id="2_54qik"]
-[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_j8aoo"]
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="4_54qik"]
-[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_0.tres" id="5_aba4l"]
-[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_1.tres" id="6_j8aoo"]
-
-[sub_resource type="Resource" id="Resource_uwl24"]
-script = ExtResource("2_j8aoo")
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_eciu5"]
-script = ExtResource("2_j8aoo")
-myEQUIP_TYPE = 1
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_0bbmd"]
-script = ExtResource("2_j8aoo")
-myEQUIP_TYPE = 2
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
-
-[sub_resource type="Resource" id="Resource_wjxrr"]
-script = ExtResource("2_j8aoo")
-myEQUIP_TYPE = 3
-metadata/_custom_type_script = "uid://d2t4gp3nheyip"
+[ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_damage_0.tres" id="5_aba4l"]
+[ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_heal_0.tres" id="6_j8aoo"]
 
 [resource]
 script = ExtResource("1_s2l11")
 body_sprite = ExtResource("1_jueod")
 face_sprite = ExtResource("2_54qik")
+base_stats_dictionarty = Dictionary[StringName, int]({
+&"agility": 10,
+&"luck": 10,
+&"magical_attack": 10,
+&"magical_defense": 10,
+&"max_hp": 25,
+&"max_sp": 20,
+&"physical_attack": 10,
+&"physical_defense": 10
+})
 skill_resource_array = Array[ExtResource("4_54qik")]([ExtResource("5_aba4l"), ExtResource("6_j8aoo")])
-equip_serializable_array = Array[ExtResource("2_j8aoo")]([SubResource("Resource_uwl24"), SubResource("Resource_eciu5"), SubResource("Resource_0bbmd"), SubResource("Resource_wjxrr")])
 metadata/_custom_type_script = "uid://msji6sjd708t"

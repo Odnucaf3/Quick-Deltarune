@@ -111,6 +111,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_xrh8u")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ik87f")
 value = 21.0
 rounded = true
+fill_mode = 1
 show_percentage = false
 
 [node name="sp_Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1780225793]
@@ -129,6 +130,7 @@ layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_hxoxt")
 theme_override_styles/fill = SubResource("StyleBoxFlat_igypo")
 value = 26.57
+fill_mode = 1
 show_percentage = false
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1314879005]

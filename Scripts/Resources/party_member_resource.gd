@@ -12,7 +12,7 @@ class_name Party_Member_Resource
 	"magical_attack": 10,
 	"magical_defense": 10,
 	"agility": 10,
-	"luck": 10
+	"luck": 10,
 }
 #-------------------------------------------------------------------------------
 @export var extra_stats_dictionarty: Dictionary[StringName, int] = {
@@ -40,7 +40,14 @@ class_name Party_Member_Resource
 }
 #-------------------------------------------------------------------------------
 @export var skill_resource_array: Array[Item_Resource]
-@export var equip_serializable_array: Array[Equip_Serializable]
+@export var equip_type_array: Array[Equip_Resource.EQUIP_TYPE] = [
+	Equip_Resource.EQUIP_TYPE.WEAPON,
+	Equip_Resource.EQUIP_TYPE.HEAD,
+	Equip_Resource.EQUIP_TYPE.BODY,
+	Equip_Resource.EQUIP_TYPE.RING,
+	Equip_Resource.EQUIP_TYPE.RING,
+	Equip_Resource.EQUIP_TYPE.RING
+]
 #-------------------------------------------------------------------------------
 func _init():
 	resource_local_to_scene = false

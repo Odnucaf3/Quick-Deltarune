@@ -2,12 +2,11 @@
 
 [ext_resource type="Script" uid="uid://d1xgk00n12kl5" path="res://Scripts/Scenes/singleton.gd" id="1_ixejq"]
 [ext_resource type="Script" uid="uid://ugjgndtknor8" path="res://Scripts/Scenes/Option_Menu.gd" id="2_ar5in"]
-[ext_resource type="AudioStream" uid="uid://b0xuwk0awfbnl" path="res://Assets/rpg_maker_mv/audio/bgm/Theme2.ogg" id="2_lqxqx"]
-[ext_resource type="AudioStream" uid="uid://btiqylj537e1c" path="res://Assets/rpg_maker_mv/audio/bgm/Dungeon3.ogg" id="2_pfk01"]
+[ext_resource type="AudioStream" uid="uid://dnfvuphmhx0dy" path="res://Assets/ansimuz/Sewers pack files/music/rainbowlaser.ogg" id="2_re85v"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="3_ihmui"]
+[ext_resource type="AudioStream" uid="uid://bhk0y5m17grl5" path="res://Assets/ansimuz/warped city files/music/cyber_runner.ogg" id="3_ul50i"]
 [ext_resource type="AudioStream" uid="uid://baltlrphadqr3" path="res://Assets/rpg_maker_mv/audio/se/Equip1.ogg" id="4_34f2p"]
 [ext_resource type="AudioStream" uid="uid://baniygb18w4lg" path="res://Assets/rpg_maker_mv/audio/se/Cursor2.ogg" id="4_s3k3f"]
-[ext_resource type="AudioStream" uid="uid://ce7gpo8k6fyw3" path="res://Assets/misc/Rude_Buster.mp3" id="4_ul50i"]
 [ext_resource type="AudioStream" uid="uid://ck13aarckp4hs" path="res://Assets/rpg_maker_mv/audio/se/Decision1.ogg" id="5_34f2p"]
 [ext_resource type="AudioStream" uid="uid://cqlwwawf65bsr" path="res://Assets/rpg_maker_mv/audio/se/Cancel2.ogg" id="6_pfk01"]
 [ext_resource type="AudioStream" uid="uid://bh07p8k8k7fbx" path="res://Assets/rpg_maker_mv/audio/se/Save.ogg" id="8_s3k3f"]
@@ -41,9 +40,8 @@ audioStreamPlayer_enemy_colapse = NodePath("AudioStreamPlayer_enemy_colapse")
 audioStreamPlayer_recovery = NodePath("AudioStreamPlayer_recovery")
 audioStreamPlayer_graze = NodePath("AudioStreamPlayer_graze")
 bgmPlayer = NodePath("AudioStreamPlayer_bgm")
-title_bgm = ExtResource("2_lqxqx")
-stage1 = ExtResource("2_pfk01")
-battle1 = ExtResource("4_ul50i")
+stage1 = ExtResource("3_ul50i")
+battle1 = ExtResource("2_re85v")
 fps_margin_container = NodePath("CanvasLayer/debug_MarginContainer")
 fps_label = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
 

@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://deigb0wpxseqj"]
 
-[ext_resource type="Texture2D" uid="uid://8jitbvxqo37v" path="res://Assets/Sprites/Magnet.png" id="1_0sp46"]
 [ext_resource type="Script" uid="uid://ckbwtn4v3dh8n" path="res://Scripts/Prefabs/party_member_ui_script.gd" id="1_dax5a"]
 [ext_resource type="Theme" uid="uid://wd0u0jfbqnww" path="res://Themes/ui_theme.tres" id="3_v1s3a"]
 
@@ -34,7 +33,7 @@ expand_margin_bottom = 2.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v1s3a"]
 bg_color = Color(0.5568628, 1, 0.4392157, 1)
 
-[node name="ally_ui" type="Control" unique_id=1908754346 node_paths=PackedStringArray("button_pivot", "button", "label_hp", "bar_hp", "label_sp", "bar_sp")]
+[node name="ally_ui" type="Control" unique_id=1908754346 node_paths=PackedStringArray("button_pivot", "button", "label_hp", "bar_hp", "label_sp", "bar_sp", "label_status_effect")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -50,6 +49,7 @@ label_hp = NodePath("Control/VBoxContainer/hp_Label")
 bar_hp = NodePath("Control/VBoxContainer/ProgressBar")
 label_sp = NodePath("Control/VBoxContainer/sp_Label")
 bar_sp = NodePath("Control/VBoxContainer/ProgressBar2")
+label_status_effect = NodePath("Control/VBoxContainer/hp_Label2")
 
 [node name="Control" type="Control" parent="." unique_id=1003558557]
 layout_mode = 1
@@ -76,7 +76,6 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 0
 alignment = 2
 
 [node name="hp_Label" type="Label" parent="Control/VBoxContainer" unique_id=702044947]
@@ -87,19 +86,6 @@ theme_override_font_sizes/font_size = 18
 text = "300 / 300 HP"
 horizontal_alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/hp_Label" unique_id=1985398219]
-visible = false
-self_modulate = Color(0, 0, 0, 0.4117647)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_0sp46")
-expand_mode = 1
-
 [node name="ProgressBar" type="ProgressBar" parent="Control/VBoxContainer" unique_id=1572435796]
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 2
@@ -107,9 +93,11 @@ theme_override_styles/background = SubResource("StyleBoxFlat_ftr10")
 theme_override_styles/fill = SubResource("StyleBoxFlat_pevsk")
 value = 21.0
 rounded = true
+fill_mode = 1
 show_percentage = false
 
 [node name="sp_Label" type="Label" parent="Control/VBoxContainer" unique_id=1257536267]
+visible = false
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_constants/outline_size = 5
@@ -117,26 +105,23 @@ theme_override_font_sizes/font_size = 18
 text = "300 / 300 SP"
 horizontal_alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/sp_Label" unique_id=1501014056]
-visible = false
-self_modulate = Color(0, 0, 0, 0.4117647)
-show_behind_parent = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_0sp46")
-expand_mode = 1
-
 [node name="ProgressBar2" type="ProgressBar" parent="Control/VBoxContainer" unique_id=355679639]
+visible = false
 custom_minimum_size = Vector2(0, 7)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_pgxcy")
 theme_override_styles/fill = SubResource("StyleBoxFlat_v1s3a")
 value = 26.57
+fill_mode = 1
 show_percentage = false
+
+[node name="hp_Label2" type="Label" parent="Control/VBoxContainer" unique_id=726431112]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 12
+text = "Status Effect: 0"
+horizontal_alignment = 2
 
 [node name="Control2" type="Control" parent="." unique_id=1303565593]
 layout_mode = 1

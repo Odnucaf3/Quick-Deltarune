@@ -9,24 +9,24 @@ class_name Party_Member_Serializable
 var hp: int
 var sp: int
 #-------------------------------------------------------------------------------
-var base_stats_dictionarty: Dictionary[StringName, int] = {
-	"max_hp": 100,
-	#"max_sp": 20,
-	"physical_attack": 10,
-	"physical_defense": 10,
-	"magical_attack": 10,
-	"magical_defense": 10,
-	#"agility": 10,
-	"luck": 10
+var base_stats_dictionarty: Dictionary[StringName, int] = {		#NOTA: Este diccionario está hecho para tener los elementos con este orden.
+	"max_hp": 0,												#NOTA: También puedo borrar las stats que piense que no vaya a usar.
+	#"max_sp": 0,
+	"physical_attack": 0,
+	"physical_defense": 0,
+	"magical_attack": 0,
+	"magical_defense": 0,
+	#"agility": 0,
+	"luck": 0,
 }
 #-------------------------------------------------------------------------------
-@export var skill_array: Array[Item_Serializable]
+var skill_array: Array[Item_Serializable]
 var skill_array_in_battle: Array[Item_Serializable]
 #-------------------------------------------------------------------------------
-@export var equip_array: Array[Equip_Serializable]
+var equip_array: Array[Equip_Serializable]
 var equip_array_in_battle: Array[Equip_Serializable]
 #-------------------------------------------------------------------------------
-@export var statuseffect_array: Array[StatusEffect_Serializable]
+var statuseffect_array: Array[StatusEffect_Serializable]
 var statuseffect_array_in_battle: Array[StatusEffect_Serializable]
 var is_in_guard: bool
 #-------------------------------------------------------------------------------
@@ -107,10 +107,17 @@ func Set_All_PartyMember_Stats_and_Skills():
 		skill_array.append(_item_serializable)
 	#-------------------------------------------------------------------------------
 	equip_array.clear()
-	for _i in party_member_resource.equip_serializable_array.size():
-		var _equip_serializable: Equip_Serializable = party_member_resource.equip_serializable_array[_i].Constructor()
+	#-------------------------------------------------------------------------------
+	for _i in party_member_resource.equip_type_array.size():
+		var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
+		#-------------------------------------------------------------------------------
+		_equip_serializable.myEQUIP_TYPE = party_member_resource.equip_type_array[_i]
+		#-------------------------------------------------------------------------------
 		equip_array.append(_equip_serializable)
 	#-------------------------------------------------------------------------------
+	#Set_Start_Old()
+#-------------------------------------------------------------------------------
+func Set_Start_Old():
 	for _i in base_stats_dictionarty.size():
 		var _key: String = base_stats_dictionarty.keys()[_i]
 		base_stats_dictionarty.set(_key, party_member_resource.base_stats_dictionarty.get(_key, 0))
@@ -123,4 +130,3 @@ func Set_All_PartyMember_Stats_and_Skills():
 			base_stats_dictionarty.set(_key, base_stats_dictionarty.get(_key, 0) + statuseffect_array[_j].statuseffect_resource.base_stats_dictionarty.get(_key, 0))
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------

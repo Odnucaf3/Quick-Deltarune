@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Item_Resource" format=3 uid="uid://blwy2xm425v5c"]
+
+[ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="1_ls2v3"]
+
+[resource]
+script = ExtResource("1_ls2v3")
+tp_cost = 32
+max_cooldown = 2
+metadata/_custom_type_script = "uid://cutcj8e6g23o2"

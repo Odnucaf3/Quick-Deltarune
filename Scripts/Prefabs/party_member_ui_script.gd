@@ -10,4 +10,6 @@ class_name Party_Member_UI
 @export var label_sp: Label
 @export var bar_sp: ProgressBar
 #-------------------------------------------------------------------------------
+@export var label_status_effect: Label
+#-------------------------------------------------------------------------------
 @export var dialogue_root: Control

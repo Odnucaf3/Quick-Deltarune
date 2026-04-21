@@ -1,0 +1,234 @@
+key,es-AR,en-US
+title_menu_label,Nombre del Juego,Name of the Game
+title_menu_button_0,Comenzar,Start
+title_menu_button_1,Opciones,Options
+title_menu_button_2,Créditos,Credits
+title_menu_button_3,Salir del Juego,Quit Game
+credits_menu_button,Créditos,Credits
+credits_menu_richtext,"* ""Sewer Pack Files"" (de Ansimuz).
+([url]https://ansimuz.itch.io/sewers-action-pack[/url])
+
+* ""Starfighter Files"" (de Ansimuz).
+([url]https://ansimuz.itch.io/star-fighter[/url])
+
+* ""Warped City Files"" (de Ansimuz).
+([url]https://ansimuz.itch.io/warped-city[/url])
+
+* ""Pattern Pack 2"" (de Kenney-Assets).
+([url]https://kenney-assets.itch.io/pattern-pack-2[/url])
+
+* Recursos de RPG Maker MV (de Gotcha Gotcha Games, KADOKAWA y Yoji Ojima).
+([url]https://rpgmakerofficial.com/en/support/rule/[/url])
+
+*Programación y Diseño (a cargo de Facundo Flores).
+([url]https://facuflores.itch.io/[/url])
+
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla Bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+[center]El fin[/center]","* ""Sewer Pack Files"" (by Ansimuz).
+([url]https://ansimuz.itch.io/sewers-action-pack[/url])
+
+* ""Starfighter Files"" (by Ansimuz).
+([url]https://ansimuz.itch.io/star-fighter[/url])
+
+* ""Warped City Files"" (by Ansimuz).
+([url]https://ansimuz.itch.io/warped-city[/url])
+
+* ""Pattern Pack 2"" (by Kenney-Assets).
+([url]https://kenney-assets.itch.io/pattern-pack-2[/url])
+
+* RPG-Maker MV Assets (by Gotcha Gotcha Games, KADOKAWA and Yoji Ojima).
+([url]https://rpgmakerofficial.com/en/support/rule/[/url])
+
+* Programming and Design (by Facundo Flores).
+([url]https://facuflores.itch.io/[/url])
+
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+Bla bla bla bla bla bla bla bla bla bla bla bla bla.
+[center]The End[/center]"
+option_menu_title_label,Menú de Opciones,Option Menu
+option_menu_idiome_label,Lenguaje,Language
+option_menu_resolution_label,Resolución,Resolution
+option_menu_fullscreen_label,Pantalla Completa,Full Screen
+option_menu_borderless_label,Sin Bordes,Borderless
+option_menu_vsync_label,Sincronización Vertical,Vertical Synchronization
+option_menu_master_label,Maestro,Master
+option_menu_sfx_label,SFX,SFX
+option_menu_bgm_label,BGM,BGM
+option_menu_back_button,Volver,Back
+pause_menu_title_label,Menú de Pausa,Pause Menu
+pause_menu_button_0,Habilidades,Skills
+pause_menu_button_1,Inventario,Items
+pause_menu_button_2,Equipo,Equip
+pause_menu_button_3,Estado,Status
+pause_menu_button_4,Opciones,Options
+pause_menu_button_5,Ir al Título,Go to Title
+pause_menu_party_members_label,Mienbros del Equipo,Party Members
+item_menu_cost_label,Costo,Cost
+item_menu_hold_label,Bolsa,Bag
+item_menu_description_label,Descripción,Description
+item_menu_all_items_label,Todos los Objetos,All Items
+item_menu_consumable_items_label,Objetos Consumibles,Consumable Items
+item_menu_equip_items_label,Objetos de Equipo,Equip Items
+item_menu_key_items_label,Objetos Clave,Key Items
+user_menu_info_label,Información,Information
+user_menu_stats_label,Estadísticas,Statistics
+user_menu_status_effect_label,Estados Alterados,Status Effects
+user_menu_equip_label,Equipo,Equip
+user_menu_equip_slot_label,Ranura,Slot
+user_menu_equip_slot_empty_button,vacio,empty
+user_menu_skill_label,Habilidades,Skills
+name_key_0,Dinero Cibernético,Cyber Money
+description_key_0,* Se usa para comprar Objetos Cibernéticos.,* Used to buy cyber items
+name_key_1,Llave Cibernética,Cyber Key
+description_key_1,* Se usa para abrir Puertas Cibernéticas.,* Used to open Cyber Doors.
+name_skill_damage_0,Atacar,Attack
+description_skill_damage_0,"* Inflige 5 de daño físico normal a 1 enemigo.
+ * Ganas 5 TP.","* Deals 5 of Physical-Normal Damage to 1 Enemy.
+* You gain 5 TP."
+name_skill_damage_1,Aguijón venenoso,Poison Stinger
+description_skill_damage_1,"* Inflige 5 de daño mágico normal a 1 enemigo.
+ * Aplica el estado de ""Veneno"" durante 3 turnos.","* Deals 5 of Magical-Normal Damage to 1 Enemy.
+* Add ""Poison"" State for 3 Turns."
+name_skill_damage_2,Destructor Rudo,Rude Buster
+description_skill_damage_2,* Inflige daño moderado de elemento grosero a un enemigo. Depende del ataque y la magia.,* Deals moderate Rude-elemental damage to one foe. Depends on Attack and Magic.
+name_skill_damage_3,Corte en V,V-Slash
+description_skill_damage_3,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x2).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x2).
+name_skill_damage_4,Corte en Dobre V,Double V-Slash
+description_skill_damage_4,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x4).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x4).
+name_skill_damage_5,Corte en Triple Doble V,Triple Double V-Slash
+description_skill_damage_5,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x12).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x12).
+name_skill_heal_0,Bloquear,Guard
+description_skill_heal_0,"* El usuario recibe La Mitad del Daño Físico durante 1 Turno.
+ * Ganas 5 TP.","* The User receives Half of Physical Damage for 1 Turn.
+* You gain 5 TP."
+name_skill_heal_1,Magia Curativa,Healing Magic
+description_skill_heal_1,* Cura el 50% de los PV-Máx. a 1 Aliado.,* Deals 50% of Max-HP Healing to 1 Ally.
+name_skill_heal_2,Lucero del Alba,Morning Star
+description_skill_heal_2,"* Cura el 50% de los PV-Máx. a 1 Aliado-Derribado.
+ * Elimina el estado de ""Derribado"".","* Deals 50% of Max-HP Healing to 1 KnockDown-Ally.
+* Remove ""KnockDown"" State."
+name_ally_0,Hanabi,Hanabi
+title_ally_0,La hacker traviesa.,The mischivious hacher.
+description_ally_0,"* Una ex-miembro de las hermanas del Este, maestra en el arte del hackeo.
+Su falta de fuerza física la compensa con su grán destreza a la hora de esquivar.","* A former member of the Eastern Sisters, a master of hacking.
+Her lack of physical strength is compensated by her exceptional skill at dodging."
+name_ally_1,Bob,Bob
+title_ally_1,El monje loco.,The crazy monk.
+description_ally_1,"* Un ex-miembros de los Testigos.
+Una religion de suicidas que según ellos les dan resistencia sobrehumana.","* A former member of the Jehovah's Witnesses.
+A religion of suicides that they claim grants them superhuman endurance."
+name_ally_2,Chaser,Chaser
+title_ally_2,La pistolera copada.,The cool gunslinger.
+description_ally_2,"* Una ex-miembro de las fuerzas especiales.
+Su alta destreza con las armas de fuego no se puede alcanzar con ningún implante cibernético.","* A former member of the special forces.
+His exceptional skill with firearms cannot be matched by any cybernetic implant."
+name_enemy_0,Soldado,Soldier
+description_enemy_0,* Una fortaleza móvil capaz de aplastar a cualquier enemigo.,* An moving fortress able to crush any enemy.
+scene_0_dialogue_0,"* En una tierra lejana, había una ciudad cibernética.","* In a distant land, there was a cyber city."
+scene_0_dialogue_1,"* Y en esa ciudad cibernética, había una chica.","* An in that cyber city, there was a girl."
+scene_0_dialogue_2,* Y esa chica estaba a punto de hacer algo genial.,"* And that girl, was about to do some cool shit."
+merchant_0_name,Nombre del Mercante,Merchant's Name
+merchant_0_dialogue_0,"* Hola, ¿quieres comprar algo?","* Hello there, would you like to buy something."
+merchant_0_dialogue_1,"* No sé, che.",* I don't know man.
+merchant_0_dialogue_2,"* Dale, te hago precio.","* Come on, it's cheap"
+merchant_0_dialogue_3,"* Bueno, está bien.","* Ok, fine."
+merchant_0_dialogue_4,"* Gracias ♪, vuelva pronto ♪.","* Thanks you ♪, come back again ♪."
+merchant_0_dialogue_5,* De nada loco.,* You are welcome.
+merchant_0_dialogue_6,"* Si llegás a volver, te hago un descuento.","* If you come more ofter, I will give you and discount."
+merchant_0_dialogue_7,* ¡Chau!,"* Really, awasome."
+battle_menu_button_0,Atacar,Attack
+battle_menu_button_1,Bloquear,Guard
+battle_menu_button_2,Habilidades,Skills
+battle_menu_button_3,Inventario,Items
+battle_menu_button_4,Equipo,Equip
+battle_menu_button_5,Estado,Status
+win_menu_title,Tu Ganaste,You Win
+lose_menu_title,Tu Perdiste,You Lose
+escape_menu_title,¿Escapar?,Escape?
+escape_menu_button_0,Reintentar la Batalla,Retry Battle
+escape_menu_button_1,Escapar de la Batalla,Escape Battle
+escape_menu_button_2,Volver al Punto de Guardado,Return to SaveSpot
+name_stat_max_hp,PV-Máximos,Max-HP
+description_stat_max_hp,,
+name_stat_max_sp,PM-Máximos,Max-SP
+description_stat_max_sp,,
+name_stat_physical_attack,Ataque Físico,Physical Attack
+description_stat_physical_attack,,
+name_stat_physical_defense,Defensa Física,Physical Defense
+description_stat_physical_defense,,
+name_stat_magical_attack,Ataque Mágico,Magical Attack
+description_stat_magical_attack,,
+name_stat_magical_defense,Defensa Mágica,Magical Defense
+description_stat_magical_defense,,
+name_stat_agility,Agilidad,Agility
+description_stat_agility,,
+name_stat_luck,Suerte,Luck
+description_stat_luck,,
+weapon_label,Arma,Weapon
+head_label,Cabeza,Head
+body_label,Cuerpo,Body
+ring_label,Anillo,Ring
+name_item_heal_0,Poción Curativa,Healing Potion
+description_item_heal_0,* Cura el 50% de los PV máximos a 1 aliado.,* Deals 50% of Max-HP Healing to 1 Ally.
+name_item_heal_1,Menta Revividora,Revive Mint
+description_item_heal_1,"* Cura el 50% de los PV-Máximos a 1 Aliado-Derribado.
+* Elimina el estado ""Derribado"".","* Deals 50% of Max-HP Healing to 1 KnockDown-Ally.
+* Remove ""KnockDown"" State."
+name_item_damage_0,Cóctel Molotov,Cogtail Molotov
+description_item_damage_0,"* Inflige 30 de daño físico de fuego a 1 enemigo. 100% de probabilidad de aplicar el efecto ""Quemadura"" durante 3 turnos.","* Do 30 of Fire-Physical-Damage to 1 Enemy. 100% chances to Add ""Burning"" for 3 Turn."
+name_status_damage_0,Derribado,Knock Down
+description_status_damage_0,"* ""A pesar de que tu cuerpo no responde, te aferras a la vida para volver a levantar y seguir luchando"".
+* El Usuario no puede Actuar, si todo los Aliados tienen el estado ""Derribado"", pierdes el combate.","* Prevents the user's body from fading away when their HP reaches zero, allowing them to continue fighting if they revive."
+name_status_damage_1,Veneno,Poison
+description_status_damage_1,* El usuario recibe un 5% de daño a los PV-Máximos por Turno.,* The User receive %5 of Max-HP Damage for each Turn.
+name_status_damage_2,Quemadura,Burning
+description_status_damage_2,* El usuario recibe un 5% de daño a los PV máximos por turno.,* The User receive %5 of Max-HP Damage for each Turn.
+name_status_damage_3,Hackeado,Hacked
+description_status_damage_3,"* Si el Usuario afectado es Aliado, pierdes 33% del TP-Máximo.
+* Si el Usuario afectado es Enemigo, afectará su IA dependiendo del tipo de Enemigo.","* If the affected User is an Ally, they lose 33% of their Max-TP.
+* If the affected User is an Enemy, their AI will be affected depending on the enemy type."
+,,
+name_status_heal_0,Bloqueando,Guarding
+description_status_heal_0,* El Usuario Recibe 50% menos de Daño-Físico.,* The User receives 50% less of Physical Damage.
+name_status_heal_1,Refrescante,Refreshing
+description_status_heal_1,* El usuario recibe un 10% de curación a los PV máximos por turno.,* The User receive %10 of Max-HP Healing for each Turn.
+,,
+name_equip_weapon_0,Revólver Cibernético,Cyber Revolver
+description_equip_weapon_0,* Arma cibernética que dispara balas cibernéticas.,* An Cyber Weapon that shoots Cyber Bullets.
+name_equip_weapon_1,Cuchillo Cibernético,Cyber Knife
+description_equip_weapon_1,* Arma cibernética que realiza cortes cibernéticos.,* An Cyber Weapon that does Cyber Slashes.
+name_equip_head_0,,
+description_equip_head_0,,
+name_equip_body_0,,
+description_equip_body_0,,
+name_equip_ring_0,,
+description_equip_ring_0,,

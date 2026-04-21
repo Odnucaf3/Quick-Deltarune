@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bhk0y5m17grl5"
+path="res://.godot/imported/cyber_runner.ogg-299bfc15eb28e6d215f2a8e2e59c22bd.oggvorbisstr"
+
+[deps]
+
+source_file="res://Assets/ansimuz/warped city files/music/cyber_runner.ogg"
+dest_files=["res://.godot/imported/cyber_runner.ogg-299bfc15eb28e6d215f2a8e2e59c22bd.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

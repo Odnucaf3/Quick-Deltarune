@@ -189,10 +189,10 @@ func Set_Button_WSAD(_b:Button, _selected:Callable, _submited:Callable, _cancele
 			elif(Input.is_action_pressed("Input_S")):
 				_s.call()
 			#-------------------------------------------------------------------------------
-			elif(Input.is_action_pressed("Input_A")):
+			elif(_event.is_action_pressed("Input_A")):
 				_a.call()
 			#-------------------------------------------------------------------------------
-			elif(Input.is_action_pressed("Input_D")):
+			elif(_event.is_action_pressed("Input_D")):
 				_d.call()
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
