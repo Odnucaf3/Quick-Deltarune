@@ -9,20 +9,11 @@
 [ext_resource type="Resource" uid="uid://chu4cb3eiww1t" path="res://Resources/User_Skills/skill_damage_3.tres" id="7_3ouut"]
 [ext_resource type="Resource" uid="uid://blwy2xm425v5c" path="res://Resources/User_Skills/skill_damage_4.tres" id="8_64mk8"]
 [ext_resource type="Resource" uid="uid://bssw408uuvmlk" path="res://Resources/User_Skills/skill_damage_5.tres" id="9_230i0"]
+[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/User_Skills/skill_heal_1.tres" id="10_64mk8"]
 
 [resource]
 script = ExtResource("3_rfo30")
 body_sprite = ExtResource("1_bcdi5")
 face_sprite = ExtResource("2_ubtia")
-base_stats_dictionarty = Dictionary[StringName, int]({
-&"agility": 10,
-&"luck": 10,
-&"magical_attack": 10,
-&"magical_defense": 10,
-&"max_hp": 45,
-&"max_sp": 20,
-&"physical_attack": 10,
-&"physical_defense": 10
-})
-skill_resource_array = Array[ExtResource("4_ubtia")]([ExtResource("5_q0y1p"), ExtResource("6_ljdc7"), ExtResource("7_3ouut"), ExtResource("8_64mk8"), ExtResource("9_230i0")])
+skill_resource_array = Array[ExtResource("4_ubtia")]([ExtResource("5_q0y1p"), ExtResource("6_ljdc7"), ExtResource("7_3ouut"), ExtResource("8_64mk8"), ExtResource("9_230i0"), ExtResource("10_64mk8")])
 metadata/_custom_type_script = "uid://msji6sjd708t"

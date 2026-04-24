@@ -110,7 +110,7 @@ name_key_0,Dinero Cibernético,Cyber Money
 description_key_0,* Se usa para comprar Objetos Cibernéticos.,* Used to buy cyber items
 name_key_1,Llave Cibernética,Cyber Key
 description_key_1,* Se usa para abrir Puertas Cibernéticas.,* Used to open Cyber Doors.
-name_skill_damage_0,Atacar,Attack
+name_skill_damage_0,Ataque,Attack
 description_skill_damage_0,"* Inflige 5 de daño físico normal a 1 enemigo.
  * Ganas 5 TP.","* Deals 5 of Physical-Normal Damage to 1 Enemy.
 * You gain 5 TP."
@@ -126,9 +126,16 @@ name_skill_damage_4,Corte en Dobre V,Double V-Slash
 description_skill_damage_4,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x4).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x4).
 name_skill_damage_5,Corte en Triple Doble V,Triple Double V-Slash
 description_skill_damage_5,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x12).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x12).
-name_skill_heal_0,Bloquear,Guard
-description_skill_heal_0,"* El usuario recibe La Mitad del Daño Físico durante 1 Turno.
- * Ganas 5 TP.","* The User receives Half of Physical Damage for 1 Turn.
+name_skill_damage_6,Guardia Ataque,Guard Attack
+description_skill_damage_6,"* Inflige 5 de daño físico normal a 1 enemigo.
+* El usuario recibe La Mitad del Daño Físico durante Ese-Turno.","* Deals 5 of Physical-Normal Damage to 1 Enemy.
+* The User receives Half of Physical Damage for This-Turn."
+name_skill_damage_7,Royal Attack,Ataque Real
+description_skill_damage_7,* Inflige 5 de daño físico normal a Todos los Enemigo.,* Deals 5 of Physical-Normal Damage to All-Enemies.
+,,
+name_skill_heal_0,Guardia,Guard
+description_skill_heal_0,"* El usuario recibe La Mitad del Daño Físico durante Ese-Turno.
+* Ganas 5 TP.","* The User receives Half of Physical Damage for This-Turn.
 * You gain 5 TP."
 name_skill_heal_1,Magia Curativa,Healing Magic
 description_skill_heal_1,* Cura el 50% de los PV-Máx. a 1 Aliado.,* Deals 50% of Max-HP Healing to 1 Ally.
@@ -136,6 +143,9 @@ name_skill_heal_2,Lucero del Alba,Morning Star
 description_skill_heal_2,"* Cura el 50% de los PV-Máx. a 1 Aliado-Derribado.
  * Elimina el estado de ""Derribado"".","* Deals 50% of Max-HP Healing to 1 KnockDown-Ally.
 * Remove ""KnockDown"" State."
+name_skill_heal_3,Guardia Real,Royal Guard
+description_skill_heal_3,* Todos los Aliados recibe La Mitad del Daño Físico durante Ese-Turno.,* All-Allies receives Half of Physical Damage for This-Turn.
+,,
 name_ally_0,Hanabi,Hanabi
 title_ally_0,La hacker traviesa.,The mischivious hacher.
 description_ally_0,"* Una ex-miembro de las hermanas del Este, maestra en el arte del hackeo.
@@ -151,11 +161,14 @@ title_ally_2,La pistolera copada.,The cool gunslinger.
 description_ally_2,"* Una ex-miembro de las fuerzas especiales.
 Su alta destreza con las armas de fuego no se puede alcanzar con ningún implante cibernético.","* A former member of the special forces.
 His exceptional skill with firearms cannot be matched by any cybernetic implant."
+,,
 name_enemy_0,Soldado,Soldier
 description_enemy_0,* Una fortaleza móvil capaz de aplastar a cualquier enemigo.,* An moving fortress able to crush any enemy.
+,,
 scene_0_dialogue_0,"* En una tierra lejana, había una ciudad cibernética.","* In a distant land, there was a cyber city."
 scene_0_dialogue_1,"* Y en esa ciudad cibernética, había una chica.","* An in that cyber city, there was a girl."
 scene_0_dialogue_2,* Y esa chica estaba a punto de hacer algo genial.,"* And that girl, was about to do some cool shit."
+,,
 merchant_0_name,Nombre del Mercante,Merchant's Name
 merchant_0_dialogue_0,"* Hola, ¿quieres comprar algo?","* Hello there, would you like to buy something."
 merchant_0_dialogue_1,"* No sé, che.",* I don't know man.
@@ -165,8 +178,9 @@ merchant_0_dialogue_4,"* Gracias ♪, vuelva pronto ♪.","* Thanks you ♪, com
 merchant_0_dialogue_5,* De nada loco.,* You are welcome.
 merchant_0_dialogue_6,"* Si llegás a volver, te hago un descuento.","* If you come more ofter, I will give you and discount."
 merchant_0_dialogue_7,* ¡Chau!,"* Really, awasome."
-battle_menu_button_0,Atacar,Attack
-battle_menu_button_1,Bloquear,Guard
+,,
+battle_menu_button_0,Ataque,Attack
+battle_menu_button_1,Guardia,Guard
 battle_menu_button_2,Habilidades,Skills
 battle_menu_button_3,Inventario,Items
 battle_menu_button_4,Equipo,Equip
@@ -203,8 +217,10 @@ name_item_heal_1,Menta Revividora,Revive Mint
 description_item_heal_1,"* Cura el 50% de los PV-Máximos a 1 Aliado-Derribado.
 * Elimina el estado ""Derribado"".","* Deals 50% of Max-HP Healing to 1 KnockDown-Ally.
 * Remove ""KnockDown"" State."
+,,
 name_item_damage_0,Cóctel Molotov,Cogtail Molotov
 description_item_damage_0,"* Inflige 30 de daño físico de fuego a 1 enemigo. 100% de probabilidad de aplicar el efecto ""Quemadura"" durante 3 turnos.","* Do 30 of Fire-Physical-Damage to 1 Enemy. 100% chances to Add ""Burning"" for 3 Turn."
+,,
 name_status_damage_0,Derribado,Knock Down
 description_status_damage_0,"* ""A pesar de que tu cuerpo no responde, te aferras a la vida para volver a levantar y seguir luchando"".
 * El Usuario no puede Actuar, si todo los Aliados tienen el estado ""Derribado"", pierdes el combate.","* Prevents the user's body from fading away when their HP reaches zero, allowing them to continue fighting if they revive."
@@ -226,9 +242,12 @@ name_equip_weapon_0,Revólver Cibernético,Cyber Revolver
 description_equip_weapon_0,* Arma cibernética que dispara balas cibernéticas.,* An Cyber Weapon that shoots Cyber Bullets.
 name_equip_weapon_1,Cuchillo Cibernético,Cyber Knife
 description_equip_weapon_1,* Arma cibernética que realiza cortes cibernéticos.,* An Cyber Weapon that does Cyber Slashes.
+,,
 name_equip_head_0,,
 description_equip_head_0,,
+,,
 name_equip_body_0,,
 description_equip_body_0,,
+,,
 name_equip_ring_0,,
 description_equip_ring_0,,

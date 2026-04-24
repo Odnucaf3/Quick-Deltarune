@@ -2,6 +2,7 @@ extends Resource
 class_name StatusEffect_Resource
 #-------------------------------------------------------------------------------
 @export var max_hold: int = 10
+@export var is_infinite: bool = false
 #-------------------------------------------------------------------------------
 @export var base_stats_dictionarty: Dictionary[StringName, int] = {
 	"max_hp": 0,
@@ -13,6 +14,8 @@ class_name StatusEffect_Resource
 	"agility": 0,
 	"luck": 0
 }
+#-------------------------------------------------------------------------------
+@export var skill_resource_array: Array[Item_Resource]
 #-------------------------------------------------------------------------------
 func _init():
 	resource_local_to_scene = false

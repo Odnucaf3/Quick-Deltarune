@@ -78,6 +78,42 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 alignment = 2
 
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer" unique_id=346877429]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/HBoxContainer" unique_id=1306612743]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="Control/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1483113030]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "300"
+horizontal_alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="Control/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1948275989]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Control/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2084031793]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "300"
+horizontal_alignment = 2
+
+[node name="Label" type="Label" parent="Control/VBoxContainer/HBoxContainer" unique_id=1285178331]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 18
+text = "HP"
+vertical_alignment = 1
+
 [node name="hp_Label" type="Label" parent="Control/VBoxContainer" unique_id=702044947]
 layout_mode = 2
 size_flags_vertical = 1

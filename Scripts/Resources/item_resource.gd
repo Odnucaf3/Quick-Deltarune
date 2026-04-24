@@ -1,7 +1,7 @@
 extends Resource
 class_name Item_Resource
 #-------------------------------------------------------------------------------
-enum TARGET_TYPE{ENEMY_1, ALLY_1, ALLY_DEATH, USER}
+enum TARGET_TYPE{ONE_ENEMY, ALL_ENEMIES, ONE_ALLY, ALL_ALLIES, ONE_DEAD_ALLY, ALL_DEAD_ALLIES, USER}
 #-------------------------------------------------------------------------------
 #region VARIABLES
 @export_category("Common Paramenters")

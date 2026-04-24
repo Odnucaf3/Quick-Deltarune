@@ -26,10 +26,13 @@ func Chek_if_savespot_was_activated() -> bool:
 	return false
 #-------------------------------------------------------------------------------
 func Interactable_Action():
+	#-------------------------------------------------------------------------------
 	if(Chek_if_savespot_was_activated()):
 		singleton.game_scene.SaveMenu_Open(name, dialogue)
+	#-------------------------------------------------------------------------------
 	else:
 		animation_player.play("Turn_On")
 		singleton.game_scene.Add_New_SaveSpot_for_Teleporting_Options(name)
 		singleton.game_scene.SaveMenu_Open(name, dialogue)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------

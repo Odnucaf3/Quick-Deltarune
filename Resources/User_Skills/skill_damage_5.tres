@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_hyeun")
-tp_cost = 96
+myTARGET_TYPE = 1
+tp_cost = 30
 max_cooldown = 1
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

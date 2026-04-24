@@ -6,18 +6,26 @@ class_name Equip_Serializable
 @export var stored: int = 1
 @export var price: int = 0
 #-------------------------------------------------------------------------------
+var skill_serializable_array: Array[Item_Serializable]
+#-------------------------------------------------------------------------------
 func _init():
 	resource_local_to_scene = true
 #-------------------------------------------------------------------------------
 func Constructor() -> Equip_Serializable:
-	var _equip_serializable_new: Equip_Serializable = Equip_Serializable.new()
+	var _new_equip_serializable: Equip_Serializable = Equip_Serializable.new()
 	#-------------------------------------------------------------------------------
-	_equip_serializable_new.equip_resource = equip_resource
-	_equip_serializable_new.myEQUIP_TYPE = myEQUIP_TYPE
-	_equip_serializable_new.stored = stored
-	_equip_serializable_new.price = price
+	_new_equip_serializable.equip_resource = equip_resource
+	_new_equip_serializable.myEQUIP_TYPE = myEQUIP_TYPE
+	_new_equip_serializable.stored = stored
+	_new_equip_serializable.price = price
 	#-------------------------------------------------------------------------------
-	return _equip_serializable_new
+	_new_equip_serializable.skill_serializable_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in skill_serializable_array.size():
+		var _new_skill_serializable: Item_Serializable = skill_serializable_array[_i].Constructor()
+		_new_equip_serializable.skill_serializable_array.append(_new_skill_serializable)
+	#-------------------------------------------------------------------------------
+	return _new_equip_serializable
 #-------------------------------------------------------------------------------
 func SaveData_Constructor() -> Dictionary:
 	var _dictionary: Dictionary = {}

@@ -22,3 +22,21 @@ var item_serializable: Item_Serializable
 var party_member_ui: Party_Member_UI
 #-------------------------------------------------------------------------------
 var disappears_when_dies: bool = true
+#-------------------------------------------------------------------------------
+func Constructor() -> Party_Member:
+	var _party_member: Party_Member = Party_Member.new()
+	#-------------------------------------------------------------------------------
+	_party_member.party_member_serializable = party_member_serializable.Constructor()
+	#-------------------------------------------------------------------------------
+	_party_member.is_Facing_Left = is_Facing_Left
+	_party_member.is_Moving = is_Moving
+	#-------------------------------------------------------------------------------
+	_party_member.pivot = pivot
+	_party_member.sprite = sprite
+	_party_member.animation_tree = animation_tree
+	_party_member.party_member_ui = party_member_ui
+	#-------------------------------------------------------------------------------
+	_party_member.disappears_when_dies = disappears_when_dies
+	#-------------------------------------------------------------------------------
+	return _party_member
+#-------------------------------------------------------------------------------

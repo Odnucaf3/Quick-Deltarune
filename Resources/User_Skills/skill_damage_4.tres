@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_ls2v3")
-tp_cost = 32
-max_cooldown = 2
+tp_cost = 20
+max_cooldown = 1
 metadata/_custom_type_script = "uid://cutcj8e6g23o2"

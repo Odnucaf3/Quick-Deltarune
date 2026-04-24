@@ -179,6 +179,7 @@ var teleport_menu_bonfire_button_array: Array[Button]
 var camera_offset_y: float = 28
 var current_player_turn: int = 0
 @export var black_panel: Panel
+@export var black_panel_on_top_of_everithing: Panel
 @export var battle_black_panel: Panel
 @export var pause_menu_panel: Panel
 @export var pause_menu_money_label: Label
@@ -376,8 +377,6 @@ func _ready() -> void:
 	PauseMenu_Set()
 	#-------------------------------------------------------------------------------
 	Set_Idiome()
-	#-------------------------------------------------------------------------------
-	Set_DialogueMenu_NextButton()
 	#-------------------------------------------------------------------------------
 	Set_All_Menu_Descriptions_Minimum_Size_Y(418)
 	#-------------------------------------------------------------------------------
@@ -706,8 +705,6 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	for _i in _enemy_array.size():
 		enemy_party.append(_enemy_array[_i])
 		#-------------------------------------------------------------------------------
-		_enemy_array[_i].party_member_serializable.Set_All_PartyMember_Stats_and_Skills()
-		#-------------------------------------------------------------------------------
 		var _party_member_ui: Party_Member_UI = enemy_ui_prefab.instantiate() as Party_Member_UI
 		_enemy_array[_i].party_member_ui = _party_member_ui
 		_enemy_array[_i].party_member_ui.hide()
@@ -776,8 +773,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		battle_menu.show()
 		tp_bar_root.show()
 		#-------------------------------------------------------------------------------
-		tp = 15
-		Set_TP_Label(tp)
+		Set_Starting_TP()
 		#-------------------------------------------------------------------------------
 		battle_box.global_position = camera.global_position - battle_box.size/2.0
 		singleton.Set_Button(battle_menu_button[0],func():singleton.Common_Selected() , func():BattleMenu_AttackButton_Submit(), func():BattleMenu_AnyButton_Cancel())
@@ -827,6 +823,10 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 	#-------------------------------------------------------------------------------
 	await _tween.finished
 #-------------------------------------------------------------------------------
+func Set_Starting_TP():
+	tp = 30
+	Set_TP_Label(tp)
+#-------------------------------------------------------------------------------
 func Set_AllItems_When_Enter_Battle():
 	#-------------------------------------------------------------------------------
 	consumable_item_array_in_battle.clear()
@@ -864,11 +864,6 @@ func Set_AllItems_When_Exit_Battle():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(_user:Party_Member):
-	_user.party_member_serializable.skill_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.skill_array.size():
-		_user.party_member_serializable.skill_array_in_battle.append(_user.party_member_serializable.skill_array[_j].Constructor())
-	#-------------------------------------------------------------------------------
 	_user.party_member_serializable.equip_array_in_battle.clear()
 	#-------------------------------------------------------------------------------
 	for _j in _user.party_member_serializable.equip_array.size():
@@ -878,6 +873,11 @@ func Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(_user:Party_Member
 	#-------------------------------------------------------------------------------
 	for _j in _user.party_member_serializable.statuseffect_array.size():
 		_user.party_member_serializable.statuseffect_array_in_battle.append(_user.party_member_serializable.statuseffect_array[_j].Constructor())
+	#-------------------------------------------------------------------------------
+	_user.party_member_serializable.skill_array_in_battle.clear()
+	#-------------------------------------------------------------------------------
+	for _j in _user.party_member_serializable.skill_array.size():
+		_user.party_member_serializable.skill_array_in_battle.append(_user.party_member_serializable.skill_array[_j].Constructor())
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(_user:Party_Member):
@@ -1309,10 +1309,12 @@ func BattleMenu_StatusButton_Submit():
 	for _i in friend_party.size():
 		singleton.Set_Button(friend_party[_i].party_member_ui.button, func():singleton.Common_Selected(), func():BattleMenu_StatusButton_TargetButton_Submit(friend_party[_i], false), func():BattleMenu_StatusButton_TargetButton_Cancel())
 		friend_party[_i].party_member_ui.button_pivot.show()
+		friend_party[_i].party_member_ui.button.disabled = false
 	#-------------------------------------------------------------------------------
 	for _i in enemy_party.size():
 		singleton.Set_Button(enemy_party[_i].party_member_ui.button, func():singleton.Common_Selected(), func():BattleMenu_StatusButton_TargetButton_Submit(enemy_party[_i], true), func():BattleMenu_StatusButton_TargetButton_Cancel())
 		enemy_party[_i].party_member_ui.button_pivot.show()
+		enemy_party[_i].party_member_ui.button.disabled = false
 	#-------------------------------------------------------------------------------
 	singleton.Move_to_Button(friend_party[0].party_member_ui.button)
 	singleton.Common_Submited()
@@ -1664,10 +1666,9 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 	#-------------------------------------------------------------------------------
 	if(friend_party[current_player_turn].party_member_serializable.hp >= _item_serializable.item_resource.hp_cost and friend_party[current_player_turn].party_member_serializable.sp >= _item_serializable.item_resource.sp_cost and _tp >= _item_serializable.item_resource.tp_cost):
 		match(_item_serializable.item_resource.myTARGET_TYPE):
-			Item_Resource.TARGET_TYPE.ENEMY_1:
+			Item_Resource.TARGET_TYPE.ONE_ENEMY:
 				#-------------------------------------------------------------------------------
 				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-				#-------------------------------------------------------------------------------
 				var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
 				#-------------------------------------------------------------------------------
 				if(_enemy_party_alive.size() > 0):
@@ -1678,9 +1679,13 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
 					#-------------------------------------------------------------------------------
+					singleton.Disconnect_Button(dialogue_menu_button_next)
+					dialogue_menu_button_next.hide()
+					#-------------------------------------------------------------------------------
 					for _i in _enemy_party_alive.size():
 						_enemy_party_alive[_i].party_member_ui.button_pivot.show()
 						singleton.Set_Button(_enemy_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _enemy_party_alive[_i], _enemy_party_alive, _item_serializable), _cancel)
+						_enemy_party_alive[_i].party_member_ui.button.disabled = false
 					#-------------------------------------------------------------------------------
 					singleton.Move_to_Button(_enemy_party_alive[0].party_member_ui.button)
 					singleton.Common_Submited()
@@ -1689,7 +1694,35 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					singleton.Common_Canceled()
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
-			Item_Resource.TARGET_TYPE.ALLY_1:
+			Item_Resource.TARGET_TYPE.ALL_ENEMIES:
+				#-------------------------------------------------------------------------------
+				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+				#-------------------------------------------------------------------------------
+				if(_enemy_party_alive.size() > 0):
+					_last_menu.hide()
+					dialogue_menu.show()
+					dialogue_menu_button_next.hide()
+					#-------------------------------------------------------------------------------
+					_tp -= _item_serializable.item_resource.tp_cost
+					Set_TP_Label(_tp)
+					#-------------------------------------------------------------------------------
+					singleton.Set_Button(dialogue_menu_button_next, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _enemy_party_alive[0], _enemy_party_alive, _item_serializable), _cancel)
+					dialogue_menu_button_next.show()
+					dialogue_menu_button_next.disabled = false
+					#-------------------------------------------------------------------------------
+					for _i in _enemy_party_alive.size():
+						_enemy_party_alive[_i].party_member_ui.button_pivot.show()
+						_enemy_party_alive[_i].party_member_ui.button.disabled = true
+					#-------------------------------------------------------------------------------
+					singleton.Move_to_Button(dialogue_menu_button_next)
+					singleton.Common_Submited()
+				#-------------------------------------------------------------------------------
+				else:
+					singleton.Common_Canceled()
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			Item_Resource.TARGET_TYPE.ONE_ALLY:
 				#-------------------------------------------------------------------------------
 				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
@@ -1701,9 +1734,13 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
 					#-------------------------------------------------------------------------------
+					singleton.Disconnect_Button(dialogue_menu_button_next)
+					dialogue_menu_button_next.hide()
+					#-------------------------------------------------------------------------------
 					for _i in _friend_party_alive.size():
 						_friend_party_alive[_i].party_member_ui.button_pivot.show()
 						singleton.Set_Button(_friend_party_alive[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _friend_party_alive[_i], _friend_party_alive, _item_serializable), _cancel)
+						_friend_party_alive[_i].party_member_ui.button.disabled = false
 					#-------------------------------------------------------------------------------
 					singleton.Move_to_Button(_friend_party_alive[0].party_member_ui.button)
 					singleton.Common_Submited()
@@ -1712,7 +1749,34 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					singleton.Common_Canceled()
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
-			Item_Resource.TARGET_TYPE.ALLY_DEATH:
+			Item_Resource.TARGET_TYPE.ALL_ALLIES:
+				#-------------------------------------------------------------------------------
+				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				#-------------------------------------------------------------------------------
+				if(_friend_party_alive.size() > 0):
+					_last_menu.hide()
+					dialogue_menu.show()
+					dialogue_menu_button_next.hide()
+					#-------------------------------------------------------------------------------
+					_tp -= _item_serializable.item_resource.tp_cost
+					Set_TP_Label(_tp)
+					#-------------------------------------------------------------------------------
+					singleton.Set_Button(dialogue_menu_button_next, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _friend_party_alive[0], _friend_party_alive, _item_serializable), _cancel)
+					dialogue_menu_button_next.show()
+					dialogue_menu_button_next.disabled = false
+					#-------------------------------------------------------------------------------
+					for _i in _friend_party_alive.size():
+						_friend_party_alive[_i].party_member_ui.button_pivot.show()
+						_friend_party_alive[_i].party_member_ui.button.disabled = true
+					#-------------------------------------------------------------------------------
+					singleton.Move_to_Button(dialogue_menu_button_next)
+					singleton.Common_Submited()
+				#-------------------------------------------------------------------------------
+				else:
+					singleton.Common_Canceled()
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			Item_Resource.TARGET_TYPE.ONE_DEAD_ALLY:
 				#-------------------------------------------------------------------------------
 				var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
@@ -1724,11 +1788,42 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 					_tp -= _item_serializable.item_resource.tp_cost
 					Set_TP_Label(_tp)
 					#-------------------------------------------------------------------------------
+					singleton.Disconnect_Button(dialogue_menu_button_next)
+					dialogue_menu_button_next.hide()
+					#-------------------------------------------------------------------------------
 					for _i in _friend_party_dead.size():
 						_friend_party_dead[_i].party_member_ui.button_pivot.show()
 						singleton.Set_Button(_friend_party_dead[_i].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_dead, _friend_party_dead[_i], _friend_party_dead, _item_serializable), _cancel)
+						_friend_party_dead[_i].party_member_ui.button.disabled = false
 					#-------------------------------------------------------------------------------
 					singleton.Move_to_Button(_friend_party_dead[0].party_member_ui.button)
+					singleton.Common_Submited()
+				#-------------------------------------------------------------------------------
+				else:
+					singleton.Common_Canceled()
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+			Item_Resource.TARGET_TYPE.ALL_DEAD_ALLIES:
+				#-------------------------------------------------------------------------------
+				var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
+				#-------------------------------------------------------------------------------
+				if(_friend_party_dead.size() > 0):
+					_last_menu.hide()
+					dialogue_menu.show()
+					dialogue_menu_button_next.hide()
+					#-------------------------------------------------------------------------------
+					_tp -= _item_serializable.item_resource.tp_cost
+					Set_TP_Label(_tp)
+					#-------------------------------------------------------------------------------
+					singleton.Set_Button(dialogue_menu_button_next, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_dead, _friend_party_dead[0], _friend_party_dead, _item_serializable), _cancel)
+					dialogue_menu_button_next.show()
+					dialogue_menu_button_next.disabled = false
+					#-------------------------------------------------------------------------------
+					for _i in _friend_party_dead.size():
+						_friend_party_dead[_i].party_member_ui.button_pivot.show()
+						_friend_party_dead[_i].party_member_ui.button.disabled = true
+					#-------------------------------------------------------------------------------
+					singleton.Move_to_Button(dialogue_menu_button_next)
 					singleton.Common_Submited()
 				#-------------------------------------------------------------------------------
 				else:
@@ -1746,8 +1841,12 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 				_tp -= _item_serializable.item_resource.tp_cost
 				Set_TP_Label(_tp)
 				#-------------------------------------------------------------------------------
+				singleton.Disconnect_Button(dialogue_menu_button_next)
+				dialogue_menu_button_next.hide()
+				#-------------------------------------------------------------------------------
 				_friend_party_alive[current_player_turn].party_member_ui.button_pivot.show()
 				singleton.Set_Button(_friend_party_alive[current_player_turn].party_member_ui.button, func():singleton.Common_Selected(), func():TargetMenu_TargetButton_Submit(_friend_party_alive, _friend_party_alive[current_player_turn], _friend_party_alive, _item_serializable), _cancel)
+				_friend_party_alive[current_player_turn].party_member_ui.button.disabled = false
 				#-------------------------------------------------------------------------------
 				singleton.Move_to_Button(_friend_party_alive[current_player_turn].party_member_ui.button)
 				singleton.Common_Submited()
@@ -1824,6 +1923,7 @@ func Hide_AllTarget():
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.button_pivot.hide()
 	#-------------------------------------------------------------------------------
+	dialogue_menu_button_next.hide()
 #-------------------------------------------------------------------------------
 func Seconds(_timer:float):
 	await get_tree().create_timer(_timer, true, true).timeout
@@ -1935,7 +2035,7 @@ func Set_Target_Avalible(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	match(_user.item_serializable.item_resource.myTARGET_TYPE):
 		#-------------------------------------------------------------------------------
-		Item_Resource.TARGET_TYPE.ENEMY_1:
+		Item_Resource.TARGET_TYPE.ONE_ENEMY:
 			#-------------------------------------------------------------------------------
 			if(_user.target.party_member_serializable.hp > 0):
 				pass
@@ -1964,10 +2064,10 @@ func Set_Target_Avalible(_user:Party_Member):
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		Item_Resource.TARGET_TYPE.ALLY_1:
+		Item_Resource.TARGET_TYPE.ONE_ALLY:
 			pass
 		#-------------------------------------------------------------------------------
-		Item_Resource.TARGET_TYPE.ALLY_DEATH:
+		Item_Resource.TARGET_TYPE.ONE_DEAD_ALLY:
 			pass
 		#-------------------------------------------------------------------------------
 		Item_Resource.TARGET_TYPE.USER:
@@ -2000,8 +2100,8 @@ func Do_Defence_Minigame(_player_alive_defending: Array[Party_Member]):
 		Set_Players_and_Enemies_before_action()
 		#-------------------------------------------------------------------------------
 		for _i in _player_alive_defending.size():
-			await Do_Player_Action(_player_alive_defending[_i])
 			await Seconds(0.1)
+			await Do_Player_Action(_player_alive_defending[_i])
 		#-------------------------------------------------------------------------------
 		await Seconds(0.5)
 	#-------------------------------------------------------------------------------
@@ -2022,8 +2122,8 @@ func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
 				Set_Target_Avalible(_attacking_party[_i])
 				#-------------------------------------------------------------------------------
 				if(_attacking_party[_i].target != null):
+					await Seconds(0.1)
 					await Do_Player_Action(_attacking_party[_i])
-					await Seconds(0.2)
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 			await Seconds(0.5)
@@ -2091,86 +2191,17 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	var _was_status_effect_removed_this_turn: bool = false
+	battle_box.hide()
+	await Status_Effect_Action_When_Turn_Start()
+	await Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed()
 	#-------------------------------------------------------------------------------
 	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-	var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
-	#-------------------------------------------------------------------------------
-	for _i in friend_party.size():
-		#-------------------------------------------------------------------------------
-		var _skill_serializable_array: Array[Item_Serializable] = friend_party[_i].party_member_serializable.skill_array_in_battle
-		#-------------------------------------------------------------------------------
-		for _j in _skill_serializable_array.size():
-			#-------------------------------------------------------------------------------
-			if(_skill_serializable_array[_j].hold < 0):
-				_skill_serializable_array[_j].hold = 0
-			#-------------------------------------------------------------------------------
-			_skill_serializable_array[_j].cooldown -= 1
-			#-------------------------------------------------------------------------------
-			if(_skill_serializable_array[_j].cooldown < 0):
-				_skill_serializable_array[_j].cooldown = 0
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = friend_party[_i].party_member_serializable.statuseffect_array_in_battle
-		#-------------------------------------------------------------------------------
-		for _j in range(_statuseffect_serializable_array.size()-1, -1, -1):
-			#-------------------------------------------------------------------------------
-			if(_statuseffect_serializable_array[_j].statuseffect_resource.max_hold > 0):
-				_statuseffect_serializable_array[_j].stored -= 1
-				#-------------------------------------------------------------------------------
-				if(_statuseffect_serializable_array[_j].stored <= 0):
-					Flying_PopUp(friend_party[_i], "-"+tr("name_"+get_resource_filename(_statuseffect_serializable_array[_j].statuseffect_resource)))
-					_statuseffect_serializable_array.remove_at(_j)
-					_was_status_effect_removed_this_turn = true
-				#-------------------------------------------------------------------------------
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		Set_Status_Effect_Label(friend_party[_i])
-		#-------------------------------------------------------------------------------
-		if(friend_party[_i].party_member_serializable.hp > 0):
-			_friend_party_alive.append(friend_party[_i])
-			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
-		#-------------------------------------------------------------------------------
-		else:
-			_friend_party_dead.append(friend_party[_i])
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	_enemy_party_alive = Get_Alive_Party_Array(enemy_party)
-	var _enemy_party_dead:Array[Party_Member] = Get_Dead_Party_Array(enemy_party)
-	#-------------------------------------------------------------------------------
-	for _i in _enemy_party_alive.size():
-		#-------------------------------------------------------------------------------
-		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
-		#-------------------------------------------------------------------------------
-		for _j in range(_statuseffect_serializable_array.size()-1, -1, -1):
-			#-------------------------------------------------------------------------------
-			if(_statuseffect_serializable_array[_j].statuseffect_resource.max_hold > 0):
-				_statuseffect_serializable_array[_j].stored -= 1
-				#-------------------------------------------------------------------------------
-				if(_statuseffect_serializable_array[_j].stored <= 0):
-					Flying_PopUp(_enemy_party_alive[_i], "-"+tr("name_"+get_resource_filename(_statuseffect_serializable_array[_j].statuseffect_resource)))
-					_statuseffect_serializable_array.remove_at(_j)
-					_was_status_effect_removed_this_turn = true
-				#-------------------------------------------------------------------------------
-			#-------------------------------------------------------------------------------
-		#-------------------------------------------------------------------------------
-		Set_Status_Effect_Label(_enemy_party_alive[_i])
-		#-------------------------------------------------------------------------------
-		Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	Set_TP_Label(tp)
 	#-------------------------------------------------------------------------------
 	if(_enemy_party_alive.size() > 0):
 		#-------------------------------------------------------------------------------
 		if(_friend_party_alive.size() > 0):
 			Animation_Transition(hitbox_animation_tree, "Transition/", "Normal")
-			battle_box.hide()
 			myGAME_STATE = GAME_STATE.IN_MENU
-			#-------------------------------------------------------------------------------
-			if(_was_status_effect_removed_this_turn):
-				await Seconds(1.18)
-				#await Seconds(0.68)		#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s) - lo que dura el "Move_to_Position"(0.5s).
 			#-------------------------------------------------------------------------------
 			await Move_Fighters_to_Position_2(true)
 			#await Seconds(0.25)
@@ -2269,12 +2300,12 @@ func You_Retry(_enemy_array:Array[Party_Member]):
 	#-------------------------------------------------------------------------------
 	win_lose_retry_escape_menu_vboxcontainer.hide()
 	win_lose_retry_escape_menu_label.hide()
-	dialogue_menu.hide()
+	#dialogue_menu.hide()
 	#-------------------------------------------------------------------------------
 	var _tween: Tween = create_tween()
 	#-------------------------------------------------------------------------------
-	black_panel.self_modulate = Color.TRANSPARENT
-	_tween.tween_property(black_panel, "self_modulate", Color.BLACK, 0.3)
+	black_panel_on_top_of_everithing.self_modulate = Color.TRANSPARENT
+	_tween.tween_property(black_panel_on_top_of_everithing, "self_modulate", Color.BLACK, 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		#-------------------------------------------------------------------------------
@@ -2301,21 +2332,27 @@ func You_Retry(_enemy_array:Array[Party_Member]):
 			friend_party[_i].party_member_serializable.sp = 0
 			Set_SP_Label(friend_party[_i])
 			#-------------------------------------------------------------------------------
+			Set_Status_Effect_Label(friend_party[_i])
+			#-------------------------------------------------------------------------------
 			friend_party[_i].item_serializable = null
 			#-------------------------------------------------------------------------------
 			friend_party[_i].party_member_ui.show()
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party.size():
+			#-------------------------------------------------------------------------------
+			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(enemy_party[_i])
+			#-------------------------------------------------------------------------------
 			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 			#-------------------------------------------------------------------------------
 			var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(enemy_party[_i].party_member_serializable, "max_hp")
 			enemy_party[_i].party_member_serializable.hp = _max_hp
 			Set_HP_Label(enemy_party[_i])
 			#-------------------------------------------------------------------------------
+			Set_Status_Effect_Label(enemy_party[_i])
+			#-------------------------------------------------------------------------------
 			enemy_party[_i].party_member_ui.show()
 		#-------------------------------------------------------------------------------
-		tp = 15
-		Set_TP_Label(tp)
+		Set_Starting_TP()
 		#-------------------------------------------------------------------------------
 		current_player_turn = 0
 		battle_menu.global_position = friend_party[0].party_member_ui.button_pivot.global_position
@@ -2325,7 +2362,7 @@ func You_Retry(_enemy_array:Array[Party_Member]):
 	#_tween.tween_interval(0.05)
 	Move_Fighters_to_Position(_tween, true, 0.05)
 	#-------------------------------------------------------------------------------
-	_tween.tween_property(black_panel, "self_modulate", Color.TRANSPARENT, 0.3)
+	_tween.tween_property(black_panel_on_top_of_everithing, "self_modulate", Color.TRANSPARENT, 0.3)
 	#-------------------------------------------------------------------------------
 	_tween.tween_callback(func():
 		battle_menu.show()
@@ -2434,10 +2471,12 @@ func TimeOut_Tween(_iMax: int):
 	_tween.tween_interval(1.0)
 	#-------------------------------------------------------------------------------
 	for _i in _iMax:
+		#-------------------------------------------------------------------------------
 		_tween.tween_callback(func():
 			timer-=1
 			PrintTimer(timer, _iMax)
 		)
+		#-------------------------------------------------------------------------------
 		_tween.tween_interval(1.0)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -2897,7 +2936,7 @@ func Gain_Tp(_int:int):
 #-------------------------------------------------------------------------------
 func skill_damage_0(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_normal_attack")
+	Play_AttackAnimation(_user.target, "anim_normal_attack")
 	#-------------------------------------------------------------------------------
 	Gain_Tp(5)
 	Set_TP_Label(tp)
@@ -2908,13 +2947,12 @@ func skill_damage_0(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func skill_damage_1(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	#-------------------------------------------------------------------------------
-	Play_AttackAnimation(_user, "anim_poison")
+	Play_AttackAnimation(_user.target, "anim_poison")
 	#-------------------------------------------------------------------------------
 	var _status_effect_name: StringName = "status_damage_1"
 	var _status_effect: StatusEffect_Resource = Get_StatusEffect_Resource(_status_effect_name)
 	#-------------------------------------------------------------------------------
-	Add_Status_Effect(_user.target, _status_effect, 1)
+	Add_Status_Effect(_user.target, _status_effect, 3)
 	Flying_PopUp(_user.target, "+"+tr("name_"+_status_effect_name))
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
@@ -2925,7 +2963,7 @@ func Get_StatusEffect_Resource(_status_effect_name:StringName) -> StatusEffect_R
 #-------------------------------------------------------------------------------
 func skill_damage_2(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_heavy_bullet")
+	Play_AttackAnimation(_user.target, "anim_heavy_bullet")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
@@ -2935,7 +2973,7 @@ func skill_damage_2(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func skill_damage_3(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_skill_1")
+	Play_AttackAnimation(_user.target, "anim_skill_1")
 	#-------------------------------------------------------------------------------
 	for _i in 2:
 		await Seconds(0.1)
@@ -2945,7 +2983,7 @@ func skill_damage_3(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func skill_damage_4(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_skill_1")
+	Play_AttackAnimation(_user.target, "anim_skill_1")
 	#-------------------------------------------------------------------------------
 	for _i in 4:
 		await Seconds(0.1)
@@ -2955,12 +2993,20 @@ func skill_damage_4(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func skill_damage_5(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_skill_1")
 	#-------------------------------------------------------------------------------
-	for _i in 12:
-		await Seconds(0.1)
-		HP_Damage(_user.target, 5)
-	#-------------------------------------------------------------------------------	
+	for _i in _user.target_party.size():
+		Play_AttackAnimation(_user.target_party[_i], "anim_skill_1")
+		#-------------------------------------------------------------------------------
+		var _callable: Callable = func():
+			#-------------------------------------------------------------------------------
+			for _j in 4:
+				await Seconds(0.1)
+				HP_Damage(_user.target_party[_i], 5)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		await Seconds(0.15)
+		_callable.call()
+	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
 func skill_heal_0(_user:Party_Member):
@@ -2974,7 +3020,7 @@ func skill_heal_0(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func skill_heal_1(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_healing")
+	Play_AttackAnimation(_user.target, "anim_healing")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
@@ -2987,21 +3033,30 @@ func skill_heal_1(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func skill_heal_2(_user:Party_Member):
 	skill_heal_1(_user)
-	
 #-------------------------------------------------------------------------------
 func skill_heal_3(_user:Party_Member):
-	skill_heal_1(_user)
+	#-------------------------------------------------------------------------------
+	for _i in _user.user_party.size():
+		#-------------------------------------------------------------------------------
+		if(_user.user_party[_i].party_member_serializable.hp > 0):
+			await Seconds(0.1)
+			var _status_effect_resource_name: StringName = "status_heal_0"
+			var _status_effect_resource: StatusEffect_Resource = load(user_status_effect_resource_path+_status_effect_resource_name+".tres") as StatusEffect_Resource
+			Add_Status_Effect(_user.user_party[_i], _status_effect_resource, 0)
+			Flying_PopUp(_user.user_party[_i], "+"+tr("name_"+_status_effect_resource_name))
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	await Seconds(0.1)
 #-------------------------------------------------------------------------------
 func skill_heal_4(_user:Party_Member):
 	skill_heal_1(_user)
 #-------------------------------------------------------------------------------
 func Play_AttackAnimation(_user:Party_Member, _name: String):
-	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
 	var _animation_effect: Animation_Effect = load(skill_animation_effect_path+_name+".tscn").instantiate() as Animation_Effect
 	_animation_effect.animation_player.play("action")
 	_animation_effect.z_index = 2
-	_animation_effect.global_position = _user.target.global_position
+	_animation_effect.global_position = _user.global_position
 	#-------------------------------------------------------------------------------
 	world_2d.add_child(_animation_effect)
 	await _animation_effect.animation_player.animation_finished
@@ -3049,7 +3104,7 @@ func Get_Max_TP():
 #-------------------------------------------------------------------------------
 func item_heal_0(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_healing")
+	Play_AttackAnimation(_user.target, "anim_healing")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
@@ -3059,7 +3114,7 @@ func item_heal_0(_user:Party_Member):
 #-------------------------------------------------------------------------------
 func item_heal_1(_user:Party_Member):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
-	Play_AttackAnimation(_user, "anim_revive")
+	Play_AttackAnimation(_user.target, "anim_revive")
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
@@ -3164,6 +3219,7 @@ func Destroy_Childrens(_node:Node):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func HP_Damage(_target:Party_Member, _int:int):
+	#-------------------------------------------------------------------------------
 	if(_target.party_member_serializable.hp > 0):
 		_target.party_member_serializable.hp -= _int
 		#-------------------------------------------------------------------------------
@@ -3919,12 +3975,12 @@ func Create_StatusEffect_Button(_statuseffect_serializable: StatusEffect_Seriali
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	#-------------------------------------------------------------------------------
-	if(_statuseffect_serializable.statuseffect_resource.max_hold > 0):
-		_label2.text = "["+str(_statuseffect_serializable.stored)+"]  "
-	#-------------------------------------------------------------------------------
-	else:
+	if(_statuseffect_serializable.statuseffect_resource.is_infinite):
 		#∞, ꝏ, Ꝏ
 		_label2.text = "[Ꝏ]  "
+	#-------------------------------------------------------------------------------
+	else:
+		_label2.text = "["+str(_statuseffect_serializable.stored)+"/"+str(_statuseffect_serializable.statuseffect_resource.max_hold)+"]  "
 	#-------------------------------------------------------------------------------
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
@@ -4041,12 +4097,16 @@ func Set_EquipItem_Information_Common(_equip_resource:Equip_Resource) ->String:
 		#-------------------------------------------------------------------------------
 		if(_value > 0):
 			_s += "\n"
-			_s += "* +"+str(_value)+" "+_key+"."
+			_s += "* +"+str(_value)+" "+tr("name_stat_"+_key)+"."
 		#-------------------------------------------------------------------------------
 		elif(_value < 0):
 			_s += "\n"
-			_s += "* "+str(_value)+" "+_key+"."
+			_s += "* "+str(_value)+" "+tr("name_stat_"+_key)+"."
 		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in _equip_resource.skill_resource_array.size():
+		_s += "\n"
+		_s += "* Add Skill: "+tr("name_"+get_resource_filename(_equip_resource.skill_resource_array[_i]))+"."
 	#-------------------------------------------------------------------------------
 	return _s
 #-------------------------------------------------------------------------------
@@ -4105,8 +4165,6 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	user_menu.show()
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party[_index]
-	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
 	#-------------------------------------------------------------------------------
@@ -4123,7 +4181,9 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
-	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable.skill_array
+	var _user: Party_Member = friend_party[_index]
+	_user.party_member_serializable.Set_Skills()
+	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable.Get_Skills()
 	#-------------------------------------------------------------------------------
 	for _i in _skill_serializable_array.size():
 		var _skill_button: Button = Create_Skill_Button(_skill_serializable_array[_i])
@@ -4175,8 +4235,6 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	user_menu.show()
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party[_index]
-	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
 	#-------------------------------------------------------------------------------
@@ -4193,6 +4251,7 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_WSAD(user_menu_equip_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
+	var _user: Party_Member = friend_party[_index]
 	var _equip_serializable_array: Array[Equip_Serializable] = _user.party_member_serializable.equip_array
 	#-------------------------------------------------------------------------------
 	for _i in _equip_serializable_array.size():
@@ -4830,7 +4889,7 @@ func Load_All_Data():
 		room_test.room_id = room_test.name
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
-			friend_party[_i].party_member_serializable.Set_All_PartyMember_Stats_and_Skills()
+			friend_party[_i].party_member_serializable.Set_Empty_EquipSlots_Types()
 		#-------------------------------------------------------------------------------
 		#Save_All_Data("player_starting_position")
 		#-------------------------------------------------------------------------------
@@ -5460,11 +5519,15 @@ func Dialogue_Open():
 		Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 		friend_party[_i].is_Moving = false
 	#-------------------------------------------------------------------------------
+	Set_DialogueMenu_NextButton()
 	singleton.Move_to_Button(dialogue_menu_button_next)
 #-------------------------------------------------------------------------------
 func Dialogue(_dialogue:String):
 	dialogue_menu.show()
+	#-------------------------------------------------------------------------------
+	Set_DialogueMenu_NextButton()
 	dialogue_menu_button_next.show()
+	dialogue_menu_button_next.disabled = false
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaker1.hide()
 	dialogue_menu_speaker1_name.hide()
@@ -5475,7 +5538,10 @@ func Dialogue(_dialogue:String):
 #-------------------------------------------------------------------------------
 func Dialogue_with_Speaker(_texture:Texture2D, _nombre:String, _dialogue:String):
 	dialogue_menu.show()
+	#-------------------------------------------------------------------------------
+	Set_DialogueMenu_NextButton()
 	dialogue_menu_button_next.show()
+	dialogue_menu_button_next.disabled = false
 	#-------------------------------------------------------------------------------
 	dialogue_menu_speaker1.show()
 	dialogue_menu_speaker1_image.texture = _texture
@@ -5665,4 +5731,119 @@ func Set_Status_Effect_Label(_user:Party_Member):
 		_int += 1
 	#-------------------------------------------------------------------------------
 	_user.party_member_ui.label_status_effect.text = tr("user_menu_status_effect_label")+": "+str(_int)
+#-------------------------------------------------------------------------------
+var popip_time_alived: float = 1.18		#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s)
+#var popip_time_alived: float = 0.68	#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s) - lo que dura el "Move_to_Position"(0.5s).
+#-------------------------------------------------------------------------------
+func Status_Effect_Action_When_Turn_Start():
+	#-------------------------------------------------------------------------------
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	#-------------------------------------------------------------------------------
+	if(_friend_party_alive.size() <= 0 or _enemy_party_alive.size() <= 0):
+		return
+	#-------------------------------------------------------------------------------
+	var _does_anyone_has_this_status_effect: bool = false
+	#-------------------------------------------------------------------------------
+	for _i in _friend_party_alive.size():
+		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _friend_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		#-------------------------------------------------------------------------------
+		for _j in _status_effect_serializable_array.size():
+			#-------------------------------------------------------------------------------
+			if(get_resource_filename(_status_effect_serializable_array[_j].statuseffect_resource) == "status_damage_1"):
+				var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_friend_party_alive[_i].party_member_serializable, "max_hp")
+				var _damage = int(float(_max_hp)*0.1)
+				HP_Damage(_friend_party_alive[_i], _damage)
+				Play_AttackAnimation(_friend_party_alive[_i], "anim_poison")
+				_does_anyone_has_this_status_effect = true
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in _enemy_party_alive.size():
+		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		#-------------------------------------------------------------------------------
+		for _j in _status_effect_serializable_array.size():
+			#-------------------------------------------------------------------------------
+			if(get_resource_filename(_status_effect_serializable_array[_j].statuseffect_resource) == "status_damage_1"):
+				var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_enemy_party_alive[_i].party_member_serializable, "max_hp")
+				var _damage = int(float(_max_hp)*0.1)
+				HP_Damage(_enemy_party_alive[_i], _damage)
+				Play_AttackAnimation(_enemy_party_alive[_i], "anim_poison")
+				_does_anyone_has_this_status_effect = true
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	if(_does_anyone_has_this_status_effect):
+		await Seconds(popip_time_alived)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed():
+	var _was_status_effect_removed_this_turn: bool = false
+	#-------------------------------------------------------------------------------
+	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	#-------------------------------------------------------------------------------
+	if(_friend_party_alive.size() <= 0 or _enemy_party_alive.size() <= 0):
+		return
+	#-------------------------------------------------------------------------------
+	for _i in _friend_party_alive.size():
+		#-------------------------------------------------------------------------------
+		var _skill_serializable_array: Array[Item_Serializable] = _friend_party_alive[_i].party_member_serializable.skill_array_in_battle
+		#-------------------------------------------------------------------------------
+		for _j in _skill_serializable_array.size():
+			#-------------------------------------------------------------------------------
+			if(_skill_serializable_array[_j].hold < 0):
+				_skill_serializable_array[_j].hold = 0
+			#-------------------------------------------------------------------------------
+			_skill_serializable_array[_j].cooldown -= 1
+			#-------------------------------------------------------------------------------
+			if(_skill_serializable_array[_j].cooldown < 0):
+				_skill_serializable_array[_j].cooldown = 0
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _friend_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		#-------------------------------------------------------------------------------
+		for _j in range(_statuseffect_serializable_array.size()-1, -1, -1):
+			#-------------------------------------------------------------------------------
+			if(!_statuseffect_serializable_array[_j].statuseffect_resource.is_infinite):
+				_statuseffect_serializable_array[_j].stored -= 1
+				#-------------------------------------------------------------------------------
+				if(_statuseffect_serializable_array[_j].stored <= 0):
+					Flying_PopUp(_friend_party_alive[_i], "-"+tr("name_"+get_resource_filename(_statuseffect_serializable_array[_j].statuseffect_resource)))
+					_statuseffect_serializable_array.remove_at(_j)
+					_was_status_effect_removed_this_turn = true
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------		
+		#-------------------------------------------------------------------------------
+		Set_Status_Effect_Label(_friend_party_alive[_i])
+		#-------------------------------------------------------------------------------
+		Animation_StateMachine(_friend_party_alive[_i].animation_tree, "", "Idle")
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in _enemy_party_alive.size():
+		#-------------------------------------------------------------------------------
+		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		#-------------------------------------------------------------------------------
+		for _j in range(_statuseffect_serializable_array.size()-1, -1, -1):
+			#-------------------------------------------------------------------------------
+			if(!_statuseffect_serializable_array[_j].statuseffect_resource.is_infinite):
+				_statuseffect_serializable_array[_j].stored -= 1
+				#-------------------------------------------------------------------------------
+				if(_statuseffect_serializable_array[_j].stored <= 0):
+					Flying_PopUp(_enemy_party_alive[_i], "-"+tr("name_"+get_resource_filename(_statuseffect_serializable_array[_j].statuseffect_resource)))
+					_statuseffect_serializable_array.remove_at(_j)
+					_was_status_effect_removed_this_turn = true
+				#-------------------------------------------------------------------------------
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+		Set_Status_Effect_Label(_enemy_party_alive[_i])
+		#-------------------------------------------------------------------------------
+		Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	Set_TP_Label(tp)
+	#-------------------------------------------------------------------------------
+	if(_was_status_effect_removed_this_turn):
+		await Seconds(popip_time_alived)
+	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------

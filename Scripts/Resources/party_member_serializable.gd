@@ -57,13 +57,13 @@ func SaveData_Constructor() -> Dictionary:
 	#-------------------------------------------------------------------------------
 	_dictionary["statuseffect_array"] = _statuseffect_data
 	#-------------------------------------------------------------------------------
-	var _skill_data: Array[Dictionary] = []
+	#var _skill_data: Array[Dictionary] = []
 	#-------------------------------------------------------------------------------
-	for _i in skill_array.size():
-		var _skill_dictionary: Dictionary = skill_array[_i].SaveData_Constructor()
-		_skill_data.append(_skill_dictionary)
+	#for _i in skill_array.size():
+	#	var _skill_dictionary: Dictionary = skill_array[_i].SaveData_Constructor()
+	#	_skill_data.append(_skill_dictionary)
 	#-------------------------------------------------------------------------------
-	_dictionary["skill_array"] = _skill_data
+	#_dictionary["skill_array"] = _skill_data
 	#-------------------------------------------------------------------------------
 	return _dictionary
 #-------------------------------------------------------------------------------
@@ -88,24 +88,82 @@ func LoadData_Constructor(_dictionaty:Dictionary):
 	#-------------------------------------------------------------------------------
 	skill_array.clear()
 	#-------------------------------------------------------------------------------
-	var _skill_array:Array = _dictionaty.get("skill_array", [])
+	#var _skill_array:Array = _dictionaty.get("skill_array", [])
 	#-------------------------------------------------------------------------------
-	for _i in _skill_array.size():
-		var _skill: Item_Serializable = Item_Serializable.new()
-		_skill.LoadData_Constructor(_skill_array[_i])
-		skill_array.append(_skill)
+	#for _i in _skill_array.size():
+	#	var _skill: Item_Serializable = Item_Serializable.new()
+	#	_skill.LoadData_Constructor(_skill_array[_i])
+	#	skill_array.append(_skill)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Set_All_PartyMember_Stats_and_Skills():
+func Set_Skills():
 	skill_array.clear()
 	#-------------------------------------------------------------------------------
 	for _i in party_member_resource.skill_resource_array.size():
-		var _item_serializable: Item_Serializable = Item_Serializable.new()
-		#-------------------------------------------------------------------------------
-		_item_serializable.item_resource = party_member_resource.skill_resource_array[_i]
-		#-------------------------------------------------------------------------------
-		skill_array.append(_item_serializable)
+		var _skill_serializable: Item_Serializable = Set_Skill_Starting_Values(party_member_resource.skill_resource_array[_i])
+		skill_array.append(_skill_serializable)
 	#-------------------------------------------------------------------------------
+	for _i in equip_array.size():
+		#-------------------------------------------------------------------------------
+		if(equip_array[_i].equip_resource != null):
+			equip_array[_i].skill_serializable_array.clear()
+			#-------------------------------------------------------------------------------
+			for _j in equip_array[_i].equip_resource.skill_resource_array.size():
+				var _skill_serializable_1: Item_Serializable = Set_Skill_Starting_Values(equip_array[_i].equip_resource.skill_resource_array[_j])
+				equip_array[_i].skill_serializable_array.append(_skill_serializable_1)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in statuseffect_array.size():
+		statuseffect_array[_i].skill_serializable_array.clear()
+		#-------------------------------------------------------------------------------
+		for _j in statuseffect_array[_i].statuseffect_resource.skill_resource_array.size():
+			var _skill_serializable_1: Item_Serializable = Set_Skill_Starting_Values(statuseffect_array[_i].statuseffect_resource.skill_resource_array[_j])
+			statuseffect_array[_i].skill_serializable_array.append(_skill_serializable_1)
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	#Set_Start_Old()
+#-------------------------------------------------------------------------------
+func Get_Skills() -> Array[Item_Serializable]:
+	var _skill_array: Array[Item_Serializable]
+	_skill_array.append_array(skill_array)
+	#-------------------------------------------------------------------------------
+	for _i in equip_array.size():
+		#-------------------------------------------------------------------------------
+		if(equip_array[_i].equip_resource != null):
+			_skill_array.append_array(equip_array[_i].skill_serializable_array)
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in statuseffect_array.size():
+		_skill_array.append_array(statuseffect_array[_i].skill_serializable_array)
+	#-------------------------------------------------------------------------------
+	return _skill_array
+#-------------------------------------------------------------------------------
+func Get_Skills_in_Battle() -> Array[Item_Serializable]:
+	var _skill_array_in_battle: Array[Item_Serializable]
+	_skill_array_in_battle.append_array(skill_array_in_battle)
+	#-------------------------------------------------------------------------------
+	for _i in equip_array_in_battle.size():
+		#-------------------------------------------------------------------------------
+		if(equip_array_in_battle[_i].equip_resource != null):
+			_skill_array_in_battle.append_array(equip_array_in_battle[_i].skill_serializable_array)
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in statuseffect_array_in_battle.size():
+		_skill_array_in_battle.append_array(statuseffect_array_in_battle[_i].skill_serializable_array)
+	#-------------------------------------------------------------------------------
+	return _skill_array_in_battle
+#-------------------------------------------------------------------------------
+func Set_Skill_Starting_Values(_skill_resource: Item_Resource) -> Item_Serializable:
+	var _skill_serializable: Item_Serializable = Item_Serializable.new()
+	#-------------------------------------------------------------------------------
+	_skill_serializable.item_resource = _skill_resource
+	_skill_serializable.cooldown = 0
+	_skill_serializable.hold = _skill_serializable.item_resource.max_hold
+	#-------------------------------------------------------------------------------
+	return _skill_serializable
+#-------------------------------------------------------------------------------
+func Set_Empty_EquipSlots_Types():
 	equip_array.clear()
 	#-------------------------------------------------------------------------------
 	for _i in party_member_resource.equip_type_array.size():
@@ -115,9 +173,8 @@ func Set_All_PartyMember_Stats_and_Skills():
 		#-------------------------------------------------------------------------------
 		equip_array.append(_equip_serializable)
 	#-------------------------------------------------------------------------------
-	#Set_Start_Old()
 #-------------------------------------------------------------------------------
-func Set_Start_Old():
+func Set_Start_Old():	#Esto es viejo, no sirve
 	for _i in base_stats_dictionarty.size():
 		var _key: String = base_stats_dictionarty.keys()[_i]
 		base_stats_dictionarty.set(_key, party_member_resource.base_stats_dictionarty.get(_key, 0))

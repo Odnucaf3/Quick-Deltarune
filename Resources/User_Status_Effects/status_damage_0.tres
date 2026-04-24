@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_fp0mn")
 max_hold = 0
+is_infinite = true
 metadata/_custom_type_script = "uid://cnxg5h2oypmxr"

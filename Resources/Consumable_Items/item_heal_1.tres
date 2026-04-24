@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_1y4y7")
-myTARGET_TYPE = 2
+myTARGET_TYPE = 4
 anim = "Crouch"
 tp_cost = 10
 max_cooldown = 1
