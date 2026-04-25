@@ -12,15 +12,15 @@ func _init():
 	resource_local_to_scene = true
 #-------------------------------------------------------------------------------
 func Constructor() -> Item_Serializable:
-	var _item_serializable_new: Item_Serializable = Item_Serializable.new()
+	var _new_item_serializable: Item_Serializable = Item_Serializable.new()
 	#-------------------------------------------------------------------------------
-	_item_serializable_new.item_resource = item_resource
-	_item_serializable_new.cooldown = cooldown
-	_item_serializable_new.hold = hold
-	_item_serializable_new.stored = stored
-	_item_serializable_new.price = price
+	_new_item_serializable.item_resource = item_resource
+	_new_item_serializable.cooldown = cooldown
+	_new_item_serializable.hold = hold
+	_new_item_serializable.stored = stored
+	_new_item_serializable.price = price
 	#-------------------------------------------------------------------------------
-	return _item_serializable_new
+	return _new_item_serializable
 #-------------------------------------------------------------------------------
 func SaveData_Constructor() -> Dictionary:
 	var _dictionary: Dictionary = {}

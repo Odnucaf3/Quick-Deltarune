@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c3gpm8500ebkp"]
 
-[ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_84owv"]
+[ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/party_member_node.gd" id="1_84owv"]
 [ext_resource type="Resource" uid="uid://cfwc05cwwcm4g" path="res://Resources/Users/enemy_0.tres" id="2_iisv6"]
 [ext_resource type="Texture2D" uid="uid://dyegdx81d1rxj" path="res://Assets/ansimuz/Sewers pack files/Spritesheets/Soldier/soldier.png" id="2_vs54o"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_x021x"]

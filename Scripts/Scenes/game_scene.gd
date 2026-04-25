@@ -25,9 +25,6 @@ var hex_color_orange: String = "fb7927"
 #-------------------------------------------------------------------------------
 var key_dictionary: Dictionary[String, int]
 #-------------------------------------------------------------------------------
-@export_group("Important Serializable")
-@export var money_serializable: Key_Item_Serializable
-#-------------------------------------------------------------------------------
 @export_group("Important Resources")
 @export var attack_skill_resource: Item_Resource
 @export var guard_skill_resource: Item_Resource
@@ -58,9 +55,9 @@ var key_dictionary: Dictionary[String, int]
 @export var player_interactable_by_action_area2d: Area2D
 @export var player_interactable_by_touch_not_enemy_area2d: Area2D
 @export var player_interactable_by_touch_enemy_area2d: Area2D
-@export var friend_party: Array[Party_Member]
+@export var friend_party: Array[Party_Member_Node]
 #-------------------------------------------------------------------------------
-var enemy_party: Array[Party_Member]
+var enemy_party: Array[Party_Member_Node]
 #-------------------------------------------------------------------------------
 @export_group("Item Menues")
 @export var item_menu: Control
@@ -99,14 +96,8 @@ var item_menu_equip_button_array: Array[Button]
 var item_menu_key_button_array: Array[Button]
 #-------------------------------------------------------------------------------
 @export_group("Inventory")
-@export var consumable_item_array: Array[Item_Serializable]
-var consumable_item_array_in_battle: Array[Item_Serializable]
-#-------------------------------------------------------------------------------
-@export var equip_item_array: Array[Equip_Serializable]
-var equip_item_array_in_battle: Array[Equip_Serializable]
-#-------------------------------------------------------------------------------
-@export var key_item_array: Array[Key_Item_Serializable]
-var key_item_array_in_battle: Array[Key_Item_Serializable]
+@export var inventory_serializable: Inventory_Serializable
+var inventory_serializable_in_battle: Inventory_Serializable
 #-------------------------------------------------------------------------------
 @export_group("User Menues")
 @export var user_menu: Control
@@ -189,6 +180,11 @@ var current_player_turn: int = 0
 @export var pause_menu_party_label: Label
 @export var pause_menu_party_button_content: Control
 var pause_menu_party_button_array: Array[Party_Button]
+#-------------------------------------------------------------------------------
+@export var go_to_title_menu: Control
+@export var go_to_title_menu_title_label: Label
+@export var go_to_title_menu_button_array: Array[Button]
+#-------------------------------------------------------------------------------
 var isSlowMotion: bool = false
 #-------------------------------------------------------------------------------
 var can_enter_fight: bool = true
@@ -317,6 +313,9 @@ func _ready() -> void:
 	tp_bar_root.hide()
 	confirm_buy_menu.hide()
 	money_menu.hide()
+	go_to_title_menu.hide()
+	#-------------------------------------------------------------------------------
+	singleton.Button_Array_Set_Horizontal_Navigation(go_to_title_menu_button_array)
 	#-------------------------------------------------------------------------------
 	singleton.Button_Remove_Navigation(user_menu_info_button)
 	singleton.Button_Remove_Navigation(user_menu_stats_button)
@@ -601,7 +600,7 @@ func Camera_Set_Target_Position() -> Vector2:
 	#-------------------------------------------------------------------------------
 	return _new_position
 #-------------------------------------------------------------------------------
-func Face_Left(_user:Party_Member, _b:bool):
+func Face_Left(_user:Party_Member_Node, _b:bool):
 	#-------------------------------------------------------------------------------
 	if(_b):
 		_user.pivot.scale.x = -1
@@ -694,7 +693,7 @@ func PickUp_Item_2(_item_script:Item_Script):
 #-------------------------------------------------------------------------------
 #region SET BATTLEFIELD
 #-------------------------------------------------------------------------------
-func EnterBattle(_enemy_array:Array[Party_Member]):
+func EnterBattle(_enemy_array:Array[Party_Member_Node]):
 	myGAME_STATE = GAME_STATE.IN_MENU
 	myBATTLE_STATE = BATTLE_STATE.STILL_FIGHTING
 	#-------------------------------------------------------------------------------
@@ -773,8 +772,6 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 		battle_menu.show()
 		tp_bar_root.show()
 		#-------------------------------------------------------------------------------
-		Set_Starting_TP()
-		#-------------------------------------------------------------------------------
 		battle_box.global_position = camera.global_position - battle_box.size/2.0
 		singleton.Set_Button(battle_menu_button[0],func():singleton.Common_Selected() , func():BattleMenu_AttackButton_Submit(), func():BattleMenu_AnyButton_Cancel())
 		singleton.Set_Button(battle_menu_button[1],func():singleton.Common_Selected() , func():BattleMenu_DefenseButton_Submit(), func():BattleMenu_AnyButton_Cancel())
@@ -804,6 +801,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 			friend_party[_i].party_member_ui.button_pivot.hide()
 		#-------------------------------------------------------------------------------
 		for _i in enemy_party.size():
+			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(enemy_party[_i])
 			#-------------------------------------------------------------------------------
 			var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(enemy_party[_i].party_member_serializable, "max_hp")
 			enemy_party[_i].party_member_serializable.hp = _max_hp
@@ -817,6 +815,7 @@ func EnterBattle(_enemy_array:Array[Party_Member]):
 			enemy_party[_i].party_member_ui.show()
 			enemy_party[_i].party_member_ui.button_pivot.hide()
 		#-------------------------------------------------------------------------------
+		Set_Starting_TP()
 		Set_TP_Label(tp)
 		#-------------------------------------------------------------------------------
 	)
@@ -828,74 +827,17 @@ func Set_Starting_TP():
 	Set_TP_Label(tp)
 #-------------------------------------------------------------------------------
 func Set_AllItems_When_Enter_Battle():
-	#-------------------------------------------------------------------------------
-	consumable_item_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array.size():
-		consumable_item_array_in_battle.append(consumable_item_array[_i].Constructor())
-	#-------------------------------------------------------------------------------
-	equip_item_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _i in equip_item_array.size():
-		equip_item_array_in_battle.append(equip_item_array[_i].Constructor())
-	#-------------------------------------------------------------------------------
-	key_item_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _i in key_item_array.size():
-		key_item_array_in_battle.append(key_item_array[_i].Constructor())
-	#-------------------------------------------------------------------------------
+	inventory_serializable_in_battle = inventory_serializable.Constructor()
 #-------------------------------------------------------------------------------
 func Set_AllItems_When_Exit_Battle():
-	#-------------------------------------------------------------------------------
-	consumable_item_array.clear()
-	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array_in_battle.size():
-		consumable_item_array.append(consumable_item_array_in_battle[_i].Constructor())
-	#-------------------------------------------------------------------------------
-	equip_item_array.clear()
-	#-------------------------------------------------------------------------------
-	for _i in equip_item_array_in_battle.size():
-		equip_item_array.append(equip_item_array_in_battle[_i].Constructor())
-	#-------------------------------------------------------------------------------
-	key_item_array.clear()
-	#-------------------------------------------------------------------------------
-	for _i in key_item_array_in_battle.size():
-		key_item_array.append(key_item_array_in_battle[_i].Constructor())
-	#-------------------------------------------------------------------------------
+	inventory_serializable = inventory_serializable_in_battle.Constructor()
 #-------------------------------------------------------------------------------
-func Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(_user:Party_Member):
-	_user.party_member_serializable.equip_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.equip_array.size():
-		_user.party_member_serializable.equip_array_in_battle.append(_user.party_member_serializable.equip_array[_j].Constructor())
-	#-------------------------------------------------------------------------------
-	_user.party_member_serializable.statuseffect_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.statuseffect_array.size():
-		_user.party_member_serializable.statuseffect_array_in_battle.append(_user.party_member_serializable.statuseffect_array[_j].Constructor())
-	#-------------------------------------------------------------------------------
-	_user.party_member_serializable.skill_array_in_battle.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.skill_array.size():
-		_user.party_member_serializable.skill_array_in_battle.append(_user.party_member_serializable.skill_array[_j].Constructor())
-	#-------------------------------------------------------------------------------
+func Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(_user:Party_Member_Node):
+	_user.party_member_serializable_in_battle = _user.party_member_serializable.Constructor()
+	_user.party_member_serializable_in_battle.Set_Skills()
 #-------------------------------------------------------------------------------
-func Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(_user:Party_Member):
-	_user.party_member_serializable.skill_array.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.skill_array_in_battle.size():
-		_user.party_member_serializable.skill_array.append(_user.party_member_serializable.skill_array_in_battle[_j].Constructor())
-	#-------------------------------------------------------------------------------
-	_user.party_member_serializable.equip_array.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.equip_array_in_battle.size():
-		_user.party_member_serializable.equip_array.append(_user.party_member_serializable.equip_array_in_battle[_j].Constructor())
-	#-------------------------------------------------------------------------------
-	_user.party_member_serializable.statuseffect_array.clear()
-	#-------------------------------------------------------------------------------
-	for _j in _user.party_member_serializable.statuseffect_array_in_battle.size():
-		_user.party_member_serializable.statuseffect_array.append(_user.party_member_serializable.statuseffect_array_in_battle[_j].Constructor())
-	#-------------------------------------------------------------------------------
+func Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(_user:Party_Member_Node):
+	_user.party_member_serializable = _user.party_member_serializable_in_battle.Constructor()
 #-------------------------------------------------------------------------------
 func Move_Fighters_to_Position_2(_is_menu_position:bool):
 	var _tween: Tween = create_tween()
@@ -980,9 +922,7 @@ func BattleMenu_SkillButton_Submit():
 	dialogue_menu.hide()
 	user_menu.show()
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-	#-------------------------------------------------------------------------------
-	var _user: Party_Member = _friend_party_alive[current_player_turn]
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
@@ -1000,8 +940,11 @@ func BattleMenu_SkillButton_Submit():
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.skill_array_in_battle.size():
-		var _button: Button = Create_Skill_Button(_user.party_member_serializable.skill_array_in_battle[_i])
+	var _user: Party_Member_Node = _friend_party_alive[current_player_turn]
+	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable_in_battle.Get_Skills()
+	#-------------------------------------------------------------------------------
+	for _i in _skill_serializable_array.size():
+		var _button: Button = Create_Skill_Button(_skill_serializable_array[_i])
 		#-------------------------------------------------------------------------------
 		var _cancel_back: Callable = func():
 			user_menu.show()
@@ -1013,8 +956,8 @@ func BattleMenu_SkillButton_Submit():
 			singleton.Move_to_Button(user_menu_skill_button_array[_i])
 			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():SkillMenu_SkillButton_Selected(_user.party_member_serializable.skill_array_in_battle[_i])
-		var _submit_1: Callable = func(): SkillMenu_SkillButton_Submit(_user.party_member_serializable.skill_array_in_battle[_i], _cancel_back)
+		var _selected_1: Callable = func():SkillMenu_SkillButton_Selected(_skill_serializable_array[_i])
+		var _submit_1: Callable = func(): SkillMenu_SkillButton_Submit(_skill_serializable_array[_i], _cancel_back)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_button, _selected_1, _submit_1, _cancel_0, _w, _s, _a, _d)
 		user_menu_skill_content.add_child(_button)
@@ -1090,26 +1033,28 @@ func BattleMenu_ItemButton_Submit():
 	singleton.Set_Button_WSAD(item_menu_equip_button, _selected_0, _submit_0, _cancel_0, _w, _s, _equip_a, _equip_d)
 	singleton.Set_Button_WSAD(item_menu_key_button, _selected_0, _submit_0, _cancel_0, _w, _s, _key_a, _key_d)
 	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array_in_battle.size():
-		var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable_in_battle
+	#-------------------------------------------------------------------------------
+	for _i in _inventory_serializable.consumable_item_array.size():
+		var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 		#-------------------------------------------------------------------------------
-		var _hold: int = consumable_item_array_in_battle[_i].hold
-		var _cooldown: int = consumable_item_array_in_battle[_i].cooldown
+		var _hold: int = _inventory_serializable.consumable_item_array[_i].hold
+		var _cooldown: int = _inventory_serializable.consumable_item_array[_i].cooldown
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array_in_battle[_i].item_resource == (_friend_party_alive[_j].item_serializable.item_resource)):
+			if(_inventory_serializable.consumable_item_array[_i].item_resource == (_friend_party_alive[_j].item_serializable.item_resource)):
 				_hold -= 1
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		for _j in current_player_turn:
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array_in_battle[_i].item_resource == (_friend_party_alive[_j].item_serializable.item_resource)):
-				_cooldown += consumable_item_array_in_battle[_i].item_resource.max_cooldown
+			if(_inventory_serializable.consumable_item_array[_i].item_resource == (_friend_party_alive[_j].item_serializable.item_resource)):
+				_cooldown += _inventory_serializable.consumable_item_array[_i].item_resource.max_cooldown
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		if(consumable_item_array_in_battle[_i].hold > 0):
-			var _consumableitem_button: Button = Create_ConsumableItem_Button(consumable_item_array_in_battle[_i], _hold, _cooldown)
+		if(_inventory_serializable.consumable_item_array[_i].hold > 0):
+			var _consumableitem_button: Button = Create_ConsumableItem_Button(_inventory_serializable.consumable_item_array[_i], _hold, _cooldown)
 			#-------------------------------------------------------------------------------
 			var _back_consumableitem: Callable = func():
 				item_menu.show()
@@ -1121,14 +1066,14 @@ func BattleMenu_ItemButton_Submit():
 				singleton.Move_to_Button(_consumableitem_button)
 				singleton.Common_Canceled()
 			#-------------------------------------------------------------------------------
-			var _selected_consumableitem: Callable = func():ItemMenu_Consumable_ItemButton_Selected(consumable_item_array_in_battle[_i])
-			var _submit_consumableitem: Callable = func():ItemMenu_ItemButton_Submit(consumable_item_array_in_battle[_i], _hold, _cooldown, _back_consumableitem)
+			var _selected_consumableitem: Callable = func():ItemMenu_Consumable_ItemButton_Selected(_inventory_serializable.consumable_item_array[_i])
+			var _submit_consumableitem: Callable = func():ItemMenu_ItemButton_Submit(_inventory_serializable.consumable_item_array[_i], _hold, _cooldown, _back_consumableitem)
 			#-------------------------------------------------------------------------------
 			singleton.Set_Button_WSAD(_consumableitem_button, _selected_consumableitem, _submit_consumableitem, _cancel_0, _w, _s, _consumable_a, _consumable_d)
 			item_menu_consumable_content.add_child(_consumableitem_button)
 			item_menu_consumable_button_array.append(_consumableitem_button)
 		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_ConsumableItem_Button(consumable_item_array_in_battle[_i], _hold, _cooldown)
+		var _allitem_button: Button = Create_ConsumableItem_Button(_inventory_serializable.consumable_item_array[_i], _hold, _cooldown)
 		#-------------------------------------------------------------------------------
 		var _back_allitem: Callable = func():
 			item_menu.show()
@@ -1140,42 +1085,42 @@ func BattleMenu_ItemButton_Submit():
 			singleton.Move_to_Button(_allitem_button)
 			singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
-		var _selected_allitem: Callable = func():ItemMenu_Consumable_ItemButton_Selected(consumable_item_array_in_battle[_i])
-		var _submit_allitem: Callable = func():ItemMenu_ItemButton_Submit(consumable_item_array_in_battle[_i], _hold, _cooldown, _back_allitem)
+		var _selected_allitem: Callable = func():ItemMenu_Consumable_ItemButton_Selected(_inventory_serializable.consumable_item_array[_i])
+		var _submit_allitem: Callable = func():ItemMenu_ItemButton_Submit(_inventory_serializable.consumable_item_array[_i], _hold, _cooldown, _back_allitem)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_allitem_button, _selected_allitem, _submit_allitem, _cancel_0, _w, _s, _all_a, _all_d)
 		item_menu_all_content.add_child(_allitem_button)
 		item_menu_all_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	for _i in equip_item_array_in_battle.size():
-		var _equipitem_button: Button = Create_EquipItem_Button(equip_item_array_in_battle[_i])
+	for _i in _inventory_serializable.equip_item_array.size():
+		var _equipitem_button: Button = Create_EquipItem_Button(_inventory_serializable.equip_item_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_item_array_in_battle[_i])
+		var _selected: Callable = func():ItemMenu_Equipment_ItemButton_Selected(_inventory_serializable.equip_item_array[_i])
 		var _submit: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_equipitem_button, _selected, _submit, _cancel_0, _w, _s, _equip_a, _equip_d)
 		item_menu_equip_content.add_child(_equipitem_button)
 		item_menu_equip_button_array.append(_equipitem_button)
 		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_EquipItem_Button(equip_item_array_in_battle[_i])
+		var _allitem_button: Button = Create_EquipItem_Button(_inventory_serializable.equip_item_array[_i])
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_allitem_button, _selected, _submit, _cancel_0, _w, _s, _all_a, _all_d)
 		item_menu_all_content.add_child(_allitem_button)
 		item_menu_all_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	
+	var _new_key_item_array: Array[Key_Item_Serializable] = Get_Key_Item_Serializable_Array(_inventory_serializable)
 	#-------------------------------------------------------------------------------
-	for _i in key_item_array_in_battle.size():
-		var _keyitem_button: Button = Create_KeyItem_Button(key_item_array_in_battle[_i])
+	for _i in _new_key_item_array.size():
+		var _keyitem_button: Button = Create_KeyItem_Button(_new_key_item_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected: Callable = func():ItemMenu_KeyItem_ItemButton_Selected(key_item_array_in_battle[_i])
+		var _selected: Callable = func():ItemMenu_KeyItem_ItemButton_Selected(_new_key_item_array[_i])
 		var _submit: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_keyitem_button, _selected, _submit, _cancel_0, _w, _s, _key_a, _key_d)
 		item_menu_key_content.add_child(_keyitem_button)
 		item_menu_key_button_array.append(_keyitem_button)
 		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_KeyItem_Button(key_item_array_in_battle[_i])
+		var _allitem_button: Button = Create_KeyItem_Button(_new_key_item_array[_i])
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_allitem_button, _selected, _submit, _cancel_0, _w, _s, _all_a, _all_d)
 		item_menu_all_content.add_child(_allitem_button)
@@ -1202,9 +1147,7 @@ func BattleMenu_EquipButton_Submit():
 	battle_menu.hide()
 	dialogue_menu.hide()
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-	#-------------------------------------------------------------------------------
-	var _user: Party_Member = _friend_party_alive[current_player_turn]
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)	
 	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
@@ -1222,17 +1165,20 @@ func BattleMenu_EquipButton_Submit():
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_WSAD(user_menu_equip_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.equip_array_in_battle.size():
-		var _button:Button = Create_EquipSlot_Button(_user.party_member_serializable.equip_array_in_battle[_i])
+	var _user: Party_Member_Node = _friend_party_alive[current_player_turn]
+	var _equip_serializable_array: Array[Equip_Serializable] = _user.party_member_serializable_in_battle.equip_serializable_array
+	#-------------------------------------------------------------------------------
+	for _i in _equip_serializable_array.size():
+		var _button:Button = Create_EquipSlot_Button(_equip_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.party_member_serializable.equip_array_in_battle, _i)
+		var _selected_1: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _equip_serializable_array, _i)
 		var _submit_1: Callable = func():BattleMenu_EquipButton_EquipSlot_Submit(_user, _i)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_button, _selected_1, _submit_1, _cancel_0, _w, _s, _a, _d)
 		user_menu_equip_button_array.append(_button)
 		user_menu_equip_content.add_child(_button)
 	#-------------------------------------------------------------------------------
-	Create_EquipSlot_Label(_user.party_member_serializable.equip_array_in_battle)
+	Create_EquipSlot_Label(_equip_serializable_array)
 	#-------------------------------------------------------------------------------
 	singleton.Button_Array_Set_Vertical_Navigation(user_menu_equip_button_array)
 	#-------------------------------------------------------------------------------
@@ -1243,7 +1189,7 @@ func BattleMenu_EquipButton_Submit():
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
+func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member_Node,_index:int):
 	user_menu.hide()
 	item_menu.show()
 	#-------------------------------------------------------------------------------
@@ -1273,10 +1219,12 @@ func BattleMenu_EquipButton_EquipSlot_Submit(_user:Party_Member,_index:int):
 	item_menu_equip_content.add_child(_empty_button)
 	item_menu_equip_button_array.append(_empty_button)
 	#-------------------------------------------------------------------------------
-	for _i in equip_item_array_in_battle.size():
-		var _button: Button = Create_EquipItem_Button(equip_item_array_in_battle[_i])
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable_in_battle
+	#-------------------------------------------------------------------------------
+	for _i in _inventory_serializable.equip_item_array.size():
+		var _button: Button = Create_EquipItem_Button(_inventory_serializable.equip_item_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_item_array_in_battle[_i])
+		var _selected_1: Callable = func():ItemMenu_Equipment_ItemButton_Selected(_inventory_serializable.equip_item_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_button, _selected_1, _submit_1, _cancel_0, _w, _s, _a, _d)
@@ -1319,7 +1267,7 @@ func BattleMenu_StatusButton_Submit():
 	singleton.Move_to_Button(friend_party[0].party_member_ui.button)
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:bool):
+func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member_Node, _is_enemy:bool):
 	user_menu.show()
 	dialogue_menu.hide()
 	#-------------------------------------------------------------------------------
@@ -1411,41 +1359,38 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 	#-------------------------------------------------------------------------------
 	Create_Stats_Button_Array(_user.party_member_serializable, _cancel_0, _w, _s, _stats_a, _stats_d)
 	#-------------------------------------------------------------------------------
-	var _new_statuseffect_array: Array[StatusEffect_Serializable]
+	var _new_status_effect_serializable_array: Array[StatusEffect_Serializable] = Get_Status_Effect_Serializable_Array(_user)
 	#-------------------------------------------------------------------------------
-	if(_user.party_member_serializable.hp <= 0):
-		var _down_statuseffect_serializable: StatusEffect_Serializable = StatusEffect_Serializable.new()
-		_down_statuseffect_serializable.statuseffect_resource = down_statuseffect_resource
-		_new_statuseffect_array.append(_down_statuseffect_serializable)
-	#-------------------------------------------------------------------------------
-	_new_statuseffect_array.append_array(_user.party_member_serializable.statuseffect_array_in_battle)
-	#-------------------------------------------------------------------------------
-	for _i in _new_statuseffect_array.size():
-		var _statuseffect_button: Button = Create_StatusEffect_Button(_new_statuseffect_array[_i])
+	for _i in _new_status_effect_serializable_array.size():
+		var _statuseffect_button: Button = Create_StatusEffect_Button(_new_status_effect_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():StatusMenu_StatusEffectButton_Selected(_new_statuseffect_array[_i])
+		var _selected_1: Callable = func():StatusMenu_StatusEffectButton_Selected(_new_status_effect_serializable_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_statuseffect_button, _selected_1, _submit_1, _cancel_0, _w, _s, _statuseffect_a, _statuseffect_d)
 		user_menu_statuseffect_content.add_child(_statuseffect_button)
 		user_menu_statuseffect_button_array.append(_statuseffect_button)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.equip_array_in_battle.size():
-		var _equipslot_button:Button = Create_EquipSlot_Button(_user.party_member_serializable.equip_array_in_battle[_i])
+	var _equip_serializable_array: Array[Equip_Serializable] = _user.party_member_serializable_in_battle.equip_serializable_array
+	#-------------------------------------------------------------------------------
+	for _i in _equip_serializable_array.size():
+		var _equipslot_button:Button = Create_EquipSlot_Button(_equip_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.party_member_serializable.equip_array_in_battle, _i)
+		var _selected_1: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _equip_serializable_array, _i)
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_equipslot_button, _selected_1, _submit_1, _cancel_0, _w, _s, _equip_a, _equip_d)
 		user_menu_equip_button_array.append(_equipslot_button)
 		user_menu_equip_content.add_child(_equipslot_button)
 	#-------------------------------------------------------------------------------
-	Create_EquipSlot_Label(_user.party_member_serializable.equip_array_in_battle)
+	Create_EquipSlot_Label(_equip_serializable_array)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.skill_array_in_battle.size():
-		var _skill_button:Button = Create_Skill_Button(_user.party_member_serializable.skill_array_in_battle[_i])
+	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable_in_battle.Get_Skills()
+	#-------------------------------------------------------------------------------
+	for _i in _skill_serializable_array.size():
+		var _skill_button:Button = Create_Skill_Button(_skill_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():SkillMenu_SkillButton_Selected(_user.party_member_serializable.skill_array_in_battle[_i])
+		var _selected_1: Callable = func():SkillMenu_SkillButton_Selected(_skill_serializable_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_skill_button, _selected_1, _submit_1, _cancel_0, _w, _s, _skill_a, _skill_d)
@@ -1469,7 +1414,7 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member, _is_enemy:b
 	#-------------------------------------------------------------------------------
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user:Party_Member):
+func BattleMenu_StatusButton_TargetButton_StatusMenu_Cancel(_user:Party_Member_Node):
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		friend_party[_i].party_member_ui.button_pivot.show()
@@ -1529,12 +1474,12 @@ func BattleMenu_AnyButton_Cancel():
 	#-------------------------------------------------------------------------------
 	else:
 		#-------------------------------------------------------------------------------
-		var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+		var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 		#-------------------------------------------------------------------------------
 		for _i in range(current_player_turn, _friend_party_alive.size()):
 			Animation_StateMachine(_friend_party_alive[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
-		var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+		var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 		#-------------------------------------------------------------------------------
 		for _i in _enemy_party_alive.size():
 			Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Idle")
@@ -1589,12 +1534,13 @@ func ItemMenu_KeyItem_ItemButton_Selected(keyitem_serializable:Key_Item_Serializ
 	Set_KeyItem_Information(keyitem_serializable)
 	singleton.Common_Selected()
 #-------------------------------------------------------------------------------
-func EquipSlotMenu_EquipButton_Selected(_user:Party_Member, _equip_serializable_array:Array[Equip_Serializable], _index: int):
+func EquipSlotMenu_EquipButton_Selected(_user:Party_Member_Node, _equip_serializable_array:Array[Equip_Serializable], _index: int):
 	#-------------------------------------------------------------------------------
 	if(_equip_serializable_array[_index].equip_resource == null):
 		User_Menu_No_Description()
 	#-------------------------------------------------------------------------------
 	else:
+		User_Menu_No_Description()
 		user_menu_description.text = Set_EquipItem_Information_Common(_equip_serializable_array[_index].equip_resource)
 		user_menu_description.get_v_scroll_bar().value = 0
 		#-------------------------------------------------------------------------------
@@ -1668,8 +1614,8 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 		match(_item_serializable.item_resource.myTARGET_TYPE):
 			Item_Resource.TARGET_TYPE.ONE_ENEMY:
 				#-------------------------------------------------------------------------------
-				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-				var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+				var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
+				var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 				#-------------------------------------------------------------------------------
 				if(_enemy_party_alive.size() > 0):
 					_last_menu.hide()
@@ -1696,8 +1642,8 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ALL_ENEMIES:
 				#-------------------------------------------------------------------------------
-				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-				var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+				var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
+				var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 				#-------------------------------------------------------------------------------
 				if(_enemy_party_alive.size() > 0):
 					_last_menu.hide()
@@ -1724,7 +1670,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ONE_ALLY:
 				#-------------------------------------------------------------------------------
-				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
 				if(_friend_party_alive.size() > 0):
 					_last_menu.hide()
@@ -1751,7 +1697,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ALL_ALLIES:
 				#-------------------------------------------------------------------------------
-				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
 				if(_friend_party_alive.size() > 0):
 					_last_menu.hide()
@@ -1778,7 +1724,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ONE_DEAD_ALLY:
 				#-------------------------------------------------------------------------------
-				var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
+				var _friend_party_dead: Array[Party_Member_Node] = Get_Dead_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
 				if(_friend_party_dead.size() > 0):
 					_last_menu.hide()
@@ -1805,7 +1751,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.ALL_DEAD_ALLIES:
 				#-------------------------------------------------------------------------------
-				var _friend_party_dead: Array[Party_Member] = Get_Dead_Party_Array(friend_party)
+				var _friend_party_dead: Array[Party_Member_Node] = Get_Dead_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
 				if(_friend_party_dead.size() > 0):
 					_last_menu.hide()
@@ -1832,7 +1778,7 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 			#-------------------------------------------------------------------------------
 			Item_Resource.TARGET_TYPE.USER:
 				#-------------------------------------------------------------------------------
-				var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+				var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 				#-------------------------------------------------------------------------------
 				_last_menu.hide()
 				dialogue_menu.show()
@@ -1857,9 +1803,9 @@ func TargetMenu_Enter(_item_serializable:Item_Serializable, _last_menu:Control, 
 		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------	
 #-------------------------------------------------------------------------------
-func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Party_Member, _target_party:Array[Party_Member], _item_serializable:Item_Serializable):	
+func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member_Node], _target:Party_Member_Node, _target_party:Array[Party_Member_Node], _item_serializable:Item_Serializable):	
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	_friend_party_alive[current_player_turn].user_party = _user_party
 	_friend_party_alive[current_player_turn].target = _target
@@ -1882,7 +1828,7 @@ func TargetMenu_TargetButton_Submit(_user_party:Array[Party_Member], _target:Par
 #-------------------------------------------------------------------------------
 func TargetMenu_TargetButton_Cancel():
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	_friend_party_alive[current_player_turn].user_party = []
 	_friend_party_alive[current_player_turn].target = null
@@ -1899,7 +1845,7 @@ func After_Choose_Target_Logic():
 	Hide_AllTarget()
 	current_player_turn += 1
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	if(current_player_turn < _friend_party_alive.size()):
 		#-------------------------------------------------------------------------------
@@ -1933,16 +1879,16 @@ func Party_Actions():
 	if(myBATTLE_STATE != BATTLE_STATE.STILL_FIGHTING):
 		return
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	current_player_turn = _friend_party_alive.size()
 	Set_TP_Label(tp)
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 	#-------------------------------------------------------------------------------
-	var _player_alive_attacking: Array[Party_Member] = []
-	var _player_alive_defending: Array[Party_Member] = []
-	var _player_alive_using_skill_or_item: Array[Party_Member] = []
+	var _player_alive_attacking: Array[Party_Member_Node] = []
+	var _player_alive_defending: Array[Party_Member_Node] = []
+	var _player_alive_using_skill_or_item: Array[Party_Member_Node] = []
 	#-------------------------------------------------------------------------------
 	for _i in _friend_party_alive.size():
 		#-------------------------------------------------------------------------------
@@ -1964,7 +1910,7 @@ func Party_Actions():
 		#-------------------------------------------------------------------------------
 		Set_Players_and_Enemies_before_action()
 		#-------------------------------------------------------------------------------
-		var _user: Party_Member = _player_alive_using_skill_or_item[_i]
+		var _user: Party_Member_Node = _player_alive_using_skill_or_item[_i]
 		Set_Target_Avalible(_user)
 		#-------------------------------------------------------------------------------
 		if(_user.target != null):
@@ -1994,10 +1940,10 @@ func Party_Actions():
 			Animation_StateMachine(_friend_party_alive[_i].animation_tree, "", "Idle")
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	for _i in range(enemy_party.size()-1,-1,-1):
-		var _enemy: Party_Member = enemy_party[_i]
+		var _enemy: Party_Member_Node = enemy_party[_i]
 		#-------------------------------------------------------------------------------
 		if(_enemy.party_member_serializable.hp <= 0 and _enemy.disappears_when_dies):
 			enemy_party.erase(_enemy)
@@ -2031,7 +1977,7 @@ func Set_Players_and_Enemies_before_action():
 		friend_party[_j].damage_label_array.clear()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Set_Target_Avalible(_user:Party_Member):
+func Set_Target_Avalible(_user:Party_Member_Node):
 	#-------------------------------------------------------------------------------
 	match(_user.item_serializable.item_resource.myTARGET_TYPE):
 		#-------------------------------------------------------------------------------
@@ -2041,7 +1987,7 @@ func Set_Target_Avalible(_user:Party_Member):
 				pass
 			#-------------------------------------------------------------------------------
 			else:
-				var _target_array_alive: Array[Party_Member] = []
+				var _target_array_alive: Array[Party_Member_Node] = []
 				#-------------------------------------------------------------------------------
 				for _i in _user.target_party.size():
 					#-------------------------------------------------------------------------------
@@ -2075,7 +2021,7 @@ func Set_Target_Avalible(_user:Party_Member):
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Do_Player_Action(_user:Party_Member):
+func Do_Player_Action(_user:Party_Member_Node):
 	#-------------------------------------------------------------------------------
 	if(_user.target == null):
 		return
@@ -2095,7 +2041,7 @@ func Do_Player_Action(_user:Party_Member):
 	await call(_action_string, _user)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Do_Defence_Minigame(_player_alive_defending: Array[Party_Member]):
+func Do_Defence_Minigame(_player_alive_defending: Array[Party_Member_Node]):
 	if(_player_alive_defending.size() > 0):
 		Set_Players_and_Enemies_before_action()
 		#-------------------------------------------------------------------------------
@@ -2106,11 +2052,11 @@ func Do_Defence_Minigame(_player_alive_defending: Array[Party_Member]):
 		await Seconds(0.5)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Do_Attack_Minigame(_attacking_party: Array[Party_Member]):
+func Do_Attack_Minigame(_attacking_party: Array[Party_Member_Node]):
 	if(_attacking_party.size() > 0):
 		Set_Players_and_Enemies_before_action()
 		#-------------------------------------------------------------------------------
-		var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+		var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 		#-------------------------------------------------------------------------------
 		if(_enemy_party_alive.size() > 0):
 			dialogue_menu.show()
@@ -2152,7 +2098,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	screen_limit_left = camera.global_position.x-camera_center.x
 	screen_limit_right = camera.global_position.x+camera_center.x
 	#-------------------------------------------------------------------------------
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	for _i in _enemy_party_alive.size():
 		Animation_StateMachine(_enemy_party_alive[_i].animation_tree, "Base_StateMachine/", "Aim")
@@ -2173,21 +2119,22 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	#-------------------------------------------------------------------------------
 	myGAME_STATE = GAME_STATE.IN_MENU
 	current_player_turn = 0
+	var _inventory_serializable
 	#-------------------------------------------------------------------------------
-	for _i in range(consumable_item_array_in_battle.size()-1, -1, -1):
+	for _i in range(inventory_serializable_in_battle.consumable_item_array.size()-1, -1, -1):
 		#-------------------------------------------------------------------------------
-		if(consumable_item_array_in_battle[_i].hold <= 0):
-			consumable_item_array_in_battle[_i].hold = 0
+		if(inventory_serializable_in_battle.consumable_item_array[_i].hold <= 0):
+			inventory_serializable_in_battle.consumable_item_array[_i].hold = 0
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array_in_battle[_i].stored <= 0):
-				consumable_item_array_in_battle.remove_at(_i)
+			if(inventory_serializable_in_battle.consumable_item_array[_i].stored <= 0):
+				inventory_serializable_in_battle.consumable_item_array.remove_at(_i)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		else:
-			consumable_item_array_in_battle[_i].cooldown -= 1
+			inventory_serializable_in_battle.consumable_item_array[_i].cooldown -= 1
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array_in_battle[_i].cooldown < 0):
-				consumable_item_array_in_battle[_i].cooldown = 0
+			if(inventory_serializable_in_battle.consumable_item_array[_i].cooldown < 0):
+				inventory_serializable_in_battle.consumable_item_array[_i].cooldown = 0
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -2195,7 +2142,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 	await Status_Effect_Action_When_Turn_Start()
 	await Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed()
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	if(_enemy_party_alive.size() > 0):
 		#-------------------------------------------------------------------------------
@@ -2226,7 +2173,7 @@ func Start_BulletHell(_callable: Callable, _timer:int):
 func You_Win():
 	#-------------------------------------------------------------------------------
 	Set_AllItems_When_Exit_Battle()
-	Fill_the_ConsumableItems_Hold_from_Stored()
+	Fill_the_ConsumableItems_Hold_from_Stored_and_Remove_Cooldown()
 	ReFill_All_Skills()
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
@@ -2291,7 +2238,7 @@ func RetryMenu_RetryButton_Submit():
 	myBATTLE_STATE = BATTLE_STATE.YOU_RETRY
 	dialogue_signal.emit()
 #-------------------------------------------------------------------------------
-func You_Retry(_enemy_array:Array[Party_Member]):
+func You_Retry(_enemy_array:Array[Party_Member_Node]):
 	#-------------------------------------------------------------------------------
 	enemy_party.clear()
 	#-------------------------------------------------------------------------------
@@ -2314,10 +2261,7 @@ func You_Retry(_enemy_array:Array[Party_Member]):
 			_enemy_array[_i].party_member_ui.show()
 			_enemy_array[_i].party_member_ui.button_pivot.hide()
 		#-------------------------------------------------------------------------------
-		consumable_item_array_in_battle.clear()
-		#-------------------------------------------------------------------------------
-		for _i in consumable_item_array.size():
-			consumable_item_array_in_battle.append(consumable_item_array[_i].Constructor())
+		Set_AllItems_When_Enter_Battle()
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
 			#-------------------------------------------------------------------------------
@@ -2592,11 +2536,11 @@ func EnemyBullet_PhysicsUpdate_Limitless_A(_bullet: Bullet):
 #region SPELLCARD FUNCTIONS
 func Set_Difficulty() -> float:
 	#return enemy_party.size() - enemy_party_alive.size()
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	return 3.0 - _enemy_party_alive.size()
 #-------------------------------------------------------------------------------
 func Stage1_Fire2():
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	var _mirror = 1
@@ -2616,7 +2560,7 @@ func Stage1_Fire2():
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
+func Stage1_Fire2_Bullet1(_user:Party_Member_Node, _mirror:float):
 	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	#-------------------------------------------------------------------------------
@@ -2661,7 +2605,7 @@ func Stage1_Fire2_Bullet1(_user:Party_Member, _mirror:float):
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Stage1_Fire1():
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	var _mirror = 1
@@ -2681,7 +2625,7 @@ func Stage1_Fire1():
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Stage1_Fire1_Bullet1(_user:Party_Member, _mirror:float):
+func Stage1_Fire1_Bullet1(_user:Party_Member_Node, _mirror:float):
 	#-------------------------------------------------------------------------------
 	var _difficulty: float = Set_Difficulty()
 	#-------------------------------------------------------------------------------
@@ -2748,10 +2692,10 @@ func Player_Shooted():
 	can_be_hit = false
 	Animation_Transition(hitbox_animation_tree, "Transition/", "Hurt")
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive:Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive:Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	if(_friend_party_alive.size() > 0):
-		var _target: Party_Member = _friend_party_alive.pick_random()
+		var _target: Party_Member_Node = _friend_party_alive.pick_random()
 		var _int: int
 		#-------------------------------------------------------------------------------
 		if(Has_Status_Effect_Guard(_target)):
@@ -2791,7 +2735,7 @@ func Player_Shooted():
 		StopEverithing_and_Timer()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Player_Receive_Status_Effect(_user:Party_Member):
+func Player_Receive_Status_Effect(_user:Party_Member_Node):
 	var _status_effect_name: StringName = "status_damage_3"
 	#-------------------------------------------------------------------------------
 	if(Has_Status_Effect(_user, _status_effect_name)):
@@ -2807,7 +2751,7 @@ func Player_Receive_Status_Effect(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Flying_PopUp(_user:Party_Member, _s:String):
+func Flying_PopUp(_user:Party_Member_Node, _s:String):
 	var _is_enemy:bool
 	#-------------------------------------------------------------------------------
 	if(friend_party.has(_user)):
@@ -2819,7 +2763,7 @@ func Flying_PopUp(_user:Party_Member, _s:String):
 	var _popup: PopUp_UI = Spawn_Label_in_User(_user, _is_enemy)
 	await Flying_PopUp_Actions(_popup, _s, _is_enemy)
 #-------------------------------------------------------------------------------
-func Spawn_Label_in_User(_user:Party_Member, _is_enemy:bool) -> PopUp_UI:
+func Spawn_Label_in_User(_user:Party_Member_Node, _is_enemy:bool) -> PopUp_UI:
 	#-------------------------------------------------------------------------------
 	for _i in _user.damage_label_array.size():
 		#-------------------------------------------------------------------------------
@@ -2833,7 +2777,7 @@ func Spawn_Label_in_User(_user:Party_Member, _is_enemy:bool) -> PopUp_UI:
 	_user.damage_label_array.append(_popup_2)
 	return _popup_2
 #-------------------------------------------------------------------------------
-func Spawn_Label_in_User_2(_user:Party_Member, _is_enemy:bool, _index:int) -> PopUp_UI:
+func Spawn_Label_in_User_2(_user:Party_Member_Node, _is_enemy:bool, _index:int) -> PopUp_UI:
 	var _popup: PopUp_UI
 	#-------------------------------------------------------------------------------
 	if(_is_enemy):
@@ -2885,9 +2829,9 @@ func LoseMenu_GiveUpButton_Submit():
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func Bullet_Grazed_SP_Gain():
-	var _target_party: Array[Party_Member] = []
+	var _target_party: Array[Party_Member_Node] = []
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	for _i in _friend_party_alive.size():
 		var _max_sp: int = Get_Party_Member_Calculated_Base_Stat(_friend_party_alive[_i].party_member_serializable, "max_sp")
@@ -2934,7 +2878,7 @@ func Gain_Tp(_int:int):
 #-------------------------------------------------------------------------------
 #region PARTY_SKILLS CALLABLES
 #-------------------------------------------------------------------------------
-func skill_damage_0(_user:Party_Member):
+func skill_damage_0(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_normal_attack")
 	#-------------------------------------------------------------------------------
@@ -2945,7 +2889,7 @@ func skill_damage_0(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func skill_damage_1(_user:Party_Member):
+func skill_damage_1(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_poison")
 	#-------------------------------------------------------------------------------
@@ -2961,7 +2905,7 @@ func Get_StatusEffect_Resource(_status_effect_name:StringName) -> StatusEffect_R
 	var _status_effect: StatusEffect_Resource = load(user_status_effect_resource_path+_status_effect_name+".tres") as StatusEffect_Resource
 	return _status_effect
 #-------------------------------------------------------------------------------
-func skill_damage_2(_user:Party_Member):
+func skill_damage_2(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_heavy_bullet")
 	#-------------------------------------------------------------------------------
@@ -2971,7 +2915,7 @@ func skill_damage_2(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func skill_damage_3(_user:Party_Member):
+func skill_damage_3(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_skill_1")
 	#-------------------------------------------------------------------------------
@@ -2981,7 +2925,7 @@ func skill_damage_3(_user:Party_Member):
 	#-------------------------------------------------------------------------------	
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func skill_damage_4(_user:Party_Member):
+func skill_damage_4(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_skill_1")
 	#-------------------------------------------------------------------------------
@@ -2991,7 +2935,7 @@ func skill_damage_4(_user:Party_Member):
 	#-------------------------------------------------------------------------------	
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func skill_damage_5(_user:Party_Member):
+func skill_damage_5(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	#-------------------------------------------------------------------------------
 	for _i in _user.target_party.size():
@@ -3009,7 +2953,7 @@ func skill_damage_5(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func skill_heal_0(_user:Party_Member):
+func skill_heal_0(_user:Party_Member_Node):
 	Gain_Tp(5)
 	Set_TP_Label(tp)
 	#-------------------------------------------------------------------------------
@@ -3018,7 +2962,7 @@ func skill_heal_0(_user:Party_Member):
 	Add_Status_Effect(_user, _status_effect_resource, 0)
 	Flying_PopUp(_user, "+"+tr("name_"+_status_effect_resource_name))
 #-------------------------------------------------------------------------------
-func skill_heal_1(_user:Party_Member):
+func skill_heal_1(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_healing")
 	#-------------------------------------------------------------------------------
@@ -3031,10 +2975,10 @@ func skill_heal_1(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func skill_heal_2(_user:Party_Member):
+func skill_heal_2(_user:Party_Member_Node):
 	skill_heal_1(_user)
 #-------------------------------------------------------------------------------
-func skill_heal_3(_user:Party_Member):
+func skill_heal_3(_user:Party_Member_Node):
 	#-------------------------------------------------------------------------------
 	for _i in _user.user_party.size():
 		#-------------------------------------------------------------------------------
@@ -3048,10 +2992,10 @@ func skill_heal_3(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.1)
 #-------------------------------------------------------------------------------
-func skill_heal_4(_user:Party_Member):
+func skill_heal_4(_user:Party_Member_Node):
 	skill_heal_1(_user)
 #-------------------------------------------------------------------------------
-func Play_AttackAnimation(_user:Party_Member, _name: String):
+func Play_AttackAnimation(_user:Party_Member_Node, _name: String):
 	#-------------------------------------------------------------------------------
 	var _animation_effect: Animation_Effect = load(skill_animation_effect_path+_name+".tscn").instantiate() as Animation_Effect
 	_animation_effect.animation_player.play("action")
@@ -3062,9 +3006,9 @@ func Play_AttackAnimation(_user:Party_Member, _name: String):
 	await _animation_effect.animation_player.animation_finished
 	_animation_effect.queue_free()
 #-------------------------------------------------------------------------------
-func Add_Status_Effect(_user:Party_Member, _status_effect:StatusEffect_Resource, _int:int):
+func Add_Status_Effect(_user:Party_Member_Node, _status_effect:StatusEffect_Resource, _int:int):
 	#-------------------------------------------------------------------------------
-	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable.statuseffect_array_in_battle
+	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable_in_battle.status_effect_serializable_array
 	#-------------------------------------------------------------------------------
 	for _i in _status_effect_serializable_array.size():
 		#-------------------------------------------------------------------------------
@@ -3078,18 +3022,36 @@ func Add_Status_Effect(_user:Party_Member, _status_effect:StatusEffect_Resource,
 	_status_effect_serializable.stored = _int + 1
 	_status_effect_serializable_array.append(_status_effect_serializable)
 	#-------------------------------------------------------------------------------
+	Set_Skills_in_Status_Effect_Serializable_when_is_Applied(_status_effect_serializable)
+	#-------------------------------------------------------------------------------
 	Set_TP_Label(tp)
 	Set_Status_Effect_Label(_user)
 	#-------------------------------------------------------------------------------
 	return
 #-------------------------------------------------------------------------------
+func Set_Skills_in_Status_Effect_Serializable_when_is_Applied(_status_effect_serializable:StatusEffect_Serializable):
+	var _status_effect_resource: StatusEffect_Resource = _status_effect_serializable.statuseffect_resource
+	#-------------------------------------------------------------------------------
+	_status_effect_serializable.skill_serializable_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in _status_effect_resource.skill_resource_array.size():
+		var _skill_serializable: Item_Serializable = Item_Serializable.new()
+		#-------------------------------------------------------------------------------
+		_skill_serializable.item_resource = _status_effect_resource.skill_resource_array[_i]
+		_skill_serializable.cooldown = 0
+		_skill_serializable.hold = _status_effect_resource.skill_resource_array[_i].max_hold
+		#-------------------------------------------------------------------------------
+		_status_effect_serializable.skill_serializable_array.append(_skill_serializable)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 func Get_Max_TP():
 	var _max_tp = 100
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
+		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = friend_party[_i].party_member_serializable_in_battle.status_effect_serializable_array
 		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].party_member_serializable.statuseffect_array_in_battle.size():
-			var _status_effect_resource: StatusEffect_Resource = friend_party[_i].party_member_serializable.statuseffect_array_in_battle[_j].statuseffect_resource
+		for _j in _status_effect_serializable_array.size():
+			var _status_effect_resource: StatusEffect_Resource = _status_effect_serializable_array[_j].statuseffect_resource
 			#-------------------------------------------------------------------------------
 			if(get_resource_filename(_status_effect_resource) == "status_damage_3"):
 				_max_tp -= 33
@@ -3102,7 +3064,7 @@ func Get_Max_TP():
 #-------------------------------------------------------------------------------
 #region PARTY_ITEMS CALLABLES
 #-------------------------------------------------------------------------------
-func item_heal_0(_user:Party_Member):
+func item_heal_0(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_healing")
 	#-------------------------------------------------------------------------------
@@ -3112,7 +3074,7 @@ func item_heal_0(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func item_heal_1(_user:Party_Member):
+func item_heal_1(_user:Party_Member_Node):
 	Animation_StateMachine(_user.animation_tree, "", "Shot")
 	Play_AttackAnimation(_user.target, "anim_revive")
 	#-------------------------------------------------------------------------------
@@ -3125,28 +3087,28 @@ func item_heal_1(_user:Party_Member):
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
 #-------------------------------------------------------------------------------
-func item_heal_2(_user:Party_Member):
+func item_heal_2(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_heal_3(_user:Party_Member):
+func item_heal_3(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_heal_4(_user:Party_Member):
+func item_heal_4(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_damage_0(_user:Party_Member):
+func item_damage_0(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_damage_1(_user:Party_Member):
+func item_damage_1(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_damage_2(_user:Party_Member):
+func item_damage_2(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_damage_3(_user:Party_Member):
+func item_damage_3(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
-func item_damage_4(_user:Party_Member):
+func item_damage_4(_user:Party_Member_Node):
 	item_heal_1(_user)
 #-------------------------------------------------------------------------------
 #endregion
@@ -3218,7 +3180,7 @@ func Destroy_Childrens(_node:Node):
 		_child.queue_free()
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func HP_Damage(_target:Party_Member, _int:int):
+func HP_Damage(_target:Party_Member_Node, _int:int):
 	#-------------------------------------------------------------------------------
 	if(_target.party_member_serializable.hp > 0):
 		_target.party_member_serializable.hp -= _int
@@ -3236,14 +3198,14 @@ func HP_Damage(_target:Party_Member, _int:int):
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func User_Got_KnockDown(_user:Party_Member):
+func User_Got_KnockDown(_user:Party_Member_Node):
 	#-------------------------------------------------------------------------------
-	Flying_PopUp(_user, "+"+tr("name_status_damage_0"))
+	Flying_PopUp(_user, "+"+tr("name_"+get_resource_filename(down_statuseffect_resource)))
 	_user.party_member_serializable.hp = 0
 	Set_HP_Label(_user)
 	singleton.audioStreamPlayer_enemy_colapse.play()
 	#-------------------------------------------------------------------------------
-	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable.statuseffect_array_in_battle
+	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable_in_battle.status_effect_serializable_array
 	#-------------------------------------------------------------------------------
 	for _i in range(_status_effect_serializable_array.size()-1, -1, -1):
 		_status_effect_serializable_array.remove_at(_i)
@@ -3251,11 +3213,11 @@ func User_Got_KnockDown(_user:Party_Member):
 	Set_Status_Effect_Label(_user)
 	Set_TP_Label(tp)
 #-------------------------------------------------------------------------------
-func HP_Heal_Porcentual(_target:Party_Member, _scale:float):
+func HP_Heal_Porcentual(_target:Party_Member_Node, _scale:float):
 	#-------------------------------------------------------------------------------
 	if(_target.party_member_serializable.hp <= 0):
 		_target.party_member_serializable.hp = 0
-		Flying_PopUp(_target, "-"+tr("name_status_damage_0"))
+		Flying_PopUp(_target, "-"+tr("name_"+get_resource_filename(down_statuseffect_resource)))
 	#-------------------------------------------------------------------------------
 	var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_target.party_member_serializable, "max_hp")
 	var _gain_hp: int  = int(float(_max_hp)*_scale)
@@ -3272,13 +3234,13 @@ func HP_Heal_Porcentual(_target:Party_Member, _scale:float):
 	Set_HP_Label(_target)
 	Set_Status_Effect_Label(_target)
 #-------------------------------------------------------------------------------
-func Set_HP_Label(_user:Party_Member):
+func Set_HP_Label(_user:Party_Member_Node):
 	var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_user.party_member_serializable, "max_hp")
 	_user.party_member_ui.label_hp.text = str(_user.party_member_serializable.hp)+"/"+str(_max_hp)+" HP"
 	_user.party_member_ui.bar_hp.max_value = _max_hp
 	_user.party_member_ui.bar_hp.value = _user.party_member_serializable.hp
 #-------------------------------------------------------------------------------
-func Set_SP_Label(_user:Party_Member):
+func Set_SP_Label(_user:Party_Member_Node):
 	var _max_sp: int = Get_Party_Member_Calculated_Base_Stat(_user.party_member_serializable, "max_sp")
 	_user.party_member_ui.label_sp.text = str(_user.party_member_serializable.sp)+"/"+str(_max_sp)+" SP"
 	_user.party_member_ui.bar_sp.max_value = _max_sp
@@ -3354,14 +3316,6 @@ func Debug_Information() -> void:
 	_s += "Enemy Bullets Enabled: " + str(enemyBullets_Enabled_Array.size())+"\n"
 	_s += "Enemy Bullets Disabled: " + str(enemyBullets_Disabled_Array.size())+"\n"
 	_s += "-------------------------------------------------------\n"
-	if(consumable_item_array.size() > 0):
-		_s += "Potion Item: " + str(consumable_item_array[0].stored)+"\n"
-	if(consumable_item_array_in_battle.size() > 0):
-		_s += "Potion Item in Battle: " + str(consumable_item_array_in_battle[0].stored)+"\n"
-	if(friend_party[2].party_member_serializable.skill_array.size() > 0):
-		_s += "Potion Skill: " + str(friend_party[2].party_member_serializable.skill_array[0].stored)+"\n"
-	if(friend_party[2].party_member_serializable.skill_array_in_battle.size() > 0):
-		_s += "Potion Skill in Battle: " + str(friend_party[2].party_member_serializable.skill_array_in_battle[0].stored)+"\n"
 	debug_label.text = _s
 #-------------------------------------------------------------------------------
 func Show_fps():
@@ -3414,9 +3368,12 @@ func PauseMenu_Open():
 	PauseOn()
 #-------------------------------------------------------------------------------
 func SetMoney_Label():
-	var _s: String = "  $ "+str(money_serializable.stored)+"  "
+	var _s: String = "  "+Get_Money_Label(inventory_serializable.money_serializable.stored)+"  "
 	pause_menu_money_label.text = _s
 	money_menu_label.text = _s
+#-------------------------------------------------------------------------------
+func Get_Money_Label(_value:int) -> String:
+	return "$"+str(_value)
 #-------------------------------------------------------------------------------
 func PauseOn():
 	#-------------------------------------------------------------------------------
@@ -3517,44 +3474,45 @@ func PauseMenu_ItemButton_Submit():
 	singleton.Set_Button_WSAD(item_menu_equip_button, _selected_0, _submit_0, _cancel_0, _w, _s, _equip_a, _equip_d)
 	singleton.Set_Button_WSAD(item_menu_key_button, _selected_0, _submit_0, _cancel_0, _w, _s, _key_a, _key_d)
 	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array.size():
-		var _hold: int = consumable_item_array[_i].hold
-		var _cooldown: int = consumable_item_array[_i].cooldown
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	for _i in _inventory_serializable.consumable_item_array.size():
+		var _hold: int = _inventory_serializable.consumable_item_array[_i].hold
+		var _cooldown: int = _inventory_serializable.consumable_item_array[_i].cooldown
 		#-------------------------------------------------------------------------------
-		var _consumableitem_button: Button = Create_ConsumableItem_Button(consumable_item_array[_i], _hold, _cooldown)
+		var _consumableitem_button: Button = Create_ConsumableItem_Button(_inventory_serializable.consumable_item_array[_i], _hold, _cooldown)
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():ItemMenu_Consumable_ItemButton_Selected(consumable_item_array[_i])
+		var _selected_1: Callable = func():ItemMenu_Consumable_ItemButton_Selected(_inventory_serializable.consumable_item_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_consumableitem_button, _selected_1, _submit_1, _cancel_0, _w, _s, _consumable_a, _consumable_d)
 		item_menu_consumable_content.add_child(_consumableitem_button)
 		item_menu_consumable_button_array.append(_consumableitem_button)
 		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_ConsumableItem_Button(consumable_item_array[_i], _hold, _cooldown)
+		var _allitem_button: Button = Create_ConsumableItem_Button(_inventory_serializable.consumable_item_array[_i], _hold, _cooldown)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_allitem_button, _selected_1, _submit_1, _cancel_0, _w, _s, _all_a, _all_d)
 		item_menu_all_content.add_child(_allitem_button)
 		item_menu_all_button_array.append(_allitem_button)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	for _i in equip_item_array.size():
-		var _equipitem_button: Button = Create_EquipItem_Button(equip_item_array[_i])
+	for _i in _inventory_serializable.equip_item_array.size():
+		var _equipitem_button: Button = Create_EquipItem_Button(_inventory_serializable.equip_item_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_item_array[_i])
+		var _selected_1: Callable = func():ItemMenu_Equipment_ItemButton_Selected(_inventory_serializable.equip_item_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_equipitem_button, _selected_1, _submit_1, _cancel_0, _w, _s, _equip_a, _equip_d)
 		item_menu_equip_content.add_child(_equipitem_button)
 		item_menu_equip_button_array.append(_equipitem_button)
 		#-------------------------------------------------------------------------------
-		var _allitem_button: Button = Create_EquipItem_Button(equip_item_array[_i])
+		var _allitem_button: Button = Create_EquipItem_Button(_inventory_serializable.equip_item_array[_i])
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_allitem_button, _selected_1, _submit_1, _cancel_0, _w, _s, _all_a, _all_d)
 		item_menu_all_content.add_child(_allitem_button)
 		item_menu_all_button_array.append(_allitem_button)
 	#-------------------------------------------------------------------------------
-	var _new_key_item_array: Array[Key_Item_Serializable] = [money_serializable]
-	_new_key_item_array.append_array(key_item_array)
+	var _new_key_item_array: Array[Key_Item_Serializable] = Get_Key_Item_Serializable_Array(_inventory_serializable)
 	#-------------------------------------------------------------------------------
 	for _i in _new_key_item_array.size():
 		var _keyitem_button: Button = Create_KeyItem_Button(_new_key_item_array[_i])
@@ -3612,9 +3570,28 @@ func PauseMenu_OptionButton_Submit():
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
 func PauseMenu_QuitButton_Submit():
+	go_to_title_menu.show()
+	#-------------------------------------------------------------------------------
+	singleton.Set_Button(go_to_title_menu_button_array[0], singleton.Common_Selected, func():Go_To_Title_Menu_Yes_Button_Submit(), func():Go_To_Title_Menu_Any_Button_Cancel())
+	singleton.Set_Button(go_to_title_menu_button_array[1], singleton.Common_Selected, func():Go_To_Title_Menu_No_Button_Submit(), func():Go_To_Title_Menu_Any_Button_Cancel())
+	#-------------------------------------------------------------------------------
+	singleton.Move_to_Button(go_to_title_menu_button_array[1])
+	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func Go_To_Title_Menu_Yes_Button_Submit():
 	PauseOff()
 	get_tree().change_scene_to_file("res://Nodes/Scenes/title_scene.tscn")
 	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func Go_To_Title_Menu_No_Button_Submit():
+	go_to_title_menu.hide()
+	singleton.Move_to_Button(pause_menu_button_array[5])
+	singleton.Common_Submited()
+#-------------------------------------------------------------------------------
+func Go_To_Title_Menu_Any_Button_Cancel():
+	go_to_title_menu.hide()
+	singleton.Move_to_Button(pause_menu_button_array[5])
+	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
 func PauseMenu_AnyButton_Cancel():
 	singleton.Common_Canceled()
@@ -3626,7 +3603,7 @@ func PauseMenu_AnyButton_Cancel():
 #-------------------------------------------------------------------------------
 #region CREATE BUTTON
 #-------------------------------------------------------------------------------
-func Create_PartyMember_Button(_party_member:Party_Member) -> Party_Button:
+func Create_PartyMember_Button(_party_member:Party_Member_Node) -> Party_Button:
 	var _party_button: Party_Button = party_button_prefab.instantiate() as Party_Button
 	#-------------------------------------------------------------------------------
 	PartyMember_Button_Set_HP_and_SP(_party_button, _party_member)
@@ -3637,7 +3614,7 @@ func Create_PartyMember_Button(_party_member:Party_Member) -> Party_Button:
 	#-------------------------------------------------------------------------------
 	return _party_button
 #-------------------------------------------------------------------------------
-func PartyMember_Button_Set_HP_and_SP(_party_button:Party_Button, _party_member:Party_Member):
+func PartyMember_Button_Set_HP_and_SP(_party_button:Party_Button, _party_member:Party_Member_Node):
 	var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_party_member.party_member_serializable, "max_hp")
 	_party_button.label_hp.text = str(_max_hp)+"/"+str(_max_hp)+" HP"
 	_party_button.bar_hp.max_value = _max_hp
@@ -3648,7 +3625,7 @@ func PartyMember_Button_Set_HP_and_SP(_party_button:Party_Button, _party_member:
 	_party_button.bar_sp.max_value = _max_sp
 	_party_button.bar_sp.value = _max_sp
 #-------------------------------------------------------------------------------
-func PartyMember_Button_Set_Idiome(_party_button:Party_Button, _party_member:Party_Member):
+func PartyMember_Button_Set_Idiome(_party_button:Party_Button, _party_member:Party_Member_Node):
 	var _id: String = get_instance_filename(_party_member)
 	#-------------------------------------------------------------------------------
 	var _s: String = ""
@@ -3765,7 +3742,7 @@ func Create_ConsumableItem_InMarket_Button(_item_serializable: Item_Serializable
 	_label2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label2.text = ""
-	_label2.text += "$"+str(_item_serializable.price)+"  "
+	_label2.text += Get_Money_Label(_item_serializable.price)+"  "
 	#_label2.text += "["+str(_item_serializable.stored)+"]  "
 	#-------------------------------------------------------------------------------
 	_button.add_child(_label2)
@@ -3803,7 +3780,7 @@ func Create_EquipItem_InMarket_Button(_equip_serializable: Equip_Serializable) -
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label2.text = ""
 	_label2.text += "["+str(_equip_serializable.stored)+"]  "
-	_label2.text += "$"+str(_equip_serializable.price)+"  "
+	_label2.text += Get_Money_Label(_equip_serializable.price)+"  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3894,7 +3871,7 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	_label2.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label2.text = ""
 	_label2.text += "["+str(_keyitem_serializable.stored)+"]  "
-	_label2.text += "$"+str(_keyitem_serializable.price)+"  "
+	_label2.text += Get_Money_Label(_keyitem_serializable.price)+"  "
 	_button.add_child(_label2)
 	#-------------------------------------------------------------------------------
 	return _button
@@ -3911,14 +3888,14 @@ func Create_Stats_Button_Array(_party_member_serializable:Party_Member_Serializa
 func Get_Party_Member_Calculated_Base_Stat(_party_member_serializable:Party_Member_Serializable,_key: StringName) -> int:
 	var _value: int = _party_member_serializable.party_member_resource.base_stats_dictionarty.get(_key, 0)
 	#-------------------------------------------------------------------------------
-	for _j in _party_member_serializable.equip_array.size():
+	for _j in _party_member_serializable.equip_serializable_array.size():
 		#-------------------------------------------------------------------------------
-		if(_party_member_serializable.equip_array[_j].equip_resource != null):
-			_value += _party_member_serializable.equip_array[_j].equip_resource.base_stats_dictionarty.get(_key, 0)
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_value += _party_member_serializable.equip_serializable_array[_j].equip_resource.base_stats_dictionarty.get(_key, 0)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	for _j in _party_member_serializable.statuseffect_array.size():
-		_value += _party_member_serializable.statuseffect_array[_j].statuseffect_resource.base_stats_dictionarty.get(_key, 0)
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_value += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.base_stats_dictionarty.get(_key, 0)
 	#-------------------------------------------------------------------------------
 	return _value
 #-------------------------------------------------------------------------------
@@ -4181,7 +4158,7 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party[_index]
+	var _user: Party_Member_Node = friend_party[_index]
 	_user.party_member_serializable.Set_Skills()
 	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable.Get_Skills()
 	#-------------------------------------------------------------------------------
@@ -4251,8 +4228,8 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	singleton.Set_Button_WSAD(user_menu_equip_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party[_index]
-	var _equip_serializable_array: Array[Equip_Serializable] = _user.party_member_serializable.equip_array
+	var _user: Party_Member_Node = friend_party[_index]
+	var _equip_serializable_array: Array[Equip_Serializable] = _user.party_member_serializable.equip_serializable_array
 	#-------------------------------------------------------------------------------
 	for _i in _equip_serializable_array.size():
 		var _equipslot_button:Button = Create_EquipSlot_Button(_equip_serializable_array[_i])
@@ -4274,7 +4251,7 @@ func PauseMenu_EquipButton_PartyButton_Submit(_index:int):
 	user_menu_title.text = tr("user_menu_equip_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _index_slot:int):
+func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member_Node, _index_slot:int):
 	user_menu.hide()
 	item_menu.show()
 	#-------------------------------------------------------------------------------
@@ -4303,11 +4280,13 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _ind
 	item_menu_equip_content.add_child(_empty_button)
 	item_menu_equip_button_array.append(_empty_button)
 	#-------------------------------------------------------------------------------
-	for _i in equip_item_array.size():
-		var _equipitem_button: Button = Create_EquipItem_Button(equip_item_array[_i])
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	for _i in _inventory_serializable.equip_item_array.size():
+		var _equipitem_button: Button = Create_EquipItem_Button(_inventory_serializable.equip_item_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():ItemMenu_Equipment_ItemButton_Selected(equip_item_array[_i])
-		var _submit_1: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user, equip_item_array[_i], _index_slot)
+		var _selected_1: Callable = func():ItemMenu_Equipment_ItemButton_Selected(_inventory_serializable.equip_item_array[_i])
+		var _submit_1: Callable = func():PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user, _inventory_serializable.equip_item_array[_i], _index_slot)
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_equipitem_button, _selected_1, _submit_1, _cancel_0, _w, _s, _a, _d)
 		item_menu_equip_content.add_child(_equipitem_button)
@@ -4321,13 +4300,15 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_Submit(_user:Party_Member, _ind
 	item_menu_title.text = tr("item_menu_equip_items_label")
 	singleton.Common_Submited()
 #-------------------------------------------------------------------------------
-func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member, _equip_serializable:Equip_Serializable, _index_slot:int):
+func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_Member_Node, _equip_serializable:Equip_Serializable, _index_slot:int):
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
-	if(_user.party_member_serializable.equip_array[_index_slot].equip_resource != _equip_serializable.equip_resource):
-		Remove_Equip_Serializable_to_Array(equip_item_array, _equip_serializable)
+	if(_user.party_member_serializable.equip_serializable_array[_index_slot].equip_resource != _equip_serializable.equip_resource):
+		Remove_Equip_Serializable_to_Array(_inventory_serializable.equip_item_array, _equip_serializable)
 		#-------------------------------------------------------------------------------
-		_user.party_member_serializable.equip_array[_index_slot].equip_resource = _equip_serializable.equip_resource
-		_user.party_member_serializable.equip_array[_index_slot].stored = 1
+		_user.party_member_serializable.equip_serializable_array[_index_slot].equip_resource = _equip_serializable.equip_resource
+		_user.party_member_serializable.equip_serializable_array[_index_slot].stored = 1
+		Set_Skills_in_Equip_Serializable_when_Equip_Resource_is_Equiped(_equip_serializable)
 		#-------------------------------------------------------------------------------
 		user_menu_equip_button_array[_index_slot].text = tr("name_"+get_resource_filename(_equip_serializable.equip_resource))
 	#-------------------------------------------------------------------------------
@@ -4337,13 +4318,29 @@ func PauseMenu_EquipButton_PartyButton_EquipSlot_EquipMenu_Submit(_user: Party_M
 	singleton.Move_to_Button(user_menu_equip_button_array[_index_slot])
 	singleton.Play_SFX_Equip()
 #-------------------------------------------------------------------------------
-func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Party_Member, _index_slot:int):
+func Set_Skills_in_Equip_Serializable_when_Equip_Resource_is_Equiped(_equip_serializable:Equip_Serializable):
+	var _equip_resource: Equip_Resource = _equip_serializable.equip_resource
 	#-------------------------------------------------------------------------------
-	if(_user.party_member_serializable.equip_array[_index_slot].equip_resource != null):
-		Add_Equip_Serializable_to_Array(equip_item_array, _user.party_member_serializable.equip_array[_index_slot].equip_resource, 1)
+	_equip_serializable.skill_serializable_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in _equip_resource.skill_resource_array.size():
+		var _skill_serializable: Item_Serializable = Item_Serializable.new()
 		#-------------------------------------------------------------------------------
-		_user.party_member_serializable.equip_array[_index_slot].equip_resource = null
-		_user.party_member_serializable.equip_array[_index_slot].stored = 0
+		_skill_serializable.item_resource = _equip_resource.skill_resource_array[_i]
+		_skill_serializable.cooldown = 0
+		_skill_serializable.hold = _equip_resource.skill_resource_array[_i].max_hold
+		#-------------------------------------------------------------------------------
+		_equip_serializable.skill_serializable_array.append(_skill_serializable)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func PauseMenu_EquipButton_PartyButton_EmptyEquipSlot_EquipMenu_Submit(_user: Party_Member_Node, _index_slot:int):
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	if(_user.party_member_serializable.equip_serializable_array[_index_slot].equip_resource != null):
+		Add_Equip_Serializable_to_Array(_inventory_serializable.equip_item_array, _user.party_member_serializable.equip_serializable_array[_index_slot].equip_resource, 1)
+		#-------------------------------------------------------------------------------
+		_user.party_member_serializable.equip_serializable_array[_index_slot].equip_resource = null
+		_user.party_member_serializable.equip_serializable_array[_index_slot].stored = 0
 		#-------------------------------------------------------------------------------
 		user_menu_equip_button_array[_index_slot].text = "  ["+tr("user_menu_equip_slot_empty_button")+"]  "
 	#-------------------------------------------------------------------------------
@@ -4380,7 +4377,7 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	pause_menu.hide()
 	user_menu.show()
 	#-------------------------------------------------------------------------------
-	var _user: Party_Member = friend_party[_index]
+	var _user: Party_Member_Node = friend_party[_index]
 	#-------------------------------------------------------------------------------
 	var _w: Callable = func():
 		singleton.Scroll_Richtext_Up(user_menu_description)
@@ -4450,32 +4447,35 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	Create_Stats_Button_Array(_user.party_member_serializable, _cancel_0, _w, _s, _stats_a, _stats_d)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.statuseffect_array.size():
-		var _statuseffect_button: Button = Create_StatusEffect_Button(friend_party[_index].statuseffect_array[_i])
+	for _i in _user.party_member_serializable.status_effect_serializable_array.size():
+		var _statuseffect_button: Button = Create_StatusEffect_Button(friend_party[_index].status_effect_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():StatusMenu_StatusEffectButton_Selected(friend_party[_index].statuseffect_array[_i])
+		var _selected_1: Callable = func():StatusMenu_StatusEffectButton_Selected(friend_party[_index].status_effect_serializable_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_statuseffect_button, _selected_1, _submit_1, _cancel_0, _w, _s, _statuseffect_a, _statuseffect_d)
 		user_menu_statuseffect_content.add_child(_statuseffect_button)
 		user_menu_statuseffect_button_array.append(_statuseffect_button)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.equip_array.size():
-		var _equipslot_button:Button = Create_EquipSlot_Button(_user.party_member_serializable.equip_array[_i])
+	for _i in _user.party_member_serializable.equip_serializable_array.size():
+		var _equipslot_button:Button = Create_EquipSlot_Button(_user.party_member_serializable.equip_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.party_member_serializable.equip_array, _i)
+		var _selected_1: Callable = func():EquipSlotMenu_EquipButton_Selected(_user, _user.party_member_serializable.equip_serializable_array, _i)
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_equipslot_button, _selected_1, _submit_1, _cancel_0, _w, _s, _equip_a, _equip_d)
 		user_menu_equip_button_array.append(_equipslot_button)
 		user_menu_equip_content.add_child(_equipslot_button)
 	#-------------------------------------------------------------------------------
-	Create_EquipSlot_Label(_user.party_member_serializable.equip_array)
+	Create_EquipSlot_Label(_user.party_member_serializable.equip_serializable_array)
 	#-------------------------------------------------------------------------------
-	for _i in _user.party_member_serializable.skill_array.size():
-		var _skill_button:Button = Create_Skill_Button(_user.party_member_serializable.skill_array[_i])
+	_user.party_member_serializable.Set_Skills()
+	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable.Get_Skills()
+	#-------------------------------------------------------------------------------
+	for _i in _skill_serializable_array.size():
+		var _skill_button:Button = Create_Skill_Button(_skill_serializable_array[_i])
 		#-------------------------------------------------------------------------------
-		var _selected_1: Callable = func():SkillMenu_SkillButton_Selected(_user.party_member_serializable.skill_array[_i])
+		var _selected_1: Callable = func():SkillMenu_SkillButton_Selected(_skill_serializable_array[_i])
 		var _submit_1: Callable = func():singleton.Common_Canceled()
 		#-------------------------------------------------------------------------------
 		singleton.Set_Button_WSAD(_skill_button, _selected_1, _submit_1, _cancel_0, _w, _s, _skill_a, _skill_d)
@@ -4513,7 +4513,7 @@ func PauseMenu_StatusButton_PartyButton_Cancel():
 	singleton.Move_to_Button(pause_menu_button_array[3])
 	singleton.Common_Canceled()
 #-------------------------------------------------------------------------------
-func User_Menu_Info_Button_Selected(_user:Party_Member):
+func User_Menu_Info_Button_Selected(_user:Party_Member_Node):
 	user_menu_info_image.texture = _user.party_member_serializable.party_member_resource.body_sprite
 	#-------------------------------------------------------------------------------
 	user_menu_description.text = tr("description_"+get_instance_filename(_user))
@@ -4817,32 +4817,38 @@ func Save_Keys_Dictionary():
 	singleton.currentSaveData_Json.set("key_dictionary", key_dictionary)
 #-------------------------------------------------------------------------------
 func Save_ConsumableItems():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
 	var _array: Array[Dictionary] = []
 	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array.size():
-		var _dictionary: Dictionary = consumable_item_array[_i].SaveData_Constructor()
+	for _i in _inventory_serializable.consumable_item_array.size():
+		var _dictionary: Dictionary = _inventory_serializable.consumable_item_array[_i].SaveData_Constructor()
 		_array.append(_dictionary)
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json.set("item_array", _array)
 #-------------------------------------------------------------------------------
 func Save_KeyItems():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
 	var _array: Array[Dictionary] = []
 	#-------------------------------------------------------------------------------
-	for _i in key_item_array.size():
-		var _dictionary: Dictionary = key_item_array[_i].SaveData_Constructor()
+	for _i in _inventory_serializable.key_item_array.size():
+		var _dictionary: Dictionary = _inventory_serializable.key_item_array[_i].SaveData_Constructor()
 		_array.append(_dictionary)
 	#-------------------------------------------------------------------------------
 	singleton.currentSaveData_Json.set("key_item_array", _array)
-	singleton.currentSaveData_Json.set("money", money_serializable.stored)
+	singleton.currentSaveData_Json.set("money", _inventory_serializable.money_serializable.stored)
 #-------------------------------------------------------------------------------
 func Save_Equip():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
 	var _array: Array[Dictionary] = []
 	#-------------------------------------------------------------------------------
-	for _i in equip_item_array.size():
-		var _dictionary: Dictionary = equip_item_array[_i].SaveData_Constructor()
+	for _i in _inventory_serializable.equip_item_array.size():
+		var _dictionary: Dictionary = _inventory_serializable.equip_item_array[_i].SaveData_Constructor()
 		_array.append(_dictionary)
 	#-------------------------------------------------------------------------------
-	singleton.currentSaveData_Json.set("equip_array", _array)
+	singleton.currentSaveData_Json.set("equip_serializable_array", _array)
 #-------------------------------------------------------------------------------
 func Save_Friends():
 	var _array: Array[Dictionary] = []
@@ -4935,38 +4941,44 @@ func Load_Keys_Dictionary():
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Load_ConsumableItems():
-	consumable_item_array.clear()
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	_inventory_serializable.consumable_item_array.clear()
 	#-------------------------------------------------------------------------------
 	var _item_data: Array = singleton.currentSaveData_Json.get("item_array", [])
 	#-------------------------------------------------------------------------------
 	for _i in _item_data.size():
 		var _item_serializable: Item_Serializable = Item_Serializable.new()
 		_item_serializable.LoadData_Constructor(_item_data[_i])
-		consumable_item_array.append(_item_serializable)
+		_inventory_serializable.consumable_item_array.append(_item_serializable)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Load_KeyItems():
-	key_item_array.clear()
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	_inventory_serializable.key_item_array.clear()
 	#-------------------------------------------------------------------------------
 	var _keyitem_data: Array = singleton.currentSaveData_Json.get("key_item_array", [])
 	#-------------------------------------------------------------------------------
 	for _i in _keyitem_data.size():
 		var _keyitem_serializable: Key_Item_Serializable = Key_Item_Serializable.new()
 		_keyitem_serializable.LoadData_Constructor(_keyitem_data[_i])
-		key_item_array.append(_keyitem_serializable)
+		_inventory_serializable.key_item_array.append(_keyitem_serializable)
 	#-------------------------------------------------------------------------------
-	money_serializable.stored = singleton.currentSaveData_Json.get("money", 0)
+	_inventory_serializable.money_serializable.stored = singleton.currentSaveData_Json.get("money", 0)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Load_Equip():
-	equip_item_array.clear()
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
-	var _equip_data: Array = singleton.currentSaveData_Json.get("equip_array", [])
+	_inventory_serializable.equip_item_array.clear()
+	#-------------------------------------------------------------------------------
+	var _equip_data: Array = singleton.currentSaveData_Json.get("equip_serializable_array", [])
 	#-------------------------------------------------------------------------------
 	for _i in _equip_data.size():
 		var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
 		_equip_serializable.LoadData_Constructor(_equip_data[_i])
-		equip_item_array.append(_equip_serializable)
+		_inventory_serializable.equip_item_array.append(_equip_serializable)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Load_Friends():
@@ -5131,13 +5143,15 @@ func Close_Market():
 	PauseOff()
 #-------------------------------------------------------------------------------
 func BuyMenu_ItemConsumable_Selected(_item_serializable: Item_Serializable):
-	for _i in consumable_item_array.size():
-		#----------------------------------------------------------------
-		if(consumable_item_array[_i].item_resource == _item_serializable.item_resource):
-			ItemMenu_Consumable_ItemButton_Selected(consumable_item_array[_i])
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	for _i in _inventory_serializable.consumable_item_array.size():
+		#-------------------------------------------------------------------------------
+		if(_inventory_serializable.consumable_item_array[_i].item_resource == _item_serializable.item_resource):
+			ItemMenu_Consumable_ItemButton_Selected(_inventory_serializable.consumable_item_array[_i])
 			return
-		#----------------------------------------------------------------
-	#----------------------------------------------------------------
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 	var _item_serializable_new: Item_Serializable = _item_serializable.Constructor()
 	_item_serializable_new.hold = 0
 	_item_serializable_new.stored = 0
@@ -5145,13 +5159,14 @@ func BuyMenu_ItemConsumable_Selected(_item_serializable: Item_Serializable):
 	return
 #-------------------------------------------------------------------------------
 func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item_serializable: Item_Serializable):
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
 	var _submit: Callable= func():
 		var _price: int = _item_serializable.price * how_many_would_you_buy
 		#-------------------------------------------------------------------------------
-		if(_price <= money_serializable.stored):
+		if(_price <= _inventory_serializable.money_serializable.stored):
 			_item_serializable.hold -= how_many_would_you_buy
-			money_serializable.stored -= _price
+			_inventory_serializable.money_serializable.stored -= _price
 			#-------------------------------------------------------------------------------
 			var _id: String = Get_MerchantId_and_ItemId_and_Hold(_merchant_name, _item_serializable.item_resource)
 			key_dictionary[_id] = _item_serializable.stored
@@ -5187,10 +5202,12 @@ func BuyMenu_ItemConsumable_Submit(_button:Button, _merchant_name: String, _item
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
-	for _i in equip_item_array.size():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#-------------------------------------------------------------------------------
+	for _i in _inventory_serializable.equip_item_array.size():
 		#----------------------------------------------------------------
-		if(equip_item_array[_i].equip_resource == _equip_serializable.equip_resource):
-			ItemMenu_Equipment_ItemButton_Selected(equip_item_array[_i])
+		if(_inventory_serializable.equip_item_array[_i].equip_resource == _equip_serializable.equip_resource):
+			ItemMenu_Equipment_ItemButton_Selected(_inventory_serializable.equip_item_array[_i])
 			return
 		#----------------------------------------------------------------
 	#----------------------------------------------------------------
@@ -5200,13 +5217,14 @@ func BuyMenu_EquipItem_Selected(_equip_serializable: Equip_Serializable):
 	return
 #-------------------------------------------------------------------------------
 func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_serializable: Equip_Serializable, _equipitem_button:Button, _allitem_button:Button):
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
 	var _submit: Callable= func():
 		var _price: int = _equip_serializable.price * how_many_would_you_buy
 		#-------------------------------------------------------------------------------
-		if(_price <= money_serializable.stored and how_many_would_you_buy <= _equip_serializable.stored):
+		if(_price <= _inventory_serializable.money_serializable.stored and how_many_would_you_buy <= _equip_serializable.stored):
 			_equip_serializable.stored -= how_many_would_you_buy
-			money_serializable.stored -= _price
+			_inventory_serializable.money_serializable.stored -= _price
 			#-------------------------------------------------------------------------------
 			var _id: String = Get_MerchantId_and_ItemId_and_Hold(_merchant_name, _equip_serializable.equip_resource)
 			key_dictionary[_id] = _equip_serializable.stored
@@ -5245,10 +5263,12 @@ func BuyMenu_EquipItem_Submit(_button:Button, _merchant_name: String, _equip_ser
 	Confirm_Buy_Menu_Submit(_submit, _button, _up, _down, _left, _right)
 #-------------------------------------------------------------------------------
 func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
-	for _i in key_item_array.size():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
+	#----------------------------------------------------------------
+	for _i in _inventory_serializable.key_item_array.size():
 		#----------------------------------------------------------------
-		if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
-			ItemMenu_KeyItem_ItemButton_Selected(key_item_array[_i])
+		if(_inventory_serializable.key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
+			ItemMenu_KeyItem_ItemButton_Selected(_inventory_serializable.key_item_array[_i])
 			return
 		#----------------------------------------------------------------
 	#----------------------------------------------------------------
@@ -5258,13 +5278,14 @@ func BuyMenu_KeyItem_Selected(_keyitem_serializable: Key_Item_Serializable):
 	return
 #-------------------------------------------------------------------------------
 func BuyMenu_KeyItem_Submit(_button:Button, _merchant_name: String, _keyitem_serializable: Key_Item_Serializable, _keyitem_button:Button, _allitem_button:Button):
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
 	var _submit: Callable= func():
 		var _price: int = _keyitem_serializable.price * how_many_would_you_buy
 		#-------------------------------------------------------------------------------
-		if(_price <= money_serializable.stored and how_many_would_you_buy <= _keyitem_serializable.stored):
+		if(_price <= _inventory_serializable.money_serializable.stored and how_many_would_you_buy <= _keyitem_serializable.stored):
 			_keyitem_serializable.stored -= how_many_would_you_buy
-			money_serializable.stored -= _price
+			_inventory_serializable.money_serializable.stored -= _price
 			#-------------------------------------------------------------------------------
 			var _id: String = Get_MerchantId_and_ItemId_and_Hold(_merchant_name, _keyitem_serializable.key_item_resource)
 			key_dictionary[_id] = _keyitem_serializable.stored
@@ -5332,14 +5353,14 @@ func Change_EquipItem_Hold_Label(_equip_serializable: Equip_Serializable, _butto
 	var _label: Label = _button.get_child(0) as Label
 	_label.text = ""
 	_label.text += "["+str(_equip_serializable.stored)+"]  "
-	_label.text += "$"+str(_equip_serializable.price)+"  "
+	_label.text += Get_Money_Label(_equip_serializable.price)+"  "
 #-------------------------------------------------------------------------------
 func Set_Max_Items_You_Can_Buy(_stored:int, _original_price:int, _whole_cost:int):
 	#-------------------------------------------------------------------------------
 	if(how_many_would_you_buy > _stored):
 		how_many_would_you_buy = _stored
 	#-------------------------------------------------------------------------------
-	while(money_serializable.stored < _whole_cost):
+	while(inventory_serializable.money_serializable.stored < _whole_cost):
 		how_many_would_you_buy -= 1
 		_whole_cost = _original_price * how_many_would_you_buy
 	#-------------------------------------------------------------------------------
@@ -5351,36 +5372,40 @@ func Change_KeyItem_Hold_Label(_keyitem_serializable: Key_Item_Serializable, _bu
 	var _label: Label = _button.get_child(0) as Label
 	_label.text = ""
 	_label.text += "["+str(_keyitem_serializable.stored)+"]  "
-	_label.text += "$"+str(_keyitem_serializable.price)+"  "
+	_label.text += Get_Money_Label(_keyitem_serializable.price)+"  "
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region RESTORED SKILLS & ITEMS FUNCTIONS
 #-------------------------------------------------------------------------------
 func Fill_the_ConsumableItems_Stored_from_Hold():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array.size():
+	for _i in _inventory_serializable.consumable_item_array.size():
 		#-------------------------------------------------------------------------------
-		if(consumable_item_array[_i].hold > consumable_item_array[_i].item_resource.max_hold):
-			var _extra: int = consumable_item_array[_i].hold - consumable_item_array[_i].item_resource.max_hold
-			consumable_item_array[_i].hold = consumable_item_array[_i].item_resource.max_hold
-			consumable_item_array[_i].stored += _extra
+		if(_inventory_serializable.consumable_item_array[_i].hold > _inventory_serializable.consumable_item_array[_i].item_resource.max_hold):
+			var _extra: int = _inventory_serializable.consumable_item_array[_i].hold - _inventory_serializable.consumable_item_array[_i].item_resource.max_hold
+			_inventory_serializable.consumable_item_array[_i].hold = _inventory_serializable.consumable_item_array[_i].item_resource.max_hold
+			_inventory_serializable.consumable_item_array[_i].stored += _extra
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-func Fill_the_ConsumableItems_Hold_from_Stored():
+func Fill_the_ConsumableItems_Hold_from_Stored_and_Remove_Cooldown():
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array.size():
+	for _i in _inventory_serializable.consumable_item_array.size():
 		#-------------------------------------------------------------------------------
-		if(consumable_item_array[_i].hold < consumable_item_array[_i].item_resource.max_hold):
-			var _lo_que_falta: int = consumable_item_array[_i].item_resource.max_hold - consumable_item_array[_i].hold 
-			consumable_item_array[_i].stored -= _lo_que_falta
+		_inventory_serializable.consumable_item_array[_i].cooldown = 0
+		#-------------------------------------------------------------------------------
+		if(_inventory_serializable.consumable_item_array[_i].hold < _inventory_serializable.consumable_item_array[_i].item_resource.max_hold):
+			var _lo_que_falta: int = _inventory_serializable.consumable_item_array[_i].item_resource.max_hold - _inventory_serializable.consumable_item_array[_i].hold 
+			_inventory_serializable.consumable_item_array[_i].stored -= _lo_que_falta
 			#-------------------------------------------------------------------------------
-			if(consumable_item_array[_i].stored < 0):
-				_lo_que_falta -= consumable_item_array[_i].stored
-				consumable_item_array[_i].stored = 0
+			if(_inventory_serializable.consumable_item_array[_i].stored < 0):
+				_lo_que_falta += _inventory_serializable.consumable_item_array[_i].stored
+				_inventory_serializable.consumable_item_array[_i].stored = 0
 			#-------------------------------------------------------------------------------
-			consumable_item_array[_i].hold += _lo_que_falta
+			_inventory_serializable.consumable_item_array[_i].hold += _lo_que_falta
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -5388,32 +5413,35 @@ func ReFill_All_Skills():
 	#-------------------------------------------------------------------------------
 	for _i in friend_party.size():
 		#-------------------------------------------------------------------------------
-		for _j in friend_party[_i].party_member_serializable.skill_array.size():
-			friend_party[_i].party_member_serializable.skill_array[_j].hold = friend_party[_i].party_member_serializable.skill_array[_j].item_resource.max_hold
+		for _j in friend_party[_i].party_member_serializable.skill_serializable_array.size():
+			friend_party[_i].party_member_serializable.skill_serializable_array[_j].hold = friend_party[_i].party_member_serializable.skill_serializable_array[_j].item_resource.max_hold
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable, _hold:int) -> Item_Serializable:
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
-	for _i in consumable_item_array.size():
+	for _i in _inventory_serializable.consumable_item_array.size():
 		#-------------------------------------------------------------------------------
-		if(consumable_item_array[_i].item_resource == _item_serializable.item_resource):
+		if(_inventory_serializable.consumable_item_array[_i].item_resource == _item_serializable.item_resource):
+			#-------------------------------------------------------------------------------
 			if(_item_serializable.item_resource.max_hold > 0):
-				consumable_item_array[_i].hold += _hold
+				_inventory_serializable.consumable_item_array[_i].hold += _hold
 				#-------------------------------------------------------------------------------
-				if(consumable_item_array[_i].hold > _item_serializable.item_resource.max_hold):
-					var _extra: int = consumable_item_array[_i].hold - _item_serializable.item_resource.max_hold
-					consumable_item_array[_i].hold = _item_serializable.item_resource.max_hold
-					consumable_item_array[_i].stored += _extra
-					return consumable_item_array[_i]
+				if(_inventory_serializable.consumable_item_array[_i].hold > _item_serializable.item_resource.max_hold):
+					var _extra: int = _inventory_serializable.consumable_item_array[_i].hold - _item_serializable.item_resource.max_hold
+					_inventory_serializable.consumable_item_array[_i].hold = _item_serializable.item_resource.max_hold
+					_inventory_serializable.consumable_item_array[_i].stored += _extra
+					return _inventory_serializable.consumable_item_array[_i]
 				#-------------------------------------------------------------------------------
 				else:
-					return consumable_item_array[_i]
+					return _inventory_serializable.consumable_item_array[_i]
 				#-------------------------------------------------------------------------------
 			#-------------------------------------------------------------------------------
 			else:
-				consumable_item_array[_i].stored += _hold
-				return consumable_item_array[_i]
+				_inventory_serializable.consumable_item_array[_i].stored += _hold
+				return _inventory_serializable.consumable_item_array[_i]
+			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	var _new_item: Item_Serializable = _item_serializable.Constructor()
@@ -5426,22 +5454,22 @@ func Add_ConsumableItem_to_Inventory(_item_serializable: Item_Serializable, _hol
 			var _extra: int = _new_item.hold - _item_serializable.item_resource.max_hold
 			_new_item.hold = _item_serializable.item_resource.max_hold
 			_new_item.stored += _extra
-			consumable_item_array.append(_new_item)
+			_inventory_serializable.consumable_item_array.append(_new_item)
 			return _new_item
 		#-------------------------------------------------------------------------------
 		else:
-			consumable_item_array.append(_new_item)
+			_inventory_serializable.consumable_item_array.append(_new_item)
 			return _new_item
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	else:
 		_new_item.stored = _hold
-		consumable_item_array.append(_new_item)
+		_inventory_serializable.consumable_item_array.append(_new_item)
 		return _new_item
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 func Add_EquipItem_to_Inventory(_equip_serializable: Equip_Serializable, _hold:int) -> Equip_Serializable:
-	return Add_Equip_Serializable_to_Array(equip_item_array, _equip_serializable.equip_resource, _hold)
+	return Add_Equip_Serializable_to_Array(inventory_serializable.equip_item_array, _equip_serializable.equip_resource, _hold)
 #-------------------------------------------------------------------------------
 func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _equip_resource:Equip_Resource, _hold: int) -> Equip_Serializable:
 	#-------------------------------------------------------------------------------
@@ -5459,24 +5487,25 @@ func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _eq
 	return _equip_serializable
 #-------------------------------------------------------------------------------
 func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hold:int) -> Key_Item_Serializable:
+	var _inventory_serializable: Inventory_Serializable = inventory_serializable
 	#-------------------------------------------------------------------------------
-	if(_keyitem_serializable.key_item_resource == money_serializable.key_item_resource):
-		money_serializable.stored += _hold
-		return money_serializable
+	if(_keyitem_serializable.key_item_resource == _inventory_serializable.money_serializable.key_item_resource):
+		_inventory_serializable.money_serializable.stored += _hold
+		return _inventory_serializable.money_serializable
 	#-------------------------------------------------------------------------------
 	else:
 		#-------------------------------------------------------------------------------
-		for _i in key_item_array.size():
+		for _i in _inventory_serializable.key_item_array.size():
 			#-------------------------------------------------------------------------------
-			if(key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
-				key_item_array[_i].stored += _hold
-				return key_item_array[_i]
+			if(_inventory_serializable.key_item_array[_i].key_item_resource == _keyitem_serializable.key_item_resource):
+				_inventory_serializable.key_item_array[_i].stored += _hold
+				return _inventory_serializable.key_item_array[_i]
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
 		var _new_keyitem: Key_Item_Serializable = _keyitem_serializable.Constructor()
 		_new_keyitem.key_item_resource = _keyitem_serializable.key_item_resource
 		_new_keyitem.stored = _hold
-		key_item_array.append(_new_keyitem)
+		_inventory_serializable.key_item_array.append(_new_keyitem)
 		return _new_keyitem
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -5506,7 +5535,7 @@ func Print_How_Many_Do_You_Buy(_price:int, _has_limited_stored:bool, _stored:int
 	else:
 		confirm_buy_menu_button.text = "  ["+str(how_many_would_you_buy)+"]  "
 	#-------------------------------------------------------------------------------
-	confirm_buy_menu_item_price.text = "$"+str(_price* how_many_would_you_buy)+"  "
+	confirm_buy_menu_item_price.text = Get_Money_Label(_price * how_many_would_you_buy)+"  "
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
@@ -5686,8 +5715,8 @@ func Enable_Menu_And_Move_to_Button_0(_container:Control, _button:Button):
 #-------------------------------------------------------------------------------
 #region PARTY FUNCTIONS
 #-------------------------------------------------------------------------------
-func Get_Alive_Party_Array(_party_array:Array[Party_Member]) -> Array[Party_Member]:
-	var _alive_party_array: Array[Party_Member]
+func Get_Alive_Party_Array(_party_array:Array[Party_Member_Node]) -> Array[Party_Member_Node]:
+	var _alive_party_array: Array[Party_Member_Node]
 	#-------------------------------------------------------------------------------
 	for _i in _party_array.size():
 		#-------------------------------------------------------------------------------
@@ -5697,8 +5726,8 @@ func Get_Alive_Party_Array(_party_array:Array[Party_Member]) -> Array[Party_Memb
 	#-------------------------------------------------------------------------------
 	return _alive_party_array
 #-------------------------------------------------------------------------------
-func Get_Dead_Party_Array(_party_array:Array[Party_Member]) -> Array[Party_Member]:
-	var _dead_party_array: Array[Party_Member]
+func Get_Dead_Party_Array(_party_array:Array[Party_Member_Node]) -> Array[Party_Member_Node]:
+	var _dead_party_array: Array[Party_Member_Node]
 	#-------------------------------------------------------------------------------
 	for _i in _party_array.size():
 		#-------------------------------------------------------------------------------
@@ -5710,22 +5739,22 @@ func Get_Dead_Party_Array(_party_array:Array[Party_Member]) -> Array[Party_Membe
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
-func Has_Status_Effect_Guard(_user:Party_Member) -> bool:
+func Has_Status_Effect_Guard(_user:Party_Member_Node) -> bool:
 	return Has_Status_Effect(_user, "status_heal_0")
 #-------------------------------------------------------------------------------
-func Has_Status_Effect(_user:Party_Member, _status_effect_name:StringName) -> bool:
-	var _status_effect_array: Array[StatusEffect_Serializable] = _user.party_member_serializable.statuseffect_array_in_battle
+func Has_Status_Effect(_user:Party_Member_Node, _status_effect_name:StringName) -> bool:
+	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable_in_battle.status_effect_serializable_array
 	#-------------------------------------------------------------------------------
-	for _i in _status_effect_array.size():
+	for _i in _status_effect_serializable_array.size():
 		#-------------------------------------------------------------------------------
-		if(get_resource_filename(_status_effect_array[_i].statuseffect_resource) == _status_effect_name):
+		if(get_resource_filename(_status_effect_serializable_array[_i].statuseffect_resource) == _status_effect_name):
 			return true
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	return false
 #-------------------------------------------------------------------------------
-func Set_Status_Effect_Label(_user:Party_Member):
-	var _int: int = _user.party_member_serializable.statuseffect_array_in_battle.size()
+func Set_Status_Effect_Label(_user:Party_Member_Node):
+	var _int: int = _user.party_member_serializable_in_battle.status_effect_serializable_array.size()
 	#-------------------------------------------------------------------------------
 	if(_user.party_member_serializable.hp <= 0):
 		_int += 1
@@ -5737,8 +5766,8 @@ var popip_time_alived: float = 1.18		#NOTA: es lo que duran los "Flying_PopUp_Ac
 #-------------------------------------------------------------------------------
 func Status_Effect_Action_When_Turn_Start():
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	if(_friend_party_alive.size() <= 0 or _enemy_party_alive.size() <= 0):
 		return
@@ -5746,7 +5775,7 @@ func Status_Effect_Action_When_Turn_Start():
 	var _does_anyone_has_this_status_effect: bool = false
 	#-------------------------------------------------------------------------------
 	for _i in _friend_party_alive.size():
-		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _friend_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _friend_party_alive[_i].party_member_serializable_in_battle.status_effect_serializable_array
 		#-------------------------------------------------------------------------------
 		for _j in _status_effect_serializable_array.size():
 			#-------------------------------------------------------------------------------
@@ -5760,7 +5789,7 @@ func Status_Effect_Action_When_Turn_Start():
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	for _i in _enemy_party_alive.size():
-		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable_in_battle.status_effect_serializable_array
 		#-------------------------------------------------------------------------------
 		for _j in _status_effect_serializable_array.size():
 			#-------------------------------------------------------------------------------
@@ -5780,15 +5809,15 @@ func Status_Effect_Action_When_Turn_Start():
 func Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed():
 	var _was_status_effect_removed_this_turn: bool = false
 	#-------------------------------------------------------------------------------
-	var _friend_party_alive: Array[Party_Member] = Get_Alive_Party_Array(friend_party)
-	var _enemy_party_alive: Array[Party_Member] = Get_Alive_Party_Array(enemy_party)
+	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
+	var _enemy_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(enemy_party)
 	#-------------------------------------------------------------------------------
 	if(_friend_party_alive.size() <= 0 or _enemy_party_alive.size() <= 0):
 		return
 	#-------------------------------------------------------------------------------
 	for _i in _friend_party_alive.size():
 		#-------------------------------------------------------------------------------
-		var _skill_serializable_array: Array[Item_Serializable] = _friend_party_alive[_i].party_member_serializable.skill_array_in_battle
+		var _skill_serializable_array: Array[Item_Serializable] = _friend_party_alive[_i].party_member_serializable_in_battle.skill_serializable_array
 		#-------------------------------------------------------------------------------
 		for _j in _skill_serializable_array.size():
 			#-------------------------------------------------------------------------------
@@ -5801,7 +5830,7 @@ func Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed():
 				_skill_serializable_array[_j].cooldown = 0
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _friend_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _friend_party_alive[_i].party_member_serializable_in_battle.status_effect_serializable_array
 		#-------------------------------------------------------------------------------
 		for _j in range(_statuseffect_serializable_array.size()-1, -1, -1):
 			#-------------------------------------------------------------------------------
@@ -5822,7 +5851,7 @@ func Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed():
 	#-------------------------------------------------------------------------------
 	for _i in _enemy_party_alive.size():
 		#-------------------------------------------------------------------------------
-		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable.statuseffect_array_in_battle
+		var _statuseffect_serializable_array: Array[StatusEffect_Serializable] = _enemy_party_alive[_i].party_member_serializable_in_battle.status_effect_serializable_array
 		#-------------------------------------------------------------------------------
 		for _j in range(_statuseffect_serializable_array.size()-1, -1, -1):
 			#-------------------------------------------------------------------------------
@@ -5847,3 +5876,24 @@ func Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed():
 		await Seconds(popip_time_alived)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+func Get_Key_Item_Serializable_Array(_inventory_serializable:Inventory_Serializable) -> Array[Key_Item_Serializable]:
+	var _new_key_item_array: Array[Key_Item_Serializable]
+	#-------------------------------------------------------------------------------
+	if(_inventory_serializable.money_serializable.stored > 0):
+		_new_key_item_array.append(_inventory_serializable.money_serializable)
+	#-------------------------------------------------------------------------------
+	_new_key_item_array.append_array(_inventory_serializable.key_item_array)
+	return _new_key_item_array
+#-------------------------------------------------------------------------------
+func Get_Status_Effect_Serializable_Array(_user:Party_Member_Node) -> Array[StatusEffect_Serializable]:
+	var _new_status_effect_serializable_array: Array[StatusEffect_Serializable]
+	#-------------------------------------------------------------------------------
+	if(_user.party_member_serializable.hp <= 0):
+		var _down_statuseffect_serializable: StatusEffect_Serializable = StatusEffect_Serializable.new()
+		_down_statuseffect_serializable.statuseffect_resource = down_statuseffect_resource
+		_new_status_effect_serializable_array.append(_down_statuseffect_serializable)
+	#-------------------------------------------------------------------------------
+	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable_in_battle.status_effect_serializable_array
+	_new_status_effect_serializable_array.append_array(_status_effect_serializable_array)
+	#-------------------------------------------------------------------------------
+	return _new_status_effect_serializable_array

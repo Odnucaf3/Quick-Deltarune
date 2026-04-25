@@ -36,7 +36,7 @@ const saveData_name : String = "Save"
 const saveData_path : String = "user://Save/"
 var currentSaveData_Json: Dictionary;
 #-------------------------------------------------------------------------------
-@export var playerResource: Array[Party_Member]		# Array[PlayerResource]
+@export var playerResource: Array[Party_Member_Node]		# Array[PlayerResource]
 #-------------------------------------------------------------------------------
 var currentFocus: Control
 #-------------------------------------------------------------------------------
@@ -317,6 +317,27 @@ func Button_Set_Vertical_Navigation(_button:Button, _button_top:Button, _button_
 	_button.focus_neighbor_bottom = _button_botton.get_path()
 	_button.focus_neighbor_left = _button.get_path()
 	_button.focus_neighbor_right = _button.get_path()
+#-------------------------------------------------------------------------------
+func Button_Array_Set_Horizontal_Navigation(_button_array:Array[Button]):
+	#-------------------------------------------------------------------------------
+	if(_button_array.size() > 0):
+		if(_button_array.size() > 1):
+			Button_Set_Horizontal_Navigation(_button_array[0], _button_array[_button_array.size()-1], _button_array[1])
+			#-------------------------------------------------------------------------------
+			for _i in range(1, _button_array.size()-1):
+				Button_Set_Horizontal_Navigation(_button_array[_i], _button_array[_i-1], _button_array[_i+1])
+			#-------------------------------------------------------------------------------
+			Button_Set_Horizontal_Navigation(_button_array[_button_array.size()-1], _button_array[_button_array.size()-2], _button_array[0])
+		#-------------------------------------------------------------------------------
+		else:
+			Button_Set_Horizontal_Navigation(_button_array[0], _button_array[0], _button_array[0])
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Button_Set_Horizontal_Navigation(_button:Button, _button_left:Button, _button_right:Button):
+	_button.focus_neighbor_top = _button.get_path()
+	_button.focus_neighbor_bottom = _button.get_path()
+	_button.focus_neighbor_left = _button_left.get_path()
+	_button.focus_neighbor_right = _button_right.get_path()
 #-------------------------------------------------------------------------------
 func Button_Remove_Navigation(_button:Button):
 	_button.focus_neighbor_top = _button.get_path()

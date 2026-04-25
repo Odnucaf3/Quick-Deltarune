@@ -87,7 +87,7 @@ option_menu_back_button,Volver,Back
 pause_menu_title_label,Menú de Pausa,Pause Menu
 pause_menu_button_0,Habilidades,Skills
 pause_menu_button_1,Inventario,Items
-pause_menu_button_2,Equipo,Equip
+pause_menu_button_2,Equipamiento,Equip
 pause_menu_button_3,Estado,Status
 pause_menu_button_4,Opciones,Options
 pause_menu_button_5,Ir al Título,Go to Title
@@ -97,12 +97,12 @@ item_menu_hold_label,Bolsa,Bag
 item_menu_description_label,Descripción,Description
 item_menu_all_items_label,Todos los Objetos,All Items
 item_menu_consumable_items_label,Objetos Consumibles,Consumable Items
-item_menu_equip_items_label,Objetos de Equipo,Equip Items
-item_menu_key_items_label,Objetos Clave,Key Items
+item_menu_equip_items_label,Objetos Equipables,Equip Items
+item_menu_key_items_label,Objetos Claves,Key Items
 user_menu_info_label,Información,Information
 user_menu_stats_label,Estadísticas,Statistics
 user_menu_status_effect_label,Estados Alterados,Status Effects
-user_menu_equip_label,Equipo,Equip
+user_menu_equip_label,Equipamiento,Equip
 user_menu_equip_slot_label,Ranura,Slot
 user_menu_equip_slot_empty_button,vacio,empty
 user_menu_skill_label,Habilidades,Skills
@@ -110,6 +110,7 @@ name_key_0,Dinero Cibernético,Cyber Money
 description_key_0,* Se usa para comprar Objetos Cibernéticos.,* Used to buy cyber items
 name_key_1,Llave Cibernética,Cyber Key
 description_key_1,* Se usa para abrir Puertas Cibernéticas.,* Used to open Cyber Doors.
+,,
 name_skill_damage_0,Ataque,Attack
 description_skill_damage_0,"* Inflige 5 de daño físico normal a 1 enemigo.
  * Ganas 5 TP.","* Deals 5 of Physical-Normal Damage to 1 Enemy.
@@ -125,7 +126,7 @@ description_skill_damage_3,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemig
 name_skill_damage_4,Corte en Dobre V,Double V-Slash
 description_skill_damage_4,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x4).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x4).
 name_skill_damage_5,Corte en Triple Doble V,Triple Double V-Slash
-description_skill_damage_5,* Inflige 5 Puntos de Daño Físico-Normal a 1 Enemigo (x12).,* Do 5 Points of Physical-Normal Damage to 1 Enemy (x12).
+description_skill_damage_5,* Inflige 5 Puntos de Daño Físico-Normal a Todos los Enemigo (x4).,* Do 5 Points of Physical-Normal Damage to All Enemies (x4).
 name_skill_damage_6,Guardia Ataque,Guard Attack
 description_skill_damage_6,"* Inflige 5 de daño físico normal a 1 enemigo.
 * El usuario recibe La Mitad del Daño Físico durante Ese-Turno.","* Deals 5 of Physical-Normal Damage to 1 Enemy.
@@ -183,7 +184,7 @@ battle_menu_button_0,Ataque,Attack
 battle_menu_button_1,Guardia,Guard
 battle_menu_button_2,Habilidades,Skills
 battle_menu_button_3,Inventario,Items
-battle_menu_button_4,Equipo,Equip
+battle_menu_button_4,Equipamiento,Equip
 battle_menu_button_5,Estado,Status
 win_menu_title,Tu Ganaste,You Win
 lose_menu_title,Tu Perdiste,You Lose

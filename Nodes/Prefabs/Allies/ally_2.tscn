@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dottqr7xoeeuf"]
 
-[ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/player.gd" id="1_d1kby"]
+[ext_resource type="Script" uid="uid://cdfilolimyl3k" path="res://Scripts/Nodes/party_member_node.gd" id="1_d1kby"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="2_n075v"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="3_a6kb6"]
 [ext_resource type="Resource" uid="uid://buxlsnd05sofl" path="res://Resources/Users/ally_2.tres" id="3_n075v"]

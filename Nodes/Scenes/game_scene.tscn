@@ -5,17 +5,17 @@
 [ext_resource type="PackedScene" uid="uid://byvkq3i4ra8cn" path="res://Nodes/Prefabs/bullet.tscn" id="2_lleqo"]
 [ext_resource type="Resource" uid="uid://bi7n7pyt0tbai" path="res://Resources/User_Skills/skill_damage_0.tres" id="5_rpgth"]
 [ext_resource type="Resource" uid="uid://cqpa4wrjsrbky" path="res://Resources/User_Skills/skill_heal_0.tres" id="6_lujb4"]
-[ext_resource type="Resource" uid="uid://b2nrnfuff0r7b" path="res://Resources/Consumable_Items/item_heal_1.tres" id="7_42b3h"]
 [ext_resource type="Script" uid="uid://beengnff5twcx" path="res://Scripts/Resources/item_serializable.gd" id="7_igypo"]
-[ext_resource type="Resource" uid="uid://bxfthrihw0pwr" path="res://Resources/Key_Items/key_1.tres" id="7_xhx7r"]
 [ext_resource type="Resource" uid="uid://dn7qw2txq8q8w" path="res://Resources/Key_Items/key_0.tres" id="8_3p4s7"]
 [ext_resource type="Resource" uid="uid://bnrjjakhyhhuk" path="res://Resources/User_Status_Effects/status_damage_0.tres" id="8_xhx7r"]
 [ext_resource type="PackedScene" uid="uid://ba24ojqvdx61q" path="res://Nodes/Prefabs/ally_popup.tscn" id="9_yqvj6"]
 [ext_resource type="Script" uid="uid://dcdqq2gseak8d" path="res://Scripts/Resources/keyitem_serializable.gd" id="11_hko5v"]
 [ext_resource type="PackedScene" uid="uid://drqeo8sudr51s" path="res://Nodes/Prefabs/enemy_popup.tscn" id="11_s3ops"]
 [ext_resource type="PackedScene" uid="uid://ckdq3xhi07i1g" path="res://Nodes/Prefabs/Rooms/room_test_01.tscn" id="11_tnh07"]
+[ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="12_42b3h"]
 [ext_resource type="Texture2D" uid="uid://c5tbmn2ticnw1" path="res://Assets/kenney_assets/pattern_pack_2/Thin/Default (256px)/pattern_0016.png" id="12_s3ops"]
 [ext_resource type="PackedScene" uid="uid://da1odroc62jt3" path="res://Nodes/Prefabs/Allies/ally_0.tscn" id="13_hxoxt"]
+[ext_resource type="Script" uid="uid://wcaoeaqjl6l4" path="res://Scripts/Resources/inventory_serializable.gd" id="14_yqvj6"]
 [ext_resource type="PackedScene" uid="uid://bmoqfek0rdwlr" path="res://Nodes/Prefabs/enemy_ui.tscn" id="16_mapp4"]
 [ext_resource type="Resource" uid="uid://c0hgqpee0skjt" path="res://Resources/Users/ally_0.tres" id="16_xhx7r"]
 [ext_resource type="Script" uid="uid://bi1xe5kquw8gi" path="res://Scripts/Resources/party_member_serializable.gd" id="17_42b3h"]
@@ -32,24 +32,16 @@
 [ext_resource type="Script" uid="uid://c7bqs6lok38oe" path="res://Scripts/Scenes/canvas_layer.gd" id="29_s3ops"]
 [ext_resource type="Texture2D" uid="uid://drvt7kmovft4d" path="res://Assets/room_previews/room_test_01.jpg" id="33_s3ops"]
 
-[sub_resource type="Resource" id="Resource_xvxdo"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_yqvj6"]
 script = ExtResource("11_hko5v")
 key_item_resource = ExtResource("8_3p4s7")
-stored = 4000
+stored = 0
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
-
-[sub_resource type="Resource" id="Resource_yqvj6"]
-script = ExtResource("7_igypo")
-item_resource = ExtResource("7_42b3h")
-hold = 9
-metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_hko5v"]
-script = ExtResource("11_hko5v")
-key_item_resource = ExtResource("7_xhx7r")
-stored = 2
-metadata/_custom_type_script = "uid://dcdqq2gseak8d"
+script = ExtResource("14_yqvj6")
+money_serializable = SubResource("Resource_yqvj6")
+metadata/_custom_type_script = "uid://wcaoeaqjl6l4"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4usn6"]
 bg_color = Color(0, 0, 0, 1)
@@ -271,12 +263,11 @@ bg_color = Color(0.5568628, 1, 0.4392157, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lleqo"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_title", "item_menu_description_title", "item_menu_description", "item_menu_cost_label", "item_menu_tp_cost_num_label", "item_menu_cooldown_num_label", "item_menu_hold_label", "item_menu_hold_num_label", "item_menu_storage_num_label", "item_menu_all_scrollContainer", "item_menu_all_content", "item_menu_all_button", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_button", "item_menu_equip_scrollContainer", "item_menu_equip_content", "item_menu_equip_button", "item_menu_key_scrollContainer", "item_menu_key_content", "item_menu_key_button", "user_menu", "user_menu_title", "user_menu_description_title", "user_menu_description", "user_menu_cost_label", "user_menu_tp_cost_num_label", "user_menu_cooldown_num_label", "user_menu_held_label", "user_menu_hold_num_label", "user_menu_storage_num_label", "user_menu_skill_scrollContainer", "user_menu_skill_content", "user_menu_skill_button", "user_menu_equip_scrollContainer", "user_menu_equip_content", "user_menu_equip_button", "user_menu_equip_button_label", "user_menu_info_container", "user_menu_info_button", "user_menu_info_party_button", "user_menu_info_image", "user_menu_stats_scrollContainer", "user_menu_stats_content", "user_menu_stats_button", "user_menu_statuseffect_scrollContainer", "user_menu_statuseffect_content", "user_menu_statuseffect_button", "teleport_menu", "teleport_menu_title", "teleport_menu_rect", "teleport_menu_description", "teleport_menu_zone_scrollContainer", "teleport_menu_zone_content", "teleport_menu_zone_button_array", "teleport_menu_bonfire_scrollContainer", "teleport_menu_bonfire_content", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "black_panel", "black_panel_on_top_of_everithing", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_title_label", "pause_menu_button_array", "pause_menu_party_label", "pause_menu_party_button_content", "win_lose_retry_escape_menu_label", "win_lose_retry_escape_menu_vboxcontainer", "win_lose_retry_escape_menu_button", "debug_label", "fps_label", "camera", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "hitbox", "grazebox", "hitbox_animation_tree", "battlemenu_equipbutton_emptyspace", "timer_label", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_label", "max_tp_label")]
+[node name="game_scene" type="Node" unique_id=1249486470 node_paths=PackedStringArray("world_2d", "room_test", "dialogue_menu", "dialogue_menu_button_next", "dialogue_menu_speaker1", "dialogue_menu_speaker1_image", "dialogue_menu_speaker1_name", "dialogue_menu_speaking_label", "savespot_menu", "savespot_menu_button_array", "player_characterbody2d", "player_collider", "player_interactable_by_action_area2d", "player_interactable_by_touch_not_enemy_area2d", "player_interactable_by_touch_enemy_area2d", "friend_party", "item_menu", "item_menu_title", "item_menu_description_title", "item_menu_description", "item_menu_cost_label", "item_menu_tp_cost_num_label", "item_menu_cooldown_num_label", "item_menu_hold_label", "item_menu_hold_num_label", "item_menu_storage_num_label", "item_menu_all_scrollContainer", "item_menu_all_content", "item_menu_all_button", "item_menu_consumable_scrollContainer", "item_menu_consumable_content", "item_menu_consumable_button", "item_menu_equip_scrollContainer", "item_menu_equip_content", "item_menu_equip_button", "item_menu_key_scrollContainer", "item_menu_key_content", "item_menu_key_button", "user_menu", "user_menu_title", "user_menu_description_title", "user_menu_description", "user_menu_cost_label", "user_menu_tp_cost_num_label", "user_menu_cooldown_num_label", "user_menu_held_label", "user_menu_hold_num_label", "user_menu_storage_num_label", "user_menu_skill_scrollContainer", "user_menu_skill_content", "user_menu_skill_button", "user_menu_equip_scrollContainer", "user_menu_equip_content", "user_menu_equip_button", "user_menu_equip_button_label", "user_menu_info_container", "user_menu_info_button", "user_menu_info_party_button", "user_menu_info_image", "user_menu_stats_scrollContainer", "user_menu_stats_content", "user_menu_stats_button", "user_menu_statuseffect_scrollContainer", "user_menu_statuseffect_content", "user_menu_statuseffect_button", "teleport_menu", "teleport_menu_title", "teleport_menu_rect", "teleport_menu_description", "teleport_menu_zone_scrollContainer", "teleport_menu_zone_content", "teleport_menu_zone_button_array", "teleport_menu_bonfire_scrollContainer", "teleport_menu_bonfire_content", "confirm_buy_menu", "confirm_buy_menu_item_name", "confirm_buy_menu_button", "confirm_buy_menu_item_price", "money_menu", "money_menu_label", "black_panel", "black_panel_on_top_of_everithing", "battle_black_panel", "pause_menu_panel", "pause_menu_money_label", "pause_menu", "pause_menu_title_label", "pause_menu_button_array", "pause_menu_party_label", "pause_menu_party_button_content", "go_to_title_menu", "go_to_title_menu_title_label", "go_to_title_menu_button_array", "win_lose_retry_escape_menu_label", "win_lose_retry_escape_menu_vboxcontainer", "win_lose_retry_escape_menu_button", "debug_label", "fps_label", "camera", "battle_control", "battle_menu", "battle_menu_button", "battle_box", "hitbox", "grazebox", "hitbox_animation_tree", "battlemenu_equipbutton_emptyspace", "timer_label", "tp_bar_root", "tp_bar_progressbar_present", "tp_bar_progressbar_future", "tp_label", "max_tp_label")]
 script = ExtResource("1_xqt5u")
 world_2d = NodePath("World_2D")
 room_test = NodePath("World_2D/room_test_01")
 ui_theme = ExtResource("26_1th3s")
-money_serializable = SubResource("Resource_xvxdo")
 attack_skill_resource = ExtResource("5_rpgth")
 guard_skill_resource = ExtResource("6_lujb4")
 down_statuseffect_resource = ExtResource("8_xhx7r")
@@ -321,8 +312,7 @@ item_menu_equip_button = NodePath("CanvasLayer/All Menues/Item_Menues/HBoxContai
 item_menu_key_scrollContainer = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer/Key_Items_ScrollContainer")
 item_menu_key_content = NodePath("CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer/Key_Items_ScrollContainer/VBoxContainer")
 item_menu_key_button = NodePath("CanvasLayer/All Menues/Item_Menues/HBoxContainer/Button4")
-consumable_item_array = Array[ExtResource("7_igypo")]([SubResource("Resource_yqvj6")])
-key_item_array = Array[ExtResource("11_hko5v")]([SubResource("Resource_hko5v")])
+inventory_serializable = SubResource("Resource_hko5v")
 user_menu = NodePath("CanvasLayer/All Menues/Status_Menues")
 user_menu_title = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer2/Label")
 user_menu_description_title = NodePath("CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3/HBoxContainer3/Label")
@@ -352,8 +342,8 @@ user_menu_statuseffect_content = NodePath("CanvasLayer/All Menues/Status_Menues/
 user_menu_statuseffect_button = NodePath("CanvasLayer/All Menues/Status_Menues/HBoxContainer/Button_StatusEffect")
 teleport_menu = NodePath("CanvasLayer/All Menues/Teleport_Menu")
 teleport_menu_title = NodePath("CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer/Label")
-teleport_menu_rect = NodePath("CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/Control/TextureRect")
-teleport_menu_description = NodePath("CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/RichTextLabel")
+teleport_menu_rect = NodePath("CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/VBoxContainer/Control/TextureRect")
+teleport_menu_description = NodePath("CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/VBoxContainer/RichTextLabel")
 teleport_menu_zone_scrollContainer = NodePath("CanvasLayer/All Menues/Teleport_Menu/HBoxContainer/ScrollContainer")
 teleport_menu_zone_content = NodePath("CanvasLayer/All Menues/Teleport_Menu/HBoxContainer/ScrollContainer/HBoxContainer")
 teleport_menu_zone_button_array = [NodePath("CanvasLayer/All Menues/Teleport_Menu/HBoxContainer/ScrollContainer/HBoxContainer/Button")]
@@ -375,6 +365,9 @@ pause_menu_title_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxCon
 pause_menu_button_array = [NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button2"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button3"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button4"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button5"), NodePath("CanvasLayer/Pause_Menu/HBox_Container/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button6")]
 pause_menu_party_label = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/party_members_title_Label")
 pause_menu_party_button_content = NodePath("CanvasLayer/Pause_Menu/HBox_Container/Panel2/MarginContainer/VBoxContainer2/ScrollContainer/VBoxContainer")
+go_to_title_menu = NodePath("CanvasLayer/Go_to_Title_Menu")
+go_to_title_menu_title_label = NodePath("CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer/Label")
+go_to_title_menu_button_array = [NodePath("CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer/HBoxContainer/Button"), NodePath("CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer/HBoxContainer/Button2")]
 win_lose_retry_escape_menu_label = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_Label")
 win_lose_retry_escape_menu_vboxcontainer = NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer")
 win_lose_retry_escape_menu_button = [NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button2"), NodePath("CanvasLayer/Win_Lose_Retry_Escape_Dialogue_Menues/VBoxContainer/VBoxContainer/Win_Lose_Retry_Escape_VBoxContainer/Button3")]
@@ -855,7 +848,6 @@ text = "  $500  "
 horizontal_alignment = 1
 
 [node name="Pause_Menu" type="MarginContainer" parent="CanvasLayer" unique_id=1516907207]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1042,6 +1034,52 @@ size_flags_vertical = 1
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 1
+
+[node name="Go_to_Title_Menu" type="PanelContainer" parent="CanvasLayer" unique_id=498395677]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("26_1th3s")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Go_to_Title_Menu" unique_id=384185872]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Go_to_Title_Menu/MarginContainer" unique_id=2074035770]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer" unique_id=993528611]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "Do you want to go to Title?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer" unique_id=2105434103]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer/HBoxContainer" unique_id=928671416]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "Yes"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Go_to_Title_Menu/MarginContainer/VBoxContainer/HBoxContainer" unique_id=909555047]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "No"
 
 [node name="Black_Panel" type="Panel" parent="CanvasLayer" unique_id=1099603300]
 self_modulate = Color(1, 1, 1, 0)
@@ -1971,7 +2009,6 @@ text = "↑W"
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2" unique_id=2080176601]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "* Utility description of the Skill / Item. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
 
@@ -2022,6 +2059,7 @@ text = "[3]"
 horizontal_alignment = 2
 
 [node name="Status_Menues" type="VBoxContainer" parent="CanvasLayer/All Menues" unique_id=174187539]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -2769,7 +2807,6 @@ text = "↑W"
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3" unique_id=1118940747]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "* Utility description of the Skill / Item.
 Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
@@ -2821,7 +2858,6 @@ text = "[99]"
 horizontal_alignment = 2
 
 [node name="Teleport_Menu" type="VBoxContainer" parent="CanvasLayer/All Menues" unique_id=1416940092]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -3132,12 +3168,17 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "↑W"
 
-[node name="Control" type="Control" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=1382578090]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=543294736]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="Control" type="Control" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/VBoxContainer" unique_id=1382578090]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/Control" unique_id=1749279778]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/VBoxContainer/Control" unique_id=1749279778]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -3147,10 +3188,9 @@ grow_vertical = 2
 texture = ExtResource("33_s3ops")
 stretch_mode = 5
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2" unique_id=1859578551]
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/VBoxContainer" unique_id=1859578551]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "* Utlity description of the Skill / Item."
 

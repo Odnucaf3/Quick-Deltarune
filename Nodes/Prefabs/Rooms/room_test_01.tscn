@@ -84,6 +84,7 @@ metadata/_custom_type_script = "uid://d2t4gp3nheyip"
 [sub_resource type="Resource" id="Resource_srwso"]
 script = ExtResource("10_xdoc7")
 key_item_resource = ExtResource("11_5drey")
+stored = 4000
 metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 
 [sub_resource type="Resource" id="Resource_xdoc7"]
@@ -102,7 +103,7 @@ var _myENEMY_STATE: ENEMY_STATE = ENEMY_STATE.PATROLLING
 @export var area2d_Interactable: Interactable_Script
 @export var area2d_collider: CollisionShape2D
 #-------------------------------------------------------------------------------
-@export var enemy: Array[Party_Member]
+@export var enemy: Array[Party_Member_Node]
 @export var label: Label
 #-------------------------------------------------------------------------------
 var original_position: Vector2
@@ -322,7 +323,7 @@ metadata/_custom_type_script = "uid://bi1xe5kquw8gi"
 [sub_resource type="GDScript" id="GDScript_rqg47"]
 script/source = "extends Interactable_Script
 #-------------------------------------------------------------------------------
-@export var user: Party_Member
+@export var user: Party_Member_Node
 @export var speaker1_image: Texture2D
 @export var speaker2_image: Texture2D
 #-------------------------------------------------------------------------------
