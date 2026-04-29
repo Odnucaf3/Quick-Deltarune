@@ -270,6 +270,10 @@ var how_many_would_you_buy: int = 0
 var input_dir: Vector2
 var input_dir_normal: Vector2
 var dead_zone: float = 0.001
+#-------------------------------------------------------------------------------
+var popip_time_alived: float = 1.18		#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s)
+#var popip_time_alived: float = 0.68	#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s) - lo que dura el "Move_to_Position"(0.5s).
+#-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
 #region MONOBEHAVIOUR
@@ -788,7 +792,7 @@ func EnterBattle(_enemy_array:Array[Party_Member_Node]):
 		for _i in friend_party.size():
 			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(friend_party[_i])
 			#-------------------------------------------------------------------------------
-			var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(friend_party[_i].party_member_serializable, "max_hp")
+			var _max_hp: int = Get_Max_HP(friend_party[_i].party_member_serializable)
 			friend_party[_i].party_member_serializable.hp = _max_hp
 			Set_HP_Label(friend_party[_i])
 			#-------------------------------------------------------------------------------
@@ -803,7 +807,7 @@ func EnterBattle(_enemy_array:Array[Party_Member_Node]):
 		for _i in enemy_party.size():
 			Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(enemy_party[_i])
 			#-------------------------------------------------------------------------------
-			var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(enemy_party[_i].party_member_serializable, "max_hp")
+			var _max_hp: int = Get_Max_HP(enemy_party[_i].party_member_serializable)
 			enemy_party[_i].party_member_serializable.hp = _max_hp
 			Set_HP_Label(enemy_party[_i])
 			#-------------------------------------------------------------------------------
@@ -834,7 +838,7 @@ func Set_AllItems_When_Exit_Battle():
 #-------------------------------------------------------------------------------
 func Set_All_User_Skills_Equip_StatusEffect_When_Enter_Battle(_user:Party_Member_Node):
 	_user.party_member_serializable_in_battle = _user.party_member_serializable.Constructor()
-	_user.party_member_serializable_in_battle.Set_Skills()
+	Set_Skills(_user.party_member_serializable_in_battle)
 #-------------------------------------------------------------------------------
 func Set_All_User_Skills_Equip_StatusEffect_When_Exit_Battle(_user:Party_Member_Node):
 	_user.party_member_serializable = _user.party_member_serializable_in_battle.Constructor()
@@ -894,8 +898,7 @@ func BattleMenu_AttackButton_Submit():
 		singleton.Move_to_First_Button(battle_menu_button)
 		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
-	var _skill_serializable: Item_Serializable = Item_Serializable.new()
-	_skill_serializable.item_resource = attack_skill_resource
+	var _skill_serializable: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(attack_skill_resource)
 	#-------------------------------------------------------------------------------
 	TargetMenu_Enter(_skill_serializable, battle_menu, _cancel)
 #-------------------------------------------------------------------------------
@@ -912,8 +915,7 @@ func BattleMenu_DefenseButton_Submit():
 		singleton.Move_to_Button(battle_menu_button[1])
 		singleton.Common_Canceled()
 	#-------------------------------------------------------------------------------
-	var _skill_serializable: Item_Serializable = Item_Serializable.new()
-	_skill_serializable.item_resource = guard_skill_resource
+	var _skill_serializable: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(guard_skill_resource)
 	#-------------------------------------------------------------------------------
 	TargetMenu_Enter(_skill_serializable, battle_menu, _cancel)
 #-------------------------------------------------------------------------------
@@ -941,7 +943,7 @@ func BattleMenu_SkillButton_Submit():
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member_Node = _friend_party_alive[current_player_turn]
-	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable_in_battle.Get_Skills()
+	var _skill_serializable_array: Array[Item_Serializable] = Get_Skills(_user.party_member_serializable_in_battle)
 	#-------------------------------------------------------------------------------
 	for _i in _skill_serializable_array.size():
 		var _button: Button = Create_Skill_Button(_skill_serializable_array[_i])
@@ -1357,7 +1359,7 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member_Node, _is_en
 	singleton.Set_Button_WSAD(user_menu_equip_button, _selected_0, _submit_0, _cancel_0, _w, _s, _equip_a, _equip_d)
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _skill_a, _skill_d)
 	#-------------------------------------------------------------------------------
-	Create_Stats_Button_Array(_user.party_member_serializable, _cancel_0, _w, _s, _stats_a, _stats_d)
+	Create_Stats_Button_Array(_user.party_member_serializable_in_battle, _cancel_0, _w, _s, _stats_a, _stats_d)
 	#-------------------------------------------------------------------------------
 	var _new_status_effect_serializable_array: Array[StatusEffect_Serializable] = Get_Status_Effect_Serializable_Array(_user)
 	#-------------------------------------------------------------------------------
@@ -1385,7 +1387,7 @@ func BattleMenu_StatusButton_TargetButton_Submit(_user:Party_Member_Node, _is_en
 	#-------------------------------------------------------------------------------
 	Create_EquipSlot_Label(_equip_serializable_array)
 	#-------------------------------------------------------------------------------
-	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable_in_battle.Get_Skills()
+	var _skill_serializable_array: Array[Item_Serializable] = Get_Skills(_user.party_member_serializable_in_battle)
 	#-------------------------------------------------------------------------------
 	for _i in _skill_serializable_array.size():
 		var _skill_button:Button = Create_Skill_Button(_skill_serializable_array[_i])
@@ -2269,7 +2271,7 @@ func You_Retry(_enemy_array:Array[Party_Member_Node]):
 			#-------------------------------------------------------------------------------
 			Animation_StateMachine(friend_party[_i].animation_tree, "", "Idle")
 			#-------------------------------------------------------------------------------
-			var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(friend_party[_i].party_member_serializable, "max_hp")
+			var _max_hp: int = Get_Max_HP(friend_party[_i].party_member_serializable)
 			friend_party[_i].party_member_serializable.hp = _max_hp
 			Set_HP_Label(friend_party[_i])
 			#-------------------------------------------------------------------------------
@@ -2288,7 +2290,7 @@ func You_Retry(_enemy_array:Array[Party_Member_Node]):
 			#-------------------------------------------------------------------------------
 			Animation_StateMachine(enemy_party[_i].animation_tree, "Base_StateMachine/", "Idle")
 			#-------------------------------------------------------------------------------
-			var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(enemy_party[_i].party_member_serializable, "max_hp")
+			var _max_hp: int = Get_Max_HP(enemy_party[_i].party_member_serializable)
 			enemy_party[_i].party_member_serializable.hp = _max_hp
 			Set_HP_Label(enemy_party[_i])
 			#-------------------------------------------------------------------------------
@@ -2834,7 +2836,7 @@ func Bullet_Grazed_SP_Gain():
 	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
 	#-------------------------------------------------------------------------------
 	for _i in _friend_party_alive.size():
-		var _max_sp: int = Get_Party_Member_Calculated_Base_Stat(_friend_party_alive[_i].party_member_serializable, "max_sp")
+		var _max_sp: int = Get_Max_SP(_friend_party_alive[_i].party_member_serializable)
 		#-------------------------------------------------------------------------------
 		if(_friend_party_alive[_i].party_member_serializable.sp < _max_sp):
 			_target_party.append(_friend_party_alive[_i])
@@ -2845,7 +2847,7 @@ func Bullet_Grazed_SP_Gain():
 		_target_party[0].party_member_serializable.sp += 1
 		SP_Gain_VisualEffect(_target_party[0].global_position)
 		#-------------------------------------------------------------------------------
-		var _max_sp: int = Get_Party_Member_Calculated_Base_Stat(_target_party[0].party_member_serializable, "max_sp")
+		var _max_sp: int = Get_Max_SP(_target_party[0].party_member_serializable)
 		#-------------------------------------------------------------------------------
 		if(_target_party[0].party_member_serializable.sp > _max_sp):
 			_target_party[0].party_member_serializable.sp = _max_sp
@@ -2948,7 +2950,7 @@ func skill_damage_5(_user:Party_Member_Node):
 				HP_Damage(_user.target_party[_i], 5)
 			#-------------------------------------------------------------------------------
 		#-------------------------------------------------------------------------------
-		await Seconds(0.15)
+		await Seconds(0.13)
 		_callable.call()
 	#-------------------------------------------------------------------------------
 	await Seconds(0.3)
@@ -3017,9 +3019,7 @@ func Add_Status_Effect(_user:Party_Member_Node, _status_effect:StatusEffect_Reso
 			return
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	var _status_effect_serializable: StatusEffect_Serializable = StatusEffect_Serializable.new()
-	_status_effect_serializable.statuseffect_resource = _status_effect
-	_status_effect_serializable.stored = _int + 1
+	var _status_effect_serializable: StatusEffect_Serializable = Create_Status_Effect_Serializable_with_Status_Effect_Resource(_status_effect, _int + 1)
 	_status_effect_serializable_array.append(_status_effect_serializable)
 	#-------------------------------------------------------------------------------
 	Set_Skills_in_Status_Effect_Serializable_when_is_Applied(_status_effect_serializable)
@@ -3029,18 +3029,21 @@ func Add_Status_Effect(_user:Party_Member_Node, _status_effect:StatusEffect_Reso
 	#-------------------------------------------------------------------------------
 	return
 #-------------------------------------------------------------------------------
+func Create_Status_Effect_Serializable_with_Status_Effect_Resource(_status_effect_resource:StatusEffect_Resource, _int:int) -> StatusEffect_Serializable:
+	var _status_effect_serializable: StatusEffect_Serializable = StatusEffect_Serializable.new()
+	#-------------------------------------------------------------------------------
+	_status_effect_serializable.statuseffect_resource = _status_effect_resource
+	_status_effect_serializable.stored = _int
+	#-------------------------------------------------------------------------------
+	return _status_effect_serializable
+#-------------------------------------------------------------------------------
 func Set_Skills_in_Status_Effect_Serializable_when_is_Applied(_status_effect_serializable:StatusEffect_Serializable):
 	var _status_effect_resource: StatusEffect_Resource = _status_effect_serializable.statuseffect_resource
 	#-------------------------------------------------------------------------------
 	_status_effect_serializable.skill_serializable_array.clear()
 	#-------------------------------------------------------------------------------
 	for _i in _status_effect_resource.skill_resource_array.size():
-		var _skill_serializable: Item_Serializable = Item_Serializable.new()
-		#-------------------------------------------------------------------------------
-		_skill_serializable.item_resource = _status_effect_resource.skill_resource_array[_i]
-		_skill_serializable.cooldown = 0
-		_skill_serializable.hold = _status_effect_resource.skill_resource_array[_i].max_hold
-		#-------------------------------------------------------------------------------
+		var _skill_serializable: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(_status_effect_resource.skill_resource_array[_i])
 		_status_effect_serializable.skill_serializable_array.append(_skill_serializable)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -3219,7 +3222,7 @@ func HP_Heal_Porcentual(_target:Party_Member_Node, _scale:float):
 		_target.party_member_serializable.hp = 0
 		Flying_PopUp(_target, "-"+tr("name_"+get_resource_filename(down_statuseffect_resource)))
 	#-------------------------------------------------------------------------------
-	var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_target.party_member_serializable, "max_hp")
+	var _max_hp: int = Get_Max_HP(_target.party_member_serializable)
 	var _gain_hp: int  = int(float(_max_hp)*_scale)
 	_target.party_member_serializable.hp += _gain_hp
 	#-------------------------------------------------------------------------------
@@ -3235,13 +3238,13 @@ func HP_Heal_Porcentual(_target:Party_Member_Node, _scale:float):
 	Set_Status_Effect_Label(_target)
 #-------------------------------------------------------------------------------
 func Set_HP_Label(_user:Party_Member_Node):
-	var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_user.party_member_serializable, "max_hp")
+	var _max_hp: int = Get_Max_HP(_user.party_member_serializable)
 	_user.party_member_ui.label_hp.text = str(_user.party_member_serializable.hp)+"/"+str(_max_hp)+" HP"
 	_user.party_member_ui.bar_hp.max_value = _max_hp
 	_user.party_member_ui.bar_hp.value = _user.party_member_serializable.hp
 #-------------------------------------------------------------------------------
 func Set_SP_Label(_user:Party_Member_Node):
-	var _max_sp: int = Get_Party_Member_Calculated_Base_Stat(_user.party_member_serializable, "max_sp")
+	var _max_sp: int = Get_Max_SP(_user.party_member_serializable)
 	_user.party_member_ui.label_sp.text = str(_user.party_member_serializable.sp)+"/"+str(_max_sp)+" SP"
 	_user.party_member_ui.bar_sp.max_value = _max_sp
 	_user.party_member_ui.bar_sp.value = _user.party_member_serializable.sp
@@ -3615,12 +3618,12 @@ func Create_PartyMember_Button(_party_member:Party_Member_Node) -> Party_Button:
 	return _party_button
 #-------------------------------------------------------------------------------
 func PartyMember_Button_Set_HP_and_SP(_party_button:Party_Button, _party_member:Party_Member_Node):
-	var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_party_member.party_member_serializable, "max_hp")
+	var _max_hp: int = Get_Max_HP(_party_member.party_member_serializable)
 	_party_button.label_hp.text = str(_max_hp)+"/"+str(_max_hp)+" HP"
 	_party_button.bar_hp.max_value = _max_hp
 	_party_button.bar_hp.value = _max_hp
 	#-------------------------------------------------------------------------------
-	var _max_sp: int = Get_Party_Member_Calculated_Base_Stat(_party_member.party_member_serializable, "max_sp")
+	var _max_sp: int = Get_Max_SP(_party_member.party_member_serializable)
 	_party_button.label_sp.text = str(_max_sp)+"/"+str(_max_sp)+" SP"
 	_party_button.bar_sp.max_value = _max_sp
 	_party_button.bar_sp.value = _max_sp
@@ -3877,27 +3880,14 @@ func Create_KeyItem_InMarket_Button(_keyitem_serializable: Key_Item_Serializable
 	return _button
 #-------------------------------------------------------------------------------
 func Create_Stats_Button_Array(_party_member_serializable:Party_Member_Serializable, _cancel:Callable, _w:Callable, _s:Callable, _a:Callable, _d:Callable):
-	#-------------------------------------------------------------------------------
-	for _i in _party_member_serializable.base_stats_dictionarty.size():
-		var _key: String = _party_member_serializable.base_stats_dictionarty.keys()[_i]		#NOTA: Utilizar diccionarios privados, y no exportados, mantienen el orden original de sus elementos.
-		var _value: int = Get_Party_Member_Calculated_Base_Stat(_party_member_serializable, _key)
-		#-------------------------------------------------------------------------------
-		Create_Stats_Button_2(_key, _value, _cancel, _w, _s, _a, _d)
-	#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-func Get_Party_Member_Calculated_Base_Stat(_party_member_serializable:Party_Member_Serializable,_key: StringName) -> int:
-	var _value: int = _party_member_serializable.party_member_resource.base_stats_dictionarty.get(_key, 0)
-	#-------------------------------------------------------------------------------
-	for _j in _party_member_serializable.equip_serializable_array.size():
-		#-------------------------------------------------------------------------------
-		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
-			_value += _party_member_serializable.equip_serializable_array[_j].equip_resource.base_stats_dictionarty.get(_key, 0)
-		#-------------------------------------------------------------------------------
-	#-------------------------------------------------------------------------------
-	for _j in _party_member_serializable.status_effect_serializable_array.size():
-		_value += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.base_stats_dictionarty.get(_key, 0)
-	#-------------------------------------------------------------------------------
-	return _value
+	Create_Stats_Button_2("max_hp", Get_Max_HP(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	#Create_Stats_Button_2("max_sp", Get_Max_SP(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	Create_Stats_Button_2("physical_attack", Get_Physical_Attack(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	Create_Stats_Button_2("physical_defense", Get_Physical_Defense(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	Create_Stats_Button_2("magical_attack", Get_Magical_Attack(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	Create_Stats_Button_2("magical_defense", Get_Magical_Defense(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	#Create_Stats_Button_2("agility", Get_Agility(_party_member_serializable), _cancel, _w, _s, _a, _d)
+	Create_Stats_Button_2("luck", Get_Luck(_party_member_serializable), _cancel, _w, _s, _a, _d)
 #-------------------------------------------------------------------------------
 func Create_Stats_Button_2(_id:String, _value:int, _cancel:Callable, _w:Callable, _s:Callable, _a:Callable, _d:Callable):
 	var _stats_button: Button = Create_Stats_Button(_id, _value)
@@ -4066,24 +4056,31 @@ func Set_EquipItem_Information_Common(_equip_resource:Equip_Resource) ->String:
 	var _s:String = ""
 	_s += tr("description_"+get_resource_filename(_equip_resource))
 	#-------------------------------------------------------------------------------
-	var _not_sorted_base_stats_dictionarty: Dictionary[StringName, int] = friend_party[0].party_member_serializable.base_stats_dictionarty	#NOTA: Necesito hacer esto porque los @export dictionary se reordenan alfabeticamente, mientras que los privados mantienen el orden original.
-	#-------------------------------------------------------------------------------
-	for _i in _not_sorted_base_stats_dictionarty.size():
-		var _key: String = _not_sorted_base_stats_dictionarty.keys()[_i]		#NOTA: Utilizar diccionarios privados, y no exportados, mantienen el orden original de sus elementos.
-		var _value: int = _equip_resource.base_stats_dictionarty.get(_key, 0)
-		#-------------------------------------------------------------------------------
-		if(_value > 0):
-			_s += "\n"
-			_s += "* +"+str(_value)+" "+tr("name_stat_"+_key)+"."
-		#-------------------------------------------------------------------------------
-		elif(_value < 0):
-			_s += "\n"
-			_s += "* "+str(_value)+" "+tr("name_stat_"+_key)+"."
-		#-------------------------------------------------------------------------------
+	_s += Get_Weapon_Stat_String("max_hp", _equip_resource.max_hp)
+	#_s += Get_Weapon_Stat_String("max_sp", _equip_resource.max_sp)
+	_s += Get_Weapon_Stat_String("physical_attack", _equip_resource.physical_attack)
+	_s += Get_Weapon_Stat_String("physical_defense", _equip_resource.physical_defense)
+	_s += Get_Weapon_Stat_String("magical_attack", _equip_resource.magical_attack)
+	_s += Get_Weapon_Stat_String("magical_defense", _equip_resource.magical_defense)
+	#_s += Get_Weapon_Stat_String("agility", _equip_resource.agility)
+	_s += Get_Weapon_Stat_String("max_hp", _equip_resource.luck)
 	#-------------------------------------------------------------------------------
 	for _i in _equip_resource.skill_resource_array.size():
 		_s += "\n"
 		_s += "* Add Skill: "+tr("name_"+get_resource_filename(_equip_resource.skill_resource_array[_i]))+"."
+	#-------------------------------------------------------------------------------
+	return _s
+#-------------------------------------------------------------------------------
+func Get_Weapon_Stat_String(_key:String, _value:int) -> String:
+	var _s: String = ""
+	#-------------------------------------------------------------------------------
+	if(_value > 0):
+		_s += "\n"
+		_s += "* "+"(+"+str(_value)+")"+" "+tr("name_stat_"+_key)+"."
+	#-------------------------------------------------------------------------------
+	elif(_value < 0):
+		_s += "\n"
+		_s += "* "+"(+"+str(_value)+")"+" "+tr("name_stat_"+_key)+"."
 	#-------------------------------------------------------------------------------
 	return _s
 #-------------------------------------------------------------------------------
@@ -4159,8 +4156,8 @@ func PauseMenu_SkillButton_PartyButton_Submit(_index:int):
 	singleton.Set_Button_WSAD(user_menu_skill_button, _selected_0, _submit_0, _cancel_0, _w, _s, _a, _d)
 	#-------------------------------------------------------------------------------
 	var _user: Party_Member_Node = friend_party[_index]
-	_user.party_member_serializable.Set_Skills()
-	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable.Get_Skills()
+	Set_Skills(_user.party_member_serializable)
+	var _skill_serializable_array: Array[Item_Serializable] = Get_Skills(_user.party_member_serializable)
 	#-------------------------------------------------------------------------------
 	for _i in _skill_serializable_array.size():
 		var _skill_button: Button = Create_Skill_Button(_skill_serializable_array[_i])
@@ -4324,12 +4321,7 @@ func Set_Skills_in_Equip_Serializable_when_Equip_Resource_is_Equiped(_equip_seri
 	_equip_serializable.skill_serializable_array.clear()
 	#-------------------------------------------------------------------------------
 	for _i in _equip_resource.skill_resource_array.size():
-		var _skill_serializable: Item_Serializable = Item_Serializable.new()
-		#-------------------------------------------------------------------------------
-		_skill_serializable.item_resource = _equip_resource.skill_resource_array[_i]
-		_skill_serializable.cooldown = 0
-		_skill_serializable.hold = _equip_resource.skill_resource_array[_i].max_hold
-		#-------------------------------------------------------------------------------
+		var _skill_serializable: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(_equip_resource.skill_resource_array[_i])
 		_equip_serializable.skill_serializable_array.append(_skill_serializable)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -4469,8 +4461,8 @@ func PauseMenu_StatusButton_PartyButton_Submit(_index:int):
 	#-------------------------------------------------------------------------------
 	Create_EquipSlot_Label(_user.party_member_serializable.equip_serializable_array)
 	#-------------------------------------------------------------------------------
-	_user.party_member_serializable.Set_Skills()
-	var _skill_serializable_array: Array[Item_Serializable] = _user.party_member_serializable.Get_Skills()
+	Set_Skills(_user.party_member_serializable)
+	var _skill_serializable_array: Array[Item_Serializable] = Get_Skills(_user.party_member_serializable)
 	#-------------------------------------------------------------------------------
 	for _i in _skill_serializable_array.size():
 		var _skill_button:Button = Create_Skill_Button(_skill_serializable_array[_i])
@@ -4895,7 +4887,7 @@ func Load_All_Data():
 		room_test.room_id = room_test.name
 		#-------------------------------------------------------------------------------
 		for _i in friend_party.size():
-			friend_party[_i].party_member_serializable.Set_Empty_EquipSlots_Types()
+			Set_Empty_EquipSlots_Types(friend_party[_i].party_member_serializable)
 		#-------------------------------------------------------------------------------
 		#Save_All_Data("player_starting_position")
 		#-------------------------------------------------------------------------------
@@ -5480,10 +5472,16 @@ func Add_Equip_Serializable_to_Array(_equip_array:Array[Equip_Serializable], _eq
 			return _equip_array[_i]
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
+	var _equip_serializable: Equip_Serializable = Create_Equip_Serializable_with_Equip_Resource(_equip_resource, _hold)
+	_equip_array.append(_equip_serializable)
+	return _equip_serializable
+#-------------------------------------------------------------------------------
+func Create_Equip_Serializable_with_Equip_Resource(_equip_resource:Equip_Resource, _hold:int) -> Equip_Serializable:
 	var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
+	#-------------------------------------------------------------------------------
 	_equip_serializable.equip_resource = _equip_resource
 	_equip_serializable.stored = _hold
-	_equip_array.append(_equip_serializable)
+	#-------------------------------------------------------------------------------
 	return _equip_serializable
 #-------------------------------------------------------------------------------
 func Add_KeyItem_to_Inventory(_keyitem_serializable: Key_Item_Serializable, _hold:int) -> Key_Item_Serializable:
@@ -5739,6 +5737,8 @@ func Get_Dead_Party_Array(_party_array:Array[Party_Member_Node]) -> Array[Party_
 #-------------------------------------------------------------------------------
 #endregion
 #-------------------------------------------------------------------------------
+#region STATUS EFFECT FUNCTIONS
+#-------------------------------------------------------------------------------
 func Has_Status_Effect_Guard(_user:Party_Member_Node) -> bool:
 	return Has_Status_Effect(_user, "status_heal_0")
 #-------------------------------------------------------------------------------
@@ -5761,9 +5761,6 @@ func Set_Status_Effect_Label(_user:Party_Member_Node):
 	#-------------------------------------------------------------------------------
 	_user.party_member_ui.label_status_effect.text = tr("user_menu_status_effect_label")+": "+str(_int)
 #-------------------------------------------------------------------------------
-var popip_time_alived: float = 1.18		#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s)
-#var popip_time_alived: float = 0.68	#NOTA: es lo que duran los "Flying_PopUp_Actions"(1.18s) - lo que dura el "Move_to_Position"(0.5s).
-#-------------------------------------------------------------------------------
 func Status_Effect_Action_When_Turn_Start():
 	#-------------------------------------------------------------------------------
 	var _friend_party_alive: Array[Party_Member_Node] = Get_Alive_Party_Array(friend_party)
@@ -5780,7 +5777,7 @@ func Status_Effect_Action_When_Turn_Start():
 		for _j in _status_effect_serializable_array.size():
 			#-------------------------------------------------------------------------------
 			if(get_resource_filename(_status_effect_serializable_array[_j].statuseffect_resource) == "status_damage_1"):
-				var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_friend_party_alive[_i].party_member_serializable, "max_hp")
+				var _max_hp: int = Get_Max_HP(_friend_party_alive[_i].party_member_serializable)
 				var _damage = int(float(_max_hp)*0.1)
 				HP_Damage(_friend_party_alive[_i], _damage)
 				Play_AttackAnimation(_friend_party_alive[_i], "anim_poison")
@@ -5794,7 +5791,7 @@ func Status_Effect_Action_When_Turn_Start():
 		for _j in _status_effect_serializable_array.size():
 			#-------------------------------------------------------------------------------
 			if(get_resource_filename(_status_effect_serializable_array[_j].statuseffect_resource) == "status_damage_1"):
-				var _max_hp: int = Get_Party_Member_Calculated_Base_Stat(_enemy_party_alive[_i].party_member_serializable, "max_hp")
+				var _max_hp: int = Get_Max_HP(_enemy_party_alive[_i].party_member_serializable)
 				var _damage = int(float(_max_hp)*0.1)
 				HP_Damage(_enemy_party_alive[_i], _damage)
 				Play_AttackAnimation(_enemy_party_alive[_i], "anim_poison")
@@ -5876,6 +5873,22 @@ func Status_Effect_Action_When_Turn_Start_and_Status_Effect_is_Removed():
 		await Seconds(popip_time_alived)
 	#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+func Get_Status_Effect_Serializable_Array(_user:Party_Member_Node) -> Array[StatusEffect_Serializable]:
+	var _new_status_effect_serializable_array: Array[StatusEffect_Serializable]
+	#-------------------------------------------------------------------------------
+	if(_user.party_member_serializable.hp <= 0):
+		var _down_statuseffect_serializable: StatusEffect_Serializable = Create_Status_Effect_Serializable_with_Status_Effect_Resource(down_statuseffect_resource, 1)
+		_new_status_effect_serializable_array.append(_down_statuseffect_serializable)
+	#-------------------------------------------------------------------------------
+	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable_in_battle.status_effect_serializable_array
+	_new_status_effect_serializable_array.append_array(_status_effect_serializable_array)
+	#-------------------------------------------------------------------------------
+	return _new_status_effect_serializable_array
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region KEY ITEMS FUNCTIONS
+#-------------------------------------------------------------------------------
 func Get_Key_Item_Serializable_Array(_inventory_serializable:Inventory_Serializable) -> Array[Key_Item_Serializable]:
 	var _new_key_item_array: Array[Key_Item_Serializable]
 	#-------------------------------------------------------------------------------
@@ -5885,15 +5898,191 @@ func Get_Key_Item_Serializable_Array(_inventory_serializable:Inventory_Serializa
 	_new_key_item_array.append_array(_inventory_serializable.key_item_array)
 	return _new_key_item_array
 #-------------------------------------------------------------------------------
-func Get_Status_Effect_Serializable_Array(_user:Party_Member_Node) -> Array[StatusEffect_Serializable]:
-	var _new_status_effect_serializable_array: Array[StatusEffect_Serializable]
+#endregion
+#-------------------------------------------------------------------------------
+#region SKILLS SERIALIZABLE FUNCTIONS
+#-------------------------------------------------------------------------------
+func Set_Skills(_party_member_serializable:Party_Member_Serializable):
+	_party_member_serializable.skill_serializable_array.clear()
 	#-------------------------------------------------------------------------------
-	if(_user.party_member_serializable.hp <= 0):
-		var _down_statuseffect_serializable: StatusEffect_Serializable = StatusEffect_Serializable.new()
-		_down_statuseffect_serializable.statuseffect_resource = down_statuseffect_resource
-		_new_status_effect_serializable_array.append(_down_statuseffect_serializable)
+	for _i in _party_member_serializable.party_member_resource.skill_resource_array.size():
+		var _skill_serializable: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(_party_member_serializable.party_member_resource.skill_resource_array[_i])
+		_party_member_serializable.skill_serializable_array.append(_skill_serializable)
 	#-------------------------------------------------------------------------------
-	var _status_effect_serializable_array: Array[StatusEffect_Serializable] = _user.party_member_serializable_in_battle.status_effect_serializable_array
-	_new_status_effect_serializable_array.append_array(_status_effect_serializable_array)
+	for _i in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_i].equip_resource != null):
+			_party_member_serializable.equip_serializable_array[_i].skill_serializable_array.clear()
+			#-------------------------------------------------------------------------------
+			for _j in _party_member_serializable.equip_serializable_array[_i].equip_resource.skill_resource_array.size():
+				var _skill_serializable_1: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(_party_member_serializable.equip_serializable_array[_i].equip_resource.skill_resource_array[_j])
+				_party_member_serializable.equip_serializable_array[_i].skill_serializable_array.append(_skill_serializable_1)
+			#-------------------------------------------------------------------------------
+		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
-	return _new_status_effect_serializable_array
+	for _i in _party_member_serializable.status_effect_serializable_array.size():
+		_party_member_serializable.status_effect_serializable_array[_i].skill_serializable_array.clear()
+		#-------------------------------------------------------------------------------
+		for _j in _party_member_serializable.status_effect_serializable_array[_i].statuseffect_resource.skill_resource_array.size():
+			var _skill_serializable_1: Item_Serializable = Create_Skill_Serializable_with_Skill_Resource(_party_member_serializable.status_effect_serializable_array[_i].statuseffect_resource.skill_resource_array[_j])
+			_party_member_serializable.status_effect_serializable_array[_i].skill_serializable_array.append(_skill_serializable_1)
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+func Create_Skill_Serializable_with_Skill_Resource(_skill_resource: Item_Resource) -> Item_Serializable:
+	var _skill_serializable: Item_Serializable = Item_Serializable.new()
+	#-------------------------------------------------------------------------------
+	_skill_serializable.item_resource = _skill_resource
+	_skill_serializable.cooldown = 0
+	_skill_serializable.hold = _skill_serializable.item_resource.max_hold
+	#-------------------------------------------------------------------------------
+	return _skill_serializable
+#-------------------------------------------------------------------------------
+func Get_Skills(_party_member_serializable:Party_Member_Serializable) -> Array[Item_Serializable]:
+	var _skill_array: Array[Item_Serializable]
+	_skill_array.append_array(_party_member_serializable.skill_serializable_array)
+	#-------------------------------------------------------------------------------
+	for _i in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_i].equip_resource != null):
+			_skill_array.append_array(_party_member_serializable.equip_serializable_array[_i].skill_serializable_array)
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _i in _party_member_serializable.status_effect_serializable_array.size():
+		_skill_array.append_array(_party_member_serializable.status_effect_serializable_array[_i].skill_serializable_array)
+	#-------------------------------------------------------------------------------
+	return _skill_array
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region SET EQUIP SERIALIZABLE FUNCTIONS
+#-------------------------------------------------------------------------------
+func Set_Empty_EquipSlots_Types(_party_member_serializable:Party_Member_Serializable):
+	_party_member_serializable.equip_serializable_array.clear()
+	#-------------------------------------------------------------------------------
+	for _i in _party_member_serializable.party_member_resource.equip_type_array.size():
+		var _equip_serializable: Equip_Serializable = Equip_Serializable.new()
+		#-------------------------------------------------------------------------------
+		_equip_serializable.myEQUIP_TYPE = _party_member_serializable.party_member_resource.equip_type_array[_i]
+		#-------------------------------------------------------------------------------
+		_party_member_serializable.equip_serializable_array.append(_equip_serializable)
+	#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------
+#region STATS FUNCTIONS
+#-------------------------------------------------------------------------------
+func Get_Max_HP(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _max_hp: int = _party_member_serializable.party_member_resource.max_hp
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_max_hp += _party_member_serializable.equip_serializable_array[_j].equip_resource.max_hp
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_max_hp += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.max_hp
+	#-------------------------------------------------------------------------------
+	return _max_hp
+#-------------------------------------------------------------------------------
+func Get_Max_SP(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _max_sp: int = _party_member_serializable.party_member_resource.max_sp
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_max_sp += _party_member_serializable.equip_serializable_array[_j].equip_resource.max_sp
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_max_sp += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.max_sp
+	#-------------------------------------------------------------------------------
+	return _max_sp
+#-------------------------------------------------------------------------------
+func Get_Physical_Attack(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _physical_attack: int = _party_member_serializable.party_member_resource.physical_attack
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_physical_attack += _party_member_serializable.equip_serializable_array[_j].equip_resource.physical_attack
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_physical_attack += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.physical_attack
+	#-------------------------------------------------------------------------------
+	return _physical_attack
+#-------------------------------------------------------------------------------
+func Get_Physical_Defense(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _physical_defense: int = _party_member_serializable.party_member_resource.physical_defense
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_physical_defense += _party_member_serializable.equip_serializable_array[_j].equip_resource.physical_defense
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_physical_defense += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.physical_defense
+	#-------------------------------------------------------------------------------
+	return _physical_defense
+#-------------------------------------------------------------------------------
+func Get_Magical_Attack(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _magical_attack: int = _party_member_serializable.party_member_resource.magical_attack
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_magical_attack += _party_member_serializable.equip_serializable_array[_j].equip_resource.magical_attack
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_magical_attack += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.magical_attack
+	#-------------------------------------------------------------------------------
+	return _magical_attack
+#-------------------------------------------------------------------------------
+func Get_Magical_Defense(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _magical_defense: int = _party_member_serializable.party_member_resource.magical_defense
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_magical_defense += _party_member_serializable.equip_serializable_array[_j].equip_resource.magical_defense
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_magical_defense += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.magical_defense
+	#-------------------------------------------------------------------------------
+	return _magical_defense
+#-------------------------------------------------------------------------------
+func Get_Agility(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _agility: int = _party_member_serializable.party_member_resource.agility
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_agility += _party_member_serializable.equip_serializable_array[_j].equip_resource.agility
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_agility += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.agility
+	#-------------------------------------------------------------------------------
+	return _agility
+#-------------------------------------------------------------------------------
+func Get_Luck(_party_member_serializable:Party_Member_Serializable) -> int:
+	var _luck: int = _party_member_serializable.party_member_resource.luck
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.equip_serializable_array.size():
+		#-------------------------------------------------------------------------------
+		if(_party_member_serializable.equip_serializable_array[_j].equip_resource != null):
+			_luck += _party_member_serializable.equip_serializable_array[_j].equip_resource.luck
+		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
+	for _j in _party_member_serializable.status_effect_serializable_array.size():
+		_luck += _party_member_serializable.status_effect_serializable_array[_j].statuseffect_resource.luck
+	#-------------------------------------------------------------------------------
+	return _luck
+#-------------------------------------------------------------------------------
+#endregion
+#-------------------------------------------------------------------------------

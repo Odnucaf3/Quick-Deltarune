@@ -2009,6 +2009,7 @@ text = "↑W"
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Item_Menues/PanelContainer/All Items/HBoxContainer/VBoxContainer2" unique_id=2080176601]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "* Utility description of the Skill / Item. Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
 
@@ -2807,6 +2808,7 @@ text = "↑W"
 [node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/All Menues/Status_Menues/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer3" unique_id=1118940747]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "* Utility description of the Skill / Item.
 Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla"
@@ -3191,6 +3193,7 @@ stretch_mode = 5
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/All Menues/Teleport_Menu/PanelContainer/Teleport/HBoxContainer/VBoxContainer2/VBoxContainer" unique_id=1859578551]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
 text = "* Utlity description of the Skill / Item."
 

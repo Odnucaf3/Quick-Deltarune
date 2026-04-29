@@ -2,19 +2,12 @@
 
 [ext_resource type="Script" uid="uid://kyu7ufkbhotc" path="res://Scripts/Resources/equip_resource.gd" id="1_bgsjk"]
 [ext_resource type="Script" uid="uid://cutcj8e6g23o2" path="res://Scripts/Resources/item_resource.gd" id="2_jtp1i"]
-[ext_resource type="Resource" uid="uid://bxrap3or6v7f1" path="res://Resources/User_Skills/skill_heal_1.tres" id="3_jtp1i"]
 
 [resource]
 script = ExtResource("1_bgsjk")
-base_stats_dictionarty = Dictionary[StringName, int]({
-&"agility": 7,
-&"luck": -8,
-&"magical_attack": 5,
-&"magical_defense": -6,
-&"max_hp": 1,
-&"max_sp": -2,
-&"physical_attack": 3,
-&"physical_defense": -4
-})
-skill_resource_array = Array[ExtResource("2_jtp1i")]([ExtResource("3_jtp1i")])
+max_hp = 10
+physical_attack = 5
+magical_attack = 4
+agility = 3
+luck = 2
 metadata/_custom_type_script = "uid://kyu7ufkbhotc"

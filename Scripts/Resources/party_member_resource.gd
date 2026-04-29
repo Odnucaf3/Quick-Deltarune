@@ -4,42 +4,43 @@ class_name Party_Member_Resource
 @export var body_sprite: Texture2D
 @export var face_sprite: Texture2D
 #-------------------------------------------------------------------------------
-@export var base_stats_dictionarty: Dictionary[StringName, int] = {
-	"max_hp": 10,
-	"max_sp": 20,
-	"physical_attack": 10,
-	"physical_defense": 10,
-	"magical_attack": 10,
-	"magical_defense": 10,
-	"agility": 10,
-	"luck": 10,
-}
+@export_group("Base Stats")
+@export var max_hp: int = 20
+@export var max_sp: int = 10
+@export var physical_attack: int = 10
+@export var physical_defense: int = 10
+@export var magical_attack: int = 10
+@export var magical_defense: int = 10
+@export var agility: int = 10
+@export var luck: int = 10
+@export_group("")
 #-------------------------------------------------------------------------------
-@export var extra_stats_dictionarty: Dictionary[StringName, int] = {
-	"physical_presition": 100,
-	"physical_evasion": 0,
-	"magical_presition": 100,
-	"magical_evasion": 0,
-	"hp_regeneration": 0,
-	"sp_regeneration": 0,
-	"tp_regeneration": 0
-}
+@export_group("Extra Stats")
+@export var physical_presition: int = 100
+@export var physical_evasion: int = 0
+@export var magical_presition: int = 100
+@export var magical_evasion: int = 0
+@export var hp_regeneration: int = 0
+@export var sp_regeneration: int = 0
+@export var tp_regeneration: int = 0
+@export_group("")
 #-------------------------------------------------------------------------------
-@export var special_stats_dictionarty: Dictionary[StringName, int] = {
-	"target_rate": 100,
-	"guard_effect_rate": 50,
-	"recovery_effect_rate": 100,
-	"pharmacology": 100,
-	"hp_cost_rate": 100,
-	"sp_cost_rate": 100,
-	"tp_cost_rate": 100,
-	"physical_damage_rate": 100,
-	"magical_damage_rate": 100,
-	"gold_rate": 100,
-	"experience_rate": 100
-}
+@export_group("Special Stats")
+@export var target_rate: int = 100
+@export var guard_effect_rate: int = 50
+@export var recovery_effect_rate: int = 100
+@export var pharmacology: int = 100
+@export var hp_cost_rate: int = 100
+@export var sp_cost_rate: int = 100
+@export var tp_cost_rate: int = 100
+@export var physical_damage_rate: int = 100
+@export var magical_damage_rate: int = 100
+@export var gold_rate: int = 100
+@export var experience_rate: int = 100
+@export_group("")
 #-------------------------------------------------------------------------------
 @export var skill_resource_array: Array[Item_Resource]
+#-------------------------------------------------------------------------------
 @export var equip_type_array: Array[Equip_Resource.EQUIP_TYPE] = [
 	Equip_Resource.EQUIP_TYPE.WEAPON,
 	Equip_Resource.EQUIP_TYPE.HEAD,
