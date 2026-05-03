@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cgtnu7kmoncu6" path="res://Nodes/Prefabs/item_prefab.tscn" id="6_7i8dt"]
 [ext_resource type="PackedScene" uid="uid://c3gpm8500ebkp" path="res://Nodes/Prefabs/Enemies/enemy_0.tscn" id="6_jyvag"]
 [ext_resource type="Resource" uid="uid://dygr7kxjhpg73" path="res://Resources/Consumable_Items/item_damage_0.tres" id="6_ptuk6"]
+[ext_resource type="Resource" uid="uid://b34sv7sxnkjlc" path="res://Resources/Consumable_Items/item_heal_2.tres" id="8_ptuk6"]
 [ext_resource type="Script" uid="uid://d2t4gp3nheyip" path="res://Scripts/Resources/equip_serializable.gd" id="8_ygji3"]
 [ext_resource type="PackedScene" uid="uid://c8fmwkm58xib0" path="res://Nodes/Prefabs/savespot_prefab.tscn" id="9_4u8d0"]
 [ext_resource type="Resource" uid="uid://cmtocen6a17v3" path="res://Resources/Equip_Items/equip_weapon_0.tres" id="9_mxnnk"]
@@ -74,6 +75,11 @@ metadata/_custom_type_script = "uid://beengnff5twcx"
 script = ExtResource("13_mxnnk")
 item_resource = ExtResource("12_ygji3")
 hold = 2
+metadata/_custom_type_script = "uid://beengnff5twcx"
+
+[sub_resource type="Resource" id="Resource_dvu1e"]
+script = ExtResource("13_mxnnk")
+item_resource = ExtResource("8_ptuk6")
 metadata/_custom_type_script = "uid://beengnff5twcx"
 
 [sub_resource type="Resource" id="Resource_8ss50"]
@@ -199,7 +205,8 @@ func Enter_Battle():
 	#-------------------------------------------------------------------------------
 	#await Dialogue_Before_Battle()
 	#-------------------------------------------------------------------------------
-	await singleton.game_scene.EnterBattle(enemy)
+	singleton.game_scene.enemy_party = enemy
+	await singleton.game_scene.EnterBattle()
 	await Battle()
 #-------------------------------------------------------------------------------
 func Battle():
@@ -207,15 +214,15 @@ func Battle():
 	while(singleton.game_scene.myBATTLE_STATE == singleton.game_scene.BATTLE_STATE.STILL_FIGHTING):
 		await singleton.game_scene.Wait_for_Player()
 		await singleton.game_scene.Party_Actions()
-		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire1(), 7)
+		await singleton.game_scene.Enemy_Actions(func():singleton.game_scene.Stage1_Fire1(), 7)
 		#-------------------------------------------------------------------------------
 		await singleton.game_scene.Wait_for_Player()
 		await singleton.game_scene.Party_Actions()
-		await singleton.game_scene.Start_BulletHell(func():singleton.game_scene.Stage1_Fire2(), 7)
+		await singleton.game_scene.Enemy_Actions(func():singleton.game_scene.Stage1_Fire2(), 7)
 		#-------------------------------------------------------------------------------
 		#await singleton.game_scene.Wait_for_Player()
 		#await singleton.game_scene.Party_Actions()
-		#await singleton.game_scene.Start_BulletHell(func():print(\"C Actio\"), 2)
+		#await singleton.game_scene.Enemy_Actions(func():print(\"C Actio\"), 2)
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
 	match(singleton.game_scene.myBATTLE_STATE):
@@ -231,7 +238,7 @@ func Battle():
 				#-------------------------------------------------------------------------------
 				singleton.game_scene.BATTLE_STATE.YOU_RETRY:
 					singleton.Common_Submited()
-					await singleton.game_scene.You_Retry(enemy)
+					await singleton.game_scene.You_Retry()
 					Battle()
 				#-------------------------------------------------------------------------------
 				singleton.game_scene.BATTLE_STATE.YOU_ESCAPE:
@@ -248,7 +255,7 @@ func Battle():
 		#-------------------------------------------------------------------------------
 		singleton.game_scene.BATTLE_STATE.YOU_RETRY:
 			singleton.Common_Submited()
-			await singleton.game_scene.You_Retry(enemy)
+			await singleton.game_scene.You_Retry()
 			Battle()
 		#-------------------------------------------------------------------------------
 	#-------------------------------------------------------------------------------
@@ -411,7 +418,7 @@ metadata/_custom_type_script = "uid://dcdqq2gseak8d"
 [sub_resource type="CircleShape2D" id="CircleShape2D_rqg47"]
 radius = 16.0
 
-[sub_resource type="Resource" id="Resource_dvu1e"]
+[sub_resource type="Resource" id="Resource_83ac6"]
 resource_local_to_scene = true
 script = ExtResource("19_8opot")
 party_member_resource = ExtResource("18_ptuk6")
@@ -492,7 +499,7 @@ autoplay = "banner-neon"
 [node name="Item" parent="." unique_id=926208097 instance=ExtResource("6_7i8dt")]
 position = Vector2(-48, 112)
 collision_layer = 4
-pickable_consumableitem = Array[ExtResource("13_mxnnk")]([SubResource("Resource_4u8d0"), SubResource("Resource_w87vk")])
+pickable_consumableitem = Array[ExtResource("13_mxnnk")]([SubResource("Resource_4u8d0"), SubResource("Resource_w87vk"), SubResource("Resource_dvu1e")])
 pickable_equipitem = Array[ExtResource("8_ygji3")]([SubResource("Resource_8ss50")])
 pickable_keyitem = Array[ExtResource("10_xdoc7")]([SubResource("Resource_srwso"), SubResource("Resource_xdoc7")])
 
@@ -575,4 +582,4 @@ _keyitem_array = Array[ExtResource("10_xdoc7")]([SubResource("Resource_wrvon")])
 shape = SubResource("CircleShape2D_rqg47")
 
 [node name="Foe_01" parent="Merchant_01" unique_id=2119111307 instance=ExtResource("6_jyvag")]
-party_member_serializable = SubResource("Resource_dvu1e")
+party_member_serializable = SubResource("Resource_83ac6")

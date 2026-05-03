@@ -218,6 +218,8 @@ name_item_heal_1,Menta Revividora,Revive Mint
 description_item_heal_1,"* Cura el 50% de los PV-Máximos a 1 Aliado-Derribado.
 * Elimina el estado ""Derribado"".","* Deals 50% of Max-HP Healing to 1 KnockDown-Ally.
 * Remove ""KnockDown"" State."
+name_item_heal_2,Gema de Vida,Life Gem
+description_item_heal_2,"* Agrega el estado alterado ""Refrescado"" (100%) a 1-Aliado por 3-Turnos.","* Add Status Effect ""Refresh"" (100%) to 1-Ally for 3-Turns."
 ,,
 name_item_damage_0,Cóctel Molotov,Cogtail Molotov
 description_item_damage_0,"* Inflige 30 de daño físico de fuego a 1 enemigo. 100% de probabilidad de aplicar el efecto ""Quemadura"" durante 3 turnos.","* Do 30 of Fire-Physical-Damage to 1 Enemy. 100% chances to Add ""Burning"" for 3 Turn."

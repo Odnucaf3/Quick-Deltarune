@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://d02bk5ejwls67"]
+
+[ext_resource type="Script" uid="uid://beo36kxbirrtl" path="res://Scripts/Prefabs/animation_effect.gd" id="1_2342p"]
+[ext_resource type="Texture2D" uid="uid://b1dka5cn66w7k" path="res://Assets/rpg_maker_mv/img/animations/Fire2.png" id="2_odc86"]
+[ext_resource type="AudioStream" uid="uid://cj26n2gq1ppa2" path="res://Assets/rpg_maker_mv/audio/se/Fire2.ogg" id="3_odc86"]
+
+[sub_resource type="Animation" id="Animation_fdxl0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_h1vb1"]
+resource_name = "action"
+length = 1.4000068
+step = 0.06666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.06666667, 0.13333334, 0.20000002, 0.26666668, 0.33333334),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.33333334, 0.4666667),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("3_odc86")
+}],
+"times": PackedFloat32Array(0.06666667)
+}
+tracks/2/use_blend = true
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ukety"]
+_data = {
+&"RESET": SubResource("Animation_fdxl0"),
+&"action": SubResource("Animation_h1vb1")
+}
+
+[node name="anim_fire_damage" type="Node2D" unique_id=1031979512 node_paths=PackedStringArray("animation_player")]
+script = ExtResource("1_2342p")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1361564567]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_odc86")
+offset = Vector2(0, -59.999992)
+hframes = 5
+vframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=723777820]
+libraries/ = SubResource("AnimationLibrary_ukety")
+autoplay = &"action"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=306134317]
+bus = &"sfx"
