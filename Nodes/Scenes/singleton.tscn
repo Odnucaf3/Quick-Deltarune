@@ -24,6 +24,8 @@
 [node name="singleton" type="Node" unique_id=1729131300 node_paths=PackedStringArray("optionMenu", "audioStreamPlayer_selected", "audioStreamPlayer_submit", "audioStreamPlayer_cancel", "audioStreamPlayer_equip", "audioStreamPlayer_save", "audioStreamPlayer_shop", "audioStreamPlayer_teleport", "audioStreamPlayer_enter_battle", "audioStreamPlayer_escape", "audioStreamPlayer_ally_damage", "audioStreamPlayer_enemy_damage", "audioStreamPlayer_enemy_colapse", "audioStreamPlayer_recovery", "audioStreamPlayer_graze", "bgmPlayer", "fps_margin_container", "fps_label")]
 process_mode = 3
 script = ExtResource("1_ixejq")
+stage1 = ExtResource("3_ul50i")
+battle1 = ExtResource("2_re85v")
 optionMenu = NodePath("CanvasLayer/Option_Menu")
 audioStreamPlayer_selected = NodePath("AudioStreamPlayer_select")
 audioStreamPlayer_submit = NodePath("AudioStreamPlayer_submit")
@@ -40,8 +42,6 @@ audioStreamPlayer_enemy_colapse = NodePath("AudioStreamPlayer_enemy_colapse")
 audioStreamPlayer_recovery = NodePath("AudioStreamPlayer_recovery")
 audioStreamPlayer_graze = NodePath("AudioStreamPlayer_graze")
 bgmPlayer = NodePath("AudioStreamPlayer_bgm")
-stage1 = ExtResource("3_ul50i")
-battle1 = ExtResource("2_re85v")
 fps_margin_container = NodePath("CanvasLayer/debug_MarginContainer")
 fps_label = NodePath("CanvasLayer/debug_MarginContainer/fps_Label")
 
